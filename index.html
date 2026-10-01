@@ -5500,4 +5500,53 @@ window.__DOD_GACHA_LEVEL_7495={version:V,four:30,six:50,names:TEN.slice()};
 })();
 </script>
 
+
+<script id="v07496-monster-party-repair">
+(()=>{
+'use strict';
+const V='v0.74.96';
+const humanNames=new Set(['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']);
+const monsterHub=window.monsterHub66;
+if(typeof monsterHub!=='function')return;
+function putMonster(slot,name){
+ if(![1,2].includes(slot))return;
+ if(!Array.isArray(S.monsterCompanions)||!S.monsterCompanions.includes(name))return toast('未加入の仲間モンスターです');
+ const before=partyNames().slice();
+ S.heroVitals7459=S.heroVitals7459||{};
+ S.heroEquipment65=S.heroEquipment65||{};
+ before.forEach((who,i)=>{
+   S.heroVitals7459[who]={hp:S.hp[i],mp:S.mp[i]};
+   if(humanNames.has(who)&&S.equipment[i])S.heroEquipment65[who]={...S.equipment[i]};
+ });
+ const after=before.slice(),other=after.indexOf(name);
+ if(other>=0&&other!==slot)after[other]=slot===1?'ミア':'トア';
+ after[slot]=name;
+ S.partyFree7438=after;
+ S.partySlots=after.slice(1);
+ after.forEach((who,i)=>{
+   if(humanNames.has(who))S.equipment[i]={...(S.heroEquipment65[who]||{武器:'',防具:'',アクセサリー:''})};
+   else S.equipment[i]={武器:'',防具:'',アクセサリー:''};
+ });
+ S.hp[slot]=maxHp(slot);S.mp[slot]=maxMp(slot);
+ save();render();toast(`${name}を${slot+1}枠目に編成`);
+}
+function hub(filter='all'){
+ monsterHub(filter);
+ const body=document.getElementById('obody');if(!body)return;
+ body.querySelectorAll('[data-ms66]').forEach(b=>{
+   b.onclick=e=>{e.preventDefault();putMonster(Number(b.dataset.ms66),b.dataset.mn66);hub(filter)};
+ });
+}
+const pv=window.partyView;
+window.partyView=function(mode='members'){
+ if(mode==='monsters')return hub('all');
+ return pv.apply(this,arguments);
+};
+window.__DOD_MONSTER_PARTY_7496={version:V,assign:putMonster};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);stamp();return z};
+stamp();setTimeout(stamp,350);
+})();
+</script>
+
 </body></html>
