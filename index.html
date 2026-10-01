@@ -5195,20 +5195,26 @@ border:0!important;border-radius:0!important;box-shadow:none!important;filter:no
 
 
 <!-- DOD_NEW6_CANONICAL_FIX_START -->
-<style id="v07486-six-canonical-size">
+<style id="v07487-six-canonical-size">
+/* Additional six: enlarge the rendered art itself, preserving the exact approved image assets. */
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,.hqHuman749.hero-ナーヴァ img,
 .hqHuman749.hero-アズライル img,.hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
  width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;
  object-fit:contain!important;object-position:center bottom!important;
- transform:scale(1.18)!important;transform-origin:center bottom!important;
+ transform:scale(1.75)!important;transform-origin:center bottom!important;
  filter:drop-shadow(0 7px 7px rgba(0,0,0,.30))!important;
  border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
 }
+/* Ensure the enlarged art is not clipped by its slot. */
+.hqHuman749.hero-ゼファル,.hqHuman749.hero-レオンハルト,.hqHuman749.hero-ナーヴァ,
+.hqHuman749.hero-アズライル,.hqHuman749.hero-フェンリル,.hqHuman749.hero-ヴォルク{
+ overflow:visible!important;
+}
 </style>
-<script id="v07485-final-lock">
+<script id="v07487-final-lock">
 (()=>{
  'use strict';
- const V='v0.74.86';
+ const V='v0.74.87';
  const stamp=()=>{
    const b=document.getElementById('buildVersion'); if(b)b.textContent=V;
    const sm=document.querySelector('.logo small'); if(sm)sm.textContent=V;
@@ -5218,7 +5224,7 @@ border:0!important;border-radius:0!important;box-shadow:none!important;filter:no
  if(typeof rr==='function') window.render=function(){const z=rr.apply(this,arguments);stamp();return z;};
  stamp();
  window.addEventListener('load',stamp,{once:true});
- window.__DOD_NEW6_CANONICAL_7486={version:V,scale:1.18,names:['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']};
+ window.__DOD_NEW6_CANONICAL_7487={version:V,scale:1.75,names:['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']};
 })();
 </script>
 <!-- DOD_NEW6_CANONICAL_FIX_END -->
