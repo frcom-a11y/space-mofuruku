@@ -2404,7 +2404,6 @@ window.__forge53={
    const rows=out.map((x,i)=>`<div class="dropItem ${cls(x)}">${count===10?`${i+1}. `:''}${x.rar}　${x.name}${x.guaranteed?'　★10連保証':''}</div>`).join('');
    const gotPivot=out.some(x=>x.kind==='pivot'), gotLegend=out.some(x=>x.rar==='LEGEND');
    window.showSummon64(out,{gotPivot,gotLegend,guaranteed});
-   setTimeout(summonView62,1700);
  }
  function summonView62(){
    const owned=!!S.legend62.pivot;
@@ -5363,4 +5362,48 @@ window.__DOD_SKILL_SELFTEST_7493=()=>{let names=Object.keys(DEF),errors=[];names
 save();render();
 })();
 </script>
+
+<style id="v07494-summon-bank-ux">
+#summonFx64.show{overflow:auto;-webkit-overflow-scrolling:touch}
+.bankCustom7494{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:10px}
+.bankCustom7494 input{width:100%;box-sizing:border-box;padding:12px 10px;border:1px solid #5c7895;border-radius:10px;background:#0c1c31;color:#fff;font-size:16px;outline:none}
+.bankCustom7494 input:focus{border-color:#e8c85e;box-shadow:0 0 0 2px #e8c85e22}
+.bankCustomBtns7494{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.bankCustomBtns7494 button{min-height:44px}
+</style>
+<script id="v07494-summon-bank-ux-script">
+(()=>{
+'use strict';
+const V='v0.74.94';
+window.showSummon64=function(out,meta={}){
+ const x=document.getElementById('summonFx64');if(!x)return;
+ const top=meta.gotPivot?'LEGEND CHARACTER':meta.gotLegend?'LEGEND':out.some(v=>v.rar==='EPIC')?'EPIC':'星降りの召喚';
+ const cls=meta.gotPivot||meta.gotLegend?'legend':out.some(v=>v.rar==='EPIC')?'epic':'';
+ let body=meta.gotPivot?`<div class="pivotReveal64"><b>ピボット</b><span>LEGEND / 戦術家</span><div class="small">固有スキル：出口を見抜く</div></div>`:'';
+ body+=`<div class="summonGrid64">${out.map((v,i)=>`<div class="summonOne64 ${String(v.rar||'').toLowerCase()}">${out.length>1?(i+1)+'. ':''}<b>${v.rar}</b><br>${v.name}</div>`).join('')}</div>`;
+ x.innerHTML=`<div class="summonScene64"><div class="summonStars64">✦ ◈ ✦</div><div class="summonTitle64 ${cls}">${top}</div>${body}<div class="summonHint64">タップして閉じる</div></div>`;
+ x.classList.add('show');clearTimeout(x._t);x._t=null;
+ x.onclick=()=>{x.classList.remove('show');x.onclick=null};
+};
+const base7494=window.baseView;
+if(typeof base7494==='function')window.baseView=function(){
+ const z=base7494.apply(this,arguments),body=document.getElementById('obody');if(!body)return z;
+ const title=[...body.querySelectorAll('.sectionTitle')].find(e=>e.textContent.includes('モフルク銀行'));
+ const panel=title&&title.closest('.panel'),actions=panel&&panel.querySelector('.bankActions');
+ if(actions){
+  actions.outerHTML=`<div class="bankCustom7494"><input id="bankAmount7494" type="number" inputmode="numeric" pattern="[0-9]*" min="1" step="1" placeholder="金額を入力"><button class="miniBtn" id="bankAll7494">全額</button></div><div class="bankCustomBtns7494"><button class="miniBtn" id="bankDep7494">入力額を預ける</button><button class="miniBtn" id="bankWd7494">入力額を引き出す</button></div>`;
+  const input=document.getElementById('bankAmount7494'),amount=()=>Math.max(0,Math.floor(Number(input.value)||0));
+  document.getElementById('bankDep7494').onclick=()=>bankMove('deposit',amount());
+  document.getElementById('bankWd7494').onclick=()=>bankMove('withdraw',amount());
+  document.getElementById('bankAll7494').onclick=()=>{input.value=String(Math.max(S.gold||0,S.bank||0));input.focus();input.select()};
+ }
+ return z;
+};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);stamp();return z};
+stamp();setTimeout(stamp,300);
+window.__DOD_UX_7494={version:V,summonManualClose:true,summonScrollPreserved:true,bankCustomAmount:true};
+})();
+</script>
+
 </body></html>
