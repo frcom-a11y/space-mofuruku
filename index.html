@@ -5406,4 +5406,98 @@ window.__DOD_UX_7494={version:V,summonManualClose:true,summonScrollPreserved:tru
 })();
 </script>
 
+
+<script id="v07495-gacha-hero-levels">
+(()=>{
+'use strict';
+const V='v0.74.95';
+const FOUR=['リリア','セレナ','ノア','カグラ'];
+const SIX=['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+const TEN=[...FOUR,...SIX];
+const FLOOR=Object.fromEntries([...FOUR.map(n=>[n,30]),...SIX.map(n=>[n,50])]);
+const GROW={
+ 'リリア':{hp:4.4,mp:3.1,atk:1.5,def:1.15,mag:3.3,spd:1.5,crit:.08},
+ 'セレナ':{hp:4.8,mp:2.4,atk:2.7,def:1.25,mag:1.3,spd:3.0,crit:.24},
+ 'ノア':{hp:4.6,mp:2.8,atk:2.4,def:1.35,mag:2.6,spd:2.1,crit:.16},
+ 'カグラ':{hp:6.2,mp:1.8,atk:3.8,def:1.45,mag:1.1,spd:1.7,crit:.15},
+ 'ゼファル':{hp:4.9,mp:2.6,atk:2.35,def:1.25,mag:2.7,spd:2.2,crit:.15},
+ 'レオンハルト':{hp:5.7,mp:2.1,atk:2.75,def:1.65,mag:1.5,spd:1.8,crit:.12},
+ 'ナーヴァ':{hp:5.4,mp:2.0,atk:3.0,def:1.25,mag:1.0,spd:2.7,crit:.20},
+ 'アズライル':{hp:4.2,mp:3.5,atk:2.0,def:1.1,mag:3.5,spd:1.9,crit:.14},
+ 'フェンリル':{hp:6.5,mp:1.8,atk:3.2,def:1.7,mag:1.2,spd:2.4,crit:.17},
+ 'ヴォルク':{hp:5.9,mp:2.2,atk:3.0,def:1.55,mag:1.4,spd:2.5,crit:.18}
+};
+S.charGrowth=S.charGrowth||{};
+S.gachaHeroes7490=Array.isArray(S.gachaHeroes7490)?S.gachaHeroes7490:[];
+function ensure(n){
+ if(!TEN.includes(n))return null;
+ const min=FLOOR[n];
+ let g=S.charGrowth[n];
+ if(!g||typeof g!=='object')g=S.charGrowth[n]={lv:min,exp:0};
+ if(!Number.isFinite(g.lv))g.lv=min;
+ if(!Number.isFinite(g.exp))g.exp=0;
+ if(S.gachaHeroes7490.includes(n)&&g.lv<min){g.lv=min;g.exp=0}
+ return g;
+}
+TEN.forEach(ensure);
+const oldHero59=window.hero59,oldHeroLv59=window.heroLv59;
+window.hero59=function(n){if(TEN.includes(n))return ensure(n);return typeof oldHero59==='function'?oldHero59(n):{lv:S.lv||1,exp:S.exp||0}};
+window.heroLv59=function(n){if(TEN.includes(n))return ensure(n).lv;return typeof oldHeroLv59==='function'?oldHeroLv59(n):(S.lv||1)};
+function isTen(n){return TEN.includes(n)}
+function level(n){return isTen(n)?ensure(n).lv:(typeof window.heroLv59==='function'?window.heroLv59(n):S.lv||1)}
+const oldBase=window.baseFor;
+window.baseFor=function(n){
+ if(!isTen(n))return oldBase.apply(this,arguments);
+ const b=BASE_MEMBERS[n],q=GROW[n],k=level(n)-1;
+ return {...b,hp:Math.floor(b.hp+k*q.hp),mp:Math.floor(b.mp+k*q.mp),atk:b.atk+k*q.atk,def:b.def+k*q.def};
+};
+const oldMaxHp=window.maxHp,oldMaxMp=window.maxMp;
+window.maxHp=function(i){const n=partyNames()[i];return isTen(n)?Math.floor(window.baseFor(n).hp):oldMaxHp.apply(this,arguments)};
+window.maxMp=function(i){const n=partyNames()[i];return isTen(n)?Math.floor(window.baseFor(n).mp):oldMaxMp.apply(this,arguments)};
+const oldStats=window.statsFor;
+window.statsFor=function(i){
+ const n=partyNames()[i];if(!isTen(n))return oldStats.apply(this,arguments);
+ const b=window.baseFor(n),q=GROW[n],lv=level(n),eq=S.equipment[i]||{},its=Object.values(eq).filter(Boolean).map(item).filter(Boolean).filter(x=>!x.exclusive||x.exclusive===n);
+ let atk=its.reduce((a,x)=>a+(x.atk||0),0),def=its.reduce((a,x)=>a+(x.def||0),0),crit=its.reduce((a,x)=>a+(x.crit||0),0);
+ return {atk:Math.floor(b.atk+atk),def:Math.floor(b.def+def),crit:+(5+(lv-1)*q.crit+crit).toFixed(1),magic:Math.floor((BASE_MEMBERS[n].atk+6)+(lv-1)*q.mag+atk*.35),speed:Math.floor(10+(lv-1)*q.spd),lv};
+};
+function grant(n,xp){
+ const g=ensure(n),ups=[];g.exp+=xp;
+ while(g.exp>=needExp(g.lv)){g.exp-=needExp(g.lv);g.lv++;ups.push(g.lv)}
+ return ups;
+}
+const oldAddExp=window.addExp;
+window.addExp=function(xp){
+ const P=partyNames(),ten=P.filter(isTen),other=P.filter(n=>!isTen(n));
+ if(!ten.length)return oldAddExp.apply(this,arguments);
+ /* Existing growth system receives EXP only for non-new heroes by temporarily excluding the new ten. */
+ const saved=S.partyFree7438&&S.partyFree7438.slice();
+ if(saved)S.partyFree7438=P.map((n,i)=>isTen(n)?(['キーボ','ミア','トア'][i]||'キーボ'):n);
+ try{oldAddExp.call(this,xp)}finally{if(saved)S.partyFree7438=saved}
+ ten.forEach(n=>{const ups=grant(n,xp);ups.forEach(l=>{const i=partyNames().indexOf(n);if(i>=0){S.hp[i]=maxHp(i);S.mp[i]=maxMp(i)}showFx(`<h1>LEVEL UP!</h1><h2>${n} Lv.${l-1} → Lv.${l}</h2>`)})});
+ save();
+};
+/* Patch summon result processing: first acquisition gets its fixed starting level. */
+const summonOld=window.summon62;
+if(typeof summonOld==='function'){
+ window.summon62=function(){
+   const before=new Set(S.gachaHeroes7490||[]);
+   const z=summonOld.apply(this,arguments);
+   (S.gachaHeroes7490||[]).forEach(n=>{if(isTen(n)&&!before.has(n)){const g=ensure(n);g.lv=Math.max(g.lv,FLOOR[n]);g.exp=0}});
+   save();return z;
+ };
+}
+/* Party UI was compiled with S.lv for these ten. Replace visible levels after each render/open. */
+function fixLabels(){
+ document.querySelectorAll('[data-hero7459]').forEach(row=>{const n=row.dataset.hero7459;if(!isTen(n))return;const small=row.querySelector('.partyInfo7459 small');if(small)small.textContent='Lv.'+level(n)});
+ document.querySelectorAll('.partyCurrentSlot7459').forEach(el=>{const b=el.querySelector('b');if(!b)return;const n=TEN.find(x=>b.textContent.includes(x));if(n){const s=el.querySelector('small');if(s)s.textContent='Lv.'+level(n)}});
+}
+const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);fixLabels();stamp();return z};
+const oo=window.open;if(typeof oo==='function')window.open=function(){const z=oo.apply(this,arguments);setTimeout(fixLabels,0);return z};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+save();fixLabels();stamp();setTimeout(()=>{fixLabels();stamp()},400);
+window.__DOD_GACHA_LEVEL_7495={version:V,four:30,six:50,names:TEN.slice()};
+})();
+</script>
+
 </body></html>
