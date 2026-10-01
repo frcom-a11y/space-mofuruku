@@ -3984,14 +3984,17 @@ const HERO_ART_METRICS7461={
  'ノア':{w:500,h:500,bbox:[27,40,472,500],scale:1.16,y:0},
  'カグラ':{w:500,h:500,bbox:[20,173,480,485],scale:1.03,y:0}
 };
+// v0.74.88: actual raster dimensions and visible alpha bounds (alpha > 20).
+// Approved image bytes are unchanged. Selena keeps her original rendering metrics.
 Object.assign(HERO_ART_METRICS7461,{
- 'ゼファル':{w:300,h:300,bbox:[0,0,300,300],scale:.92,y:0},
- 'レオンハルト':{w:300,h:300,bbox:[0,0,300,300],scale:.92,y:0},
- 'ナーヴァ':{w:300,h:300,bbox:[0,0,300,300],scale:.92,y:0},
- 'アズライル':{w:300,h:300,bbox:[0,0,300,300],scale:.92,y:0},
- 'フェンリル':{w:300,h:300,bbox:[0,0,300,300],scale:.92,y:0},
- 'ヴォルク':{w:300,h:300,bbox:[0,0,300,300],scale:.92,y:0}
+ 'ゼファル':{w:590,h:644,bbox:[10,77,580,591],reference:'セレナ'},
+ 'レオンハルト':{w:590,h:644,bbox:[7,118,585,600],reference:'セレナ'},
+ 'ナーヴァ':{w:590,h:644,bbox:[7,82,585,613],reference:'セレナ'},
+ 'アズライル':{w:590,h:644,bbox:[10,53,579,623],reference:'セレナ'},
+ 'フェンリル':{w:590,h:644,bbox:[10,82,580,600],reference:'セレナ'},
+ 'ヴォルク':{w:590,h:644,bbox:[11,69,583,617],reference:'セレナ'}
 });
+const SELENA_VISIBLE_BOUNDS7488=Object.freeze([56,83,457,500]);
 function fitNewSprites7459(){
  const battle=document.getElementById('battle');if(!battle)return;
  const slot=battle.clientWidth/3;
@@ -4003,6 +4006,35 @@ function fitNewSprites7459(){
  battle.querySelectorAll('.hqHuman749.new7455 img').forEach(im=>{
   const hero=im.dataset.hero||im.alt||'';
   const m=HERO_ART_METRICS7461[hero];if(!m)return;
+  if(m.reference==='セレナ'){
+   // Use the SAME canvas height as the existing Selena renderer, then remove
+   // her transparent margin. The six new sprites match this painted height.
+   const ref=HERO_ART_METRICS7461[m.reference];
+   const refCanvasH=targetVisibleHeight*(ref.h/(ref.bbox[3]-ref.bbox[1]))*ref.scale;
+   const paintedH=refCanvasH*(SELENA_VISIBLE_BOUNDS7488[3]-SELENA_VISIBLE_BOUNDS7488[1])/ref.h;
+   const pixelScale=paintedH/(m.bbox[3]-m.bbox[1]);
+   const h=m.h*pixelScale,w=m.w*pixelScale;
+   if(!Number.isFinite(h)||!Number.isFinite(w)||h<=0||w<=0)return;
+   const slotMatch=im.parentElement.className.match(/\bslot([012])\b/);
+   const center=slot*((slotMatch?Number(slotMatch[1]):1)+.5);
+   const left=center-w/2+m.bbox[0]*pixelScale;
+   const right=center-w/2+m.bbox[2]*pixelScale;
+   // Keep the painted outline inside the battlefield at both outer slots.
+   // This only translates the six new images; existing heroes/UI stay put.
+   const dx=left<0?-left:right>battle.clientWidth?battle.clientWidth-right:0;
+   const referenceBottomGap=refCanvasH*(ref.h-SELENA_VISIBLE_BOUNDS7488[3])/ref.h;
+   const dy=(m.h-m.bbox[3])*pixelScale-referenceBottomGap;
+   im.style.setProperty('height',h.toFixed(3)+'px','important');
+   im.style.setProperty('width',w.toFixed(3)+'px','important');
+   im.style.setProperty('max-width','none','important');
+   im.style.setProperty('max-height','none','important');
+   im.style.setProperty('margin-bottom','0px','important');
+   im.style.setProperty('transform','translate('+dx.toFixed(3)+'px,'+dy.toFixed(3)+'px)','important');
+   im.dataset.sizeReference7488=m.reference;
+   im.dataset.visibleHeight7488=paintedH.toFixed(3);
+   return;
+  }
+  // Original eight: preserve the existing sizing path without changes.
   const visibleH=m.bbox[3]-m.bbox[1];
   const h=targetVisibleHeight*(m.h/visibleH)*m.scale;
   im.style.setProperty('height',h.toFixed(2)+'px','important');
@@ -5090,8 +5122,8 @@ render=function(){
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,
 .hqHuman749.hero-ナーヴァ img,.hqHuman749.hero-アズライル img,
 .hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
- width:100%!important;height:100%!important;object-fit:contain!important;
- object-position:center bottom!important;transform:scale(.94)!important;transform-origin:center bottom!important;
+ object-fit:contain!important;
+ object-position:center bottom!important;
 }
 </style>
 
@@ -5100,9 +5132,9 @@ render=function(){
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,
 .hqHuman749.hero-ナーヴァ img,.hqHuman749.hero-アズライル img,
 .hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
-width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;
+
 object-fit:contain!important;object-position:center bottom!important;
-transform:scale(1.02)!important;transform-origin:center bottom!important;
+
 filter:none!important;border:0!important;border-radius:0!important;background:transparent!important;
 }
 </style>
@@ -5113,15 +5145,15 @@ filter:none!important;border:0!important;border-radius:0!important;background:tr
 <style id="v07474-six-canonical">
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,.hqHuman749.hero-ナーヴァ img,
 .hqHuman749.hero-アズライル img,.hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
-width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;
-transform:scale(.94)!important;transform-origin:center bottom!important;background:transparent!important;border:0!important;filter:none!important}
+object-fit:contain!important;object-position:center bottom!important;
+background:transparent!important;border:0!important;filter:none!important}
 </style>
 <script id="v07474-version">(()=>{const rr=render;render=function(){const z=rr.apply(this,arguments);const b=document.getElementById('buildVersion');if(b)b.textContent='v0.74.81';return z;};})();</script>
 <style id="v07475-six-final">
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,.hqHuman749.hero-ナーヴァ img,
 .hqHuman749.hero-アズライル img,.hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
-width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;
-transform:scale(1.50)!important;transform-origin:center bottom!important;background:transparent!important;
+object-fit:contain!important;object-position:center bottom!important;
+background:transparent!important;
 border:0!important;border-radius:0!important;filter:none!important}
 </style>
 <script id="v07475-version">(()=>{const rr=render;render=function(){const z=rr.apply(this,arguments);const b=document.getElementById('buildVersion');if(b)b.textContent='v0.74.81';return z;};})();</script>
@@ -5130,9 +5162,9 @@ border:0!important;border-radius:0!important;filter:none!important}
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,
 .hqHuman749.hero-ナーヴァ img,.hqHuman749.hero-アズライル img,
 .hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
- width:100%!important;height:100%!important;
+ 
  object-fit:contain!important;object-position:center bottom!important;
- transform:scale(1.04)!important;transform-origin:center bottom!important;
+ 
  background:transparent!important;border:0!important;border-radius:0!important;
  box-shadow:none!important;filter:none!important;
 }
@@ -5146,9 +5178,9 @@ border:0!important;border-radius:0!important;filter:none!important}
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,
 .hqHuman749.hero-ナーヴァ img,.hqHuman749.hero-アズライル img,
 .hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
- width:100%!important;height:100%!important;
+ 
  object-fit:contain!important;object-position:center bottom!important;
- transform:scale(1.03)!important;transform-origin:center bottom!important;
+ 
  background:transparent!important;border:0!important;border-radius:0!important;
  box-shadow:none!important;filter:none!important;
 }
@@ -5162,8 +5194,8 @@ border:0!important;border-radius:0!important;filter:none!important}
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,
 .hqHuman749.hero-ナーヴァ img,.hqHuman749.hero-アズライル img,
 .hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
- width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;
- transform:scale(1.03)!important;transform-origin:center bottom!important;
+ object-fit:contain!important;object-position:center bottom!important;
+ 
  background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:none!important;
 }
 </style>
@@ -5187,34 +5219,32 @@ window.__PLAYABLE6_IDENTITY_LOCK_7481={names:SIX,art:A,icon:I};
 <style id="v07481-six-display">
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,.hqHuman749.hero-ナーヴァ img,
 .hqHuman749.hero-アズライル img,.hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
-width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;
-transform:scale(1.05)!important;transform-origin:center bottom!important;background:transparent!important;
+object-fit:contain!important;object-position:center bottom!important;
+background:transparent!important;
 border:0!important;border-radius:0!important;box-shadow:none!important;filter:none!important}
 </style>
 <script id="v07481-build">(()=>{const _r=render;render=function(){const z=_r.apply(this,arguments);const b=document.getElementById('buildVersion');if(b)b.textContent='v0.74.81';return z;};})();</script>
 
 
 <!-- DOD_NEW6_CANONICAL_FIX_START -->
-<style id="v07487-six-canonical-size">
-/* Additional six: enlarge the rendered art itself, preserving the exact approved image assets. */
+<style id="v07488-six-canonical-size">
+/* Geometry is calculated by fitNewSprites7459 from Selena's actual painted
+   height. Do not scale this image a second time from a stylesheet. */
 .hqHuman749.hero-ゼファル img,.hqHuman749.hero-レオンハルト img,.hqHuman749.hero-ナーヴァ img,
 .hqHuman749.hero-アズライル img,.hqHuman749.hero-フェンリル img,.hqHuman749.hero-ヴォルク img{
- width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;
  object-fit:contain!important;object-position:center bottom!important;
- transform:scale(1.75)!important;transform-origin:center bottom!important;
  filter:drop-shadow(0 7px 7px rgba(0,0,0,.30))!important;
  border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
 }
-/* Ensure the enlarged art is not clipped by its slot. */
 .hqHuman749.hero-ゼファル,.hqHuman749.hero-レオンハルト,.hqHuman749.hero-ナーヴァ,
 .hqHuman749.hero-アズライル,.hqHuman749.hero-フェンリル,.hqHuman749.hero-ヴォルク{
  overflow:visible!important;
 }
 </style>
-<script id="v07487-final-lock">
+<script id="v07488-final-lock">
 (()=>{
  'use strict';
- const V='v0.74.87';
+ const V='v0.74.88';
  const stamp=()=>{
    const b=document.getElementById('buildVersion'); if(b)b.textContent=V;
    const sm=document.querySelector('.logo small'); if(sm)sm.textContent=V;
@@ -5222,9 +5252,10 @@ border:0!important;border-radius:0!important;box-shadow:none!important;filter:no
  };
  const rr=window.render;
  if(typeof rr==='function') window.render=function(){const z=rr.apply(this,arguments);stamp();return z;};
- stamp();
- window.addEventListener('load',stamp,{once:true});
- window.__DOD_NEW6_CANONICAL_7487={version:V,scale:1.75,names:['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']};
+ const finishStamp=()=>{stamp();setTimeout(stamp,650);};
+ finishStamp();
+ window.addEventListener('load',finishStamp,{once:true});
+ window.__DOD_NEW6_CANONICAL_7488={version:V,reference:'セレナ',alphaThreshold:20,names:['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']};
 })();
 </script>
 <!-- DOD_NEW6_CANONICAL_FIX_END -->
