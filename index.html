@@ -2382,7 +2382,7 @@ window.__forge53={
    if(x.kind==='pivotDuplicate'){
      S.starCrystals62=(S.starCrystals62||0)+10;return x;
    }
-   if(x.kind==='hero7437'){S.unlockedHeroes7436=S.unlockedHeroes7436||[];if(S.unlockedHeroes7436.includes(x.name)){S.starCrystals62=(S.starCrystals62||0)+10;return {kind:'heroDuplicate7437',name:x.name+' 重複 → 星の結晶 ×10',rar:'LEGEND'}}S.unlockedHeroes7436.push(x.name);return x;}
+   if(x.kind==='hero7437'){S.gachaHeroes7490=Array.isArray(S.gachaHeroes7490)?S.gachaHeroes7490:[];S.unlockedHeroes7436=Array.isArray(S.unlockedHeroes7436)?S.unlockedHeroes7436:[];if(S.gachaHeroes7490.includes(x.name)){S.starCrystals62=(S.starCrystals62||0)+10;return {kind:'heroDuplicate7437',name:x.name+' 重複 → 星の結晶 ×10',rar:'LEGEND'}}S.gachaHeroes7490.push(x.name);if(!S.unlockedHeroes7436.includes(x.name))S.unlockedHeroes7436.push(x.name);save();return x;}
    if(x.kind==='legendGear'){x.name=giveLegendGear62();return x}
    if(x.kind==='gear'){x.name=giveGear62(x.rar)||'強化石';if(x.name==='強化石')S.forgeMaterial=(S.forgeMaterial||0)+2;return x}
    const supplies=['上薬草','特薬草','生命の雫','強化石','強化石'];
@@ -4626,7 +4626,7 @@ statsFor=function(i){
 };
 
 function setHero7436(slot,n){
- if(slot<1||slot>2)return;if(!S.unlockedHeroes7436.includes(n))return toast(n+'は星降りの召喚で未獲得です');
+ if(slot<1||slot>2)return;if(!(S.gachaHeroes7490||[]).includes(n))return toast(n+'は星降りの召喚で未獲得です');
  if(S.partySlots.includes(n)){let o=S.partySlots.indexOf(n);if(o!==slot-1)S.partySlots[o]=slot===1?'ミア':'トア'}
  S.partySlots[slot-1]=n;
  S.equipment[slot]={...(S.heroEquipment65[n]||{武器:'',防具:'',アクセサリー:''})};
@@ -4706,7 +4706,7 @@ const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 function available(name){
  if(['キーボ','ミア','トア'].includes(name))return true;
  if(name==='ピボット')return !!S.legend62?.pivot;
- return (S.unlockedHeroes7436||[]).includes(name);
+ return (S.gachaHeroes7490||[]).includes(name);
 }
 function image(name){
  const src=window.__DOD_VISUAL7459?.[name];
@@ -5250,7 +5250,7 @@ border:0!important;border-radius:0!important;box-shadow:none!important;filter:no
 <script id="v07488-final-lock">
 (()=>{
  'use strict';
- const V='v0.74.89';
+ const V='v0.74.90';
  const stamp=()=>{
    const b=document.getElementById('buildVersion'); if(b)b.textContent=V;
    const sm=document.querySelector('.logo small'); if(sm)sm.textContent=V;
@@ -5261,30 +5261,34 @@ border:0!important;border-radius:0!important;box-shadow:none!important;filter:no
  const finishStamp=()=>{stamp();setTimeout(stamp,650);};
  finishStamp();
  window.addEventListener('load',finishStamp,{once:true});
- window.__DOD_NEW6_CANONICAL_7489={version:V,reference:'セレナ',alphaThreshold:20,names:['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']};
+ window.__DOD_NEW6_CANONICAL_7490={version:V,reference:'セレナ',alphaThreshold:20,names:['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']};
 })();
 </script>
 <!-- DOD_NEW6_CANONICAL_FIX_END -->
 
 
-<script id="v07489-gacha-unlock-guard">
+<script id="v07490-gacha-ownership-ledger">
 (()=>{'use strict';
- const V='v0.74.89';
+ const V='v0.74.90';
  const GACHA10=['リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
  S.unlockedHeroes7436=Array.isArray(S.unlockedHeroes7436)?S.unlockedHeroes7436:[];
- const owned=n=>n==='ピボット'?!!S.legend62?.pivot:!GACHA10.includes(n)||S.unlockedHeroes7436.includes(n);
- // Preserve every existing Pivot owner. Only unowned gacha heroes are removed from active slots.
- if(Array.isArray(S.partyFree7438)){
-   const fallback=['キーボ','ミア','トア'];
-   S.partyFree7438=S.partyFree7438.map((n,i)=>owned(n)?n:fallback[i]);
+ S.gachaHeroes7490=Array.isArray(S.gachaHeroes7490)?S.gachaHeroes7490:[];
+ // One-time migration: legacy unlockedHeroes7436 mixed development auto-unlocks with real ownership.
+ // Gacha ownership starts from the dedicated ledger. Pivot is deliberately excluded and preserved.
+ if(!S.gachaOwnershipMigrated7490){
+   S.unlockedHeroes7436=S.unlockedHeroes7436.filter(n=>!GACHA10.includes(n));
+   S.gachaHeroes7490=[];
+   S.gachaOwnershipMigrated7490=true;
  }
- if(Array.isArray(S.partySlots)){
-   const fallback=['ミア','トア'];
-   S.partySlots=S.partySlots.map((n,i)=>owned(n)?n:(fallback[i]||'トア'));
- }
+ const owned=n=>n==='ピボット'?!!S.legend62?.pivot:!GACHA10.includes(n)||S.gachaHeroes7490.includes(n);
+ const fallback=['キーボ','ミア','トア'];
+ if(Array.isArray(S.partyFree7438))S.partyFree7438=S.partyFree7438.map((n,i)=>owned(n)?n:fallback[i]);
+ if(Array.isArray(S.partySlots))S.partySlots=S.partySlots.map((n,i)=>owned(n)?n:(['ミア','トア'][i]||'トア'));
  save();
- window.__DOD_GACHA_UNLOCK_7489={version:V,rates:{pivot:.001,added4:.001,added6:.0007},gacha10:GACHA10.slice()};
- const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;return z};
+ window.__DOD_GACHA_OWNERSHIP_7490={version:V,rates:{pivot:.001,added4:.001,added6:.0007},gacha10:GACHA10.slice(),ledger:'gachaHeroes7490'};
+ const stamp=()=>{const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V;};
+ const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);stamp();return z};
+ stamp();setTimeout(stamp,500);
 })();
 </script>
 </body></html>
