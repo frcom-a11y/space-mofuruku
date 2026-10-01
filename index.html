@@ -2351,22 +2351,28 @@ window.__forge53={
  }
  function rollOne62(){
    // Fixed probability bands (1,000,000 slots):
-   // LEGEND characters 0.3% / LEGEND gear 0.8% (8 x 0.1%) / EPIC 2.0% / RARE 10.0% / NORMAL gear 35.0% / supplies 51.9%.
-   // Keeping the bands explicit prevents the LEGEND-equipment rate from changing after Pivot is owned.
+   // Pivot 0.10% / existing added 4 heroes 0.10% each / new 6 heroes 0.07% each.
+   // LEGEND characters total 0.92% / LEGEND gear 0.80% / EPIC 2.00% / RARE 10.00% / NORMAL gear 35.00% / supplies 51.28%.
+   // Character duplicate bands never leak into equipment odds.
    const roll=Math.floor(Math.random()*1000000);
    if(roll<1000){
      if(!S.legend62.pivot)return {kind:'pivot',name:'ピボット',rar:'LEGEND'};
-     // Duplicate Pivot keeps its 0.1% band but is converted to a fixed bonus instead of leaking into equipment odds.
      return {kind:'pivotDuplicate',name:'星の結晶 ×10',rar:'LEGEND'};
    }
-   if(roll<1500)return {kind:'hero7437',name:'リリア',rar:'LEGEND'};
-   if(roll<2000)return {kind:'hero7437',name:'セレナ',rar:'LEGEND'};
-   if(roll<2500)return {kind:'hero7437',name:'ノア',rar:'LEGEND'};
-   if(roll<3000)return {kind:'hero7437',name:'カグラ',rar:'LEGEND'};
-   if(roll<11000)return {kind:'legendGear',rar:'LEGEND'};
-   if(roll<31000)return {kind:'gear',rar:'EPIC'};
-   if(roll<131000)return {kind:'gear',rar:'RARE'};
-   if(roll<481000)return {kind:'gear',rar:'NORMAL'};
+   if(roll<2000)return {kind:'hero7437',name:'リリア',rar:'LEGEND'};
+   if(roll<3000)return {kind:'hero7437',name:'セレナ',rar:'LEGEND'};
+   if(roll<4000)return {kind:'hero7437',name:'ノア',rar:'LEGEND'};
+   if(roll<5000)return {kind:'hero7437',name:'カグラ',rar:'LEGEND'};
+   if(roll<5700)return {kind:'hero7437',name:'ゼファル',rar:'LEGEND'};
+   if(roll<6400)return {kind:'hero7437',name:'レオンハルト',rar:'LEGEND'};
+   if(roll<7100)return {kind:'hero7437',name:'ナーヴァ',rar:'LEGEND'};
+   if(roll<7800)return {kind:'hero7437',name:'アズライル',rar:'LEGEND'};
+   if(roll<8500)return {kind:'hero7437',name:'フェンリル',rar:'LEGEND'};
+   if(roll<9200)return {kind:'hero7437',name:'ヴォルク',rar:'LEGEND'};
+   if(roll<17200)return {kind:'legendGear',rar:'LEGEND'};
+   if(roll<37200)return {kind:'gear',rar:'EPIC'};
+   if(roll<137200)return {kind:'gear',rar:'RARE'};
+   if(roll<487200)return {kind:'gear',rar:'NORMAL'};
    return {kind:'supply',rar:'NORMAL'};
  }
  function grant62(x){
@@ -2402,7 +2408,7 @@ window.__forge53={
  }
  function summonView62(){
    const owned=!!S.legend62.pivot;
-   open('星降りの召喚',`<div class="summon62Hero ${owned?'summon62Owned':''}"><div class="summon62Orb">✦ ◈ ✦</div><h2>星降りの召喚</h2><p class="small">冒険で集めたゴールドだけで挑戦する召喚。課金通貨は使用しません。</p></div><div class="summon62Rate"><div><span>LEGEND CHARACTER</span><b>合計 0.3%</b></div><div><span>LEGEND EQUIPMENT</span><b>合計 0.8%</b></div></div><div class="panel"><b>排出率</b><p class="small">LEGENDキャラ 合計0.3%（ピボット0.1% / リリア・セレナ・ノア・カグラ 各0.05%） / LEGEND装備 合計0.8%（8種各0.1%） / EPIC装備2.0% / RARE装備10.0% / 通常装備35.0% / 消耗品・強化石51.9%<br>10連はRARE以上1枠保証。PHANTOMは排出されません。</p></div><div class="panel exclusiveList7437"><b>★ 専用装備5種（各0.1%）</b><p class="small">リリア：真紅宝杖エターナルハート<br>セレナ：月蝕双刃ルナ・エクリプス<br>ノア：星導魔銃アーク・ノヴァ<br>カグラ：神喰妖刀・紅夜叉<br>ピボット：天啓盤アカシック・ギア</p><p class="small">＋既存LEGEND装備3種（各0.1%）</p></div><div class="panel"><b>ピボット</b> <span class="pivotBadge61">LEGEND / 戦術家</span><p class="small">${owned?'✓ 獲得済み・パーティ編成可能':'未獲得。召喚で獲得するとパーティに解放'}</p><p class="small">固有：出口を見抜く / MP18 / 次の一撃 +60%</p></div><div class="summon62Btns"><button id="pull1_62">1回 500G</button><button id="pull10_62">10回 5,000G</button></div><p class="small" style="text-align:center">召喚回数 ${S.legend62.pulls||0}回 / 手持ち ${S.gold.toLocaleString()}G<br>ボス専用PHANTOM装備は召喚から排出されません。</p>`);
+   open('星降りの召喚',`<div class="summon62Hero ${owned?'summon62Owned':''}"><div class="summon62Orb">✦ ◈ ✦</div><h2>星降りの召喚</h2><p class="small">冒険で集めたゴールドだけで挑戦する召喚。課金通貨は使用しません。</p></div><div class="summon62Rate"><div><span>LEGEND CHARACTER</span><b>合計 0.92%</b></div><div><span>LEGEND EQUIPMENT</span><b>合計 0.8%</b></div></div><div class="panel"><b>排出率</b><p class="small">LEGENDキャラ 合計0.92%（ピボット0.1% / リリア・セレナ・ノア・カグラ 各0.1% / ゼファル・レオンハルト・ナーヴァ・アズライル・フェンリル・ヴォルク 各0.07%） / LEGEND装備 合計0.8%（8種各0.1%） / EPIC装備2.0% / RARE装備10.0% / 通常装備35.0% / 消耗品・強化石51.28%<br>10連はRARE以上1枠保証。PHANTOMは排出されません。</p></div><div class="panel exclusiveList7437"><b>★ 専用装備5種（各0.1%）</b><p class="small">リリア：真紅宝杖エターナルハート<br>セレナ：月蝕双刃ルナ・エクリプス<br>ノア：星導魔銃アーク・ノヴァ<br>カグラ：神喰妖刀・紅夜叉<br>ピボット：天啓盤アカシック・ギア</p><p class="small">＋既存LEGEND装備3種（各0.1%）</p></div><div class="panel"><b>ピボット</b> <span class="pivotBadge61">LEGEND / 戦術家</span><p class="small">${owned?'✓ 獲得済み・パーティ編成可能':'未獲得。召喚で獲得するとパーティに解放'}</p><p class="small">固有：出口を見抜く / MP18 / 次の一撃 +60%</p></div><div class="summon62Btns"><button id="pull1_62">1回 500G</button><button id="pull10_62">10回 5,000G</button></div><p class="small" style="text-align:center">召喚回数 ${S.legend62.pulls||0}回 / 手持ち ${S.gold.toLocaleString()}G<br>ボス専用PHANTOM装備は召喚から排出されません。</p>`);
    document.getElementById('pull1_62').onclick=()=>summon62(1);document.getElementById('pull10_62').onclick=()=>summon62(10);
  }
  window.summonView62=summonView62;
@@ -2417,7 +2423,7 @@ window.__forge53={
  baseView=function(){
    baseBefore62();
    const grid=document.querySelector('#obody .facGrid57');if(grid&&!grid.querySelector('[data-f62="summon"]')){
-     const b=document.createElement('button');b.className='fac57';b.dataset.f62='summon';b.innerHTML='<b>✦</b><strong>星降りの召喚</strong><small>500G / 10連5,000G / LEGENDキャラ5人＋専用装備5種</small>';b.onclick=summonView62;grid.prepend(b);
+     const b=document.createElement('button');b.className='fac57';b.dataset.f62='summon';b.innerHTML='<b>✦</b><strong>星降りの召喚</strong><small>500G / 10連5,000G / LEGENDキャラ11人＋専用装備5種</small>';b.onclick=summonView62;grid.prepend(b);
    }
  };
  // Final version guard: older version scripts can no longer leave the visible header at v0.60.
@@ -4698,7 +4704,7 @@ const HEROES=['キーボ','ミア','トア','ピボット','リリア','セレ�
 const previousPartyView=partyView;
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function available(name){
- if(['キーボ','ミア','トア','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'].includes(name))return true;
+ if(['キーボ','ミア','トア'].includes(name))return true;
  if(name==='ピボット')return !!S.legend62?.pivot;
  return (S.unlockedHeroes7436||[]).includes(name);
 }
@@ -5244,7 +5250,7 @@ border:0!important;border-radius:0!important;box-shadow:none!important;filter:no
 <script id="v07488-final-lock">
 (()=>{
  'use strict';
- const V='v0.74.88';
+ const V='v0.74.89';
  const stamp=()=>{
    const b=document.getElementById('buildVersion'); if(b)b.textContent=V;
    const sm=document.querySelector('.logo small'); if(sm)sm.textContent=V;
@@ -5255,9 +5261,30 @@ border:0!important;border-radius:0!important;box-shadow:none!important;filter:no
  const finishStamp=()=>{stamp();setTimeout(stamp,650);};
  finishStamp();
  window.addEventListener('load',finishStamp,{once:true});
- window.__DOD_NEW6_CANONICAL_7488={version:V,reference:'セレナ',alphaThreshold:20,names:['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']};
+ window.__DOD_NEW6_CANONICAL_7489={version:V,reference:'セレナ',alphaThreshold:20,names:['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']};
 })();
 </script>
 <!-- DOD_NEW6_CANONICAL_FIX_END -->
 
+
+<script id="v07489-gacha-unlock-guard">
+(()=>{'use strict';
+ const V='v0.74.89';
+ const GACHA10=['リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+ S.unlockedHeroes7436=Array.isArray(S.unlockedHeroes7436)?S.unlockedHeroes7436:[];
+ const owned=n=>n==='ピボット'?!!S.legend62?.pivot:!GACHA10.includes(n)||S.unlockedHeroes7436.includes(n);
+ // Preserve every existing Pivot owner. Only unowned gacha heroes are removed from active slots.
+ if(Array.isArray(S.partyFree7438)){
+   const fallback=['キーボ','ミア','トア'];
+   S.partyFree7438=S.partyFree7438.map((n,i)=>owned(n)?n:fallback[i]);
+ }
+ if(Array.isArray(S.partySlots)){
+   const fallback=['ミア','トア'];
+   S.partySlots=S.partySlots.map((n,i)=>owned(n)?n:(fallback[i]||'トア'));
+ }
+ save();
+ window.__DOD_GACHA_UNLOCK_7489={version:V,rates:{pivot:.001,added4:.001,added6:.0007},gacha10:GACHA10.slice()};
+ const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;return z};
+})();
+</script>
 </body></html>
