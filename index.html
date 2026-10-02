@@ -5483,7 +5483,7 @@ if(typeof summonOld==='function'){
  window.summon62=function(){
    const before=new Set(S.gachaHeroes7490||[]);
    const z=summonOld.apply(this,arguments);
-   (S.gachaHeroes7490||[]).forEach(n=>{if(isTen(n)&&!before.has(n)){const g=ensure(n);g.lv=Math.max(g.lv,FLOOR[n]);g.exp=0}});
+   (S.gachaHeroes7490||[]).forEach(n=>{if(isTen(n)&&!before.has(n)){const g=ensure(n);g.lv=FLOOR[n];g.exp=0}});
    save();return z;
  };
 }
@@ -5995,6 +5995,52 @@ const render0=window.render;if(typeof render0==='function')window.render=functio
 window.__DOD_REPAIR_7504={version:V,openWarehouse,reviveHero,bestEquip,bestFor};
 function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
 stamp();setTimeout(stamp,350);
+})();
+</script>
+
+
+<script id="v07506-gacha-start-level-fix">
+(()=>{
+'use strict';
+const V='v0.75.06';
+const ADDED4=['リリア','セレナ','ノア','カグラ'];
+const ADDED6=['ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+const TEN=[...ADDED4,...ADDED6];
+const startLv=n=>ADDED4.includes(n)?30:ADDED6.includes(n)?50:1;
+S.charGrowth=S.charGrowth||{};
+/* One-time rescue for characters affected by the old protagonist-level display/initialization bug.
+   Only zero-EXP records exactly equal to the protagonist level are corrected, to avoid lowering normally trained characters. */
+if(!S.gachaStartLevelFix7506){
+  (S.gachaHeroes7490||[]).forEach(n=>{
+    if(!TEN.includes(n))return;
+    const g=S.charGrowth[n];
+    if(g&&Number.isFinite(g.lv)&&g.lv===Number(S.lv||1)&&Number(g.exp||0)===0&&g.lv>startLv(n)){
+      g.lv=startLv(n);g.exp=0;
+    }
+  });
+  S.gachaStartLevelFix7506=true;
+  save();
+}
+/* Battle cards in the legacy renderer fall back to S.lv for heroes not present in HERO59.
+   Repaint only the visible level label from the authoritative per-character growth record. */
+function fixBattleLevels(){
+  const P=partyNames();
+  document.querySelectorAll('#party .pcard').forEach((el,i)=>{
+    const n=P[i],b=el.querySelector('b');
+    if(!n||!b||!TEN.includes(n))return;
+    const lv=(S.charGrowth[n]&&Number.isFinite(S.charGrowth[n].lv))?S.charGrowth[n].lv:startLv(n);
+    b.innerHTML=`${n}<span class="lvBattle60">Lv.${lv}</span>`;
+  });
+}
+const prevRender=window.render;
+if(typeof prevRender==='function')window.render=function(){const z=prevRender.apply(this,arguments);fixBattleLevels();stamp7506();return z};
+function stamp7506(){
+ const b=document.getElementById('buildVersion');if(b)b.textContent=V;
+ const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+fixBattleLevels();stamp7506();setTimeout(()=>{fixBattleLevels();stamp7506()},400);
+window.__DOD_GACHA_START_LEVEL_7506={version:V,added4:30,added6:50};
 })();
 </script>
 
