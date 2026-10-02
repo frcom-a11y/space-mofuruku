@@ -5919,4 +5919,82 @@ save();stamp();setTimeout(stamp,350);
 })();
 </script>
 
+
+<style id="v07504-repair-bestgear-style">
+.bestGear7504{width:100%;margin:8px 0 10px;min-height:44px;border:1px solid #e4c65d;border-radius:11px;background:linear-gradient(#564617,#32290f);color:#fff0a0;font-weight:900;font-size:13px}
+</style>
+<script id="v07504-repair-bestgear">
+(()=>{
+'use strict';
+const V='v0.75.04',TYPES=['武器','防具','アクセサリー'];
+/* 1. Warehouse: route both current base buttons directly to the working equipment/inventory UI. */
+function openWarehouse(){
+ if(typeof window.equipmentView211==='function')return window.equipmentView211();
+ if(typeof itemView==='function')return itemView();
+ toast('倉庫を読み込めませんでした');
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest?.('[data-f57="items"],[data-fac="items"]');if(!b)return;
+ e.preventDefault();e.stopPropagation();setTimeout(openWarehouse,0);
+},true);
+/* 2. Pivot KO rescue: preserve ownership/level/equipment, only repair a permanently dead saved vital when resting or using a revive. */
+function reviveHero(name,ratio=.5){
+ const i=partyNames().indexOf(name);if(i<0)return false;
+ S.hp[i]=Math.max(1,Math.floor(maxHp(i)*ratio));S.mp[i]=Math.max(0,S.mp[i]||0);
+ S.heroVitals7459=S.heroVitals7459||{};S.heroVitals7459[name]={hp:S.hp[i],mp:S.mp[i]};save();render();return true;
+}
+function rescuePivotIfStranded(){
+ if(!S.legend62?.pivot)return;
+ S.heroVitals7459=S.heroVitals7459||{};
+ const v=S.heroVitals7459['ピボット'];
+ /* Do not auto-revive during ordinary battle. Only normalize invalid negative/NaN records. HP=0 remains a valid KO. */
+ if(v&&(!Number.isFinite(v.hp)||v.hp<0)){v.hp=1;v.mp=Math.max(0,Number(v.mp)||0);save()}
+}
+rescuePivotIfStranded();
+/* Existing Life Drop button already revives party slots. Persist the revived vital so switching formation cannot restore HP=0. */
+document.addEventListener('click',e=>{
+ const b=e.target.closest?.('[data-ti]');if(!b)return;
+ setTimeout(()=>{const i=+b.dataset.ti,n=partyNames()[i];if(n&&S.hp[i]>0){S.heroVitals7459=S.heroVitals7459||{};S.heroVitals7459[n]={hp:S.hp[i],mp:S.mp[i]};save()}},50);
+},true);
+/* 3. Best gear. Score actual combat value + effects, but never steal a unique item from another hero. */
+function effectScore(x){
+ const e=x?.effect51||{};return (e.bossDamage||0)*160+(e.critDamage||0)*120+(e.lifeSteal||0)*180+(e.fireDamage||0)*110+(e.iceDamage||0)*110+(e.magicPct||0)*100+(e.speedPct||0)*80;
+}
+function score(hero,x,type){
+ if(!x)return -1e9;
+ let s=(x.atk||0)*2.25+(x.def||0)*1.35+(x.crit||0)*2.4+effectScore(x);
+ const role=String(BASE_MEMBERS[hero]?.role||'');
+ if(/魔法|召喚|回復|魔導/.test(role))s+=(x.atk||0)*.35;
+ if(/高速|会心|遠距離/.test(role))s+=(x.crit||0)*1.2;
+ if(/前衛|神狼|獣型/.test(role))s+=(x.def||0)*.35;
+ if(x.exclusive===hero)s+=10000; // character-exclusive gear is intentionally preferred when owned
+ return s;
+}
+function bestFor(hero,type){
+ const api=window.__DOD_EQUIP_UNIFIED_7503,seen=new Set(),arr=[];
+ for(const n of (S.owned||[])){if(seen.has(n))continue;seen.add(n);const x=item(n);if(!x||x.type!==type)continue;if(api&&!api.canEquip(hero,type,n)&&S.heroEquipment65?.[hero]?.[type]!==n)continue;if(x.exclusive&&x.exclusive!==hero)continue;arr.push(n)}
+ return arr.sort((a,b)=>score(hero,item(b),type)-score(hero,item(a),type))[0]||'';
+}
+function bestEquip(hero){
+ const api=window.__DOD_EQUIP_UNIFIED_7503;if(!api)return toast('装備管理を読み込めません');
+ let changed=0;
+ TYPES.forEach(type=>{const n=bestFor(hero,type);if(n&&S.heroEquipment65[hero]?.[type]!==n){if(api.equip(hero,type,n))changed++}});
+ api.sanitize();save();render();toast(changed?`${hero}を最強装備に変更しました`:'現在の装備が最強です');
+ setTimeout(()=>window.equipmentView211?.(),50);
+}
+/* Add button inside the existing equipment screen, using its currently selected hero tab. */
+function injectBest(){
+ const root=document.getElementById('obody'),top=root?.querySelector('.eq211Top');if(!top||root.querySelector('.bestGear7504'))return;
+ const active=top.querySelector('[data-hero211].on');if(!active)return;
+ const hero=active.dataset.hero211,b=document.createElement('button');b.type='button';b.className='bestGear7504';b.textContent=`⚡ ${hero}を最強装備`;b.onclick=()=>bestEquip(hero);
+ top.insertAdjacentElement('afterend',b);
+}
+const open0=window.open;if(typeof open0==='function')window.open=function(){const z=open0.apply(this,arguments);setTimeout(injectBest,0);return z};
+const render0=window.render;if(typeof render0==='function')window.render=function(){const z=render0.apply(this,arguments);rescuePivotIfStranded();stamp();return z};
+window.__DOD_REPAIR_7504={version:V,openWarehouse,reviveHero,bestEquip,bestFor};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+stamp();setTimeout(stamp,350);
+})();
+</script>
+
 </body></html>
