@@ -5634,4 +5634,107 @@ window.__DOD_GROWTH_7499={version:V,heroes:HUMANS.slice(),added4Floor:30,added6F
 })();
 </script>
 
+
+<style id="v07500-hydra-style">
+#app.hydra7500 #battle{background:radial-gradient(ellipse at 50% 80%,#173522 0,#0c2019 40%,#071016 100%)!important;border-color:#6c9d5e!important;box-shadow:inset 0 0 55px #06120ddd!important}
+#app.hydra7500 #enemies{gap:4px!important}
+#app.hydra7500 .enemy{width:32%!important}
+#app.hydra7500 .enemy .ebox{font-size:9px!important;border-color:#7e9c64!important;background:#101c18e8!important}
+#app.hydra7500 .enemy.dead .ebox{border-color:#60434a!important;opacity:.55}
+#app.hydra7500 .enemy.hydraBurn7500 .ebox{border-color:#ff714b!important;box-shadow:0 0 12px #ff4a2677!important}
+#app.hydra7500 .enemy .sprite{filter:drop-shadow(0 8px 8px #000a)}
+.hydraStatus7500{position:absolute;z-index:18;top:5px;left:50%;transform:translateX(-50%);width:92%;pointer-events:none;text-align:center;color:#e9f5df;font-size:9px;text-shadow:0 2px 4px #000}
+.hydraStatus7500 b{display:inline-block;padding:4px 8px;border:1px solid #769b61;border-radius:9px;background:#091711d9;color:#dff7bd}
+</style>
+<script id="v07500-hydra">
+(()=>{
+'use strict';
+const V='v0.75.00',ID='hydra7500',BOSS='沼地の災厄・ヒュドラ';
+const HEADS=['左首','中央首','右首'];
+MONSTERS[BOSS]={icon:'grassfang',hp:1500,atk:72,xp:5200,recruit:0};
+monBase[BOSS]=MONSTERS[BOSS];
+drops[BOSS]=[
+ {n:'ヒュドラの猛毒牙',r:1,rar:'RARE',type:'素材',desc:'沼地の災厄ヒュドラの毒牙'},
+ {n:'再生核の欠片',r:18,rar:'EPIC',type:'アクセサリー',atk:16,def:24,crit:8,desc:'攻撃+16 / 防御+24 / 会心+8%'},
+ {n:'災厄鱗鎧・ヒュドラ',r:280,rar:'PHANTOM',type:'防具',atk:20,def:74,crit:10,effect51:{bossDamage:.18,lifeSteal:.06},effectText51:'ボス特効+18% / 与ダメージ6%吸収',desc:'ヒュドラPHANTOM装備'}
+];
+const ST={id:ID,area:'毒沼地',name:'沼地の災厄：ヒュドラ',recommended:55,unlock:s=>(s.lv||1)>=55,unlockText:'Lv55で解放',boss:true,bossMonster:BOSS,enemies:[BOSS],mult:5.8,next:'毒沼地の災厄を討伐！'};
+let old=stages.find(x=>x.id===ID);if(old)Object.assign(old,ST);else stages.push(ST);
+function hydra(){return stage().id===ID}
+function mkHead(i){
+ const lv=S.lv||1,mx=900+lv*18;
+ return {name:`ヒュドラ・${HEADS[i]}`,base:BOSS,icon:'grassfang',hp:mx,max:mx,atk:50+Math.floor(lv*.65),xp:i===1?1800:1700,charge:false,boss:true,hydraHead7500:true,head7500:i,regen7500:0,burn7500:0};
+}
+const spawn0=spawn;spawn=function(){
+ const z=spawn0.apply(this,arguments);
+ if(hydra()){
+   E=[mkHead(0),mkHead(1),mkHead(2)];target=1;S.hydraTurn7500=0;S.seen[BOSS]=true;
+   if(typeof stopAuto==='function')stopAuto('沼地の災厄・ヒュドラ出現');
+   setTimeout(()=>showFx('<h1>沼地の災厄</h1><div class="dropItem">三首魔獣 ヒュドラ</div><p class="small">3つの首を同時に破壊せよ。破壊した首は数ターンで再生する。炎で焼けば再生能力が著しく低下する。</p>','rare'),120);
+ }
+ render();return z;
+};
+function isFireName(n){return /火|炎|紅蓮|フレア|メテオ|鬼火|天照|クリムゾン|エターナル/.test(String(n||''))}
+let fireWindow=false;
+const use0=window.useSkill;
+window.useSkill=function(n){fireWindow=isFireName(n);try{return use0.apply(this,arguments)}finally{fireWindow=false}};
+const hit0=window.hit;window.hit=function(i,d,c=false){
+ if(hydra()&&E[i]?.hydraHead7500){
+   if(fireWindow){E[i].burn7500=Math.max(E[i].burn7500||0,5);floatText('🔥 再生阻害',12+i*31,20,'crit')}
+   const was=E[i].hp>0,z=hit0.apply(this,arguments);
+   if(was&&E[i].hp<=0){E[i].regen7500=E[i].burn7500>0?6:3;showLog(`${HEADS[E[i].head7500]}を破壊！ ${E[i].regen7500}ターン後に再生`,1200)}
+   return z;
+ }
+ return hit0.apply(this,arguments);
+};
+const enemy0=window.enemyTurn;window.enemyTurn=function(){
+ if(!hydra())return enemy0.apply(this,arguments);
+ S.hydraTurn7500=(S.hydraTurn7500||0)+1;
+ E.forEach((e,i)=>{
+   if(!e?.hydraHead7500)return;
+   if(e.burn7500>0)e.burn7500--;
+   if(e.hp<=0){
+     if(e.regen7500>0)e.regen7500--;
+     if(e.regen7500<=0){
+       const rate=e.burn7500>0?.12:.55;
+       e.hp=Math.max(1,Math.floor(e.max*rate));
+       e.regen7500=0;
+       floatText(e.burn7500>0?'🔥 弱再生':'REGEN',12+i*31,26,e.burn7500>0?'crit':'heal');
+       showLog(`${HEADS[e.head7500]}が${e.burn7500>0?'弱く':'大きく'}再生した！`,1000);
+     }
+     return;
+   }
+   const ap=aliveParty();if(!ap.length)return;
+   const p=ap[Math.floor(Math.random()*ap.length)],def=statsFor(p).def;
+   let d=Math.max(1,Math.floor(e.atk*(.88+Math.random()*.24))-def);
+   if(S.guard)d=Math.max(1,Math.floor(d*.35));
+   partyDamage(p,d);showLog(`ヒュドラ・${HEADS[e.head7500]}の攻撃！ ${partyNames()[p]}に${d}ダメージ`,650);
+ });
+ S.guard=false;if(!aliveParty().length)wipe();
+};
+const living0=window.living;window.living=function(){
+ if(!hydra())return living0.apply(this,arguments);
+ /* Broken heads still count until all three are down simultaneously; this prevents normal finish from firing early. */
+ const alive=E.filter(e=>e.hp>0);
+ if(!alive.length)return [];
+ return alive;
+};
+function decorate(){
+ const app=document.getElementById('app');if(app)app.classList.toggle('hydra7500',hydra());
+ document.getElementById('hydraStatus7500')?.remove();
+ if(!hydra())return;
+ const b=document.getElementById('battle');if(!b)return;
+ const d=document.createElement('div');d.id='hydraStatus7500';d.className='hydraStatus7500';
+ d.innerHTML='<b>'+E.map(e=>e.hp>0?`${HEADS[e.head7500]} HP ${e.hp}/${e.max}${e.burn7500>0?' 🔥':''}`:`${HEADS[e.head7500]} 破壊中 / 再生まで${e.regen7500}`).join('　')+'</b>';
+ b.appendChild(d);
+ document.querySelectorAll('.enemy').forEach((el,i)=>{if(E[i]?.burn7500>0)el.classList.add('hydraBurn7500')});
+}
+const render0=window.render;window.render=function(){const z=render0.apply(this,arguments);decorate();stamp();return z};
+const stage0=window.stageView;window.stageView=function(){const z=stage0.apply(this,arguments);document.querySelectorAll(`[data-stage="${ID}"] b`).forEach(b=>{if(!b.textContent.includes('HYDRA'))b.insertAdjacentHTML('beforeend',' <span class="gurenBoss712">HYDRA</span>')});return z};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+window.__DOD_HYDRA_7500={version:V,stage:ID,heads:3,normalRegenTurns:3,fireRegenTurns:6,normalRegenRate:.55,fireRegenRate:.12};
+save();stamp();setTimeout(stamp,350);
+})();
+</script>
+
 </body></html>
