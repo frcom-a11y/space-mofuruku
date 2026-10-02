@@ -3304,7 +3304,7 @@ radial-gradient(circle at 72% 18%,rgba(255,195,80,.22) 0 1px,transparent 2px);ba
 <script id="v0712r-data-repair">
 (function(){
  'use strict';
- const V='v0.71.2R', HUMAN=['キーボ','ミア','トア','ピボット'];
+ const V='v0.71.2R', HUMAN=['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
  const isHuman=n=>HUMAN.includes(n);
  // Equipment is human-only. Remove any equipment accidentally attached to monster party slots.
  function sanitizeMonsterEquipment(){
@@ -3423,7 +3423,7 @@ radial-gradient(circle at 72% 18%,rgba(255,195,80,.22) 0 1px,transparent 2px);ba
  window.addEventListener('scroll',updateBtn,{passive:true});
 
  // Keep equipment repair authoritative after redraw.
- const HUMAN=['キーボ','ミア','トア','ピボット'];
+ const HUMAN=['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
  function cleanMonsterEquip(){
    const p=partyNames();
    for(let i=0;i<3;i++)if(!HUMAN.includes(p[i]))S.equipment[i]={武器:'',防具:'',アクセサリー:''};
@@ -5871,6 +5871,7 @@ function canEquip(hero,type,n){
  return ownedCount(n)>equippedCount(n,hero,type);
 }
 function sanitize(){
+ H.forEach(h=>{if(!S.heroEquipment65[h])S.heroEquipment65[h]={武器:'',防具:'',アクセサリー:''}});
  H.forEach(h=>TYPES.forEach(t=>{
    const n=S.heroEquipment65[h][t];if(!n)return;
    const x=item(n);if(!x||x.type!==t||!allowed(h,n)||ownedCount(n)<1)S.heroEquipment65[h][t]='';
@@ -5926,7 +5927,7 @@ save();stamp();setTimeout(stamp,350);
 <script id="v07504-repair-bestgear">
 (()=>{
 'use strict';
-const V='v0.75.04',TYPES=['武器','防具','アクセサリー'];
+const V='v0.75.05',TYPES=['武器','防具','アクセサリー'];
 /* 1. Warehouse: route both current base buttons directly to the working equipment/inventory UI. */
 function openWarehouse(){
  if(typeof window.equipmentView211==='function')return window.equipmentView211();
