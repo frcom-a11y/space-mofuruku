@@ -5849,4 +5849,74 @@ stamp();setTimeout(stamp,350);
 })();
 </script>
 
+
+<script id="v07503-equipment-unified">
+(()=>{
+'use strict';
+const V='v0.75.03';
+const H=['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+const TYPES=['武器','防具','アクセサリー'];
+S.heroEquipment65=S.heroEquipment65||{};
+H.forEach(n=>S.heroEquipment65[n]=S.heroEquipment65[n]||{武器:'',防具:'',アクセサリー:''});
+function ownedCount(n){return (S.owned||[]).filter(x=>x===n).length}
+function allowed(hero,n){
+ const x=item(n);if(!x||!TYPES.includes(x.type))return false;
+ return !x.exclusive||x.exclusive===hero;
+}
+function equippedCount(n,exceptHero='',exceptType=''){
+ let c=0;H.forEach(h=>TYPES.forEach(t=>{if(h===exceptHero&&t===exceptType)return;if(S.heroEquipment65[h]?.[t]===n)c++}));return c;
+}
+function canEquip(hero,type,n){
+ const x=item(n);if(!x||x.type!==type||!allowed(hero,n))return false;
+ return ownedCount(n)>equippedCount(n,hero,type);
+}
+function sanitize(){
+ H.forEach(h=>TYPES.forEach(t=>{
+   const n=S.heroEquipment65[h][t];if(!n)return;
+   const x=item(n);if(!x||x.type!==t||!allowed(h,n)||ownedCount(n)<1)S.heroEquipment65[h][t]='';
+ }));
+ /* Resolve duplicate claims deterministically: current party first, then roster order. */
+ const order=[...partyNames(),...H.filter(n=>!partyNames().includes(n))],used={};
+ order.forEach(h=>TYPES.forEach(t=>{const n=S.heroEquipment65[h]?.[t];if(!n)return;used[n]=(used[n]||0)+1;if(used[n]>ownedCount(n))S.heroEquipment65[h][t]=''}));
+ partyNames().forEach((h,i)=>S.equipment[i]={...S.heroEquipment65[h]});
+}
+function equip(hero,type,n){
+ if(!H.includes(hero)||!TYPES.includes(type))return false;
+ if(!canEquip(hero,type,n)){toast(item(n)?.exclusive&&item(n).exclusive!==hero?`${n}は${item(n).exclusive}専用です`:'この装備は他のキャラクターが使用中です');return false}
+ S.heroEquipment65[hero][type]=n;sanitize();save();render();toast(`${hero}が${n}を装備`);return true;
+}
+function unequip(hero,type){if(S.heroEquipment65[hero])S.heroEquipment65[hero][type]='';sanitize();save();render()}
+sanitize();
+const a=window.__equip65;if(a){
+ a.heroes.splice(0,a.heroes.length,...H);
+ a.eq=n=>S.heroEquipment65[n]||{武器:'',防具:'',アクセサリー:''};
+ a.equip=equip;
+ a.sync=()=>{sanitize();save()};
+}
+/* All stat reads use the selected hero's persisted equipment, including waiting heroes when later formed. */
+const stats0=window.statsFor;
+window.statsFor=function(i){
+ const hero=partyNames()[i];
+ if(H.includes(hero)){
+   const expected=S.heroEquipment65[hero]||{};
+   if(JSON.stringify(S.equipment[i]||{})!==JSON.stringify(expected))S.equipment[i]={...expected};
+ }
+ return stats0.apply(this,arguments);
+};
+/* Catch every party change path: store outgoing equipment, then restore incoming equipment. */
+let lastParty=partyNames().slice();
+function syncFormation(){
+ const now=partyNames().slice();
+ lastParty.forEach((h,i)=>{if(H.includes(h)&&S.equipment[i]&&now[i]===h)S.heroEquipment65[h]={...S.equipment[i]}});
+ now.forEach((h,i)=>{if(H.includes(h))S.equipment[i]={...S.heroEquipment65[h]}});
+ lastParty=now;sanitize();
+}
+const render0=window.render;window.render=function(){syncFormation();const z=render0.apply(this,arguments);stamp();return z};
+/* API used by the existing equipment UI to enforce physical copy counts and exclusives. */
+window.__DOD_EQUIP_UNIFIED_7503={version:V,heroes:H.slice(),types:TYPES.slice(),ownedCount,equippedCount,allowed,canEquip,equip,unequip,sanitize};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+save();stamp();setTimeout(stamp,350);
+})();
+</script>
+
 </body></html>
