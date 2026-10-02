@@ -5737,4 +5737,62 @@ save();stamp();setTimeout(stamp,350);
 })();
 </script>
 
+
+<style id="v07501-newhero-equipment-style">
+.heroEquipBtn7501{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:7px}
+.heroEquipBtn7501 button{min-height:38px;border-radius:9px;border:1px solid #7b91a9;background:#1a3651;color:#fff;font-weight:800}
+.equipHero7501{padding:10px}.equipHero7501 h2{margin:2px 0 4px}.equipSlot7501{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:7px;align-items:center;padding:9px 0;border-bottom:1px solid #29465f}
+</style>
+<script id="v07501-newhero-equipment">
+(()=>{
+'use strict';
+const V='v0.75.01';
+const N=['リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+S.heroEquipment65=S.heroEquipment65||{};N.forEach(n=>S.heroEquipment65[n]=S.heroEquipment65[n]||{武器:'',防具:'',アクセサリー:''});
+function ownedHero(n){return (S.gachaHeroes7490||[]).includes(n)}
+function eq(n){return S.heroEquipment65[n]||{武器:'',防具:'',アクセサリー:''}}
+function allowed(n,itemName){
+ const x=item(itemName);if(!x)return false;
+ if(x.exclusive&&x.exclusive!==n)return false;
+ const old=window.EXCLUSIVE7437&&window.EXCLUSIVE7437[itemName];if(old&&old!==n)return false;
+ const n6=window.__EXCLUSIVE_NEW6_7492&&window.__EXCLUSIVE_NEW6_7492[itemName];if(n6&&n6.hero!==n)return false;
+ return true;
+}
+function sync(n){
+ const i=partyNames().indexOf(n);
+ if(i>=0)S.equipment[i]={...eq(n)};
+ save();render();
+}
+function detail(n){
+ if(!N.includes(n)||!ownedHero(n))return toast(n+'は未獲得です');
+ const g=typeof hero59==='function'?hero59(n):{lv:S.lv||1,exp:0},lv=typeof heroLv59==='function'?heroLv59(n):g.lv,slot=partyNames().indexOf(n),e=eq(n);
+ open('キャラクター装備',`<div class="equipHero7501"><h2>${n} <span class="lv59">Lv.${lv}</span></h2><div class="small">${BASE_MEMBERS[n]?.role||''} / ${slot>=0?(slot+1)+'枠に編成中':'待機中'}</div><div class="panel"><b>装備 3枠</b>${['武器','防具','アクセサリー'].map(type=>`<div class="equipSlot7501"><span>${type}</span><b>${e[type]||'なし'}</b><button class="miniBtn" data-change7501="${type}">変更</button></div>`).join('')}</div><button class="miniBtn" data-back7501>パーティへ戻る</button></div>`);
+ document.querySelectorAll('[data-change7501]').forEach(b=>b.onclick=()=>picker(n,b.dataset.change7501));
+ document.querySelector('[data-back7501]')?.addEventListener('click',()=>partyView('members'));
+}
+function picker(n,type){
+ const cur=item(eq(n)[type]||'')||{atk:0,def:0,crit:0};
+ const arr=[...new Set((S.owned||[]).filter(x=>{const it=item(x);return it&&it.type===type&&allowed(n,x)}))];
+ open(`${n}：${type}変更`,`<div class="panel equipPick65"><div class="row"><span><b>なし</b></span><button class="equip" data-none7501>外す</button></div>${arr.length?arr.map(x=>{const it=item(x),a=(it.atk||0)-(cur.atk||0),d=(it.def||0)-(cur.def||0),c=(it.crit||0)-(cur.crit||0);return `<div class="row"><span><b class="${rarityClass(it.rar)}">${x}</b><br><small>攻撃 ${a>=0?'+':''}${a} / 防御 ${d>=0?'+':''}${d} / 会心 ${c>=0?'+':''}${c}%${it.exclusive?`<br>${it.exclusive}専用`:''}</small></span><button class="equip" data-pick7501="${x}">装備</button></div>`}).join(''):'<p class="small">装備できる所持品がありません。</p>'}</div>`);
+ document.querySelector('[data-none7501]')?.addEventListener('click',()=>{S.heroEquipment65[n][type]='';sync(n);detail(n)});
+ document.querySelectorAll('[data-pick7501]').forEach(b=>b.onclick=()=>{const x=b.dataset.pick7501;if(!allowed(n,x))return toast('このキャラクターには装備できません');if(!(S.owned||[]).includes(x))return toast('未所持の装備です');S.heroEquipment65[n][type]=x;sync(n);toast(`${n}が${x}を装備`);detail(n)});
+}
+function bind(){
+ const root=document.getElementById('obody');if(!root)return;
+ root.querySelectorAll('[data-hero7459]').forEach(row=>{
+   const n=row.dataset.hero7459;if(!N.includes(n)||!ownedHero(n)||row.querySelector('[data-equip7501]'))return;
+   const buttons=row.querySelector('.partyButtons7459');if(!buttons)return;
+   const wrap=document.createElement('div');wrap.className='heroEquipBtn7501';
+   const b=document.createElement('button');b.type='button';b.dataset.equip7501=n;b.textContent='装備変更';b.onclick=e=>{e.preventDefault();e.stopPropagation();detail(n)};
+   wrap.appendChild(b);buttons.insertAdjacentElement('afterend',wrap);
+ });
+}
+const oo=window.open;if(typeof oo==='function')window.open=function(){const z=oo.apply(this,arguments);setTimeout(bind,0);return z};
+const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);bind();stamp();return z};
+window.heroEquipmentView7501=detail;
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+bind();stamp();setTimeout(()=>{bind();stamp()},350);
+})();
+</script>
+
 </body></html>
