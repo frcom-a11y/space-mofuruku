@@ -5795,4 +5795,58 @@ bind();stamp();setTimeout(()=>{bind();stamp()},350);
 })();
 </script>
 
+
+<style id="v07502-equipment-tabs">
+.eq211Top{display:flex!important;overflow-x:auto!important;gap:6px!important;padding-bottom:6px!important;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.eq211Top::-webkit-scrollbar{display:none}.eq211Top button{flex:0 0 auto!important;min-width:82px!important}
+</style>
+<script id="v07502-equipment-14heroes">
+(()=>{
+'use strict';
+const V='v0.75.02';
+const ALL=['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+const EXTRA=['リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+S.heroEquipment65=S.heroEquipment65||{};
+ALL.forEach(n=>S.heroEquipment65[n]=S.heroEquipment65[n]||{武器:'',防具:'',アクセサリー:''});
+function owned(n){
+ if(['キーボ','ミア','トア'].includes(n))return true;
+ if(n==='ピボット')return !!S.legend62?.pivot;
+ return (S.gachaHeroes7490||[]).includes(n);
+}
+function api(){
+ const a=window.__equip65;if(!a)return null;
+ ALL.forEach(n=>{if(!a.heroes.includes(n))a.heroes.push(n)});
+ const baseUnlocked=a.unlocked;
+ a.unlocked=()=>ALL.filter(owned);
+ a.eq=n=>S.heroEquipment65[n]||{武器:'',防具:'',アクセサリー:''};
+ a.equip=(n,type,itemName)=>{
+   if(!owned(n))return toast(n+'は未獲得です');
+   const x=item(itemName);if(!x||!(S.owned||[]).includes(itemName))return toast('未所持の装備です');
+   if(x.type!==type)return toast('装備種別が違います');
+   if(x.exclusive&&x.exclusive!==n)return toast(`${itemName}は${x.exclusive}専用です`);
+   S.heroEquipment65[n][type]=itemName;
+   const i=partyNames().indexOf(n);if(i>=0)S.equipment[i]={...S.heroEquipment65[n]};
+   save();toast(`${n}が${itemName}を装備`);
+ };
+ return a;
+}
+api();
+/* The existing equipment screen asks __equip65 for its tabs, so replacing that API is enough.
+   Re-bind inventory entry after all historical handlers have run. */
+function openEquip(){
+ const a=api();if(!a)return toast('装備画面を読み込めません');
+ if(typeof window.equipmentView211==='function')window.equipmentView211();
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest?.('.nav[data-page="items"],[data-page="items"]');if(!b)return;
+ setTimeout(()=>{api();if(typeof window.equipmentView211==='function')window.equipmentView211()},0);
+},true);
+const oldOpen=window.open;if(typeof oldOpen==='function')window.open=function(){api();return oldOpen.apply(this,arguments)};
+const rr=window.render;if(typeof rr==='function')window.render=function(){api();const z=rr.apply(this,arguments);stamp();return z};
+window.__DOD_EQUIP_7502={version:V,heroes:ALL.slice(),owned};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+stamp();setTimeout(stamp,350);
+})();
+</script>
+
 </body></html>
