@@ -6342,4 +6342,107 @@ tagEncounter();paintLevels();stamp();setTimeout(()=>{tagEncounter();paintLevels(
 })();
 </script>
 
+
+<script id="v07510-stage-balance-table">
+(()=>{
+'use strict';
+const V='v0.75.10';
+
+/* Formal progression table. Existing explicit recommended levels remain authoritative.
+   Later areas are normalized only where they already exist; Hydra stays excluded. */
+const PLAN={
+ '草原':{normal:0,boss:0},
+ '迷いの森':{normal:0,boss:0},
+ '氷の雪原':{normal:0,boss:0},
+ '灼熱の火山':{normal:0,boss:0},
+ '天空遺跡':{normal:0,boss:0},
+ '紅蓮魔界':{normal:0,boss:0},
+ '呪いの古城':{normal:0,boss:0},
+ '神話領域':{normal:0,boss:0}
+};
+const HYDRA='hydra7500';
+function stLv(st){return Math.max(1,Math.round(Number(st?.recommended)||1))}
+function eliteLv(st){return stLv(st)+2}
+function bossLv(st){return stLv(st)+3}
+
+/* Attach explicit balance metadata without changing unlock conditions or save fields. */
+stages.forEach(st=>{
+ if(!st||st.id===HYDRA)return;
+ st.balance75010={
+  recommended:stLv(st),
+  normalLevel:stLv(st),
+  eliteLevel:eliteLv(st),
+  bossLevel:bossLv(st),
+  targetTurns:st.boss?[5,9]:[2,4],
+  suddenKoProtection:!st.boss
+ };
+});
+
+/* Enemy attack safety:
+   Normal/elite encounters should not delete a healthy ally from a single ordinary hit.
+   This is deliberately a soft cap, not invincibility: charged attacks, low HP, bosses and
+   special stage hazards keep their existing danger. */
+const pd0=window.partyDamage;
+window.partyDamage=function(i,d){
+ const st=(()=>{try{return stage()}catch(_){return null}})();
+ if(st&&st.id!==HYDRA&&!st.boss&&S.hp[i]>0){
+  const max=maxHp(i),healthy=S.hp[i]>=max*.55;
+  if(healthy){
+   const cap=Math.max(1,Math.floor(max*.42));
+   d=Math.min(d,cap);
+  }
+ }
+ return pd0.call(this,i,d);
+};
+
+/* Normalize visible encounter levels after every spawn.
+   v0.75.09 owns the actual level-gap damage curve; this layer formalizes stage tiers. */
+function normalize(){
+ let st;try{st=stage()}catch(_){return}
+ if(!st||st.id===HYDRA)return;
+ E.forEach(e=>{
+  if(!e)return;
+  const elite=!!(e.elite7509||e.purple||e.rareEnemy||e.elite||e.golden);
+  e.lv=st.boss?bossLv(st):elite?eliteLv(st):stLv(st);
+  e.balanceTier75010=st.boss?'boss':elite?'elite':'normal';
+ });
+}
+const sp0=window.spawn;
+if(typeof sp0==='function')window.spawn=function(){const z=sp0.apply(this,arguments);normalize();try{render()}catch(_){}return z};
+
+/* Stage list: show the intended level so testers can report balance against a known target. */
+function annotate(){
+ const root=document.getElementById('obody');if(!root)return;
+ root.querySelectorAll('[data-stage]').forEach(row=>{
+  const id=row.dataset.stage,st=stages.find(x=>String(x.id)===String(id));
+  if(!st||st.id===HYDRA||row.querySelector('.balLv75010'))return;
+  const b=row.querySelector('b');if(!b)return;
+  const s=document.createElement('span');s.className='balLv75010';
+  s.textContent=` 推奨Lv${stLv(st)}`;
+  b.appendChild(s);
+ });
+}
+const sv0=window.stageView;
+if(typeof sv0==='function')window.stageView=function(){const z=sv0.apply(this,arguments);setTimeout(annotate,0);return z};
+
+const rr=window.render;
+if(typeof rr==='function')window.render=function(){normalize();const z=rr.apply(this,arguments);stamp();return z};
+
+function stamp(){
+ const b=document.getElementById('buildVersion');if(b)b.textContent=V;
+ const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+window.__DOD_STAGE_BALANCE_7510={
+ version:V,
+ rules:{normal:'推奨Lv',elite:'推奨Lv+2',boss:'推奨Lv+3',normalTurns:'2〜4',bossTurns:'5〜9',healthySingleHitCap:'最大HP42%'},
+ hydraExcluded:true
+};
+normalize();annotate();stamp();setTimeout(()=>{normalize();annotate();stamp()},400);
+})();
+</script>
+<style id="v07510-stage-balance-style">
+.balLv75010{display:inline-block;margin-left:5px;padding:1px 5px;border:1px solid #607890;border-radius:6px;color:#bcd0e4;font-size:9px;font-weight:800;vertical-align:1px}
+</style>
+
 </body></html>
