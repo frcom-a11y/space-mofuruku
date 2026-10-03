@@ -7139,4 +7139,33 @@ upgrade();stamp();setTimeout(()=>{upgrade();stamp()},400);
 })();
 </script>
 
+
+<script id="v07520-version-lock">
+(()=>{
+'use strict';
+const V='v0.75.20';
+function stamp(){
+ const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
+ if(b){b.id='buildVersion';b.textContent=V}
+ const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+function wrap(name){
+ const fn=window[name];if(typeof fn!=='function'||fn.__v07520)return;
+ const w=function(){const z=fn.apply(this,arguments);stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);return z};
+ w.__v07520=true;window[name]=w;
+}
+/* These are navigation/view functions only. Game state and save logic are untouched. */
+['render','baseView','stageView','partyView','itemView','bookView','shopView','saveGuardView','open'].forEach(wrap);
+/* Last-resort UI observer: historical modules can stamp an old version after a delayed redraw. */
+const obs=new MutationObserver(()=>{
+ const b=document.getElementById('buildVersion'),sm=document.querySelector('.logo small');
+ if((b&&b.textContent!==V)||(sm&&sm.textContent!==V))stamp();
+});
+try{obs.observe(document.documentElement,{subtree:true,childList:true,characterData:true})}catch(_){}
+window.__DOD_VERSION_LOCK_7520={version:V,views:['render','base','stage','party','items','book','shop','saveguard','open']};
+stamp();setTimeout(stamp,100);setTimeout(stamp,600);
+})();
+</script>
+
 </body></html>
