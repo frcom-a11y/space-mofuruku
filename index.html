@@ -7055,4 +7055,59 @@ inject();stamp();setTimeout(()=>{inject();stamp()},400);
 })();
 </script>
 
+
+<style id="v07518-forge-style">
+.forge7518{display:grid;gap:9px}.forgeRecipe7518{padding:10px;border:1px solid #35536e;border-radius:11px;background:#0d2034}
+.forgeRecipe7518 h3{margin:0 0 5px}.forgeMats7518{font-size:10px;line-height:1.7;color:#b9cad8}
+.forgeOk7518{color:#9fe3a7}.forgeNo7518{color:#ffaaa2}.forgeRecipe7518 button{width:100%;min-height:42px;margin-top:7px}
+</style>
+<script id="v07518-forge">
+(()=>{
+'use strict';
+const V='v0.75.18';
+/* First forge set uses only material names already present in the game's drop tables.
+   Recipes are intentionally small and additive; existing drops/equipment are not rewritten. */
+const RECIPES=[
+ {id:'iceBlade',name:'氷牙剣・フロスト',type:'武器',rar:'RARE',atk:46,def:5,crit:8,gold:12000,mats:{'氷狼の牙':5,'氷の核':4,'雪うさぎの毛':3},desc:'氷素材から鍛えた軽量剣'},
+ {id:'skyKnife',name:'蒼風短剣・エアリアル',type:'武器',rar:'RARE',atk:50,def:3,crit:14,gold:15000,mats:{'風羽の欠片':5,'風切り羽':4,'天空鋼片':3},desc:'天空素材を束ねた高速短剣'},
+ {id:'gurenSword',name:'獄炎剣・ヴァルグ',type:'武器',rar:'EPIC',atk:72,def:8,crit:12,gold:35000,mats:{'獄炎の牙':8,'紅蓮魔石':6,'灼熱竜鱗':4,'魔王の紅核':1},desc:'紅蓮魔界の素材を鍛えた上位武器'},
+ {id:'blackArmor',name:'黒炎重鎧・イグニス',type:'防具',rar:'EPIC',atk:10,def:68,crit:5,gold:32000,mats:{'黒炎鋼片':8,'灼熱竜鱗':5,'紅蓮魔石':4,'魔王の紅核':1},desc:'黒炎鋼で鍛えた重装防具'},
+ {id:'abyssCharm',name:'深淵護符・アビス',type:'アクセサリー',rar:'PHANTOM',atk:28,def:30,crit:18,gold:80000,mats:{'深淵の核':1,'死神の紫布':3,'血王の紋章':2,'魔石の欠片':10},desc:'深淵素材を封じた幻級護符'}
+];
+/* Register craft outputs as normal equipment without changing existing items. */
+RECIPES.forEach(r=>{if(!specialItems[r.name])specialItems[r.name]={n:r.name,type:r.type,rar:r.rar,atk:r.atk,def:r.def,crit:r.crit,desc:r.desc}});
+S.forge7518=S.forge7518||{crafted:{}};
+function count(n){return (S.owned||[]).filter(x=>x===n).length}
+function can(r){return (S.gold||0)>=r.gold&&Object.entries(r.mats).every(([n,q])=>count(n)>=q)}
+function removeOwned(n,q){for(let k=0;k<q;k++){const i=S.owned.indexOf(n);if(i<0)return false;S.owned.splice(i,1)}return true}
+function craft(id){
+ const r=RECIPES.find(x=>x.id===id);if(!r||!can(r))return toast('素材またはGが足りません');
+ /* Validate again before mutation. */
+ if(!Object.entries(r.mats).every(([n,q])=>count(n)>=q)||(S.gold||0)<r.gold)return toast('素材またはGが足りません');
+ Object.entries(r.mats).forEach(([n,q])=>removeOwned(n,q));
+ S.gold-=r.gold;S.owned.push(r.name);S.forge7518.crafted[r.name]=(S.forge7518.crafted[r.name]||0)+1;
+ S.locks=S.locks||{};if(r.rar!=='RARE')S.locks[r.name]=true;
+ save();toast(`${r.name}を錬成した！`);forgeView();
+}
+function forgeView(){
+ open('錬成工房',`<div class="forge7518"><div class="panel"><div class="sectionTitle">素材錬成</div><div class="small">ダンジョンで集めた素材とGから装備を作成します。EPIC以上は完成時に自動ロックされます。</div><div>所持G <b>${S.gold||0}G</b></div></div>
+ ${RECIPES.map(r=>{const ok=can(r);return `<div class="forgeRecipe7518"><h3 class="${rarityClass(r.rar)}">${r.name} <span class="guideBadge7514">${r.rar}</span></h3><div class="small">${r.type} / 攻撃${r.atk} / 防御${r.def} / 会心${r.crit}%</div><div class="forgeMats7518">${Object.entries(r.mats).map(([n,q])=>{let c=count(n);return `<span class="${c>=q?'forgeOk7518':'forgeNo7518'}">${n} ${c}/${q}</span>`}).join('<br>')}<br><span class="${(S.gold||0)>=r.gold?'forgeOk7518':'forgeNo7518'}">${r.gold.toLocaleString()}G</span></div><button class="miniBtn" data-craft7518="${r.id}" ${ok?'':'disabled'}>錬成する</button></div>`}).join('')}</div>`);
+ document.querySelectorAll('[data-craft7518]').forEach(b=>b.onclick=()=>craft(b.dataset.craft7518));
+}
+function addEntry(){
+ const body=document.getElementById('obody');if(!body||document.getElementById('forgeBtn7518'))return;
+ /* Only inject into the base/home view where the bank is present. */
+ if(!body.textContent.includes('モフルク銀行'))return;
+ const b=document.createElement('button');b.id='forgeBtn7518';b.className='miniBtn';b.type='button';b.textContent='⚒ 錬成工房';b.onclick=forgeView;
+ const panel=[...body.querySelectorAll('.panel')].find(x=>x.textContent.includes('モフルク銀行'));
+ (panel||body).appendChild(b);
+}
+const base0=window.baseView;if(typeof base0==='function')window.baseView=function(){const z=base0.apply(this,arguments);setTimeout(addEntry,0);return z};
+const render0=window.render;if(typeof render0==='function')window.render=function(){const z=render0.apply(this,arguments);addEntry();stamp();return z};
+window.__DOD_FORGE_7518={version:V,recipes:RECIPES,craft,view:forgeView};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+addEntry();stamp();setTimeout(()=>{addEntry();stamp()},400);
+})();
+</script>
+
 </body></html>
