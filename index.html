@@ -1242,10 +1242,10 @@ function baseView(){
  <div class="bankSummary"><div><span>手持ち</span><b>${S.gold.toLocaleString()}G</b></div><div><span>預金</span><b class="rar-phantom">${S.bank.toLocaleString()}G</b></div><div><span>総資産</span><b>${total.toLocaleString()}G</b></div></div>
  <p class="small">全滅時に失うのは手持ちGの25%だけ。銀行預金は失いません。</p>
  <div class="bankActions"><button class="miniBtn" data-dep="100">100G預ける</button><button class="miniBtn" data-dep="1000">1,000G預ける</button><button class="miniBtn" data-dep="all">全額預ける</button><button class="miniBtn" data-wd="100">100G引出</button><button class="miniBtn" data-wd="1000">1,000G引出</button><button class="miniBtn" data-wd="all">全額引出</button></div></div>
- <div class="panel"><div class="sectionTitle">拠点施設</div><div class="baseFacilities"><button class="facility" data-fac="shop"><b>🏪</b><span>ショップ<small>装備を購入</small></span></button><button class="facility" data-fac="party"><b>🐾</b><span>仲間管理<small>編成・装備</small></span></button><button class="facility" data-fac="items"><b>🎒</b><span>倉庫<small>持ち物確認</small></span></button><button class="facility" data-fac="book"><b>📖</b><span>図鑑<small>討伐・DROP</small></span></button><button class="facility" data-fac="profile"><b>🪪</b><span>冒険者プロフィール<small>ID・中断データ</small></span></button><button class="facility" data-fac="saveguard"><b>💾</b><span>セーブ保護<small>救出・バックアップ</small></span></button></div></div>`);
+ <div class="panel"><div class="sectionTitle">拠点施設</div><div class="baseFacilities"><button class="facility" data-fac="shop"><b>🏪</b><span>ショップ<small>装備を購入</small></span></button><button class="facility" data-fac="forge"><b>⚒️</b><span>錬成工房<small>素材を集めて装備を錬成</small></span></button><button class="facility" data-fac="party"><b>🐾</b><span>仲間管理<small>編成・装備</small></span></button><button class="facility" data-fac="items"><b>🎒</b><span>倉庫<small>持ち物確認</small></span></button><button class="facility" data-fac="book"><b>📖</b><span>図鑑<small>討伐・DROP</small></span></button><button class="facility" data-fac="profile"><b>🪪</b><span>冒険者プロフィール<small>ID・中断データ</small></span></button><button class="facility" data-fac="saveguard"><b>💾</b><span>セーブ保護<small>救出・バックアップ</small></span></button></div></div>`);
  document.querySelectorAll('[data-dep]').forEach(b=>b.onclick=()=>bankMove('deposit',b.dataset.dep==='all'?S.gold:+b.dataset.dep));
  document.querySelectorAll('[data-wd]').forEach(b=>b.onclick=()=>bankMove('withdraw',b.dataset.wd==='all'?S.bank:+b.dataset.wd));
- document.querySelectorAll('[data-fac]').forEach(b=>b.onclick=()=>{let f=b.dataset.fac;if(f==='shop'){open('ショップ','');shopView('武器')}if(f==='party')partyView();if(f==='items')itemView();if(f==='book')bookView();if(f==='profile'){if(window.__profile741)window.__profile741.open();else toast('プロフィールを開けませんでした')}if(f==='saveguard')saveGuardView()});
+ document.querySelectorAll('[data-fac]').forEach(b=>b.onclick=()=>{let f=b.dataset.fac;if(f==='shop'){open('ショップ','');shopView('武器')}if(f==='forge'){const fv=window.__DOD_FORGE_7518?.view;if(typeof fv==='function')fv();else toast('錬成工房を読み込めません')}if(f==='party')partyView();if(f==='items')itemView();if(f==='book')bookView();if(f==='profile'){if(window.__profile741)window.__profile741.open();else toast('プロフィールを開けませんでした')}if(f==='saveguard')saveGuardView()});
 }
 function bookView(){let mons=[...new Set([...Object.keys(MONSTERS),...Object.keys(S.kills)])];open("モンスター図鑑",`<div class="panel">${mons.map(n=>{let seen=!!S.seen[n],ds=n==="黄金スライム"?[specialItems["幻の金冠"]]:(drops[n]||[]);return `<div class="row"><span><b class="${n==="黄金スライム"?"rar-phantom":""}">${seen?n:"???"}</b><br><small>遭遇 ${seen?"済":"未発見"} / 討伐 ${S.kills[n]||0} / 仲間 ${S.monsterCompanions.includes(n)?"加入済":"-"}</small><div class="bookDrop">DROP：${seen?ds.map(d=>S.dropFound[d.n]?`<span class="${rarityClass(d.rar)}">${d.n} ×${S.dropFound[d.n]}</span>`:`<span class="unknown">??? (1/${d.r||"特殊"})</span>`).join(" / "):"???"}</div></span><span>${n==="黄金スライム"?"✨ 変異種":""}</span></div>`}).join("")}</div>`)}
 document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{let p=b.dataset.page;if(p==="stage")stageView();if(p==="party")partyView();if(p==="base")baseView();if(p==="items")itemView();if(p==="book")bookView()});
@@ -7094,7 +7094,7 @@ function forgeView(){
  ${RECIPES.map(r=>{const ok=can(r);return `<div class="forgeRecipe7518"><h3 class="${rarityClass(r.rar)}">${r.name} <span class="guideBadge7514">${r.rar}</span></h3><div class="small">${r.type} / 攻撃${r.atk} / 防御${r.def} / 会心${r.crit}%</div><div class="forgeMats7518">${Object.entries(r.mats).map(([n,q])=>{let c=count(n);return `<span class="${c>=q?'forgeOk7518':'forgeNo7518'}">${n} ${c}/${q}</span>`}).join('<br>')}<br><span class="${(S.gold||0)>=r.gold?'forgeOk7518':'forgeNo7518'}">${r.gold.toLocaleString()}G</span></div><button class="miniBtn" data-craft7518="${r.id}" ${ok?'':'disabled'}>錬成する</button></div>`}).join('')}</div>`);
  document.querySelectorAll('[data-craft7518]').forEach(b=>b.onclick=()=>craft(b.dataset.craft7518));
 }
-function addEntry(){
+function addEntry(){return;
  const body=document.getElementById('obody');if(!body||document.getElementById('forgeBtn7518'))return;
  /* Only inject into the base/home view where the bank is present. */
  if(!body.textContent.includes('モフルク銀行'))return;
@@ -7119,7 +7119,7 @@ addEntry();stamp();setTimeout(()=>{addEntry();stamp()},400);
 'use strict';
 const V='v0.75.19';
 function forge(){const f=window.__DOD_FORGE_7518?.view;if(typeof f==='function')f();else toast('錬成工房を読み込めません')}
-function upgrade(){
+function upgrade(){document.getElementById('forgeBtn7518')?.remove();return;
  const body=document.getElementById('obody');if(!body)return;
  /* Remove the old tiny fallback entry. */
  document.getElementById('forgeBtn7518')?.remove();
@@ -7165,6 +7165,31 @@ const obs=new MutationObserver(()=>{
 try{obs.observe(document.documentElement,{subtree:true,childList:true,characterData:true})}catch(_){}
 window.__DOD_VERSION_LOCK_7520={version:V,views:['render','base','stage','party','items','book','shop','saveguard','open']};
 stamp();setTimeout(stamp,100);setTimeout(stamp,600);
+})();
+</script>
+
+
+<script id="v07521-forge-entry-lock">
+(()=>{
+'use strict';
+const V='v0.75.21';
+function ensure(){
+ const body=document.getElementById('obody');if(!body||!body.textContent.includes('拠点施設'))return;
+ const grid=body.querySelector('.baseFacilities');if(!grid)return;
+ let b=grid.querySelector('[data-fac="forge"]');
+ if(!b){
+  b=document.createElement('button');b.className='facility';b.dataset.fac='forge';b.type='button';
+  b.innerHTML='<b>⚒️</b><span>錬成工房<small>素材を集めて装備を錬成</small></span>';
+  const shop=grid.querySelector('[data-fac="shop"]');shop?.after(b);
+ }
+ b.onclick=()=>{const f=window.__DOD_FORGE_7518?.view;if(typeof f==='function')f();else toast('錬成工房を読み込めません')};
+ document.getElementById('forgeBtn7518')?.remove();
+}
+const b0=window.baseView;if(typeof b0==='function')window.baseView=function(){const z=b0.apply(this,arguments);ensure();stamp();return z};
+const r0=window.render;if(typeof r0==='function')window.render=function(){const z=r0.apply(this,arguments);ensure();stamp();return z};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+window.__DOD_FORGE_ENTRY_7521={version:V,canonical:true};
+ensure();stamp();setTimeout(()=>{ensure();stamp()},400);
 })();
 </script>
 
