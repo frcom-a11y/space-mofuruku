@@ -7094,7 +7094,7 @@ function forgeView(){
  ${RECIPES.map(r=>{const ok=can(r);return `<div class="forgeRecipe7518"><h3 class="${rarityClass(r.rar)}">${r.name} <span class="guideBadge7514">${r.rar}</span></h3><div class="small">${r.type} / 攻撃${r.atk} / 防御${r.def} / 会心${r.crit}%</div><div class="forgeMats7518">${Object.entries(r.mats).map(([n,q])=>{let c=count(n);return `<span class="${c>=q?'forgeOk7518':'forgeNo7518'}">${n} ${c}/${q}</span>`}).join('<br>')}<br><span class="${(S.gold||0)>=r.gold?'forgeOk7518':'forgeNo7518'}">${r.gold.toLocaleString()}G</span></div><button class="miniBtn" data-craft7518="${r.id}" ${ok?'':'disabled'}>錬成する</button></div>`}).join('')}</div>`);
  document.querySelectorAll('[data-craft7518]').forEach(b=>b.onclick=()=>craft(b.dataset.craft7518));
 }
-function addEntry(){return;
+function addEntry(){
  const body=document.getElementById('obody');if(!body||document.getElementById('forgeBtn7518'))return;
  /* Only inject into the base/home view where the bank is present. */
  if(!body.textContent.includes('モフルク銀行'))return;
@@ -7119,7 +7119,7 @@ addEntry();stamp();setTimeout(()=>{addEntry();stamp()},400);
 'use strict';
 const V='v0.75.19';
 function forge(){const f=window.__DOD_FORGE_7518?.view;if(typeof f==='function')f();else toast('錬成工房を読み込めません')}
-function upgrade(){document.getElementById('forgeBtn7518')?.remove();return;
+function upgrade(){
  const body=document.getElementById('obody');if(!body)return;
  /* Remove the old tiny fallback entry. */
  document.getElementById('forgeBtn7518')?.remove();
@@ -7140,56 +7140,45 @@ upgrade();stamp();setTimeout(()=>{upgrade();stamp()},400);
 </script>
 
 
-<script id="v07520-version-lock">
+
+
+
+<script id="v07522-clean-version">
 (()=>{
 'use strict';
-const V='v0.75.20';
+const V='v0.75.22';
 function stamp(){
  const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
  if(b){b.id='buildVersion';b.textContent=V}
- const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ const sm=document.querySelector('.logo small');
+ if(sm)sm.textContent=V;
  document.title='どろダン / DROP OF DUNGEON '+V;
 }
-function wrap(name){
- const fn=window[name];if(typeof fn!=='function'||fn.__v07520)return;
- const w=function(){const z=fn.apply(this,arguments);stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);return z};
- w.__v07520=true;window[name]=w;
-}
-/* These are navigation/view functions only. Game state and save logic are untouched. */
-['render','baseView','stageView','partyView','itemView','bookView','shopView','saveGuardView','open'].forEach(wrap);
-/* Last-resort UI observer: historical modules can stamp an old version after a delayed redraw. */
-const obs=new MutationObserver(()=>{
- const b=document.getElementById('buildVersion'),sm=document.querySelector('.logo small');
- if((b&&b.textContent!==V)||(sm&&sm.textContent!==V))stamp();
-});
-try{obs.observe(document.documentElement,{subtree:true,childList:true,characterData:true})}catch(_){}
-window.__DOD_VERSION_LOCK_7520={version:V,views:['render','base','stage','party','items','book','shop','saveguard','open']};
-stamp();setTimeout(stamp,100);setTimeout(stamp,600);
-})();
-</script>
-
-
-<script id="v07521-forge-entry-lock">
-(()=>{
-'use strict';
-const V='v0.75.21';
-function ensure(){
- const body=document.getElementById('obody');if(!body||!body.textContent.includes('拠点施設'))return;
- const grid=body.querySelector('.baseFacilities');if(!grid)return;
+function forgeEntry(){
+ const body=document.getElementById('obody');
+ if(!body||!body.textContent.includes('拠点施設'))return;
+ const grid=body.querySelector('.baseFacilities');
+ if(!grid)return;
  let b=grid.querySelector('[data-fac="forge"]');
  if(!b){
-  b=document.createElement('button');b.className='facility';b.dataset.fac='forge';b.type='button';
-  b.innerHTML='<b>⚒️</b><span>錬成工房<small>素材を集めて装備を錬成</small></span>';
-  const shop=grid.querySelector('[data-fac="shop"]');shop?.after(b);
+   b=document.createElement('button');
+   b.className='facility'; b.type='button'; b.dataset.fac='forge';
+   b.innerHTML='<b>⚒️</b><span>錬成工房<small>素材を集めて装備を錬成</small></span>';
+   const shop=grid.querySelector('[data-fac="shop"]');
+   if(shop)shop.after(b); else grid.appendChild(b);
  }
- b.onclick=()=>{const f=window.__DOD_FORGE_7518?.view;if(typeof f==='function')f();else toast('錬成工房を読み込めません')};
+ b.onclick=()=>{const fv=window.__DOD_FORGE_7518?.view;if(typeof fv==='function')fv();else toast('錬成工房を読み込めません')};
  document.getElementById('forgeBtn7518')?.remove();
 }
-const b0=window.baseView;if(typeof b0==='function')window.baseView=function(){const z=b0.apply(this,arguments);ensure();stamp();return z};
-const r0=window.render;if(typeof r0==='function')window.render=function(){const z=r0.apply(this,arguments);ensure();stamp();return z};
-function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
-window.__DOD_FORGE_ENTRY_7521={version:V,canonical:true};
-ensure();stamp();setTimeout(()=>{ensure();stamp()},400);
+function finish(){forgeEntry();stamp()}
+const r0=window.render;
+if(typeof r0==='function')window.render=function(){const z=r0.apply(this,arguments);finish();return z};
+const b0=window.baseView;
+if(typeof b0==='function')window.baseView=function(){const z=b0.apply(this,arguments);finish();return z};
+window.__DOD_BUILD_7522={version:V,removedVersionObserver7520:true,forgeCanonical:true};
+finish();
+setTimeout(finish,0);
+setTimeout(finish,300);
 })();
 </script>
 
