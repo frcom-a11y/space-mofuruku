@@ -6646,4 +6646,86 @@ inject();addBattleButton();stamp();setTimeout(()=>{inject();addBattleButton();st
 })();
 </script>
 
+
+<script id="v07513-balance-lock">
+(()=>{
+'use strict';
+const V='v0.75.13',HYDRA='hydra7500';
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function st(){try{return stage()}catch(_){return null}}
+function excluded(){return st()?.id===HYDRA}
+function heroLv(i){
+ const n=partyNames()[i],g=S.charGrowth?.[n];
+ if(g&&Number.isFinite(g.lv))return Math.max(1,g.lv);
+ try{return Math.max(1,heroLv59(n)||1)}catch(_){return Math.max(1,S.lv||1)}
+}
+function eLv(e){return Math.max(1,Number(e?.lv)||Number(st()?.recommended)||1)}
+/* Final v1 curve. Equal level stays neutral. +5 is clearly easier; +10 strongly easier,
+   while under-level play becomes progressively dangerous without an instant hard wall. */
+function outMul(d){
+ d=clamp(d,-15,15);
+ return d>=0?1+d*.045:1/(1+(-d)*.038);
+}
+function inMul(d){
+ d=clamp(d,-15,15);
+ return d>=0?1/(1+d*.045):1+(-d)*.045;
+}
+function tier(e){
+ if(e?.boss||e?.balanceTier75010==='boss')return 'boss';
+ if(e?.elite||e?.purple||e?.golden||e?.rareEnemy||e?.balanceTier75010==='elite')return 'elite';
+ return 'normal';
+}
+const hit0=window.hit;
+window.hit=function(i,d,c=false){
+ if(!excluded()&&E[i]?.hp>0){
+  const slot=Number.isInteger(window.__dodAttackSlot7513)?window.__dodAttackSlot7513:0;
+  const diff=heroLv(slot)-eLv(E[i]);
+  /* v0.75.09 already applies a gentler gap modifier. Counter-normalize that old curve
+     before applying the locked v1 curve, so modifiers do not stack. */
+  const old=diff>=0?1+clamp(diff,-15,15)*.035:1/(1+(-clamp(diff,-15,15))*.03);
+  d=Math.max(1,Math.floor(d/old*outMul(diff)));
+ }
+ return hit0.call(this,i,d,c);
+};
+const pd0=window.partyDamage;
+window.partyDamage=function(i,d){
+ if(!excluded()){
+  const e=E.find(x=>x&&x.hp>0);
+  if(e){
+   const diff=heroLv(i)-eLv(e);
+   const old=diff>=0?1/(1+clamp(diff,-15,15)*.035):1+(-clamp(diff,-15,15))*.035;
+   d=Math.max(1,Math.floor(d/old*inMul(diff)));
+   /* Safety caps are tiered. Normal roaming fights cannot randomly erase a healthy ally.
+      Elites are dangerous but not intended as surprise one-shots. Bosses remain uncapped. */
+   const t=tier(e),mx=maxHp(i),healthy=S.hp[i]>=mx*.55;
+   if(healthy&&t==='normal')d=Math.min(d,Math.max(1,Math.floor(mx*.36)));
+   else if(healthy&&t==='elite')d=Math.min(d,Math.max(1,Math.floor(mx*.46)));
+  }
+ }
+ return pd0.call(this,i,d);
+};
+/* Track attack owner for existing companion/AUTO engines. */
+const perform0=window.__DOD_SKILL_PERFORM_7508;
+if(typeof perform0==='function')window.__DOD_SKILL_PERFORM_7508=function(slot){
+ window.__dodAttackSlot7513=slot;
+ try{return perform0.apply(this,arguments)}finally{window.__dodAttackSlot7513=null}
+};
+const comp0=window.companionActions;
+if(typeof comp0==='function')window.companionActions=function(){
+ /* Existing engines issue party members sequentially. Their own skill bridge sets exact slots;
+    ordinary companion hits remain conservative and use the operation character if unknown. */
+ try{return comp0.apply(this,arguments)}finally{window.__dodAttackSlot7513=null}
+};
+function diagnostic(){
+ const s=st(),p=partyNames().map((n,i)=>({name:n,lv:heroLv(i),hp:maxHp(i),stats:statsFor(i)}));
+ return {version:V,stage:s?.name,recommended:s?.recommended,enemies:E.map(e=>({name:e.name,lv:eLv(e),tier:tier(e),hp:e.max,atk:e.atk})),party:p,
+ curve:{minus10:{out:+outMul(-10).toFixed(3),in:+inMul(-10).toFixed(3)},minus5:{out:+outMul(-5).toFixed(3),in:+inMul(-5).toFixed(3)},equal:{out:1,in:1},plus5:{out:+outMul(5).toFixed(3),in:+inMul(5).toFixed(3)},plus10:{out:+outMul(10).toFixed(3),in:+inMul(10).toFixed(3)}}};
+}
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);stamp();return z};
+window.__DOD_BALANCE_LOCK_7513={version:V,outMul,inMul,diagnostic,targets:{equal:'標準',plus5:'楽',plus10:'圧倒',minus5:'苦戦',minus10:'かなり厳しい'},caps:{normal:.36,elite:.46,boss:null},hydraExcluded:true};
+stamp();setTimeout(stamp,400);
+})();
+</script>
+
 </body></html>
