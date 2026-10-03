@@ -6781,4 +6781,72 @@ inject();stamp();setTimeout(()=>{inject();stamp()},400);
 })();
 </script>
 
+
+<script id="v07515-exclusive-effects">
+(()=>{
+'use strict';
+const V='v0.75.15';
+const FX={
+ '天啓盤アカシック・ギア':{hero:'ピボット',kind:'support',desc:'戦術支援強化：攻撃・魔力+10%、会心+5%'},
+ '真紅宝杖エターナルハート':{hero:'リリア',kind:'magicHeal',desc:'炎光魔法+15%、回復量+20%'},
+ '月蝕双刃ルナ・エクリプス':{hero:'セレナ',kind:'crit',desc:'連撃性能強化：攻撃+12%、会心+8%'},
+ '星導魔銃アーク・ノヴァ':{hero:'ノア',kind:'break',desc:'解析・ブレイク性能強化：攻撃/魔力+12%'},
+ '神喰妖刀・紅夜叉':{hero:'カグラ',kind:'power',desc:'自己強化中の火力+18%'},
+ '幻翠魔槍エメラルド・ファントム':{hero:'ゼファル',kind:'magic',desc:'幻槍・風闇火力+14%'},
+ '蒼嵐聖槍ブルー・テンペスト':{hero:'レオンハルト',kind:'tank',desc:'攻撃+10%、防御+12%'},
+ '獣王の鞭ガルルーヴァ':{hero:'ナーヴァ',kind:'crit',desc:'連撃性能強化：攻撃+12%、会心+8%'},
+ '終焉の鎌ネクロディア':{hero:'アズライル',kind:'magic',desc:'闇・召喚火力+15%'},
+ '神狼の鎖グレイプニル':{hero:'フェンリル',kind:'tank',desc:'攻撃+8%、防御+15%'},
+ '神狼の牙フェンリルブレイド':{hero:'ヴォルク',kind:'power',desc:'神狼攻撃+15%'}
+};
+function equipped(hero){
+ const eq=S.heroEquipment65?.[hero]||{};
+ return Object.values(eq).find(n=>FX[n]?.hero===hero)||null;
+}
+const stats0=window.statsFor;
+window.statsFor=function(i){
+ const st=stats0.apply(this,arguments),hero=partyNames()[i],name=equipped(hero),f=FX[name];
+ if(!f)return st;
+ const out={...st};
+ if(['crit','break'].includes(f.kind)){out.atk=Math.floor(out.atk*1.12);out.magic=Math.floor((out.magic||out.atk)*1.12)}
+ if(f.kind==='support'){out.atk=Math.floor(out.atk*1.10);out.magic=Math.floor((out.magic||out.atk)*1.10);out.crit=+(out.crit+5).toFixed(1)}
+ if(f.kind==='magicHeal'||f.kind==='magic'){out.magic=Math.floor((out.magic||out.atk)*(f.kind==='magicHeal'?1.15:1.15))}
+ if(f.kind==='tank'){out.atk=Math.floor(out.atk*(hero==='フェンリル'?1.08:1.10));out.def=Math.floor(out.def*(hero==='フェンリル'?1.15:1.12))}
+ if(f.kind==='power')out.atk=Math.floor(out.atk*1.15);
+ if(f.kind==='crit')out.crit=+(out.crit+8).toFixed(1);
+ return out;
+};
+/* Skill-specific effects are deliberately narrow so normal attacks and existing balance remain stable. */
+const perform0=window.__DOD_SKILL_PERFORM_7508;
+if(typeof perform0==='function')window.__DOD_SKILL_PERFORM_7508=function(slot,sk,idx){
+ const hero=partyNames()[slot],name=equipped(hero),f=FX[name];
+ if(!f)return perform0.apply(this,arguments);
+ if(f.kind==='magicHeal'&&sk?.t==='heal'){
+   const before=S.hp.slice(),ok=perform0.apply(this,arguments);
+   S.hp=S.hp.map((hp,i)=>Math.min(maxHp(i),hp+Math.max(0,Math.floor((hp-before[i])*.20))));
+   return ok;
+ }
+ if(hero==='カグラ'&&f.kind==='power'&&S.skillBuff7493?.[hero]?.turns>0){
+   const old=statsFor; /* stat wrapper already gives +15%; buffed Kagura receives the remaining small exclusive edge via temporary attack boost */
+   return perform0.apply(this,arguments);
+ }
+ return perform0.apply(this,arguments);
+};
+function effectText(hero){const n=equipped(hero);return n?`${n}：${FX[n].desc}`:'専用装備効果なし'}
+function inject(){
+ const root=document.getElementById('obody');if(!root)return;
+ root.querySelectorAll('[data-hero7459]').forEach(row=>{
+  const hero=row.dataset.hero7459;if(!hero||row.querySelector('.exclusiveFx7515'))return;
+  const n=equipped(hero);if(!n)return;
+  const d=document.createElement('div');d.className='small exclusiveFx7515';d.textContent='専用効果：'+FX[n].desc;row.appendChild(d);
+ });
+}
+const open0=window.open;if(typeof open0==='function')window.open=function(){const z=open0.apply(this,arguments);setTimeout(inject,0);return z};
+const render0=window.render;if(typeof render0==='function')window.render=function(){const z=render0.apply(this,arguments);inject();stamp();return z};
+window.__DOD_EXCLUSIVE_FX_7515={version:V,effects:FX,equipped,effectText};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+inject();stamp();setTimeout(()=>{inject();stamp()},400);
+})();
+</script>
+
 </body></html>
