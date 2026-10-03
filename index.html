@@ -5335,8 +5335,6 @@ const ICON=window.__EXCLUSIVE_NEW6_ICON_7491||{};
 window.__EXCLUSIVE_NEW6_ICON_7492=ICON;
 function apply(){
   document.querySelectorAll('img[alt]').forEach(img=>{const s=ICON[img.alt];if(s&&img.src!==s)img.src=s;});
-  const b=document.getElementById('buildVersion');if(b)b.textContent=V;
-  const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
 }
 const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);apply();return z};
 const oo=window.open;if(typeof oo==='function')window.open=function(){const z=oo.apply(this,arguments);setTimeout(apply,0);return z};
@@ -7179,6 +7177,21 @@ window.__DOD_BUILD_7522={version:V,removedVersionObserver7520:true,forgeCanonica
 finish();
 setTimeout(finish,0);
 setTimeout(finish,300);
+})();
+</script>
+
+
+<script id="v07523-base-forge-repair">
+(()=>{
+'use strict';
+const V='v0.75.23';
+function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+function forgeEntry(){const body=document.getElementById('obody');if(!body)return;const grid=body.querySelector('.baseFacilities');if(!grid)return;let b=grid.querySelector('[data-fac="forge"]');if(!b){b=document.createElement('button');b.className='facility';b.type='button';b.dataset.fac='forge';b.innerHTML='<b>⚒️</b><span>錬成工房<small>素材を集めて装備を錬成</small></span>';const shop=grid.querySelector('[data-fac="shop"]');if(shop)shop.after(b);else grid.appendChild(b)}b.onclick=()=>{const f=window.__DOD_FORGE_7518?.view;if(typeof f==='function')f();else toast('錬成工房を読み込めません')};document.getElementById('forgeBtn7518')?.remove()}
+function finish(){forgeEntry();stamp()}
+const ob=window.baseView;if(typeof ob==='function')window.baseView=function(){const z=ob.apply(this,arguments);finish();requestAnimationFrame(finish);return z};
+const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);finish();return z};
+window.__DOD_REPAIR_7523={version:V,removed7492Restamp:true,forgeRepair:true};
+finish();setTimeout(finish,0);setTimeout(finish,350);
 })();
 </script>
 
