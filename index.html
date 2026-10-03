@@ -6849,4 +6849,101 @@ inject();stamp();setTimeout(()=>{inject();stamp()},400);
 })();
 </script>
 
+
+<style id="v07516-element-system-style">
+.elem7516{display:inline-block;margin-left:4px;padding:1px 5px;border:1px solid #657f99;border-radius:6px;font-size:9px;font-weight:900}
+.elemWeak7516{color:#ffb0a8}.elemResist7516{color:#9fd1ff}
+</style>
+<script id="v07516-element-system">
+(()=>{
+'use strict';
+const V='v0.75.16';
+/* Unified elemental layer. It is intentionally modest: weakness 1.25x, resistance 0.80x.
+   Existing raw skill multipliers remain authoritative, so this does not replace character balance. */
+const HERO={
+ 'キーボ':['炎'],'ミア':['炎','氷'],'トア':['闇'],'ピボット':['星'],
+ 'リリア':['炎','光'],'セレナ':['闇','月'],'ノア':['雷','星'],'カグラ':['炎','闇'],
+ 'ゼファル':['風','闇'],'レオンハルト':['風','闇'],'ナーヴァ':['闇'],
+ 'アズライル':['闇'],'フェンリル':['氷','闇'],'ヴォルク':['氷','闇']
+};
+const SKILL={
+ 'フレア':'炎','メテオ':'炎','奥義・紅蓮':'炎','真・紅蓮覇斬':'炎',
+ 'ブリザード':'氷','ハートフレア':'炎','クリムゾンハート':'炎','永遠に燃ゆる恋心《エターナル・ラヴ》':'炎',
+ '鬼火一閃':'炎','紅蓮乱舞':'炎','鬼哭紅蓮・天照断':'炎',
+ '月影連刃':'闇','ナイトメアキス':'闇','月蝕':'闇','終月葬《エクリプス・レクイエム》':'闇',
+ 'スターショット':'星','オービットバースト':'雷','天星殲機《アストラル・ノヴァ》':'星',
+ '幻槍突き':'風','翠風連槍':'風','幻影槍陣':'風','翠嵐・ファントムランス':'風',
+ '翡翠突槍':'風','蒼風連撃':'風','蒼翠竜槍・テンペスト':'風',
+ 'ソウルハーベスト':'闇','レクイエムサモン':'闇','シャドウドレイン':'闇','エンドオブワールド':'闇',
+ 'フロストファング':'氷','絶対零度の鎖':'氷','終焉の刻':'氷',
+ 'ルーンバイト':'氷','神狼召喚':'氷','終焉の共鳴':'氷'
+};
+const MON={
+ 'スライム':{weak:['雷'],resist:[]},
+ 'ゴブリン':{weak:['炎'],resist:[]},
+ 'オオカミ':{weak:['炎'],resist:[]},
+ 'モリキノコ':{weak:['炎'],resist:['氷']},
+ 'リーフフェアリー':{weak:['炎'],resist:['風']},
+ 'シャドウバット':{weak:['光'],resist:['闇']},
+ 'スノーラビット':{weak:['炎'],resist:['氷']},
+ 'アイスウルフ':{weak:['炎'],resist:['氷']},
+ 'フロストスライム':{weak:['炎'],resist:['氷']},
+ 'フロストフェアリー':{weak:['炎'],resist:['氷']},
+ 'マグマスライム':{weak:['氷'],resist:['炎']},
+ 'フレイムリザード':{weak:['氷'],resist:['炎']},
+ '炎翼バット':{weak:['氷'],resist:['炎']},
+ 'サラマンダー':{weak:['氷'],resist:['炎']},
+ '焔竜王・ヴォルガノス':{weak:['氷'],resist:['炎']},
+ '獄炎の魔狼':{weak:['氷'],resist:['炎']},
+ '紅蓮デーモン':{weak:['氷','光'],resist:['炎','闇']},
+ '黒炎騎士':{weak:['光'],resist:['闇']},
+ 'マグマドラゴン':{weak:['氷'],resist:['炎']},
+ '煉獄魔王・ヴァルグレイン':{weak:['氷','光'],resist:['炎','闇']}
+};
+function affinity(e,elem){
+ if(!elem||!e)return 1;
+ const d=MON[e.base]||MON[e.name];if(!d)return 1;
+ if(d.weak?.includes(elem))return 1.25;
+ if(d.resist?.includes(elem))return .80;
+ return 1;
+}
+let ctx=null;
+const hit0=window.hit;
+window.hit=function(i,d,c=false){
+ if(ctx&&E[i]?.hp>0){
+  const m=affinity(E[i],ctx.elem);
+  if(m!==1){
+   d=Math.max(1,Math.floor(d*m));
+   floatText(m>1?'WEAK!':'RESIST',12+i*31,22,m>1?'crit':'');
+  }
+ }
+ return hit0.call(this,i,d,c);
+};
+/* Wrap the existing skill execution bridge; no skill definitions are replaced. */
+const perform0=window.__DOD_SKILL_PERFORM_7508;
+if(typeof perform0==='function')window.__DOD_SKILL_PERFORM_7508=function(slot,sk){
+ const hero=partyNames()[slot],elem=SKILL[sk?.n]||HERO[hero]?.[0]||null;
+ const prev=ctx;ctx={hero,elem,skill:sk?.n||''};
+ try{return perform0.apply(this,arguments)}finally{ctx=prev}
+};
+/* Manual legacy skill engine can bypass the 7508 bridge; use skill-name context around useSkill too. */
+const use0=window.useSkill;
+if(typeof use0==='function')window.useSkill=function(name){
+ const hero=partyNames()[0],prev=ctx;ctx={hero,elem:SKILL[name]||HERO[hero]?.[0]||null,skill:name};
+ try{return use0.apply(this,arguments)}finally{ctx=prev}
+};
+function inject(){
+ document.querySelectorAll('#enemies .enemy').forEach((el,i)=>{
+  const e=E[i],d=e&&(MON[e.base]||MON[e.name]);if(!d)return;
+  const box=el.querySelector('.ebox');if(!box||box.querySelector('.elem7516'))return;
+  const s=document.createElement('span');s.className='elem7516';s.textContent=`弱:${d.weak.join('・')||'-'} / 耐:${d.resist.join('・')||'-'}`;box.appendChild(s);
+ });
+}
+const render0=window.render;if(typeof render0==='function')window.render=function(){const z=render0.apply(this,arguments);inject();stamp();return z};
+window.__DOD_ELEMENTS_7516={version:V,heroes:HERO,skills:SKILL,monsters:MON,weakness:1.25,resistance:.80,affinity};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+inject();stamp();setTimeout(()=>{inject();stamp()},400);
+})();
+</script>
+
 </body></html>
