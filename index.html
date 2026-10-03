@@ -5319,7 +5319,7 @@ const oldEquip=window.equipTo;
 window.equipTo=function(i,n){const d=D[n],who=partyNames()[i];if(d&&d.hero!==who)return toast(`${n}は${d.hero}専用です`);if(d&&!owned(n))return toast(`${n}は未所持です`);const r=oldEquip.apply(this,arguments);if(d&&S.heroEquipment65[d.hero])S.heroEquipment65[d.hero]={...S.equipment[i]};save();return r;};
 window.exclusiveNew6View7492=function(){open('追加6キャラ専用装備',`<div class="panel"><div class="sectionTitle">LEGEND 専用装備6種</div>${Object.entries(D).map(([n,d])=>`<div class="exGear766 ${owned(n)?'':'locked'}"><div class="exGearIcon766"><img src="${ICON[n]}" alt="${n}"></div><div><b>${n}</b><div class="small">${d.hero}専用 / ${d.type}<br>攻撃${d.atk} / 防御${d.def} / 会心${d.crit}%<br>${owned(n)?'✓ 所持済み':'未所持・星降りの召喚から排出（0.1%）'}</div></div></div>`).join('')}<p class="small">6種それぞれ0.1%。対応キャラクター以外には装備できません。</p></div>`);};
 function bind(){const body=document.getElementById('obody');if(!body)return;if(body.textContent.includes('星降りの召喚')){const list=body.querySelector('.exclusiveList7437');if(list&&!list.querySelector('[data-exnew6]')){const b=document.createElement('button');b.className='miniBtn';b.dataset.exnew6='1';b.textContent='追加6キャラ専用装備を詳しく見る';b.onclick=window.exclusiveNew6View7492;list.appendChild(b);}const old=list&&list.querySelector('[data-ex766]');if(old)old.textContent='既存専用装備5種を詳しく見る';}}
-const stamp=()=>{const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V;};
+const stamp=()=>{};
 const rr=window.render;window.render=function(){const z=rr.apply(this,arguments);sanitize();bind();stamp();return z;};
 const oo=window.open;window.open=function(){const z=oo.apply(this,arguments);setTimeout(()=>{bind();stamp()},0);return z;};
 window.__DOD_EXCLUSIVE_7492={version:V,rates:{each:.001,totalExclusive:.011,totalLegendGear:.014},names:Object.keys(D)};
@@ -7192,6 +7192,22 @@ const ob=window.baseView;if(typeof ob==='function')window.baseView=function(){co
 const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);finish();return z};
 window.__DOD_REPAIR_7523={version:V,removed7492Restamp:true,forgeRepair:true};
 finish();setTimeout(finish,0);setTimeout(finish,350);
+})();
+</script>
+
+
+<script id="v07524-final-base-repair">
+(()=>{
+'use strict';
+const V='v0.75.24';
+function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+function forgeEntry(){const body=document.getElementById('obody');if(!body)return;const grid=body.querySelector('.baseFacilities');if(!grid)return;let b=grid.querySelector('[data-fac="forge"]');if(!b){b=document.createElement('button');b.className='facility';b.type='button';b.dataset.fac='forge';b.innerHTML='<b>⚒️</b><span>錬成工房<small>素材を集めて装備を錬成</small></span>';const shop=grid.querySelector('[data-fac="shop"]');if(shop)shop.after(b);else grid.appendChild(b)}b.onclick=()=>{const f=window.__DOD_FORGE_7518?.view;if(typeof f==='function')f();else toast('錬成工房を読み込めません')};document.getElementById('forgeBtn7518')?.remove()}
+function finish(){forgeEntry();stamp()}
+const ob=window.baseView;if(typeof ob==='function')window.baseView=function(){const z=ob.apply(this,arguments);finish();requestAnimationFrame(finish);setTimeout(finish,0);return z};
+const oo=window.open;if(typeof oo==='function')window.open=function(){const z=oo.apply(this,arguments);setTimeout(finish,0);return z};
+const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);finish();return z};
+window.__DOD_REPAIR_7524={version:V,disabledExclusive7492Stamp:true,forgeRepair:true};
+finish();setTimeout(finish,0);setTimeout(finish,500);
 })();
 </script>
 
