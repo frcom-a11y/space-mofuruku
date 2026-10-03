@@ -6196,4 +6196,150 @@ stamp();setTimeout(stamp,400);
 })();
 </script>
 
+
+<script id="v07509-balance-foundation">
+(()=>{
+'use strict';
+const V='v0.75.09';
+
+/*
+ Balance foundation v1
+ - Existing stage/monster base data stays intact.
+ - Normal encounters no longer scale 1:1 with the player's current level.
+ - Enemy level is anchored to the stage's intended progression level.
+ - Purple/elite encounters are capped above the stage level instead of copying player level.
+ - A gentle level-gap modifier makes over-leveling visibly useful without making equal-level fights trivial.
+ - Hydra is intentionally excluded.
+*/
+const originalSpawn=window.spawn;
+const originalHit=window.hit;
+const originalPartyDamage=window.partyDamage;
+const HYDRA='hydra7500';
+
+function currentStage(){try{return stage()}catch(_){return null}}
+function isHydra(){return currentStage()?.id===HYDRA}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function partyLevel(slot=0){
+ const n=partyNames()[slot];
+ const g=S.charGrowth&&S.charGrowth[n];
+ if(g&&Number.isFinite(g.lv))return Math.max(1,g.lv);
+ try{if(typeof heroLv59==='function')return Math.max(1,heroLv59(n)||1)}catch(_){}
+ return Math.max(1,S.lv||1);
+}
+function stageLevel(st){
+ if(!st)return Math.max(1,S.lv||1);
+ if(Number.isFinite(st.recommended))return Math.max(1,Math.round(st.recommended));
+ if(Number.isFinite(st.recommendedLv))return Math.max(1,Math.round(st.recommendedLv));
+ if(Number.isFinite(st.level))return Math.max(1,Math.round(st.level));
+ const ix=Math.max(0,stages.indexOf(st));
+ /* Fallback only for old stages without an explicit recommendation.
+    Progression is intentionally conservative: roughly +2 levels per stage entry. */
+ return Math.max(1,1+Math.floor(ix*2));
+}
+function enemyLevel(st,e){
+ const base=stageLevel(st);
+ if(e?.boss)return base+3;
+ if(e?.golden)return base+2;
+ if(e?.elite7509||e?.purple||e?.rareEnemy||e?.elite)return base+2;
+ return base;
+}
+function gapOut(playerLv,enemyLv){
+ const d=clamp(playerLv-enemyLv,-15,15);
+ if(d>=0)return 1+d*.035;       // +5 => 1.175, +10 => 1.35
+ return 1/(1+(-d)*.03);         // -5 => .87, -10 => .77
+}
+function gapIn(playerLv,enemyLv){
+ const d=clamp(playerLv-enemyLv,-15,15);
+ if(d>=0)return 1/(1+d*.035);   // +5 => .85, +10 => .74
+ return 1+(-d)*.035;            // -5 => 1.175, -10 => 1.35
+}
+function tagEncounter(){
+ if(isHydra())return;
+ const st=currentStage(),sl=stageLevel(st);
+ E.forEach(e=>{
+   if(!e)return;
+   /* Preserve a genuinely explicit enemy level if another system set one,
+      except the old player-following value which caused the reported spike. */
+   const old=Number(e.lv);
+   const looksPlayerLinked=Number.isFinite(old)&&old===Number(S.lv||1);
+   if(!Number.isFinite(old)||looksPlayerLinked)e.lv=enemyLevel(st,e);
+   e.lv=Math.max(1,Math.round(e.lv));
+   e.stageLv7509=sl;
+ });
+}
+window.spawn=function(){
+ const z=originalSpawn.apply(this,arguments);
+ tagEncounter();
+ try{render()}catch(_){}
+ return z;
+};
+
+/* Player -> enemy: use the attacking character's own level. */
+window.hit=function(i,d,crit=false){
+ if(!isHydra()&&E[i]&&E[i].hp>0){
+   const attacker=Number.isInteger(window.__dodAttackSlot7509)?window.__dodAttackSlot7509:0;
+   d=Math.max(1,Math.floor(d*gapOut(partyLevel(attacker),E[i].lv||stageLevel(currentStage()))));
+ }
+ return originalHit.call(this,i,d,crit);
+};
+
+/* Enemy -> player: apply only the level-gap component after all existing defense calculations. */
+window.partyDamage=function(i,d){
+ if(!isHydra()&&E?.length){
+   const enemy=E.find(e=>e&&e.hp>0);
+   if(enemy)d=Math.max(1,Math.floor(d*gapIn(partyLevel(i),enemy.lv||stageLevel(currentStage()))));
+ }
+ return originalPartyDamage.call(this,i,d);
+};
+
+/* Track which party member is producing hit() calls without changing the existing skill engine. */
+const oldPerform=window.__DOD_SKILL_PERFORM_7508;
+if(typeof oldPerform==='function')window.__DOD_SKILL_PERFORM_7508=function(slot){
+ window.__dodAttackSlot7509=slot;
+ try{return oldPerform.apply(this,arguments)}finally{window.__dodAttackSlot7509=null}
+};
+const oldCompanion=window.companionActions;
+if(typeof oldCompanion==='function')window.companionActions=function(){
+ try{return oldCompanion.apply(this,arguments)}finally{window.__dodAttackSlot7509=null}
+};
+
+/* Display the actual fixed encounter level. */
+function paintLevels(){
+ if(isHydra())return;
+ document.querySelectorAll('#enemies .enemy').forEach((el,i)=>{
+   const box=el.querySelector('.ebox'),e=E[i];if(!box||!e)return;
+   const nodes=[...box.childNodes];
+   const text=nodes.find(n=>n.nodeType===3);
+   if(text)text.textContent=`${e.name} Lv${e.lv||stageLevel(currentStage())}`;
+ });
+}
+const oldRender=window.render;
+if(typeof oldRender==='function')window.render=function(){
+ const z=oldRender.apply(this,arguments);tagEncounter();paintLevels();stamp();return z;
+};
+
+function stamp(){
+ const b=document.getElementById('buildVersion');if(b)b.textContent=V;
+ const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+window.__DOD_BALANCE_7509={
+ version:V,
+ stageLevel,
+ enemyLevel,
+ gapOut,
+ gapIn,
+ design:{
+  equal:'標準',
+  plus5:'明確に楽',
+  plus10:'かなり楽',
+  eliteOffset:2,
+  bossOffset:3,
+  hydraExcluded:true
+ }
+};
+tagEncounter();paintLevels();stamp();setTimeout(()=>{tagEncounter();paintLevels();stamp()},400);
+})();
+</script>
+
 </body></html>
