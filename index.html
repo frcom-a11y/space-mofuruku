@@ -7110,4 +7110,33 @@ addEntry();stamp();setTimeout(()=>{addEntry();stamp()},400);
 })();
 </script>
 
+
+<style id="v07519-forge-card-style">
+#forgeCard7519{touch-action:manipulation}
+</style>
+<script id="v07519-forge-card">
+(()=>{
+'use strict';
+const V='v0.75.19';
+function forge(){const f=window.__DOD_FORGE_7518?.view;if(typeof f==='function')f();else toast('錬成工房を読み込めません')}
+function upgrade(){
+ const body=document.getElementById('obody');if(!body)return;
+ /* Remove the old tiny fallback entry. */
+ document.getElementById('forgeBtn7518')?.remove();
+ if(!body.textContent.includes('拠点施設'))return;
+ const grid=body.querySelector('.baseFacilities');if(!grid||document.getElementById('forgeCard7519'))return;
+ const b=document.createElement('button');b.id='forgeCard7519';b.className='facility';b.type='button';b.innerHTML='<b>⚒️</b><span>錬成工房<small>素材を集めて装備を錬成</small></span>';b.onclick=forge;
+ /* Keep facility layout balanced: insert after the smith/shop-related facilities when possible. */
+ const shop=grid.querySelector('[data-fac="shop"]');
+ if(shop?.nextSibling)grid.insertBefore(b,shop.nextSibling);else grid.appendChild(b);
+}
+const base0=window.baseView;
+if(typeof base0==='function')window.baseView=function(){const z=base0.apply(this,arguments);setTimeout(upgrade,0);return z};
+const render0=window.render;
+if(typeof render0==='function')window.render=function(){const z=render0.apply(this,arguments);upgrade();stamp();return z};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+upgrade();stamp();setTimeout(()=>{upgrade();stamp()},400);
+})();
+</script>
+
 </body></html>
