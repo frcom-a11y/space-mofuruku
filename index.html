@@ -6544,4 +6544,106 @@ clampVitals();stamp();setTimeout(stamp,400);
 })();
 </script>
 
+
+<style id="v07512-diagnostics-ui">
+.diag7512{display:grid;gap:10px}.diag7512 .panel{margin:0}
+.diagGrid7512{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.diagStat7512{padding:8px;border:1px solid #29465f;border-radius:9px;background:#0d2034;text-align:center}
+.diagStat7512 small{display:block;color:#91a9bd;font-size:9px}.diagStat7512 b{display:block;margin-top:2px;font-size:15px;color:#fff}
+.diagHero7512,.diagEnemy7512{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid #29465f}
+.diagHero7512:last-child,.diagEnemy7512:last-child{border-bottom:0}
+.diagBadge7512{display:inline-block;padding:2px 6px;border:1px solid #607890;border-radius:7px;color:#c5d7e7;font-size:9px;font-weight:900}
+.diagGood7512{color:#9ce6a9}.diagHard7512{color:#ffb1a8}.diagEven7512{color:#ffe18a}
+.diagBtn7512{min-height:40px;border:1px solid #69829b;border-radius:9px;background:#173653;color:#fff;font-weight:800}
+</style>
+<script id="v07512-information-diagnostics-pack">
+(()=>{
+'use strict';
+const V='v0.75.12';
+const HUMANS=['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+const TEN=['リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+const SK=window.__DOD_SKILLS_7493||{};
+const GROW=window.__DOD_HUMAN_GROWTH_7511?.growth||{};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function heroLv(n){const g=S.charGrowth?.[n];if(g&&Number.isFinite(g.lv))return g.lv;try{return heroLv59(n)||S.lv||1}catch(_){return S.lv||1}}
+function heroExp(n){return Math.max(0,Number(S.charGrowth?.[n]?.exp??(n==='キーボ'?S.exp:0))||0)}
+function slot(n){return partyNames().indexOf(n)}
+function ownedHero(n){if(['キーボ','ミア','トア'].includes(n))return true;if(n==='ピボット')return !!S.legend62?.pivot;return (S.gachaHeroes7490||[]).includes(n)}
+function role(n){return BASE_MEMBERS[n]?.role||'冒険者'}
+function heroStats(n){
+ let i=slot(n);
+ if(i>=0){let st=statsFor(i);return {hp:maxHp(i),mp:maxMp(i),atk:st.atk||0,def:st.def||0,magic:st.magic||0,speed:st.speed||0,crit:st.crit||0}}
+ const r=GROW[n],l=heroLv(n),b=BASE_MEMBERS[n]||{};
+ if(r){let k=l-1;return {hp:Math.floor(r.hp0+k*r.hp),mp:Math.floor(r.mp0+k*r.mp),atk:Math.floor((b.atk||12)+k*r.atk),def:Math.floor((b.def||7)+k*r.def),magic:Math.floor((b.atk||12)+8+k*r.mag),speed:Math.floor(10+k*r.spd),crit:+(5+k*r.crit).toFixed(1)}}
+ return {hp:b.hp||0,mp:b.mp||0,atk:b.atk||0,def:b.def||0,magic:0,speed:0,crit:5};
+}
+function eq(n){return S.heroEquipment65?.[n]||{武器:'',防具:'',アクセサリー:''}}
+function eqBonus(n){
+ const e=eq(n),out={atk:0,def:0,crit:0,items:[]};
+ Object.entries(e).forEach(([type,name])=>{if(!name)return;let x=item(name);if(!x)return;out.atk+=x.atk||0;out.def+=x.def||0;out.crit+=x.crit||0;out.items.push(`${type}:${name}`)});
+ return out;
+}
+function dedicated(n){
+ const e=eq(n),found=[];
+ Object.values(e).filter(Boolean).forEach(name=>{const x=item(name);if(x?.exclusive===n)found.push(name);const z=window.__EXCLUSIVE_NEW6_7492?.[name];if(z?.hero===n&&!found.includes(name))found.push(name)});
+ return found;
+}
+function heroDetail(n){
+ if(!ownedHero(n))return toast(n+'は未所持です');
+ const l=heroLv(n),st=heroStats(n),ex=heroExp(n),req=needExp(l),eb=eqBonus(n),skills=SK[n]||[],ded=dedicated(n);
+ open('キャラクター詳細',`<div class="diag7512">
+ <div class="panel"><h2>${esc(n)} <span class="lv59">Lv.${l}</span></h2><div class="small">${esc(role(n))}</div><div class="small">EXP ${ex} / ${req}</div></div>
+ <div class="diagGrid7512">${[['HP',st.hp],['MP',st.mp],['攻撃',st.atk],['防御',st.def],['魔力',st.magic],['素早さ',st.speed],['会心',st.crit+'%'],['役割',role(n).split('/')[0]]].map(x=>`<div class="diagStat7512"><small>${x[0]}</small><b>${esc(x[1])}</b></div>`).join('')}</div>
+ <div class="panel"><b>装備補正</b><div class="small">攻撃 +${eb.atk} / 防御 +${eb.def} / 会心 +${eb.crit}%</div><div class="small">${eb.items.length?eb.items.map(esc).join('<br>'):'装備なし'}</div></div>
+ <div class="panel"><b>専用装備</b><div class="small">${ded.length?ded.map(esc).join(' / '):'現在装備している専用装備なし'}</div></div>
+ <div class="panel"><b>スキル</b>${skills.length?skills.map(s=>`<div class="diagHero7512"><span><b>${l>=s.lv?'◆':'🔒'} ${esc(s.n)}</b><small>Lv.${s.lv} / MP${s.c} / ${esc(s.d)}</small></span><span class="diagBadge7512">${l>=s.lv?'習得済':'未習得'}</span></div>`).join(''):'<div class="small">スキル情報なし</div>'}</div>
+ </div>`);
+}
+function enemyLv(e,st){return Number(e?.lv)||Number(st?.recommended)||1}
+function gapText(g){return g>=10?['かなり格下','diagGood7512']:g>=5?['格下','diagGood7512']:g<=-10?['かなり格上','diagHard7512']:g<=-5?['格上','diagHard7512']:['適正','diagEven7512']}
+function enemyDetail(i){
+ const e=E[i];if(!e)return;let st=stage(),pl=heroLv(partyNames()[0]),el=enemyLv(e,st),g=pl-el,[txt,cls]=gapText(g);
+ const tier=e.balanceTier75010==='boss'||e.boss?'ボス':e.balanceTier75010==='elite'||e.elite||e.purple||e.golden?'特殊':'通常';
+ const dropsHere=(drops[e.base]||[]).map(d=>`${d.n} [${d.rar}]`).join(' / ');
+ open('敵ステータス',`<div class="diag7512"><div class="panel"><h2>${esc(e.name)} <span class="lv59">Lv.${el}</span></h2><span class="diagBadge7512">${tier}</span></div>
+ <div class="diagGrid7512"><div class="diagStat7512"><small>HP</small><b>${Math.max(0,e.hp)} / ${e.max||e.hp}</b></div><div class="diagStat7512"><small>攻撃</small><b>${e.atk||0}</b></div><div class="diagStat7512"><small>推奨Lv</small><b>${st.recommended||'-'}</b></div><div class="diagStat7512"><small>Lv差</small><b class="${cls}">${g>=0?'+':''}${g}</b></div></div>
+ <div class="panel"><b>現在の相性</b><div class="${cls}">${txt}</div><div class="small">操作キャラLv${pl} − 敵Lv${el}</div></div>
+ <div class="panel"><b>ドロップ</b><div class="small">${dropsHere?esc(dropsHere):'登録なし'}</div></div></div>`);
+}
+function stageDiagnostics(){
+ const st=stage(),rec=Number(st.recommended)||1,pl=heroLv(partyNames()[0]),g=pl-rec,[txt,cls]=gapText(g);
+ open('戦闘診断',`<div class="diag7512"><div class="panel"><h2>${esc(st.name)}</h2><div>推奨Lv <b>${rec}</b> / 操作キャラ Lv<b>${pl}</b></div><div class="${cls}">${txt}（Lv差 ${g>=0?'+':''}${g}）</div></div>
+ <div class="panel"><b>このステージの基準</b><div class="small">通常敵 Lv${rec}<br>特殊敵 Lv${rec+2}<br>ボス Lv${rec+3}</div></div>
+ <div class="panel"><b>現在の敵</b>${E.map((e,i)=>`<div class="diagEnemy7512"><span><b>${esc(e.name)} Lv${enemyLv(e,st)}</b><small>HP ${Math.max(0,e.hp)}/${e.max||e.hp} / 攻撃 ${e.atk||0}</small></span><button class="diagBtn7512" data-ed7512="${i}">詳細</button></div>`).join('')}</div>
+ <div class="panel"><b>パーティ</b>${partyNames().map(n=>{let s=heroStats(n);return `<div class="diagHero7512"><span><b>${esc(n)} Lv${heroLv(n)}</b><small>HP ${s.hp} / 攻撃 ${s.atk} / 防御 ${s.def}</small></span><button class="diagBtn7512" data-hd7512="${esc(n)}">詳細</button></div>`}).join('')}</div></div>`);
+ document.querySelectorAll('[data-ed7512]').forEach(b=>b.onclick=()=>enemyDetail(+b.dataset.ed7512));
+ document.querySelectorAll('[data-hd7512]').forEach(b=>b.onclick=()=>heroDetail(b.dataset.hd7512));
+}
+function monsterInfo(name){
+ const b=MONSTERS[name];if(!b)return;
+ const stageNames=stages.filter(s=>(s.enemies||[]).includes(name)||s.bossMonster===name).map(s=>s.name);
+ const ds=(drops[name]||[]),kills=S.kills?.[name]||0;
+ open('モンスター詳細',`<div class="diag7512"><div class="panel"><h2>${esc(name)}</h2><div class="small">討伐数 ${kills}</div></div>
+ <div class="diagGrid7512"><div class="diagStat7512"><small>基礎HP</small><b>${b.hp||0}</b></div><div class="diagStat7512"><small>基礎攻撃</small><b>${b.atk||0}</b></div><div class="diagStat7512"><small>基礎EXP</small><b>${b.xp||0}</b></div><div class="diagStat7512"><small>仲間確率</small><b>${b.recruit?`1/${b.recruit}`:'不可'}</b></div></div>
+ <div class="panel"><b>出現場所</b><div class="small">${stageNames.length?stageNames.map(esc).join('<br>'):'現在のステージ表に登録なし'}</div></div>
+ <div class="panel"><b>ドロップ</b>${ds.length?ds.map(d=>`<div class="small">${esc(d.n)} / ${d.rar}${d.r?` / 約1/${d.r}`:''}</div>`).join(''):'<div class="small">登録なし</div>'}</div></div>`);
+}
+function inject(){
+ const body=document.getElementById('obody');if(!body)return;
+ body.querySelectorAll('[data-hero7459]').forEach(row=>{const n=row.dataset.hero7459;if(!HUMANS.includes(n)||!ownedHero(n)||row.querySelector('[data-detail7512]'))return;const b=document.createElement('button');b.className='diagBtn7512';b.dataset.detail7512=n;b.textContent='ステータス詳細';b.onclick=e=>{e.preventDefault();e.stopPropagation();heroDetail(n)};row.appendChild(b)});
+ const stageRows=body.querySelectorAll('[data-stage]');stageRows.forEach(row=>{const st=stages.find(x=>String(x.id)===String(row.dataset.stage));if(!st||row.querySelector('.diagStage7512'))return;const s=document.createElement('span');s.className='diagBadge7512 diagStage7512';s.textContent=`推奨Lv${st.recommended||'-'} / 通常${st.recommended||'-'} / 特殊${(st.recommended||0)+2} / ボス${(st.recommended||0)+3}`;row.appendChild(s)});
+}
+function addBattleButton(){
+ let b=document.getElementById('battleDiag7512');if(b)return;
+ const controls=document.querySelector('.actions')||document.querySelector('#battle')?.parentElement;if(!controls)return;
+ b=document.createElement('button');b.id='battleDiag7512';b.className='diagBtn7512';b.type='button';b.textContent='戦闘診断';b.onclick=stageDiagnostics;controls.appendChild(b);
+}
+const open0=window.open;if(typeof open0==='function')window.open=function(){const z=open0.apply(this,arguments);setTimeout(inject,0);return z};
+const render0=window.render;if(typeof render0==='function')window.render=function(){const z=render0.apply(this,arguments);inject();addBattleButton();stamp();return z};
+window.__DOD_DIAGNOSTICS_7512={version:V,heroDetail,enemyDetail,stageDiagnostics,monsterInfo};
+function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+inject();addBattleButton();stamp();setTimeout(()=>{inject();addBattleButton();stamp()},400);
+})();
+</script>
+
 </body></html>
