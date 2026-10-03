@@ -4712,8 +4712,12 @@ function image(name){
  return src?`<span class="partyPortrait7459"><img src="${src}" alt="${esc(name)}" draggable="false"></span>`:'';
 }
 function level(name){
- // Match the battle HUD's existing level source, including the existing new-hero level policy.
- if(['リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'].includes(name))return S.lv||1;
+ const gacha10=['リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+ if(gacha10.includes(name)){
+  const g=S.charGrowth&&S.charGrowth[name];
+  if(g&&Number.isFinite(g.lv))return g.lv;
+  return ['リリア','セレナ','ノア','カグラ'].includes(name)?30:50;
+ }
  return typeof window.heroLv59==='function'?window.heroLv59(name):S.lv||1;
 }
 function role(name){return BASE_MEMBERS[name]?.role||'';}
@@ -4722,15 +4726,15 @@ function scrollPosition(){
 }
 function roster(preserveScroll=false){
  const pos=preserveScroll?scrollPosition():null;
- const names=partyNames(), list=HEROES.filter(available);
+ const names=partyNames(), list=HEROES;
  open('パーティ',`<div class="partyScreen7459">
   <section class="partyPanel7459"><h3>現在の編成</h3>
   <div class="partyCurrent7459">${names.map((name,i)=>`<div class="partyCurrentSlot7459" data-current-slot="${i}">${image(name)}<b>${i+1}枠 ${esc(name)}</b><small>Lv.${level(name)}</small><span>${i===0?'操作キャラクター':'仲間'}</span></div>`).join('')}</div>
   <p class="partyHelp7459">1枠目が操作キャラクターです。編成中のキャラを別の枠に選ぶと、その2人の位置が入れ替わります。</p></section>
   <section class="partyPanel7459"><h3>キャラクター</h3>
-  ${list.map(name=>{const slot=names.indexOf(name);return `<div class="partyRow7459 ${slot>=0?'isActive':''}" data-hero7459="${esc(name)}">
-    ${image(name)}<div class="partyInfo7459"><b>${esc(name)} <small>Lv.${level(name)}</small></b><span>${esc(role(name))}</span><em>${slot>=0?`${slot+1}枠に編成中`:'待機中'}</em></div>
-    <div class="partyButtons7459">${[0,1,2].map(i=>`<button type="button" data-a7439="${esc(name)}" data-s7439="${i}" aria-label="${esc(name)}を${i+1}枠に編成" aria-pressed="${slot===i}" ${slot===i?'disabled':''}>${i+1}枠${slot===i?' ✓':''}</button>`).join('')}</div>
+  ${list.map(name=>{const slot=names.indexOf(name),own=available(name);return `<div class="partyRow7459 ${slot>=0?'isActive':''} ${own?'':'isLocked7507'}" data-hero7459="${esc(name)}">
+    ${image(name)}<div class="partyInfo7459"><b>${esc(name)} <small>${own?'Lv.'+level(name):'未所持'}</small></b><span>${esc(role(name))}</span><em>${own?(slot>=0?`${slot+1}枠に編成中`:'待機中'):'🔒 星降りの召喚で獲得'}</em></div>
+    <div class="partyButtons7459">${[0,1,2].map(i=>`<button type="button" data-a7439="${esc(name)}" data-s7439="${i}" aria-label="${esc(name)}を${i+1}枠に編成" aria-pressed="${slot===i}" ${(!own||slot===i)?'disabled':''}>${i+1}枠${slot===i?' ✓':''}</button>`).join('')}</div>
    </div>`}).join('')}</section>
   <button type="button" class="partyMonsters7459" data-mon7439>仲間モンスターを見る</button>
  </div>`);
@@ -6041,6 +6045,27 @@ function stamp7506(){
 }
 fixBattleLevels();stamp7506();setTimeout(()=>{fixBattleLevels();stamp7506()},400);
 window.__DOD_GACHA_START_LEVEL_7506={version:V,added4:30,added6:50};
+})();
+</script>
+
+
+<style id="v07507-safe-roster-ui">
+.partyRow7459.isLocked7507{opacity:.58;filter:saturate(.55)}
+.partyRow7459.isLocked7507 .partyButtons7459 button{cursor:not-allowed}
+</style>
+<script id="v07507-safe-consolidation">
+(()=>{
+'use strict';
+const V='v0.75.07';
+function stamp7507(){
+ const b=document.getElementById('buildVersion');if(b)b.textContent=V;
+ const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+const r7507=window.render;
+if(typeof r7507==='function')window.render=function(){const z=r7507.apply(this,arguments);stamp7507();return z};
+stamp7507();setTimeout(stamp7507,400);
+window.__DOD_SAFE_CONSOLIDATION_7507={version:V,partyIndividualLevels:true,lockedHeroRoster:true,gameplayLogicChanged:false,hydraChanged:false,gachaRatesChanged:false};
 })();
 </script>
 
