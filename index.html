@@ -6445,4 +6445,103 @@ normalize();annotate();stamp();setTimeout(()=>{normalize();annotate();stamp()},4
 .balLv75010{display:inline-block;margin-left:5px;padding:1px 5px;border:1px solid #607890;border-radius:6px;color:#bcd0e4;font-size:9px;font-weight:800;vertical-align:1px}
 </style>
 
+
+<script id="v07511-human-growth-foundation">
+(()=>{
+'use strict';
+const V='v0.75.11';
+const HUMANS=['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク'];
+const ROLE={
+ 'キーボ':       {hp0:82,hp:13.0,mp0:24,mp:1.55,atk:3.25,def:2.15,mag:1.25,spd:1.25,crit:.10},
+ 'ミア':         {hp0:66,hp:10.2,mp0:38,mp:3.35,atk:1.65,def:1.65,mag:3.55,spd:1.45,crit:.08},
+ 'トア':         {hp0:72,hp:11.4,mp0:26,mp:2.05,atk:3.05,def:1.80,mag:1.20,spd:2.65,crit:.20},
+ 'ピボット':     {hp0:76,hp:11.2,mp0:42,mp:3.05,atk:1.85,def:1.85,mag:2.75,spd:2.10,crit:.12},
+ 'リリア':       {hp0:66,hp:10.1,mp0:40,mp:3.30,atk:1.65,def:1.60,mag:3.50,spd:1.55,crit:.09},
+ 'セレナ':       {hp0:70,hp:11.0,mp0:30,mp:2.35,atk:3.00,def:1.75,mag:1.45,spd:3.05,crit:.24},
+ 'ノア':         {hp0:72,hp:10.8,mp0:34,mp:2.80,atk:2.65,def:1.85,mag:2.75,spd:2.20,crit:.16},
+ 'カグラ':       {hp0:84,hp:12.4,mp0:25,mp:1.85,atk:3.65,def:2.05,mag:1.20,spd:1.75,crit:.16},
+ 'ゼファル':     {hp0:72,hp:10.8,mp0:36,mp:2.65,atk:2.75,def:1.75,mag:2.80,spd:2.25,crit:.16},
+ 'レオンハルト': {hp0:88,hp:12.6,mp0:30,mp:2.05,atk:3.00,def:2.25,mag:1.55,spd:1.85,crit:.12},
+ 'ナーヴァ':     {hp0:80,hp:11.5,mp0:30,mp:2.05,atk:3.35,def:1.80,mag:1.15,spd:2.75,crit:.21},
+ 'アズライル':   {hp0:64,hp:9.9, mp0:48,mp:3.55,atk:2.05,def:1.55,mag:3.65,spd:1.95,crit:.14},
+ 'フェンリル':   {hp0:92,hp:13.0,mp0:28,mp:1.85,atk:3.45,def:2.30,mag:1.25,spd:2.45,crit:.18},
+ 'ヴォルク':     {hp0:86,hp:12.2,mp0:34,mp:2.20,atk:3.20,def:2.10,mag:1.45,spd:2.55,crit:.18}
+};
+function lv(n){
+ const g=S.charGrowth&&S.charGrowth[n];
+ if(g&&Number.isFinite(g.lv))return Math.max(1,g.lv);
+ try{if(typeof heroLv59==='function')return Math.max(1,heroLv59(n)||1)}catch(_){}
+ return Math.max(1,S.lv||1);
+}
+function growthBase(n){
+ const r=ROLE[n];if(!r)return null;
+ const l=lv(n),k=l-1,b=BASE_MEMBERS[n]||{};
+ return {
+  ...b,
+  hp:Math.floor(r.hp0+k*r.hp),
+  mp:Math.floor(r.mp0+k*r.mp),
+  atk:(Number(b.atk)||12)+k*r.atk,
+  def:(Number(b.def)||7)+k*r.def,
+  role:b.role||''
+ };
+}
+const base0=window.baseFor;
+window.baseFor=function(n){return HUMANS.includes(n)?growthBase(n):base0.apply(this,arguments)};
+
+const hp0=window.maxHp,mp0=window.maxMp;
+window.maxHp=function(i){const n=partyNames()[i];return HUMANS.includes(n)?growthBase(n).hp:hp0.apply(this,arguments)};
+window.maxMp=function(i){const n=partyNames()[i];return HUMANS.includes(n)?growthBase(n).mp:mp0.apply(this,arguments)};
+
+const stats0=window.statsFor;
+window.statsFor=function(i){
+ const n=partyNames()[i];if(!HUMANS.includes(n))return stats0.apply(this,arguments);
+ const r=ROLE[n],l=lv(n),b=growthBase(n),eq=S.equipment[i]||{};
+ const its=Object.values(eq).filter(Boolean).map(item).filter(Boolean).filter(x=>!x.exclusive||x.exclusive===n);
+ let ea=its.reduce((a,x)=>a+(x.atk||0),0),ed=its.reduce((a,x)=>a+(x.def||0),0),ec=its.reduce((a,x)=>a+(x.crit||0),0);
+ /* Preserve forge/affix/special-equipment layers by taking only positive bonuses
+    that the previous stat engine had above its naked base, never reducing them. */
+ let prior=null;try{prior=stats0.apply(this,arguments)}catch(_){}
+ const nakedOld=BASE_MEMBERS[n]||{atk:0,def:0};
+ const bonusAtk=Math.max(ea,Number(prior?.atk||0)-Math.max(0,Number(nakedOld.atk||0)));
+ const bonusDef=Math.max(ed,Number(prior?.def||0)-Math.max(0,Number(nakedOld.def||0)));
+ const atk=Math.floor(b.atk+Math.max(0,bonusAtk));
+ const def=Math.floor(b.def+Math.max(0,bonusDef));
+ const magic=Math.floor((Number(BASE_MEMBERS[n]?.atk)||12)+8+(l-1)*r.mag+ea*.35);
+ const speed=Math.floor(10+(l-1)*r.spd);
+ const crit=+(5+(l-1)*r.crit+ec).toFixed(1);
+ return {atk,def,magic,speed,crit,lv:l};
+};
+
+/* Existing saves keep their current HP ratio when the new larger maximum is introduced.
+   This prevents the update itself from acting as a free full heal. */
+if(!S.humanGrowthMigration7511){
+ const P=partyNames();
+ for(let i=0;i<3;i++){
+  if(!HUMANS.includes(P[i]))continue;
+  const oldHp=Math.max(1,Number(S.hp[i])||1),newMax=maxHp(i);
+  /* Existing max is not reliably recoverable after wrapper history; never lower current HP. */
+  S.hp[i]=Math.min(newMax,oldHp);
+  S.mp[i]=Math.min(maxMp(i),Math.max(0,Number(S.mp[i])||0));
+ }
+ S.humanGrowthMigration7511=true;save();
+}
+function clampVitals(){
+ partyNames().forEach((n,i)=>{
+  if(!HUMANS.includes(n))return;
+  S.hp[i]=Math.max(0,Math.min(maxHp(i),Number(S.hp[i])||0));
+  S.mp[i]=Math.max(0,Math.min(maxMp(i),Number(S.mp[i])||0));
+ });
+}
+const render0=window.render;
+if(typeof render0==='function')window.render=function(){clampVitals();const z=render0.apply(this,arguments);stamp();return z};
+function stamp(){
+ const b=document.getElementById('buildVersion');if(b)b.textContent=V;
+ const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+window.__DOD_HUMAN_GROWTH_7511={version:V,heroes:HUMANS.slice(),growth:ROLE};
+clampVitals();stamp();setTimeout(stamp,400);
+})();
+</script>
+
 </body></html>
