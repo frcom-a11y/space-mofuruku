@@ -7679,4 +7679,80 @@ function bind7527(){
 (()=>{'use strict';const V='v0.75.29';function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}const r=window.render;if(typeof r==='function')window.render=function(){const z=r.apply(this,arguments);stamp();return z};stamp();setTimeout(stamp,700)})();
 </script>
 
+
+<style id="v07530-map-viewport-lock">
+/* v0.75.30: stage-map sizing/position only. Prevent horizontal overflow and lock the map to the overlay width. */
+#overlay,#obox,#obody{max-width:100%!important;box-sizing:border-box!important}
+#overlay{overflow-x:hidden!important}
+#obox{overflow-x:hidden!important}
+#obody{width:100%!important;max-width:100%!important;overflow-x:hidden!important;box-sizing:border-box!important}
+.stageTopNav7527,.stageRoot7527,.worldPager7527,.worldLegend7527{
+ width:100%!important;max-width:100%!important;box-sizing:border-box!important
+}
+.worldBoard7527{
+ position:relative!important;
+ width:100%!important;
+ max-width:100%!important;
+ min-width:0!important;
+ height:auto!important;
+ min-height:0!important;
+ aspect-ratio:660 / 980!important;
+ box-sizing:border-box!important;
+ margin:0!important;
+ padding:0!important;
+ overflow:hidden!important;
+ background-size:100% 100%!important;
+ background-position:center!important;
+ background-repeat:no-repeat!important;
+}
+.worldHeader7527{
+ position:absolute!important;
+ inset:0!important;
+ width:100%!important;
+ height:100%!important;
+ margin:0!important;
+ padding:0!important;
+ pointer-events:none!important;
+ z-index:6!important
+}
+.worldHeader7527>.stageChip7527{
+ position:absolute!important;
+ top:2.2%!important;
+ right:2.2%!important;
+ margin:0!important;
+ pointer-events:none!important
+}
+.worldNode7527{
+ position:absolute!important;
+ transform:translate(-50%,-50%)!important;
+ width:29%!important;
+ max-width:29%!important;
+ min-width:0!important;
+ min-height:0!important;
+ height:auto!important;
+ padding:6px 5px!important;
+ margin:0!important;
+ box-sizing:border-box!important;
+ overflow:hidden!important;
+}
+.worldNode7527 .name{font-size:clamp(10px,3.2vw,13px)!important}
+.worldNode7527 .meta{font-size:clamp(8px,2.35vw,10px)!important}
+.worldNode7527 .flag{font-size:clamp(7px,2.15vw,9px)!important;max-width:100%!important;white-space:normal!important}
+/* Positions aligned to the actual artwork, expressed only as percentages so they stay fixed at every iPhone width. */
+.worldNode7527[data-area7527="呪われた古城"]{left:50.0%!important;top:20.7%!important}
+.worldNode7527[data-area7527="氷の雪原"]{left:78.8%!important;top:35.0%!important}
+.worldNode7527[data-area7527="迷いの森"]{left:21.8%!important;top:39.7%!important}
+.worldNode7527[data-area7527="灼熱の火山"]{left:78.6%!important;top:58.0%!important}
+.worldNode7527[data-area7527="神話領域"]{left:27.4%!important;top:72.0%!important}
+.worldNode7527[data-area7527="天空遺跡"]{left:75.8%!important;top:83.0%!important}
+.worldPager7527{justify-content:center!important;overflow:hidden!important}
+.worldPager7527>*{min-width:0!important;max-width:48%!important}
+@media(max-width:390px){
+ .worldNode7527{width:30%!important;max-width:30%!important;padding:5px 4px!important}
+}
+</style>
+<script id="v07530-map-version">
+(()=>{'use strict';const V='v0.75.30';function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}const r=window.render;if(typeof r==='function')window.render=function(){const z=r.apply(this,arguments);stamp();return z};stamp();setTimeout(stamp,700)})();
+</script>
+
 </body></html>
