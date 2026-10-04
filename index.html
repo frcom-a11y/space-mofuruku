@@ -7055,14 +7055,66 @@ inject();stamp();setTimeout(()=>{inject();stamp()},400);
 
 
 <style id="v07518-forge-style">
-.forge7518{display:grid;gap:9px}.forgeRecipe7518{padding:10px;border:1px solid #35536e;border-radius:11px;background:#0d2034}
-.forgeRecipe7518 h3{margin:0 0 5px}.forgeMats7518{font-size:10px;line-height:1.7;color:#b9cad8}
-.forgeOk7518{color:#9fe3a7}.forgeNo7518{color:#ffaaa2}.forgeRecipe7518 button{width:100%;min-height:42px;margin-top:7px}
+#forgeGuide7526{font-size:14px;line-height:1.6;color:#eaf1fa;max-width:100%;display:grid;gap:12px;touch-action:pan-y;padding-bottom:10px}
+#forgeGuide7526 *{box-sizing:border-box;min-width:0}
+#forgeGuide7526 h2{font-size:22px;line-height:1.4;margin:5px 0 8px;color:#ffe399}
+#forgeGuide7526 h3{font-size:18px;line-height:1.45;margin:5px 0 8px;color:#ffe399;overflow-wrap:anywhere}
+#forgeGuide7526 p{margin:7px 0;overflow-wrap:anywhere}
+#forgeGuide7526 button{font:inherit;line-height:1.45;min-height:44px;border-radius:10px;touch-action:manipulation;cursor:pointer;overflow-wrap:anywhere}
+#forgeGuide7526 button:focus-visible,#forgeGuide7526 input:focus-visible{outline:3px solid #ffe399;outline-offset:3px}
+#forgeGuide7526 button:disabled{opacity:.55;cursor:default}
+#forgeGuide7526 button.fg-pressed:not(:disabled){filter:brightness(1.14)}
+#forgeGuide7526 .fg-intro{padding:16px;border:1px solid #738398;border-radius:14px;background:linear-gradient(135deg,#203550,#101e33)}
+#forgeGuide7526 .fg-eyebrow{color:#f2d484;font-size:13px;font-weight:800;letter-spacing:.03em}
+#forgeGuide7526 .fg-summary{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid #405571}
+#forgeGuide7526 .fg-summary b{color:#ffe399}
+#forgeGuide7526 .fg-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#forgeGuide7526 .fg-filters button{background:#13263d;border:1px solid #536d8c;color:#eaf1fa;padding:8px}
+#forgeGuide7526 .fg-filters button[aria-pressed="true"]{background:#294664;border:2px solid #edcf7c;color:#ffe399;font-weight:800}
+#forgeGuide7526 .fg-toggle{display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 10px;border:1px solid #415a74;border-radius:10px;background:#102238;touch-action:manipulation}
+#forgeGuide7526 .fg-toggle input{width:20px;height:20px;flex-shrink:0;accent-color:#ddbd65;margin:0}
+#forgeGuide7526 .fg-caption,#forgeGuide7526 small{font-size:12px;color:#b9cada;line-height:1.6;display:block}
+#forgeGuide7526 .fg-muted{font-size:13px;color:#b9cada}
+#forgeGuide7526 .fg-list{display:grid;gap:14px}
+#forgeGuide7526 .fg-card{padding:14px;border:1px solid #516b85;background:#101f33;border-radius:13px;overflow-wrap:anywhere}
+#forgeGuide7526 .fg-card-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#forgeGuide7526 .fg-type{color:#c6d7e7;font-size:13px}
+#forgeGuide7526 .fg-badge{font-size:12px;border:1px solid #6f849c;border-radius:7px;padding:2px 7px;display:inline-block;white-space:normal}
+#forgeGuide7526 .fg-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:10px 0}
+#forgeGuide7526 .fg-stats span{background:#1c3049;border-radius:8px;text-align:center;padding:7px 3px;color:#bdccdb;font-size:12px}
+#forgeGuide7526 .fg-stats b{display:block;color:white;font-size:17px}
+#forgeGuide7526 .fg-materials{display:grid;gap:7px;margin-top:10px}
+#forgeGuide7526 .fg-material{display:flex;justify-content:space-between;align-items:center;gap:7px;text-align:left;width:100%;background:#18304b;border:1px solid #436480;padding:10px;color:#f2f7fc}
+#forgeGuide7526 .fg-material>span:first-child{flex:1}
+#forgeGuide7526 .fg-material b{font-size:14px}
+#forgeGuide7526 .fg-material em,#forgeGuide7526 .fg-confirm-row em{font-style:normal;display:inline-block}
+#forgeGuide7526 .fg-source-link{font-size:12px;color:#e6d596;flex:0 0 auto}
+#forgeGuide7526 .fg-ok{color:#b9e8b8}
+#forgeGuide7526 .fg-missing{color:#ffc09c}
+#forgeGuide7526 .fg-material em{margin-left:5px}
+#forgeGuide7526 .fg-money{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;border-top:1px solid #38536f;margin-top:12px;padding:12px 0 6px}
+#forgeGuide7526 .fg-primary{display:block;width:100%;border:1px solid #ebd08c;background:#4a432b;color:#ffedae;padding:12px;font-weight:800;margin-top:10px}
+#forgeGuide7526 .fg-secondary{display:block;width:100%;border:1px solid #657e99;background:#203851;color:#eaf3ff;padding:10px}
+#forgeGuide7526 .fg-warning{border:1px solid #907254;background:#2e2925;color:#ffe0b5;border-radius:9px;padding:10px;font-size:12px}
+#forgeGuide7526 .fg-empty{padding:20px;text-align:center;border:1px dashed #61778c;border-radius:12px}
+#forgeGuide7526 .fg-place{padding:12px 0;border-top:1px solid #39546d}
+#forgeGuide7526 .fg-place-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+#forgeGuide7526 .fg-place-head b{flex:1}
+#forgeGuide7526 .fg-place p{margin:4px 0}
+#forgeGuide7526 .fg-confirm-row{padding:11px 0;border-bottom:1px solid #39546d;display:grid;gap:4px}
+#forgeGuide7526 .fg-confirm-row span{color:#c3d5e5}
+#forgeGuide7526 .fg-notice{border:1px solid #476756;border-radius:9px;background:#192e26;padding:11px;color:#c9e7c9}
+#forgeGuide7526 .fg-success{border-color:#87a677;background:linear-gradient(135deg,#1c392e,#142735)}
+#forgeGuide7526 .fg-product{color:#ffe6a0;font-size:18px;font-weight:800}
+@media(min-width:600px){#forgeGuide7526{font-size:15px}#forgeGuide7526 .fg-filters{grid-template-columns:repeat(4,minmax(0,1fr))}#forgeGuide7526 .fg-card{padding:18px}}
+
+#forgeGuide7526 .fg-toprow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#forgeGuide7526 .fg-backtop{border:1px solid #657e99;background:#203851;color:#eaf3ff;font-size:12px;padding:8px 10px}
 </style>
 <script id="v07518-forge">
 (()=>{
 'use strict';
-const V='v0.75.18';
+const V='v0.75.26';
 /* First forge set uses only material names already present in the game's drop tables.
    Recipes are intentionally small and additive; existing drops/equipment are not rewritten. */
 const RECIPES=[
@@ -7075,23 +7127,157 @@ const RECIPES=[
 /* Register craft outputs as normal equipment without changing existing items. */
 RECIPES.forEach(r=>{if(!specialItems[r.name])specialItems[r.name]={n:r.name,type:r.type,rar:r.rar,atk:r.atk,def:r.def,crit:r.crit,desc:r.desc}});
 S.forge7518=S.forge7518||{crafted:{}};
-function count(n){return (S.owned||[]).filter(x=>x===n).length}
-function can(r){return (S.gold||0)>=r.gold&&Object.entries(r.mats).every(([n,q])=>count(n)>=q)}
-function removeOwned(n,q){for(let k=0;k<q;k++){const i=S.owned.indexOf(n);if(i<0)return false;S.owned.splice(i,1)}return true}
+/* v0.75.26: read-only collection guide and confirmed, single-use crafting.
+   Inventory uses S.owned; S.dropFound is historical and is never spent. */
+const TYPES7526=['すべて','武器','防具','アクセサリー'];
+const ui7526={type:'すべて',readyOnly:false,scroll:{overlay:0,body:0},pending:null,seq:0,busy:false};
+const esc7526=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num7526=v=>Number.isFinite(v)?v.toLocaleString('ja-JP'):'確認できません';
+const object7526=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
+const recipe7526=id=>RECIPES.find(r=>r.id===id);
+function inventory7526(){
+ const counts=new Map();
+ if(Array.isArray(S.owned))for(const n of S.owned)counts.set(n,(counts.get(n)||0)+1);
+ return counts;
+}
+function count(n){return inventory7526().get(n)||0}
+function requirements7526(r){
+ const counts=inventory7526(),valid=Array.isArray(S.owned)&&Number.isSafeInteger(S.gold)&&S.gold>=0;
+ const mats=Object.entries(r.mats).map(([name,need])=>({name,need,owned:counts.get(name)||0,missing:Math.max(0,need-(counts.get(name)||0)),locked:!!S.locks?.[name]}));
+ return {valid,mats,gold:valid?S.gold:0,goldMissing:valid?Math.max(0,r.gold-S.gold):r.gold,ready:valid&&S.gold>=r.gold&&mats.every(m=>m.missing===0)};
+}
+function can(r){return requirements7526(r).ready}
+function stageState7526(st){
+ try{return typeof st.unlock==='function'?(st.unlock(S)?'解放済み':'未解放'):'解放条件未登録'}
+ catch(_){return '解放状況を確認できません'}
+}
+function sources7526(name){
+ const result=[];
+ // Main source: live drop tables and live stage roster, not historical material counts.
+ for(const [monster,table] of Object.entries(drops)){
+  if(!Array.isArray(table)||!table.some(d=>d&&d.n===name))continue;
+  const places=[];
+  for(const st of stages){
+   const normal=(Array.isArray(st.enemies)&&st.enemies.includes(monster))||st.bossMonster===monster;
+   // Legacy v0.74.22 spawn hook explicitly spawns デスリーパー in non-boss castle stages.
+   // This source is not in st.enemies, so retain its exact, inspected spawn condition.
+   const special=monster==='デスリーパー'&&st.area==='呪われた古城'&&!st.boss;
+   if(!normal&&!special)continue;
+   places.push({id:st.id,name:st.name,recommended:Number.isFinite(st.recommended)?st.recommended:null,
+    state:stageState7526(st),unlockText:st.unlockText||'',kind:special&&!normal?'特殊遭遇':st.boss?'ボス':'通常出現'});
+  }
+  result.push({monster,places});
+ }
+ return result;
+}
+function noSource7526(name){return !sources7526(name).some(s=>s.places.length)}
+function frame7526(content,screen,ticket=''){
+ return `<div id="forgeGuide7526" data-fg-screen="${screen}" data-fg-ticket="${ticket}">${content}</div>`;
+}
+function rememberScroll7526(){
+ ui7526.scroll={overlay:document.getElementById('overlay')?.scrollTop||0,body:document.getElementById('obody')?.scrollTop||0};
+}
+function restoreScroll7526(){
+ const root=document.getElementById('forgeGuide7526');if(root?.dataset.fgScreen!=='list')return;
+ const overlay=document.getElementById('overlay'),body=document.getElementById('obody');
+ // Restore once, synchronously. Animation frames can pause when another tab is active.
+ if(overlay)overlay.scrollTop=ui7526.scroll.overlay;
+ if(body)body.scrollTop=ui7526.scroll.body;
+}
+function statLine7526(r){return `<div class="fg-stats"><span>攻撃 <b>+${r.atk}</b></span><span>防御 <b>+${r.def}</b></span><span>会心 <b>+${r.crit}%</b></span></div>`}
+function badge7526(r){return `<span class="fg-badge ${esc7526(rarityClass(r.rar))}">${esc7526(r.rar)}</span>`}
+function materialRow7526(m,id){
+ return `<button type="button" class="fg-material" data-fg-source="${esc7526(m.name)}" data-fg-recipe="${id}" aria-label="${esc7526(m.name)}の入手先を確認"><span><b>${esc7526(m.name)}</b><small>所持 ${num7526(m.owned)} / 必要 ${num7526(m.need)} <em class="${m.missing?'fg-missing':'fg-ok'}">${m.missing?'あと'+num7526(m.missing)+'個':'必要数あり'}</em></small></span><span class="fg-source-link">入手先 ›</span></button>`;
+}
+function recipeCard7526(r){
+ const req=requirements7526(r),unmapped=req.mats.filter(m=>noSource7526(m.name));
+ return `<article class="fg-card" data-fg-card="${r.id}"><div class="fg-card-top"><span class="fg-type">${esc7526(r.type)}</span>${badge7526(r)}</div><h3>${esc7526(r.name)}</h3><p class="fg-muted">${esc7526(r.desc)}</p>${statLine7526(r)}<p class="fg-caption">完成品の基礎性能（品質・強化補正前）</p><div class="fg-materials">${req.mats.map(m=>materialRow7526(m,r.id)).join('')}</div><div class="fg-money"><span>必要G <b>${num7526(r.gold)}G</b></span><span class="${req.goldMissing?'fg-missing':'fg-ok'}">${req.goldMissing?'あと'+num7526(req.goldMissing)+'G':'必要額あり'}</span></div>${unmapped.length?`<p class="fg-warning">入手先未登録の素材：${unmapped.map(m=>esc7526(m.name)).join('・')}。所持済みの素材は使用できます。</p>`:''}<button type="button" class="fg-primary" data-craft7518="${r.id}" ${req.ready?'':'disabled'}>${req.ready?'内容を確認して錬成':'素材・Gが不足しています'}</button></article>`;
+}
+function showList7526(restore=false,message=''){
+ ui7526.pending=null;
+ const visible=RECIPES.filter(r=>(ui7526.type==='すべて'||r.type===ui7526.type)&&(!ui7526.readyOnly||can(r)));
+ const readyCount=RECIPES.filter(can).length;
+ open('錬成工房',frame7526(`<section class="fg-intro"><div class="fg-toprow"><span class="fg-eyebrow">⚒ 素材錬成</span><button type="button" class="fg-backtop" data-fg-action="base">拠点に戻る</button></div><h2>レシピ図鑑</h2><p>素材名を押すと、落とすモンスターと入手ダンジョンを確認できます。</p><div class="fg-summary"><span>手持ち <b>${num7526(S.gold)}G</b></span><span>いま作れる <b>${readyCount} / ${RECIPES.length}種</b></span></div></section>${message?`<div class="fg-warning" role="status">${esc7526(message)}</div>`:''}<div class="fg-filters" aria-label="装備の種類">${TYPES7526.map(t=>`<button type="button" data-fg-type="${t}" aria-pressed="${ui7526.type===t}">${t}</button>`).join('')}</div><label class="fg-toggle"><input type="checkbox" id="fg-ready7526" ${ui7526.readyOnly?'checked':''}><span>いま作れる装備だけ</span></label><p class="fg-caption" aria-live="polite">${visible.length}件表示 / 登録${RECIPES.length}種。表示・確認だけでは素材やGは消費しません。</p><div class="fg-list">${visible.length?visible.map(recipeCard7526).join(''):'<div class="fg-empty"><h3>該当するレシピはありません</h3><p>種類を「すべて」にするか、「いま作れる装備だけ」を解除してください。</p></div>'}</div><button type="button" class="fg-secondary" data-fg-action="base">拠点に戻る</button>`,'list'));
+ bind7526();if(restore)restoreScroll7526();
+}
+function forgeView(){ui7526.scroll={overlay:0,body:0};showList7526(false)}
+function sourceView7526(name,recipeId){
+ const r=recipe7526(recipeId);if(!r||!Object.prototype.hasOwnProperty.call(r.mats,name))return;
+ rememberScroll7526();ui7526.pending=null;
+ const m=requirements7526(r).mats.find(x=>x.name===name),sources=sources7526(name);
+ const cards=sources.map(src=>`<article class="fg-card fg-source-card"><h3>${esc7526(src.monster)}</h3><p class="fg-caption">このモンスターのドロップ設定に登録済み</p>${src.places.length?src.places.map(st=>`<div class="fg-place"><div class="fg-place-head"><b>${esc7526(st.name)}</b><span class="fg-badge ${st.state==='解放済み'?'fg-ok':'fg-missing'}">${esc7526(st.state)}</span></div><p>${esc7526(st.kind)} / 推奨Lv ${st.recommended===null?'未登録':num7526(st.recommended)}</p>${st.unlockText?`<small>${esc7526(st.unlockText)}</small>`:''}</div>`).join(''):'<div class="fg-warning">現在の出現先は未登録です。収集先を案内できません。</div>'}</article>`).join('');
+ open('素材の入手先',frame7526(`<button type="button" class="fg-secondary" data-fg-action="return">← レシピに戻る</button><section class="fg-intro"><span class="fg-eyebrow">収集ガイド</span><h2>${esc7526(name)}</h2><p>${esc7526(r.name)}に使用</p><div class="fg-summary"><span>所持 <b>${num7526(m.owned)}</b> / 必要 ${num7526(m.need)}</span><b class="${m.missing?'fg-missing':'fg-ok'}">${m.missing?'あと'+num7526(m.missing)+'個':'必要数あり'}</b></div></section><div class="fg-list">${cards||'<div class="fg-warning">現在のドロップ設定に入手先の登録がありません。</div>'}</div><p class="fg-caption">入手先は現在のドロップ・出現設定から表示しています。この画面を開くだけではダンジョンへ移動しません。</p><button type="button" class="fg-secondary" data-fg-action="return">レシピに戻る</button>`,'source'));
+ bind7526();
+}
+function confirmation7526(r,message=''){
+ const req=requirements7526(r),ticket=String(++ui7526.seq);
+ ui7526.pending={id:r.id,ticket,used:false};
+ const locked=req.mats.filter(m=>m.locked);
+ open('錬成内容の確認',frame7526(`<button type="button" class="fg-secondary" data-fg-action="return">← キャンセルして戻る</button><section class="fg-intro"><span class="fg-eyebrow">作成数：1個</span><h2>${esc7526(r.name)}</h2><div class="fg-card-top"><span>${esc7526(r.type)}</span>${badge7526(r)}</div>${statLine7526(r)}</section>${message?`<div class="fg-warning" role="alert">${esc7526(message)}</div>`:''}<section class="fg-card"><h3>消費する素材</h3>${req.mats.map(m=>`<div class="fg-confirm-row"><b>${esc7526(m.name)} ×${m.need}</b><span>所持 ${num7526(m.owned)} → ${m.missing?`<em class="fg-missing">あと${num7526(m.missing)}個不足</em>`:num7526(m.owned-m.need)}</span></div>`).join('')}<div class="fg-confirm-row"><b>手持ちG −${num7526(r.gold)}G</b><span>${num7526(S.gold)}G → ${req.goldMissing?`<em class="fg-missing">あと${num7526(req.goldMissing)}G不足</em>`:num7526(S.gold-r.gold)+'G'}</span></div><p class="fg-caption">銀行の預金は使いません。</p></section><div class="fg-notice">${r.rar!=='RARE'?'EPIC以上の完成品は自動でロックします。':'完成品は倉庫に追加します。'}自動装備はしません。</div>${locked.length?`<p class="fg-warning">ロック中の素材（${locked.map(m=>esc7526(m.name)).join('・')}）も、確定後は上記の個数を消費します。</p>`:''}<p class="fg-caption">下のボタンで確定するまで消費はありません。確定後の取り消しはできません。</p><button type="button" class="fg-primary" data-fg-confirm="${r.id}" ${req.ready?'':'disabled'}>${req.ready?'素材とGを消費して1個錬成':'素材・Gが不足しています'}</button><button type="button" class="fg-secondary" data-fg-action="return">キャンセル</button>`,'confirm',ticket));
+ bind7526();
+}
 function craft(id){
- const r=RECIPES.find(x=>x.id===id);if(!r||!can(r))return toast('素材またはGが足りません');
- /* Validate again before mutation. */
- if(!Object.entries(r.mats).every(([n,q])=>count(n)>=q)||(S.gold||0)<r.gold)return toast('素材またはGが足りません');
- Object.entries(r.mats).forEach(([n,q])=>removeOwned(n,q));
- S.gold-=r.gold;S.owned.push(r.name);S.forge7518.crafted[r.name]=(S.forge7518.crafted[r.name]||0)+1;
- S.locks=S.locks||{};if(r.rar!=='RARE')S.locks[r.name]=true;
- save();toast(`${r.name}を錬成した！`);forgeView();
+ if(ui7526.busy)return false;
+ const r=recipe7526(id);if(!r)return false;
+ const root=document.getElementById('forgeGuide7526');if(root?.dataset.fgScreen==='list')rememberScroll7526();
+ confirmation7526(r);return true;
 }
-function forgeView(){
- open('錬成工房',`<div class="forge7518"><div class="panel"><div class="sectionTitle">素材錬成</div><div class="small">ダンジョンで集めた素材とGから装備を作成します。EPIC以上は完成時に自動ロックされます。</div><div>所持G <b>${S.gold||0}G</b></div></div>
- ${RECIPES.map(r=>{const ok=can(r);return `<div class="forgeRecipe7518"><h3 class="${rarityClass(r.rar)}">${r.name} <span class="guideBadge7514">${r.rar}</span></h3><div class="small">${r.type} / 攻撃${r.atk} / 防御${r.def} / 会心${r.crit}%</div><div class="forgeMats7518">${Object.entries(r.mats).map(([n,q])=>{let c=count(n);return `<span class="${c>=q?'forgeOk7518':'forgeNo7518'}">${n} ${c}/${q}</span>`}).join('<br>')}<br><span class="${(S.gold||0)>=r.gold?'forgeOk7518':'forgeNo7518'}">${r.gold.toLocaleString()}G</span></div><button class="miniBtn" data-craft7518="${r.id}" ${ok?'':'disabled'}>錬成する</button></div>`}).join('')}</div>`);
- document.querySelectorAll('[data-craft7518]').forEach(b=>b.onclick=()=>craft(b.dataset.craft7518));
+function persistMatches7526(next){
+ try{
+  const raw=localStorage.getItem(KEY),stored=raw?JSON.parse(raw):null;
+  return stored&&stored.gold===next.gold&&JSON.stringify(stored.owned)===JSON.stringify(next.owned)&&JSON.stringify(stored.forge7518)===JSON.stringify(next.forge)&&JSON.stringify(stored.locks)===JSON.stringify(next.locks);
+ }catch(_){return false}
 }
+function commit7526(id,ticket,button){
+ const pending=ui7526.pending,root=document.getElementById('forgeGuide7526');
+ if(ui7526.busy||!pending||pending.used||pending.id!==id||pending.ticket!==ticket||root?.dataset.fgScreen!=='confirm'||root.dataset.fgTicket!==ticket||!root.contains(button)||!document.getElementById('overlay')?.classList.contains('open'))return false;
+ const r=recipe7526(id);if(!r)return false;
+ // A confirmation is single-use; detached buttons and queued duplicate taps cannot spend twice.
+ pending.used=true;ui7526.pending=null;ui7526.busy=true;button.disabled=true;
+ const req=requirements7526(r);
+ if(!req.ready){ui7526.busy=false;confirmation7526(r,'所持数または手持ちGが変わりました。内容をもう一度確認してください。');return false}
+ const old={owned:S.owned,gold:S.gold,forge:S.forge7518,locks:S.locks,meta:S.__saveMeta,hadMeta:Object.prototype.hasOwnProperty.call(S,'__saveMeta')};
+ const remaining=new Map(Object.entries(r.mats)),kept=[];
+ for(const name of S.owned){const need=remaining.get(name)||0;if(need>0)remaining.set(name,need-1);else kept.push(name)}
+ if([...remaining.values()].some(q=>q!==0)){ui7526.busy=false;confirmation7526(r,'素材の個数を再確認してください。消費はしていません。');return false}
+ kept.push(r.name);
+ const forge=object7526(S.forge7518)?S.forge7518:{},history=object7526(forge.crafted)?forge.crafted:{};
+ const previous=Number(history[r.name]),times=Number.isSafeInteger(previous)&&previous>=0?previous:0;
+ const next={owned:kept,gold:S.gold-r.gold,forge:{...forge,crafted:{...history,[r.name]:times+1}},locks:{...(object7526(S.locks)?S.locks:{})}};
+ if(r.rar!=='RARE')next.locks[r.name]=true;
+ let saved=false;
+ try{
+  S.owned=next.owned;S.gold=next.gold;S.forge7518=next.forge;S.locks=next.locks;
+  saved=save()===true;
+  // A failed backup/meta write can return false after the main save was committed.
+  // Read back only to disambiguate that case; never spend again on a committed result.
+  if(!saved)saved=!!persistMatches7526(next);
+ }catch(_){saved=!!persistMatches7526(next)}
+ if(!saved){
+  S.owned=old.owned;S.gold=old.gold;S.forge7518=old.forge;S.locks=old.locks;
+  if(old.hadMeta)S.__saveMeta=old.meta;else delete S.__saveMeta;
+  ui7526.busy=false;confirmation7526(r,'保存できなかったため、錬成を中止しました。素材とGは消費していません。');return false;
+ }
+ ui7526.busy=false;
+ const money=document.getElementById('gold');if(money)money.textContent=String(S.gold);
+ open('錬成完了',frame7526(`<section class="fg-intro fg-success" role="status"><span class="fg-eyebrow">✓ 保存しました</span><h2>錬成完了</h2><p class="fg-product">${esc7526(r.name)} ×1</p><p>倉庫の所持数：${num7526(count(r.name))}個</p></section><section class="fg-card">${statLine7526(r)}<p>${r.rar!=='RARE'?'完成品はロック済みです。':'完成品を倉庫に追加しました。'}装備は自動では変更されません。</p><div class="fg-money"><span>手持ちG</span><b>${num7526(S.gold)}G</b></div></section><button type="button" class="fg-primary" data-fg-action="return">レシピ図鑑に戻る</button><button type="button" class="fg-secondary" data-fg-action="base">拠点に戻る</button>`,'result'));
+ bind7526();toast(`${r.name}を錬成した！`);return true;
+}
+function bind7526(){
+ const root=document.getElementById('forgeGuide7526');if(!root)return;
+ root.querySelectorAll('[data-fg-type]').forEach(b=>b.onclick=()=>{ui7526.type=b.dataset.fgType;ui7526.scroll={overlay:0,body:0};showList7526()});
+ const check=root.querySelector('#fg-ready7526');if(check)check.onchange=()=>{ui7526.readyOnly=check.checked;ui7526.scroll={overlay:0,body:0};showList7526()};
+ root.querySelectorAll('[data-fg-source]').forEach(b=>b.onclick=()=>sourceView7526(b.dataset.fgSource,b.dataset.fgRecipe));
+ root.querySelectorAll('[data-craft7518]').forEach(b=>b.onclick=()=>craft(b.dataset.craft7518));
+ root.querySelectorAll('[data-fg-confirm]').forEach(b=>{const ticket=root.dataset.fgTicket;b.onclick=()=>commit7526(b.dataset.fgConfirm,ticket,b)});
+ root.querySelectorAll('[data-fg-action]').forEach(b=>b.onclick=()=>{ui7526.pending=null;if(b.dataset.fgAction==='base')baseView();else showList7526(true)});
+ root.addEventListener('keydown',e=>{if(e.key==='Escape'&&root.dataset.fgScreen!=='list'){e.preventDefault();showList7526(true)}});
+ // Native button click handles touch and keyboard once. Never run crafting on touchend.
+ root.addEventListener('touchstart',e=>{const b=e.target.closest?.('button');if(b&&!b.disabled)b.classList.add('fg-pressed')},{passive:true});
+ const release=()=>root.querySelectorAll('.fg-pressed').forEach(b=>b.classList.remove('fg-pressed'));
+ root.addEventListener('touchend',release,{passive:true});root.addEventListener('touchcancel',release,{passive:true});
+}
+
 function addEntry(){
  const body=document.getElementById('obody');if(!body||body.querySelector('.facGrid57')||document.getElementById('forgeBtn7518'))return;
  /* Only inject into the base/home view where the bank is present. */
@@ -7103,6 +7289,7 @@ function addEntry(){
 const base0=window.baseView;if(typeof base0==='function')window.baseView=function(){const z=base0.apply(this,arguments);setTimeout(addEntry,0);return z};
 const render0=window.render;if(typeof render0==='function')window.render=function(){const z=render0.apply(this,arguments);addEntry();stamp();return z};
 window.__DOD_FORGE_7518={version:V,recipes:RECIPES,craft,view:forgeView};
+window.__DOD_FORGE_7526={version:V,sources:sources7526,requirements:id=>{const r=recipe7526(id);return r?requirements7526(r):null}};
 function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
 addEntry();stamp();setTimeout(()=>{addEntry();stamp()},400);
 })();
@@ -7199,7 +7386,7 @@ finish();setTimeout(finish,0);setTimeout(finish,350);
 <script id="v07525-live-base-forge-fix">
 (()=>{
 'use strict';
-const V='v0.75.25';
+const V='v0.75.26';
 function stamp(){
  const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
  if(b){b.id='buildVersion';if(b.textContent!==V)b.textContent=V}
