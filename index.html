@@ -7630,92 +7630,153 @@ function bind7527(){
 </style>
 <script id="v07528-map-art-version">(()=>{'use strict';const V='v0.75.28';function s(){}const r=window.render;if(typeof r==='function')window.render=function(){const z=r.apply(this,arguments);s();return z};s();setTimeout(s,700)})();</script>
 
-<style id="v07541-map-single-source">
-/* SINGLE SOURCE OF TRUTH FOR WORLD MAP LAYOUT — no older map positioning layer remains. */
-#obox:has(.worldBoard7527){
+<style id="v07542-map-single-source">
+/* v0.75.42: the real overlay is #overlay. Keep the adopted artwork unchanged. */
+#overlay:has(.worldBoard7527){
  width:min(100%,520px)!important;max-width:520px!important;height:100dvh!important;max-height:100dvh!important;
- padding:8px 10px calc(6px + env(safe-area-inset-bottom))!important;overflow:hidden!important;box-sizing:border-box!important
+ padding:calc(8px + env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))!important;
+ overflow:hidden!important;box-sizing:border-box!important;overscroll-behavior:none;touch-action:none
 }
-#obox:has(.worldBoard7527) #obody{
- width:100%!important;height:calc(100dvh - 86px - env(safe-area-inset-bottom))!important;
- overflow:hidden!important;display:flex!important;flex-direction:column!important;gap:4px!important;box-sizing:border-box!important
+#overlay.open:has(.worldBoard7527){display:flex!important;flex-direction:column!important;gap:6px!important}
+#overlay:has(.worldBoard7527)>.ohead{flex:0 0 auto;min-height:46px;padding-bottom:4px}
+#overlay:has(.worldBoard7527) #otitle{margin:0;font-size:22px}
+#overlay:has(.worldBoard7527) #close{min-height:40px;touch-action:manipulation}
+#overlay:has(.worldBoard7527) #obody{
+ width:100%!important;height:auto!important;flex:1 1 auto!important;min-height:0!important;
+ overflow:hidden!important;display:flex!important;flex-direction:column!important;gap:6px!important;box-sizing:border-box!important
 }
-#obox:has(.worldBoard7527) .stageTopNav7527{flex:0 0 auto!important;gap:5px!important;margin:0!important}
-#obox:has(.worldBoard7527) .stageTopNav7527 .stageHint7527{width:100%!important;font-size:8px!important;line-height:1.15!important}
-#obox:has(.worldBoard7527) .stageTab7527{padding:5px 11px!important;min-height:32px!important}
-#obox:has(.worldBoard7527) .stageRoot7527{
- flex:1 1 auto!important;min-height:0!important;overflow:hidden!important;
- display:grid!important;grid-template-rows:minmax(0,1fr) 34px 22px!important;gap:4px!important
+#overlay:has(.worldBoard7527) .stageTopNav7527{flex:0 0 auto!important;gap:5px!important;margin:0!important}
+#overlay:has(.worldBoard7527) .stageTopNav7527 .stageHint7527{width:100%!important;font-size:10px!important;line-height:1.3!important}
+#overlay:has(.worldBoard7527) .stageTab7527{padding:5px 11px!important;min-height:36px!important;touch-action:manipulation}
+#overlay:has(.worldBoard7527) .stageRoot7527{
+ flex:1 1 auto!important;min-height:0!important;min-width:0!important;overflow:hidden!important;
+ display:grid!important;grid-template-rows:var(--map-row7542,minmax(0,1fr)) 44px 24px!important;gap:4px!important;align-content:start
 }
-#obox:has(.worldBoard7527) .worldBoard7527{
- position:relative!important;height:100%!important;width:auto!important;max-width:100%!important;min-height:0!important;
- aspect-ratio:911/1157!important;justify-self:center!important;margin:0 auto!important;padding:0!important;overflow:hidden!important;
- background-size:100% 100%!important;background-position:center!important;background-repeat:no-repeat!important;box-sizing:border-box!important
+#overlay:has(.worldBoard7527) .worldBoard7527{
+ position:relative!important;width:var(--map-width7542,100%)!important;height:var(--map-height7542,auto)!important;
+ max-width:100%!important;min-height:0!important;aspect-ratio:911/1157!important;place-self:center!important;
+ margin:0!important;padding:0!important;overflow:hidden!important;border:0!important;border-radius:12px!important;
+ background-size:100% 100%!important;background-position:center!important;background-repeat:no-repeat!important;
+ box-sizing:border-box!important;touch-action:none;-webkit-user-select:none;user-select:none
 }
-#obox:has(.worldBoard7527) .worldBoard7527:before{display:none!important}
-#obox:has(.worldBoard7527) .worldHeader7527{position:absolute!important;inset:0!important;z-index:5!important;pointer-events:none!important}
-#obox:has(.worldBoard7527) .worldHeader7527>div{display:none!important}
-#obox:has(.worldBoard7527) .worldHeader7527>.stageChip7527{
- position:absolute!important;right:2.3%!important;top:2.2%!important;margin:0!important;padding:4px 7px!important;
- border:0!important;background:transparent!important;color:#fff3bd!important;font-size:9px!important
+#overlay:has(.worldBoard7527) .worldBoard7527:before{display:none!important}
+#overlay:has(.worldBoard7527) .worldHeader7527{position:absolute!important;inset:0!important;margin:0!important;z-index:5!important;pointer-events:none!important}
+#overlay:has(.worldBoard7527) .worldHeader7527>div{display:none!important}
+#overlay:has(.worldBoard7527) .worldHeader7527>.stageChip7527{
+ position:absolute!important;left:81.67%!important;top:2.33%!important;width:15.70%!important;height:7.35%!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:0!important;
+ border:0!important;background:transparent!important;color:#fff3bd!important;font-size:var(--map-meta7542,9px)!important;white-space:nowrap
 }
-/* Transparent text/touch layer inside the artwork's baked plaque. */
-#obox:has(.worldBoard7527) .worldNode7527,
-#obox:has(.worldBoard7527) .worldNode7527.current,
-#obox:has(.worldBoard7527) .worldNode7527.locked{
- position:absolute!important;transform:translate(-50%,-50%)!important;
- width:20.5%!important;max-width:20.5%!important;height:10.2%!important;min-width:0!important;min-height:0!important;
- padding:1px!important;margin:0!important;border:0!important;outline:0!important;border-radius:0!important;
+/* Each button occupies its existing painted plaque, without a second frame. */
+#overlay:has(.worldBoard7527) .worldNode7527,
+#overlay:has(.worldBoard7527) .worldNode7527.current,
+#overlay:has(.worldBoard7527) .worldNode7527.locked{
+ position:absolute!important;transform:none!important;max-width:none!important;min-width:0!important;min-height:0!important;
+ padding:var(--map-pad7542,6px) 2px 2px!important;margin:0!important;border:0!important;outline:0!important;border-radius:0!important;
  background:transparent!important;box-shadow:none!important;overflow:visible!important;
  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
  touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important
 }
-#obox:has(.worldBoard7527) .worldNode7527 .name{font-size:clamp(8px,2.35vw,11px)!important;line-height:1.05!important;color:#fff0ba!important;text-shadow:0 1px 2px #000!important}
-#obox:has(.worldBoard7527) .worldNode7527 .meta{font-size:clamp(6px,1.72vw,8px)!important;line-height:1.15!important;color:#dce7f1!important;margin-top:2px!important;text-shadow:0 1px 2px #000!important}
-#obox:has(.worldBoard7527) .worldNode7527 .flag{font-size:clamp(6px,1.6vw,7px)!important;line-height:1!important;padding:2px 3px!important;margin-top:3px!important;border:1px solid #c99c3f!important;border-radius:999px!important;background:#35230dd9!important;color:#ffe2a0!important}
-/* Centers measured directly from the 911×1157 embedded artwork. */
-#obox:has(.worldBoard7527) .worldNode7527[data-area7527="呪われた古城"]{left:49.40%!important;top:19.45%!important}
-#obox:has(.worldBoard7527) .worldNode7527[data-area7527="氷の雪原"]{left:85.35%!important;top:31.55%!important}
-#obox:has(.worldBoard7527) .worldNode7527[data-area7527="迷いの森"]{left:20.03%!important;top:38.03%!important}
-#obox:has(.worldBoard7527) .worldNode7527[data-area7527="灼熱の火山"]{left:85.07%!important;top:54.45%!important}
-#obox:has(.worldBoard7527) .worldNode7527[data-area7527="神話領域"]{left:23.60%!important;top:73.47%!important}
-#obox:has(.worldBoard7527) .worldNode7527[data-area7527="天空遺跡"]{left:82.88%!important;top:84.27%!important}
-/* Page 2: only real stage nodes are interactive. They use two existing artwork plaques. */
-#obox:has(.worldBoard7527) .worldBoard7527[data-page7541="2"] .worldNode7527[data-area7527="紅蓮魔界"]{left:20.03%!important;top:38.03%!important}
-#obox:has(.worldBoard7527) .worldBoard7527[data-page7541="2"] .worldNode7527[data-area7527="毒沼地"]{left:49.40%!important;top:19.45%!important}
-#obox:has(.worldBoard7527) .worldPager7527{height:34px!important;margin:0!important;gap:5px!important;overflow:hidden!important}
-#obox:has(.worldBoard7527) .stagePagerBtn7527{padding:5px 9px!important;min-height:32px!important;font-size:10px!important}
-#obox:has(.worldBoard7527) .worldLegend7527{height:22px!important;margin:0!important;gap:3px!important;overflow:hidden!important}
-#obox:has(.worldBoard7527) .worldLegend7527 .stageChip7527{padding:2px 5px!important;font-size:7px!important}
+#overlay:has(.worldBoard7527) .worldNode7527:before{content:"";position:absolute;left:var(--map-icon-left7542,-23%);top:var(--map-icon-top7542,-7%);width:var(--map-icon-width7542,36%);height:var(--map-icon-height7542,49%);border-radius:50%;background:transparent;pointer-events:auto}
+#overlay:has(.worldBoard7527) .worldNode7527 .name{align-self:stretch;padding-left:8%;max-width:100%;font-size:var(--map-name7542,11px)!important;line-height:1.1!important;white-space:nowrap;color:#fff0ba!important;text-shadow:0 1px 2px #000!important;pointer-events:none}
+#overlay:has(.worldBoard7527) .worldNode7527 .meta{font-size:var(--map-meta7542,8px)!important;line-height:1.15!important;white-space:nowrap;color:#dce7f1!important;margin-top:2px!important;text-shadow:0 1px 2px #000!important;pointer-events:none}
+#overlay:has(.worldBoard7527) .worldNode7527 .flag{max-width:100%;font-size:var(--map-flag7542,7px)!important;line-height:1.1!important;white-space:nowrap;padding:2px 3px!important;margin-top:3px!important;border:1px solid #c99c3f!important;border-radius:999px!important;background:#35230dd9!important;color:#ffe2a0!important;pointer-events:none}
+/* Plaque bounds in the original 911 x 1157 image. Page 2 reuses two real plaques. */
+#overlay:has(.worldBoard7527) .worldNode7527[data-area7527="呪われた古城"]{--map-icon-left7542:-21.777778%;--map-icon-top7542:-6.329114%;--map-icon-width7542:33.777778%;--map-icon-height7542:48.101266%;left:37.102086%!important;top:12.532411%!important;width:24.698134%!important;height:13.656007%!important}
+#overlay:has(.worldBoard7527) .worldNode7527[data-area7527="氷の雪原"]{--map-icon-left7542:-23.364486%;--map-icon-top7542:-5.063291%;--map-icon-width7542:35.514019%;--map-icon-height7542:48.101266%;left:72.886937%!important;top:24.632671%!important;width:23.490670%!important;height:13.656007%!important}
+#overlay:has(.worldBoard7527) .worldNode7527[data-area7527="迷いの森"]{--map-icon-left7542:-21.844660%;--map-icon-top7542:-6.918239%;--map-icon-width7542:36.893204%;--map-icon-height7542:47.798742%;left:9.001098%!important;top:31.028522%!important;width:22.612514%!important;height:13.742437%!important}
+#overlay:has(.worldBoard7527) .worldNode7527[data-area7527="灼熱の火山"]{--map-icon-left7542:-22.685185%;--map-icon-top7542:-5.660377%;--map-icon-width7542:35.185185%;--map-icon-height7542:47.798742%;left:72.667398%!important;top:47.623163%!important;width:23.710209%!important;height:13.742437%!important}
+#overlay:has(.worldBoard7527) .worldNode7527[data-area7527="神話領域"]{--map-icon-left7542:-22.009569%;--map-icon-top7542:-8.280255%;--map-icon-width7542:36.363636%;--map-icon-height7542:48.407643%;left:13.172338%!important;top:66.637857%!important;width:22.941822%!important;height:13.569576%!important}
+#overlay:has(.worldBoard7527) .worldNode7527[data-area7527="天空遺跡"]{--map-icon-left7542:-24.644550%;--map-icon-top7542:-8.280255%;--map-icon-width7542:36.018957%;--map-icon-height7542:48.407643%;left:71.020856%!important;top:77.095938%!important;width:23.161361%!important;height:13.569576%!important}
+#overlay:has(.worldBoard7527) .worldNode7527[data-area7527="紅蓮魔界"]{--map-icon-left7542:-21.844660%;--map-icon-top7542:-6.918239%;--map-icon-width7542:36.893204%;--map-icon-height7542:47.798742%;left:9.001098%!important;top:31.028522%!important;width:22.612514%!important;height:13.742437%!important}
+#overlay:has(.worldBoard7527) .worldNode7527[data-area7527="毒沼地"]{--map-icon-left7542:-21.777778%;--map-icon-top7542:-6.329114%;--map-icon-width7542:33.777778%;--map-icon-height7542:48.101266%;left:37.102086%!important;top:12.532411%!important;width:24.698134%!important;height:13.656007%!important}
+#overlay:has(.worldBoard7527) .worldPager7527{height:44px!important;margin:0!important;gap:8px!important;overflow:hidden!important}
+#overlay:has(.worldBoard7527) .stagePagerBtn7527{padding:5px 10px!important;min-height:44px!important;font-size:12px!important;touch-action:manipulation}
+#overlay:has(.worldBoard7527) .stagePagerBtn7527:disabled{opacity:.4;cursor:default}
+#overlay:has(.worldBoard7527) .worldLegend7527{height:24px!important;margin:0!important;gap:4px!important;overflow:hidden!important;align-items:center;justify-content:center;flex-wrap:nowrap}
+#overlay:has(.worldBoard7527) .worldLegend7527 .stageChip7527{padding:2px 5px!important;font-size:9px!important;white-space:nowrap}
+/* Short/landscape screens keep legible plaques and scroll only this overlay's body. */
+@media(max-height:520px){
+ #overlay:has(.worldBoard7527){touch-action:pan-y}
+ #overlay:has(.worldBoard7527) #obody{overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain;touch-action:pan-y}
+ #overlay:has(.worldBoard7527) .stageRoot7527{flex:0 0 auto!important;grid-template-rows:auto 44px 24px!important}
+ #overlay:has(.worldBoard7527) .worldBoard7527,#overlay:has(.worldBoard7527) .worldNode7527{touch-action:pan-y!important}
+}
 </style>
-<script id="v07541-map-single-controller">
+<script id="v07542-map-single-controller">
 (()=>{
 'use strict';
-const V='v0.75.41';
-let busy=false;
+const V='v0.75.42',ART_W=911,ART_H=1157;
+let frame=0,busy=false,watchedRoot=null;
+const overlay=document.getElementById('overlay');
+function schedule(){
+ if(frame)return;
+ frame=requestAnimationFrame(()=>{frame=0;sync()});
+}
+function setVar(el,name,value){if(el.style.getPropertyValue(name)!==value)el.style.setProperty(name,value)}
+function fit(board){
+ const root=board.parentElement;
+ if(!root||!root.clientWidth||!root.clientHeight)return;
+ const short=window.matchMedia('(max-height:520px)').matches;
+ const pager=root.querySelector('.worldPager7527'),legend=root.querySelector('.worldLegend7527');
+ const gap=parseFloat(getComputedStyle(root).rowGap)||0;
+ const room=root.clientHeight-(pager?.offsetHeight||0)-(legend?.offsetHeight||0)-gap*2;
+ if(!short&&room<=0)return;
+ // Floor to a subpixel: both axes always use the very same artwork scale.
+ const width=Math.floor(Math.min(root.clientWidth,short?root.clientWidth:room*ART_W/ART_H)*100)/100;
+ if(width<=0)return;
+ const height=width*ART_H/ART_W,scale=width/ART_W;
+ setVar(board,'--map-width7542',width+'px');
+ setVar(board,'--map-height7542',height.toFixed(4)+'px');
+ setVar(root,'--map-row7542',height.toFixed(4)+'px');
+ setVar(board,'--map-name7542',(30*scale).toFixed(3)+'px');
+ setVar(board,'--map-meta7542',(22*scale).toFixed(3)+'px');
+ setVar(board,'--map-flag7542',(20*scale).toFixed(3)+'px');
+ setVar(board,'--map-pad7542',(15*scale).toFixed(3)+'px');
+}
+function stamp(){
+ const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
+ if(b){if(b.id!=='buildVersion')b.id='buildVersion';if(b.textContent!==V)b.textContent=V}
+ const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;
+ const title='どろダン / DROP OF DUNGEON '+V;if(document.title!==title)document.title=title;
+}
+const ro=typeof ResizeObserver==='function'?new ResizeObserver(schedule):null;
 function sync(){
  if(busy)return;busy=true;
  try{
-  const board=document.querySelector('.worldBoard7527');
+  const board=overlay?.classList.contains('open')?overlay.querySelector('.worldBoard7527'):null;
+  const root=board?.parentElement||null;
+  if(root!==watchedRoot){if(ro&&watchedRoot)ro.unobserve(watchedRoot);watchedRoot=root;if(ro&&root)ro.observe(root)}
   if(board){
-   const t=board.querySelector('.worldHeader7527 .stageChip7527')?.textContent||'';
-   board.dataset.page7541=/2\s*\/\s*2/.test(t)?'2':'1';
+   const text=board.querySelector('.worldHeader7527 .stageChip7527')?.textContent||'';
+   const page=/^(\d+)\s*\//.exec(text.trim())?.[1]||'1';
+   if(board.dataset.page7541!==page)board.dataset.page7541=page;
+   if(board.dataset.page7542!==page)board.dataset.page7542=page;
    board.querySelectorAll('.mapSoon7535,.v7537Soon,.v7540Soon').forEach(x=>x.remove());
+   fit(board);
   }
   stamp();
  }finally{busy=false}
 }
-function stamp(){
- const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
- if(b){b.id='buildVersion';b.textContent=V}
- const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
- document.title='どろダン / DROP OF DUNGEON '+V;
-}
-const mo=new MutationObserver(()=>requestAnimationFrame(sync));
-try{mo.observe(document.getElementById('overlay')||document.body,{subtree:true,childList:true,characterData:true})}catch(_){}
-['stageView','render','open'].forEach(n=>{const f=window[n];if(typeof f!=='function'||f.__v7541)return;const w=function(){const z=f.apply(this,arguments);requestAnimationFrame(sync);return z};w.__v7541=true;window[n]=w});
-window.__DOD_MAP_7541={version:V,singleLayout:true,artSize:[911,1157]};
-sync();setTimeout(sync,250);setTimeout(sync,900);
+const mo=new MutationObserver(schedule);
+if(overlay)mo.observe(overlay,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class']});
+// Historical modules also stamp after load; watch only the labels, not the whole game.
+const labels=new MutationObserver(schedule);
+[document.querySelector('.logo'),document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('title')].forEach(el=>{
+ if(el)labels.observe(el,{subtree:true,childList:true,characterData:true});
+});
+['stageView','render','open'].forEach(n=>{
+ const f=window[n];if(typeof f!=='function'||f.__v7542)return;
+ const w=function(){const result=f.apply(this,arguments);sync();return result};
+ w.__v7542=true;window[n]=w;
+});
+window.addEventListener('resize',schedule,{passive:true});
+window.visualViewport?.addEventListener('resize',schedule,{passive:true});
+window.addEventListener('load',schedule,{once:true});
+window.__DOD_MAP_7542={version:V,singleLayout:true,artSize:[ART_W,ART_H]};
+// Preserve the previous diagnostic entry point for existing callers.
+window.__DOD_MAP_7541=window.__DOD_MAP_7542;
+sync();setTimeout(schedule,250);setTimeout(schedule,900);
 })();
 </script>
 
