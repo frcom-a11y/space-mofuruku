@@ -7780,4 +7780,109 @@ function bind7527(){
 (()=>{'use strict';const V='v0.75.31';function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}const r=window.render;if(typeof r==='function')window.render=function(){const z=r.apply(this,arguments);stamp();return z};stamp();setTimeout(stamp,700)})();
 </script>
 
+
+<style id="v07532-stage-one-screen">
+/* Scope everything to the stage/world screen so other overlays remain unchanged. */
+#obox:has(.worldBoard7527){
+  width:min(100%,520px)!important;
+  max-width:520px!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  padding:10px 12px calc(8px + env(safe-area-inset-bottom))!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+#obox:has(.worldBoard7527) #obody{
+  height:calc(100dvh - 92px - env(safe-area-inset-bottom))!important;
+  max-height:calc(100dvh - 92px - env(safe-area-inset-bottom))!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:5px!important;
+}
+#obox:has(.worldBoard7527) .stageTopNav7527{
+  flex:0 0 auto!important;
+  gap:6px!important;
+  margin:0!important;
+}
+#obox:has(.worldBoard7527) .stageTopNav7527 .stageHint7527{
+  font-size:9px!important;
+  line-height:1.2!important;
+  width:100%!important;
+}
+#obox:has(.worldBoard7527) .stageTab7527{
+  padding:6px 12px!important;
+  min-height:34px!important;
+}
+#obox:has(.worldBoard7527) .stageRoot7527{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-rows:minmax(0,1fr) auto auto!important;
+  gap:5px!important;
+  overflow:hidden!important;
+}
+#obox:has(.worldBoard7527) .worldBoard7527{
+  width:auto!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:660/980!important;
+  justify-self:center!important;
+  margin:0 auto!important;
+  background-size:100% 100%!important;
+}
+#obox:has(.worldBoard7527) .worldPager7527{
+  margin:0!important;
+  gap:6px!important;
+}
+#obox:has(.worldBoard7527) .stagePagerBtn7527{
+  padding:6px 10px!important;
+  min-height:34px!important;
+  font-size:11px!important;
+}
+#obox:has(.worldBoard7527) .worldLegend7527{
+  margin:0!important;
+  gap:4px!important;
+}
+#obox:has(.worldBoard7527) .worldLegend7527 .stageChip7527{
+  padding:3px 7px!important;
+  font-size:8px!important;
+}
+
+/* One visible plaque per stage: live button completely covers the decorative backing plate. */
+#obox:has(.worldBoard7527) .worldNode7527{
+  width:31.5%!important;
+  max-width:31.5%!important;
+  min-height:74px!important;
+  padding:6px 5px!important;
+  border:2px solid #e4bd66!important;
+  border-radius:14px!important;
+  background:#07192bf8!important;
+  box-shadow:0 5px 12px #000b!important;
+}
+#obox:has(.worldBoard7527) .worldNode7527 .name{font-size:11px!important}
+#obox:has(.worldBoard7527) .worldNode7527 .meta{font-size:8px!important}
+#obox:has(.worldBoard7527) .worldNode7527 .flag{font-size:8px!important;padding:2px 5px!important;margin-top:4px!important}
+
+/* Recenter over the six artwork plaques after the wider cover size. */
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="呪われた古城"]{left:50.8%!important;top:21.8%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="氷の雪原"]{left:79.4%!important;top:36.0%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="迷いの森"]{left:22.4%!important;top:41.3%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="灼熱の火山"]{left:79.1%!important;top:59.2%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="神話領域"]{left:27.8%!important;top:73.2%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="天空遺跡"]{left:76.0%!important;top:84.0%!important}
+
+@media(max-height:760px){
+ #obox:has(.worldBoard7527){padding-top:6px!important}
+ #obox:has(.worldBoard7527) #obody{height:calc(100dvh - 82px - env(safe-area-inset-bottom))!important}
+ #obox:has(.worldBoard7527) .worldNode7527{min-height:64px!important;padding:4px!important}
+ #obox:has(.worldBoard7527) .worldNode7527 .name{font-size:10px!important}
+ #obox:has(.worldBoard7527) .worldNode7527 .meta{font-size:7px!important}
+}
+</style>
+<script id="v07532-stage-version">
+(()=>{'use strict';const V='v0.75.32';function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}const r=window.render;if(typeof r==='function')window.render=function(){const z=r.apply(this,arguments);stamp();return z};stamp();setTimeout(stamp,700)})();
+</script>
+
 </body></html>
