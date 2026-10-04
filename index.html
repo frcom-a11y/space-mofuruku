@@ -7755,4 +7755,29 @@ function bind7527(){
 (()=>{'use strict';const V='v0.75.30';function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}const r=window.render;if(typeof r==='function')window.render=function(){const z=r.apply(this,arguments);stamp();return z};stamp();setTimeout(stamp,700)})();
 </script>
 
+
+<style id="v07531-map-plate-alignment">
+/* v0.75.31: align the live cards over the six decorative plates already baked into the map art. */
+.worldNode7527{
+  width:28.4%!important;
+  max-width:28.4%!important;
+  min-height:0!important;
+  padding:6px 5px!important;
+  border-radius:13px!important;
+}
+/* Centers measured against the actual live iPhone screenshot / baked plate positions. */
+.worldNode7527[data-area7527="呪われた古城"]{left:50.8%!important;top:21.8%!important}
+.worldNode7527[data-area7527="氷の雪原"]{left:79.4%!important;top:36.0%!important}
+.worldNode7527[data-area7527="迷いの森"]{left:22.4%!important;top:41.3%!important}
+.worldNode7527[data-area7527="灼熱の火山"]{left:79.1%!important;top:59.2%!important}
+.worldNode7527[data-area7527="神話領域"]{left:27.8%!important;top:73.2%!important}
+.worldNode7527[data-area7527="天空遺跡"]{left:76.0%!important;top:84.0%!important}
+@media(max-width:390px){
+ .worldNode7527{width:29%!important;max-width:29%!important}
+}
+</style>
+<script id="v07531-map-version">
+(()=>{'use strict';const V='v0.75.31';function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}const r=window.render;if(typeof r==='function')window.render=function(){const z=r.apply(this,arguments);stamp();return z};stamp();setTimeout(stamp,700)})();
+</script>
+
 </body></html>
