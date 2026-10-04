@@ -7425,4 +7425,188 @@ window.addEventListener('load',()=>setTimeout(finish,800),{once:true});
 })();
 </script>
 
+
+<style id="v07527-stage-world-style">
+.stageRoot7527{display:grid;gap:10px}
+.stageTopNav7527{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.stageTab7527,.stagePagerBtn7527,.stageActionBtn7527,.stageMiniBtn7527{appearance:none;border:1px solid #617f9b;background:#16304c;color:#e9f2fb;border-radius:10px;padding:8px 12px;font-weight:900;font-size:12px}
+.stageTab7527.active{background:linear-gradient(#335a86,#214264);border-color:#d7b25c;color:#fff1ba;box-shadow:inset 0 1px 0 #ffffff24}
+.stageHint7527{color:#a9bfd5;font-size:11px}
+.stageAreaBlock7527{border:1px solid #365271;border-radius:14px;background:linear-gradient(180deg,#102741,#0a1e35);padding:10px}
+.stageAreaHead7527{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
+.stageAreaHead7527 b{font-size:17px;color:#ffe39d}
+.stageAreaMeta7527{display:flex;gap:6px;flex-wrap:wrap}
+.stageChip7527{display:inline-block;padding:4px 8px;border-radius:999px;border:1px solid #607890;background:#11283f;color:#d9e8f8;font-size:10px;font-weight:800}
+.stageChip7527.good{border-color:#65a46d;color:#bff2c3;background:#0f2d18}
+.stageChip7527.warn{border-color:#c59e55;color:#ffe7af;background:#33260d}
+.stageChip7527.bad{border-color:#946372;color:#ffc1cc;background:#31161b}
+.stageCard7527{position:relative;border:1px solid #3c5b79;border-radius:14px;background:#0d2238;padding:12px;margin-top:8px;box-shadow:0 3px 10px #00000026}
+.stageCard7527.locked{opacity:.55}
+.stageCardHead7527{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.stageCardTitle7527{font-size:19px;font-weight:900;color:#fff}
+.stageCardSub7527{margin-top:4px;color:#9db6cd;font-size:11px;line-height:1.45}
+.stageCardState7527{white-space:nowrap;font-size:12px;font-weight:900;color:#fff}
+.stageCardState7527.clear{color:#8ff0aa}
+.stageCardState7527.active{color:#ffe39d}
+.stageCardState7527.locked{color:#cdb9c1}
+.stageInfoRow7527{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.stageMissing7527{margin-top:8px;font-size:11px;color:#c7d7e8;line-height:1.5}
+.stageActions7527{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.stageActionBtn7527.primary{background:linear-gradient(#355b88,#223f63);border-color:#cfa953;color:#fff0bf}
+.stageActionBtn7527.detail{background:#132b44}
+.worldBoard7527{position:relative;min-height:420px;border:1px solid #436482;border-radius:18px;padding:16px;background:
+radial-gradient(circle at 17% 28%,#6bb874 0 12%,transparent 12.5%),
+radial-gradient(circle at 66% 24%,#95cb7b 0 14%,transparent 14.5%),
+radial-gradient(circle at 76% 69%,#7fbd71 0 16%,transparent 16.5%),
+radial-gradient(circle at 32% 72%,#8ccc76 0 17%,transparent 17.5%),
+linear-gradient(180deg,#3e8ccc 0%,#1e5f9c 54%,#0b315a 100%);
+overflow:hidden;box-shadow:inset 0 0 0 2px #ffffff12}
+.worldBoard7527:before{content:'';position:absolute;inset:0;background:
+radial-gradient(circle at 20% 20%,#ffffff44 0 2px,transparent 3px),
+radial-gradient(circle at 61% 37%,#ffffff55 0 2px,transparent 3px),
+radial-gradient(circle at 82% 17%,#ffffff55 0 3px,transparent 4px),
+radial-gradient(circle at 85% 79%,#ffffff44 0 2px,transparent 3px),
+linear-gradient(130deg,transparent 0 46%,#e3c981cc 46.5% 47.2%,transparent 47.7%),
+linear-gradient(195deg,transparent 0 46%,#e3c981cc 46.5% 47.2%,transparent 47.7%),
+linear-gradient(215deg,transparent 0 61%,#e3c981cc 61.4% 62.1%,transparent 62.6%),
+linear-gradient(15deg,transparent 0 64%,#e3c981cc 64.4% 65.1%,transparent 65.6%);
+pointer-events:none;opacity:.7}
+.worldHeader7527{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px;color:#fff}
+.worldHeader7527 b{font-size:18px;color:#fff3bd}
+.worldPager7527{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:10px}
+.worldNode7527{position:absolute;min-width:118px;max-width:136px;transform:translate(-50%,-50%);border-radius:16px;border:2px solid #f6dc93;background:linear-gradient(#143453,#0b2035);color:#fff;padding:10px 10px 8px;text-align:center;box-shadow:0 6px 16px #0005;cursor:pointer}
+.worldNode7527.locked{opacity:.55;border-color:#8592a0}
+.worldNode7527.current{box-shadow:0 0 0 3px #ffe9a833,0 6px 18px #0006}
+.worldNode7527 .name{display:block;font-weight:900;color:#fff0ba;font-size:14px;line-height:1.15}
+.worldNode7527 .meta{display:block;font-size:10px;color:#c9d9ea;line-height:1.3;margin-top:4px}
+.worldNode7527 .flag{display:inline-block;margin-top:6px;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:900;border:1px solid #5f7991;background:#11283f}
+.worldNode7527 .flag.good{border-color:#65a46d;color:#bff2c3;background:#0f2d18}
+.worldNode7527 .flag.warn{border-color:#c59e55;color:#ffe7af;background:#33260d}
+.worldLegend7527{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.stageMonster7527{border:1px solid #355171;border-radius:12px;background:#0b2036;padding:10px;margin-top:8px}
+.stageMonsterHead7527{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.stageMonsterHead7527 b{font-size:15px;color:#fff}
+.dropList7527{display:grid;gap:6px;margin-top:8px}
+.dropItem7527{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;border:1px solid #2f4966;border-radius:10px;background:#10253a;padding:8px}
+.dropItem7527.got{border-color:#4c8c63;background:#112f1c}
+.dropItem7527.miss{border-color:#876338;background:#2a1d10}
+.dropName7527{font-weight:800;color:#fff;font-size:12px}
+.dropMeta7527{display:block;color:#b4c8dc;font-size:10px;line-height:1.35;margin-top:2px}
+.dropState7527{font-size:10px;font-weight:900;white-space:nowrap}
+.dropState7527.got{color:#aaf0b2}
+.dropState7527.miss{color:#ffe1a0}
+.stageDetailTop7527{display:grid;gap:8px}
+.stageSummaryGrid7527{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.stageStat7527{border:1px solid #355171;border-radius:12px;background:#0b2036;padding:10px;text-align:center}
+.stageStat7527 small{display:block;color:#9eb6cb;font-size:10px}.stageStat7527 b{display:block;color:#fff;font-size:18px;margin-top:4px}
+.stageDetailActions7527{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.stageMissingList7527{display:flex;gap:6px;flex-wrap:wrap}
+.stageEmpty7527{color:#a7bdd1;font-size:11px}
+@media(max-width:420px){
+ .worldNode7527{min-width:104px;padding:8px 8px 7px}
+ .stageCardTitle7527{font-size:17px}
+ .worldBoard7527{min-height:390px}
+}
+</style>
+<script id="v07527-stage-world-map">
+(()=>{
+'use strict';
+const V='v0.75.27';
+const UI={mode:'map',page:0};
+const POS=[{x:17,y:26},{x:50,y:18},{x:79,y:28},{x:26,y:59},{x:58,y:54},{x:80,y:73}];
+const h=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const uniq=a=>[...new Set(a)];
+function areas7527(){return uniq(stages.map(s=>s.area));}
+function areaStages7527(area){return stages.filter(s=>s.area===area);}
+function stageMonsters7527(st){return uniq((st.boss?[st.bossMonster||st.enemies?.[0]]:st.enemies||[]).filter(Boolean));}
+function stageDrops7527(st){
+  const seen=new Set(),out=[];
+  stageMonsters7527(st).forEach(m=>((drops[m]||[])).forEach(d=>{const key=d.n+'@@'+m;if(seen.has(key))return;seen.add(key);out.push({...d,monster:m});}));
+  return out;
+}
+function missingDrops7527(st){return stageDrops7527(st).filter(d=>!S.dropFound?.[d.n]);}
+function stageRecruits7527(st){return stageMonsters7527(st).filter(m=>MONSTERS[m]?.recruit);}
+function missingRecruits7527(st){return stageRecruits7527(st).filter(m=>!S.monsterCompanions?.includes(m));}
+function firstStageOfArea7527(area){return areaStages7527(area)[0]||null;}
+function stageState7527(st){
+  const unlocked=st.unlock(S),active=S.stageId===st.id,clear=!!S.clears?.[st.id];
+  const text=!unlocked?'🔒 未解放':active?'挑戦中':clear?'クリア済':'挑戦する';
+  const cls=!unlocked?'locked':active?'active':clear?'clear':'';
+  return {text,cls,unlocked,active,clear};
+}
+function areaInfo7527(area){
+  const ss=areaStages7527(area),clear=ss.filter(st=>S.clears?.[st.id]).length,unlocked=ss.filter(st=>st.unlock(S)).length;
+  const current=ss.some(st=>S.stageId===st.id),missing=ss.reduce((n,st)=>n+missingDrops7527(st).length,0),minLv=Math.min(...ss.map(st=>Number(st.recommended)||1));
+  return {stages:ss,clear,total:ss.length,unlocked,current,missing,minLv};
+}
+function dropBadge7527(d,got){return `<div class="dropItem7527 ${got?'got':'miss'}"><div><span class="dropName7527">${h(d.n)}</span><span class="dropMeta7527">${h(d.monster)} / ${h(d.rar||'-')} / ${h(d.type||'DROP')}${d.desc?`<br>${h(d.desc)}`:''}</span></div><span class="dropState7527 ${got?'got':'miss'}">${got?'取得済':'未取得'}</span></div>`}
+function monsterPanel7527(name){
+  const ds=(drops[name]||[]),joined=S.monsterCompanions?.includes(name),recruitable=!!MONSTERS[name]?.recruit;
+  return `<div class="stageMonster7527"><div class="stageMonsterHead7527"><div><b>${h(name)}</b><div class="stageHint7527">${recruitable?`仲間化: 1/${h(MONSTERS[name].recruit)}`:'仲間化なし'}</div></div><div class="stageAreaMeta7527">${recruitable?`<span class="stageChip7527 ${joined?'good':'warn'}">${joined?'加入済':'未加入'}</span>`:''}</div></div><div class="dropList7527">${ds.length?ds.map(d=>dropBadge7527({...d,monster:name},!!S.dropFound?.[d.n])).join(''):'<div class="stageEmpty7527">DROP登録なし</div>'}</div></div>`;
+}
+function stageDetail7527(id){
+  const st=stages.find(x=>String(x.id)===String(id)); if(!st) return;
+  const state=stageState7527(st),dropsAll=stageDrops7527(st),miss=missingDrops7527(st),recs=missingRecruits7527(st),mons=stageMonsters7527(st);
+  open('ステージ詳細',`
+    <div class="stageDetailTop7527">
+      <div class="panel"><h2>${h(st.name)}</h2><div class="small">${h(st.area)} / 推奨Lv${h(st.recommended)} / 通常${h(st.recommended)} / 特殊${h((Number(st.recommended)||0)+2)} / ボス${h((Number(st.recommended)||0)+3)}</div><div class="stageInfoRow7527"><span class="stageChip7527 ${state.cls}">${h(state.text)}</span><span class="stageChip7527 ${miss.length?'warn':'good'}">未取得DROP ${miss.length}/${dropsAll.length}</span><span class="stageChip7527 ${recs.length?'warn':'good'}">未加入仲間 ${recs.length}/${stageRecruits7527(st).length}</span></div>${!state.unlocked?`<div class="stageMissing7527">解放条件: ${h(st.unlockText||'')}</div>`:''}</div>
+      <div class="stageSummaryGrid7527"><div class="stageStat7527"><small>出現モンスター</small><b>${mons.length}</b></div><div class="stageStat7527"><small>未取得アイテム</small><b>${miss.length}</b></div></div>
+      <div class="panel"><b>未取得アイテム一覧</b><div class="stageMissingList7527">${miss.length?miss.map(d=>`<span class="stageChip7527 warn">${h(d.n)}</span>`).join(''):'<span class="stageChip7527 good">このステージのDROPはすべて取得済み</span>'}</div></div>
+      <div class="panel"><b>出現モンスターとDROP</b>${mons.map(monsterPanel7527).join('')}</div>
+      <div class="panel"><b>見どころ</b><div class="stageMissing7527">モンスターごとにDROPが分かれているので、欲しい装備・素材がどの敵から出るかをすぐ確認できます。未取得のDROPは金色、取得済みは緑色で表示します。</div><div class="stageDetailActions7527">${state.unlocked?`<button class="stageActionBtn7527 primary" data-stage-select7527="${h(st.id)}">このステージに挑戦</button>`:''}<button class="stageActionBtn7527 detail" data-back-stage7527="1">ステージ一覧へ戻る</button></div></div>
+    </div>`);
+  bind7527();
+}
+function selectStage7527(id){
+  const st=stages.find(x=>String(x.id)===String(id));
+  if(!st) return;
+  if(!st.unlock(S)) return toast(st.unlockText||'未解放です');
+  S.stageId=st.id;S.battle=1;try{save()}catch(_){}
+  document.getElementById('overlay')?.classList.remove('open');
+  try{spawn()}catch(_){try{render()}catch(__){}}
+  toast(`${st.name}へ移動！`);
+}
+function areaDetail7527(area){
+  const info=areaInfo7527(area);
+  open(`${area} エリア`, `<div class="stageRoot7527"><div class="panel"><h2>${h(area)}</h2><div class="small">このエリアのステージをまとめて確認できます。</div><div class="stageInfoRow7527"><span class="stageChip7527">ステージ ${info.total}</span><span class="stageChip7527 ${info.clear===info.total?'good':'warn'}">クリア ${info.clear}/${info.total}</span><span class="stageChip7527 ${info.missing?'warn':'good'}">未取得DROP ${info.missing}</span></div></div>${info.stages.map(stageCard7527).join('')}</div>`);
+  bind7527();
+}
+function stageCard7527(st){
+  const s=stageState7527(st),miss=missingDrops7527(st),recs=missingRecruits7527(st),mons=stageMonsters7527(st),enemyText=mons.join('・');
+  const missingNames=miss.slice(0,4).map(d=>d.n);
+  return `<div class="stageCard7527 ${s.unlocked?'':'locked'}" data-stage-detail7527="${h(st.id)}"><div class="stageCardHead7527"><div><div class="stageCardTitle7527">${st.boss?'👑 ':''}${h(st.name)}</div><div class="stageCardSub7527">${h(st.area)} / 推奨Lv${h(st.recommended)}<br>${s.unlocked?`出現: ${h(enemyText)}`:`解放条件: ${h(st.unlockText||'')}`}</div></div><div class="stageCardState7527 ${s.cls}">${h(s.text)}</div></div><div class="stageInfoRow7527"><span class="stageChip7527">通常${h(st.recommended)} / 特殊${h((Number(st.recommended)||0)+2)} / ボス${h((Number(st.recommended)||0)+3)}</span><span class="stageChip7527 ${miss.length?'warn':'good'}">未取得DROP ${miss.length}/${stageDrops7527(st).length}</span>${stageRecruits7527(st).length?`<span class="stageChip7527 ${recs.length?'warn':'good'}">未加入仲間 ${recs.length}/${stageRecruits7527(st).length}</span>`:''}</div><div class="stageMissing7527">${miss.length?`未入手: ${h(missingNames.join(' / '))}${miss.length>missingNames.length?` ほか${miss.length-missingNames.length}件`:''}`:'このステージのDROPはすべて取得済み'}</div><div class="stageActions7527"><button class="stageActionBtn7527 primary" data-stage-select7527="${h(st.id)}" ${s.unlocked?'':'disabled'}>${s.active?'挑戦中':'挑戦する'}</button><button class="stageActionBtn7527 detail" data-stage-detail-btn7527="${h(st.id)}">詳細を見る</button></div></div>`;
+}
+function renderList7527(){
+  return `<div class="stageRoot7527">${areas7527().map(area=>{const info=areaInfo7527(area);return `<div class="stageAreaBlock7527"><div class="stageAreaHead7527"><div><b>${h(area)}</b><div class="stageHint7527">エリア進行と未取得要素をまとめて確認</div></div><div class="stageAreaMeta7527"><span class="stageChip7527">推奨Lv ${info.minLv}〜</span><span class="stageChip7527 ${info.clear===info.total?'good':'warn'}">クリア ${info.clear}/${info.total}</span><span class="stageChip7527 ${info.missing?'warn':'good'}">未取得DROP ${info.missing}</span></div></div>${info.stages.map(stageCard7527).join('')}</div>`}).join('')}</div>`;
+}
+function renderMap7527(){
+  const areas=areas7527(),pages=[]; for(let i=0;i<areas.length;i+=6) pages.push(areas.slice(i,i+6));
+  if(UI.page>=pages.length) UI.page=Math.max(0,pages.length-1);
+  const page=pages[UI.page]||[];
+  const nodes=page.map((area,i)=>{const pos=POS[i]||{x:50,y:50},inf=areaInfo7527(area);const anyUnlocked=inf.unlocked>0;const flag=inf.current?`<span class="flag warn">現在地</span>`:inf.missing?`<span class="flag warn">未取得DROPあり</span>`:inf.clear===inf.total?`<span class="flag good">攻略済み</span>`:`<span class="flag">探索可能</span>`;return `<button class="worldNode7527 ${anyUnlocked?'':'locked'} ${inf.current?'current':''}" style="left:${pos.x}%;top:${pos.y}%" data-area7527="${h(area)}"><span class="name">${h(area)}</span><span class="meta">推奨Lv ${inf.minLv}〜<br>クリア ${inf.clear}/${inf.total}</span>${flag}</button>`;}).join('');
+  return `<div class="stageRoot7527"><div class="worldBoard7527"><div class="worldHeader7527"><div><b>幻想世界ワールドマップ</b><div class="stageHint7527">島や大陸をタップして、各エリアのステージ・未取得アイテムを確認できます。</div></div><span class="stageChip7527">${UI.page+1} / ${Math.max(1,pages.length)} ページ</span></div>${nodes}</div><div class="worldPager7527"><button class="stagePagerBtn7527" data-map-prev7527="1" ${UI.page<=0?'disabled':''}>← 前の大陸</button><button class="stagePagerBtn7527" data-map-next7527="1" ${UI.page>=pages.length-1?'disabled':''}>次の大陸 →</button></div><div class="worldLegend7527"><span class="stageChip7527 warn">未取得DROPあり</span><span class="stageChip7527 good">攻略済み</span><span class="stageChip7527">探索可能</span></div></div>`;
+}
+function stageBody7527(){
+  return `<div class="stageTopNav7527"><button class="stageTab7527 ${UI.mode==='map'?'active':''}" data-mode7527="map">ワールド</button><button class="stageTab7527 ${UI.mode==='list'?'active':''}" data-mode7527="list">一覧</button><span class="stageHint7527">推奨レベル・出現モンスター・未取得DROP・未加入仲間をひと目で確認できます。</span></div>${UI.mode==='map'?renderMap7527():renderList7527()}`;
+}
+function refresh7527(){ const body=document.getElementById('obody'); if(!body) return; body.innerHTML=stageBody7527(); bind7527(); }
+function bind7527(){
+  const body=document.getElementById('obody'); if(!body) return;
+  body.querySelectorAll('[data-mode7527]').forEach(b=>b.onclick=()=>{UI.mode=b.dataset.mode7527;refresh7527();});
+  body.querySelectorAll('[data-map-prev7527]').forEach(b=>b.onclick=()=>{UI.page=Math.max(0,UI.page-1);refresh7527();});
+  body.querySelectorAll('[data-map-next7527]').forEach(b=>b.onclick=()=>{UI.page=UI.page+1;refresh7527();});
+  body.querySelectorAll('[data-area7527]').forEach(b=>b.onclick=()=>areaDetail7527(b.dataset.area7527));
+  body.querySelectorAll('[data-stage-select7527]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();selectStage7527(b.dataset.stageSelect7527);});
+  body.querySelectorAll('[data-stage-detail7527]').forEach(card=>card.onclick=e=>{if(e.target.closest('[data-stage-select7527],[data-stage-detail-btn7527]'))return;stageDetail7527(card.dataset.stageDetail7527);});
+  body.querySelectorAll('[data-stage-detail-btn7527]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();stageDetail7527(b.dataset.stageDetailBtn7527);});
+  body.querySelectorAll('[data-back-stage7527]').forEach(b=>b.onclick=()=>stageView());
+ }
+ window.stageView=function(){open('ステージ',stageBody7527());bind7527();stamp7527();};
+ const render0=window.render; if(typeof render0==='function') window.render=function(){const z=render0.apply(this,arguments); stamp7527(); return z;};
+ function stamp7527(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V;}
+ window.__DOD_STAGE_WORLD_7527={version:V,stageView:window.stageView,stageDetail7527,areaDetail7527};
+ stamp7527(); setTimeout(stamp7527,700);
+})();
+</script>
+
 </body></html>
