@@ -7620,14 +7620,63 @@ function bind7527(){
 .worldNode7527 .name{font-size:12px!important;color:#fff0ba!important}
 .worldNode7527 .meta{font-size:9px!important}
 .worldNode7527 .flag{font-size:8px!important;padding:2px 5px!important}
-.worldNode7527[data-area="呪われた古城"]{left:49.8%!important;top:20.6%!important}
-.worldNode7527[data-area="氷の雪原"]{left:82.8%!important;top:31.0%!important}
-.worldNode7527[data-area="迷いの森"]{left:21.5%!important;top:38.5%!important}
-.worldNode7527[data-area="灼熱の火山"]{left:82.5%!important;top:55.8%!important}
-.worldNode7527[data-area="神話領域"]{left:27.5%!important;top:72.8%!important}
-.worldNode7527[data-area="天空遺跡"]{left:79.5%!important;top:83.2%!important}
+.worldNode7527[data-area7527="呪われた古城"]{left:49.8%!important;top:20.6%!important}
+.worldNode7527[data-area7527="氷の雪原"]{left:82.8%!important;top:31.0%!important}
+.worldNode7527[data-area7527="迷いの森"]{left:21.5%!important;top:38.5%!important}
+.worldNode7527[data-area7527="灼熱の火山"]{left:82.5%!important;top:55.8%!important}
+.worldNode7527[data-area7527="神話領域"]{left:27.5%!important;top:72.8%!important}
+.worldNode7527[data-area7527="天空遺跡"]{left:79.5%!important;top:83.2%!important}
 @media(max-width:420px){.worldBoard7527{min-height:590px!important}.worldNode7527{width:27%!important;padding:6px 5px!important}.worldNode7527 .name{font-size:11px!important}.worldNode7527 .meta{font-size:8px!important}}
 </style>
 <script id="v07528-map-art-version">(()=>{'use strict';const V='v0.75.28';function s(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}const r=window.render;if(typeof r==='function')window.render=function(){const z=r.apply(this,arguments);s();return z};s();setTimeout(s,700)})();</script>
+
+
+<style id="v07529-map-perfect-fit">
+/* v0.75.29: match live nodes to the baked fantasy-map plates.
+   The previous build targeted data-area, while live nodes are data-area7527. */
+.worldBoard7527{
+  min-height:650px!important;
+  aspect-ratio:0.69!important;
+  background-size:100% 100%!important;
+  overflow:hidden!important;
+}
+.worldNode7527{
+  width:31%!important;
+  min-height:82px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:8px 8px!important;
+  border-radius:14px!important;
+  background:linear-gradient(180deg,#071b31f5,#071424f7)!important;
+  border:2px solid #e3bd65!important;
+  box-shadow:0 7px 16px #000b,inset 0 1px 0 #ffffff20!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.worldNode7527 .name{font-size:13px!important;line-height:1.15!important}
+.worldNode7527 .meta{font-size:9px!important;line-height:1.35!important}
+.worldNode7527 .flag{font-size:9px!important;margin-top:5px!important}
+.worldNode7527[data-area7527="呪われた古城"]{left:50%!important;top:22%!important}
+.worldNode7527[data-area7527="氷の雪原"]{left:79%!important;top:34%!important}
+.worldNode7527[data-area7527="迷いの森"]{left:22%!important;top:40%!important}
+.worldNode7527[data-area7527="灼熱の火山"]{left:79%!important;top:57%!important}
+.worldNode7527[data-area7527="神話領域"]{left:27%!important;top:72%!important}
+.worldNode7527[data-area7527="天空遺跡"]{left:76%!important;top:83%!important}
+.worldNode7527.current{
+  border-color:#ffe08a!important;
+  box-shadow:0 0 0 3px #ffe08a33,0 7px 18px #000c!important;
+}
+.worldHeader7527>.stageChip7527{z-index:8!important}
+@media(max-width:420px){
+ .worldBoard7527{min-height:640px!important}
+ .worldNode7527{width:32%!important;min-height:76px!important;padding:7px 6px!important}
+ .worldNode7527 .name{font-size:12px!important}
+}
+</style>
+<script id="v07529-map-version">
+(()=>{'use strict';const V='v0.75.29';function stamp(){const b=document.getElementById('buildVersion');if(b)b.textContent=V;const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}const r=window.render;if(typeof r==='function')window.render=function(){const z=r.apply(this,arguments);stamp();return z};stamp();setTimeout(stamp,700)})();
+</script>
 
 </body></html>
