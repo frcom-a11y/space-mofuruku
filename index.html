@@ -8011,4 +8011,69 @@ window.addEventListener('load',()=>{stamp();setTimeout(stamp,1200)},{once:true})
 })();
 </script>
 
+
+<style id="v07537-map-structural-fix">
+/* Structural fix:
+   The artwork owns every gold/black plaque.
+   HTML nodes contain ONLY dynamic text and touch hitboxes — never another frame. */
+#obox:has(.worldBoard7527) .worldNode7527,
+#obox:has(.worldBoard7527) .worldNode7527.current,
+#obox:has(.worldBoard7527) .worldNode7527.locked{
+ border:0!important;outline:0!important;box-shadow:none!important;
+ background:transparent!important;border-radius:0!important;
+ width:22%!important;max-width:22%!important;height:10.5%!important;min-height:0!important;
+ padding:2px!important;margin:0!important;transform:translate(-50%,-50%)!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+ touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important
+}
+#obox:has(.worldBoard7527) .worldNode7527 .name{font-size:clamp(9px,2.7vw,12px)!important;line-height:1.08!important;color:#fff0ba!important;text-shadow:0 1px 2px #000!important}
+#obox:has(.worldBoard7527) .worldNode7527 .meta{font-size:clamp(7px,1.95vw,9px)!important;line-height:1.18!important;color:#d8e3ee!important;margin-top:3px!important;text-shadow:0 1px 2px #000!important}
+#obox:has(.worldBoard7527) .worldNode7527 .flag{font-size:clamp(6px,1.7vw,8px)!important;padding:2px 4px!important;margin-top:4px!important;border:1px solid #d5aa49!important;border-radius:999px!important;background:#38240ddd!important;color:#ffe4a1!important}
+
+/* Exact inner-text centers of the six plaques in the original map bitmap. */
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="呪われた古城"]{left:49.4%!important;top:19.5%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="氷の雪原"]{left:85.3%!important;top:31.6%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="迷いの森"]{left:20.0%!important;top:38.0%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="灼熱の火山"]{left:85.1%!important;top:54.5%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="神話領域"]{left:23.6%!important;top:73.5%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="天空遺跡"]{left:82.9%!important;top:84.3%!important}
+
+/* Page 2: the two real areas occupy two existing artwork plaques.
+   Empty artwork plaques are treated as future-stage slots rather than duplicate/broken cards. */
+#obox:has(.worldBoard7527) .worldBoard7527.v7537p2 .worldNode7527[data-area7527="紅蓮魔界"]{left:20.0%!important;top:38.0%!important}
+#obox:has(.worldBoard7527) .worldBoard7527.v7537p2 .worldNode7527[data-area7527="毒沼地"]{left:49.4%!important;top:19.5%!important}
+.v7537Soon{position:absolute;transform:translate(-50%,-50%);width:20%;height:8%;display:flex;align-items:center;justify-content:center;text-align:center;color:#60788f;font-size:clamp(6px,1.7vw,8px);font-weight:900;pointer-events:none}
+</style>
+<script id="v07537-map-controller">
+(()=>{
+'use strict';
+const V='v0.75.37';
+const unused=[{x:85.3,y:31.6},{x:85.1,y:54.5},{x:23.6,y:73.5},{x:82.9,y:84.3}];
+let busy=false;
+function sync(){
+ if(busy)return;busy=true;
+ try{
+  const board=document.querySelector('.worldBoard7527');if(!board){stamp();return}
+  const txt=board.querySelector('.worldHeader7527 .stageChip7527')?.textContent||'';
+  const p2=/2\s*\/\s*2/.test(txt);
+  board.classList.toggle('v7537p2',p2);
+  board.querySelectorAll('.v7537Soon').forEach(x=>x.remove());
+  if(p2)unused.forEach(s=>{const d=document.createElement('div');d.className='v7537Soon';d.style.left=s.x+'%';d.style.top=s.y+'%';d.textContent='COMING SOON';board.appendChild(d)});
+  stamp();
+ }finally{busy=false}
+}
+function stamp(){
+ const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
+ if(b){b.id='buildVersion';if(b.textContent!==V)b.textContent=V}
+ const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+const obs=new MutationObserver(()=>requestAnimationFrame(sync));
+try{obs.observe(document.getElementById('overlay')||document.body,{subtree:true,childList:true,characterData:true})}catch(_){}
+['stageView','render','open'].forEach(n=>{const f=window[n];if(typeof f!=='function'||f.__v7537)return;const w=function(){const z=f.apply(this,arguments);requestAnimationFrame(sync);return z};w.__v7537=true;window[n]=w});
+window.__DOD_MAP_7537={version:V,frameOwner:'background-art',htmlFrame:false};
+sync();setTimeout(sync,200);setTimeout(sync,900);
+})();
+</script>
+
 </body></html>
