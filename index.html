@@ -7951,28 +7951,7 @@ function bind7527(){
 #obox:has(.worldBoard7527) .worldBoard7527.page2-7535 .worldNode7527[data-area7527="毒沼地"]{left:49.4%!important;top:19.45%!important}
 .mapSoon7535{position:absolute;transform:translate(-50%,-50%);width:22.5%;height:11.7%;display:flex;align-items:center;justify-content:center;text-align:center;color:#7890a7;font-size:clamp(7px,2vw,9px);font-weight:900;letter-spacing:.04em;pointer-events:none;text-shadow:0 1px 2px #000}
 </style>
-<script id="v07535-map-finalizer">
-(()=>{
-'use strict';
-const V='v0.75.35';
-const slots=[{x:49.4,y:19.45},{x:85.35,y:31.55},{x:20.03,y:38.03},{x:85.07,y:54.45},{x:23.60,y:73.47},{x:82.88,y:84.27}];
-function finalize(){
- const board=document.querySelector('.worldBoard7527');if(!board)return;
- const page=(board.querySelector('.worldHeader7527 .stageChip7527')?.textContent||'').trim();
- const is2=/2\s*\/\s*2/.test(page);
- board.classList.toggle('page2-7535',is2);
- board.querySelectorAll('.mapSoon7535').forEach(x=>x.remove());
- if(is2)[1,3,4,5].forEach(i=>{const d=document.createElement('div');d.className='mapSoon7535';d.style.left=slots[i].x+'%';d.style.top=slots[i].y+'%';d.textContent='COMING SOON';board.appendChild(d)});
- stamp();
-}
-function stamp(){}
-const mo=new MutationObserver(()=>requestAnimationFrame(finalize));
-try{mo.observe(document.getElementById('overlay')||document.body,{subtree:true,childList:true,characterData:true})}catch(_){}
-const oldStage=window.stageView;if(typeof oldStage==='function')window.stageView=function(){const z=oldStage.apply(this,arguments);setTimeout(finalize,0);return z};
-finalize();setTimeout(finalize,200);setTimeout(finalize,700);
-window.__DOD_MAP_FINAL_7535={version:V,method:'baked-plate-text-overlay'};
-})();
-</script>
+<script id="v07535-map-finalizer">/* superseded by v0.75.40 */</script>
 <style id="v07537-map-structural-fix">
 /* Structural fix:
    The artwork owns every gold/black plaque.
@@ -8005,51 +7984,78 @@ window.__DOD_MAP_FINAL_7535={version:V,method:'baked-plate-text-overlay'};
 #obox:has(.worldBoard7527) .worldBoard7527.v7537p2 .worldNode7527[data-area7527="毒沼地"]{left:49.4%!important;top:19.5%!important}
 .v7537Soon{position:absolute;transform:translate(-50%,-50%);width:20%;height:8%;display:flex;align-items:center;justify-content:center;text-align:center;color:#60788f;font-size:clamp(6px,1.7vw,8px);font-weight:900;pointer-events:none}
 </style>
-<script id="v07537-map-controller">
-(()=>{
-'use strict';
-const V='v0.75.37';
-const unused=[{x:85.3,y:31.6},{x:85.1,y:54.5},{x:23.6,y:73.5},{x:82.9,y:84.3}];
-let busy=false;
-function sync(){
- if(busy)return;busy=true;
- try{
-  const board=document.querySelector('.worldBoard7527');if(!board){stamp();return}
-  const txt=board.querySelector('.worldHeader7527 .stageChip7527')?.textContent||'';
-  const p2=/2\s*\/\s*2/.test(txt);
-  board.classList.toggle('v7537p2',p2);
-  board.querySelectorAll('.v7537Soon').forEach(x=>x.remove());
-  if(p2)unused.forEach(s=>{const d=document.createElement('div');d.className='v7537Soon';d.style.left=s.x+'%';d.style.top=s.y+'%';d.textContent='COMING SOON';board.appendChild(d)});
-  stamp();
- }finally{busy=false}
-}
-function stamp(){}
-const obs=new MutationObserver(()=>requestAnimationFrame(sync));
-try{obs.observe(document.getElementById('overlay')||document.body,{subtree:true,childList:true,characterData:true})}catch(_){}
-['stageView','render','open'].forEach(n=>{const f=window[n];if(typeof f!=='function'||f.__v7537)return;const w=function(){const z=f.apply(this,arguments);requestAnimationFrame(sync);return z};w.__v7537=true;window[n]=w});
-window.__DOD_MAP_7537={version:V,frameOwner:'background-art',htmlFrame:false};
-sync();setTimeout(sync,200);setTimeout(sync,900);
-})();
-</script>
+<script id="v07537-map-controller">/* superseded by v0.75.40 */</script>
 
-<script id="v07539-single-version-owner">
+<style id="v07540-world-final-style">
+/* Final world map: background art owns the gold frames; HTML is text/hit-area only. */
+#obox:has(.worldBoard7527) .worldNode7527,
+#obox:has(.worldBoard7527) .worldNode7527.current,
+#obox:has(.worldBoard7527) .worldNode7527.locked{
+ border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;
+ width:22%!important;max-width:22%!important;height:10.5%!important;min-height:0!important;
+ padding:2px!important;border-radius:0!important;transform:translate(-50%,-50%)!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+ overflow:visible!important
+}
+#obox:has(.worldBoard7527) .worldNode7527 .name{font-size:clamp(9px,2.7vw,12px)!important;line-height:1.08!important;color:#fff0ba!important;text-shadow:0 1px 2px #000!important}
+#obox:has(.worldBoard7527) .worldNode7527 .meta{font-size:clamp(7px,1.95vw,9px)!important;line-height:1.18!important;color:#d8e3ee!important;margin-top:3px!important;text-shadow:0 1px 2px #000!important}
+#obox:has(.worldBoard7527) .worldNode7527 .flag{font-size:clamp(6px,1.7vw,8px)!important;padding:2px 4px!important;margin-top:4px!important;border:1px solid #d5aa49!important;border-radius:999px!important;background:#38240ddd!important;color:#ffe4a1!important}
+/* Page 1 exact plaque centers. */
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="呪われた古城"]{left:49.4%!important;top:19.45%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="氷の雪原"]{left:85.35%!important;top:31.55%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="迷いの森"]{left:20.03%!important;top:38.03%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="灼熱の火山"]{left:85.07%!important;top:54.45%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="神話領域"]{left:23.60%!important;top:73.47%!important}
+#obox:has(.worldBoard7527) .worldNode7527[data-area7527="天空遺跡"]{left:82.88%!important;top:84.27%!important}
+/* Page 2 real areas use two map plaques. No COMING SOON DOM is created. */
+#obox:has(.worldBoard7527) .worldBoard7527.v7540p2 .worldNode7527[data-area7527="紅蓮魔界"]{left:20.03%!important;top:38.03%!important}
+#obox:has(.worldBoard7527) .worldBoard7527.v7540p2 .worldNode7527[data-area7527="毒沼地"]{left:49.4%!important;top:19.45%!important}
+.stageOnly7540{display:inline-block;margin-left:5px;padding:2px 5px;border-radius:999px;border:1px solid #a37a35;background:#33240d;color:#ffe09b;font-size:8px;font-weight:900}
+</style>
+<script id="v07540-world-final">
 (()=>{
 'use strict';
-const V='v0.75.39';
-function stamp(){
- const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
- if(b){b.id='buildVersion';b.textContent=V}
- const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
- document.title='どろダン / DROP OF DUNGEON '+V;
+const V='v0.75.40';
+let lock=false;
+function uniqueDrops(st){
+ const mons=[...new Set((st.boss?[st.bossMonster||st.enemies?.[0]]:(st.enemies||[])).filter(Boolean))];
+ const out=[];
+ mons.forEach(mon=>(drops[mon]||[]).forEach(d=>{
+   const elsewhere=stages.some(other=>other!==st&&((other.enemies||[]).includes(mon)||other.bossMonster===mon));
+   out.push({...d,monster:mon,stageOnly:!elsewhere});
+ }));
+ return out;
 }
-['render','open','stageView','baseView','partyView','itemView','bookView','shopView','saveGuardView'].forEach(n=>{
- const f=window[n];if(typeof f!=='function'||f.__v7539)return;
- const w=function(){const z=f.apply(this,arguments);stamp();return z};
- w.__v7539=true;window[n]=w;
-});
-window.__DOD_VERSION_7539={version:V,singleOwner:true,mapStampDisabled:true};
-stamp();setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
-window.addEventListener('load',()=>setTimeout(stamp,1000),{once:true});
+function sync(){
+ if(lock)return;lock=true;
+ try{
+  const board=document.querySelector('.worldBoard7527');
+  if(board){
+   const page=board.querySelector('.worldHeader7527 .stageChip7527')?.textContent||'';
+   board.classList.toggle('v7540p2',/2\s*\/\s*2/.test(page));
+   board.querySelectorAll('.mapSoon7535,.v7537Soon').forEach(x=>x.remove());
+  }
+  stamp();
+ }finally{lock=false}
+}
+function enhanceDetail(){
+ const body=document.getElementById('obody');if(!body)return;
+ if(!body.textContent.includes('出現モンスターとDROP'))return;
+ const title=body.querySelector('h2')?.textContent?.trim();
+ const st=stages.find(s=>s.name===title);if(!st||body.querySelector('.exclusive7540'))return;
+ const all=uniqueDrops(st),exclusive=all.filter(d=>d.stageOnly),missing=all.filter(d=>!S.dropFound?.[d.n]);
+ const panel=document.createElement('div');panel.className='panel exclusive7540';
+ panel.innerHTML=`<b>このステージの収集ポイント</b><div class="stageInfoRow7527"><span class="stageChip7527 ${missing.length?'warn':'good'}">未取得 ${missing.length}/${all.length}</span><span class="stageChip7527 ${exclusive.length?'warn':'good'}">このステージ限定 ${exclusive.length}</span></div><div class="stageMissing7527">${exclusive.length?exclusive.map(d=>`<span class="stageOnly7540">${esc7540(d.n)} ← ${esc7540(d.monster)}</span>`).join(' '):'このステージだけに出現するモンスター由来のDROPはありません。'}</div>`;
+ const target=[...body.querySelectorAll('.panel')].find(x=>x.textContent.includes('未取得アイテム一覧'));
+ target?.after(panel);
+}
+function esc7540(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+const obs=new MutationObserver(()=>requestAnimationFrame(()=>{sync();enhanceDetail()}));
+try{obs.observe(document.getElementById('overlay')||document.body,{subtree:true,childList:true})}catch(_){}
+['stageView','open','render'].forEach(n=>{const f=window[n];if(typeof f!=='function'||f.__v7540)return;const w=function(){const z=f.apply(this,arguments);requestAnimationFrame(()=>{sync();enhanceDetail()});return z};w.__v7540=true;window[n]=w});
+window.__DOD_WORLD_7540={version:V,final:true,noFutureCards:true,collectionGuide:true};
+sync();enhanceDetail();setTimeout(()=>{sync();enhanceDetail()},500);
 })();
 </script>
 
