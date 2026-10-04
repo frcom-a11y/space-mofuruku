@@ -7973,45 +7973,6 @@ finalize();setTimeout(finalize,200);setTimeout(finalize,700);
 window.__DOD_MAP_FINAL_7535={version:V,method:'baked-plate-text-overlay'};
 })();
 </script>
-
-
-<script id="v07536-authoritative-version">
-(()=>{
-'use strict';
-const V='v0.75.36';
-let correcting=false;
-function stamp(){
- if(correcting)return; correcting=true;
- try{
-  const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
-  if(b){b.id='buildVersion';if(b.textContent!==V)b.textContent=V}
-  const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;
-  const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t;
- }finally{correcting=false}
-}
-const root=document.documentElement;
-const mo=new MutationObserver(ms=>{
- if(correcting)return;
- let need=false;
- for(const m of ms){
-  const n=m.target.nodeType===3?m.target.parentElement:m.target;
-  if(n?.id==='buildVersion'||n?.id==='buildVersion69'||n?.matches?.('.logo small')){need=true;break}
- }
- if(need)queueMicrotask(stamp);
-});
-try{mo.observe(root,{subtree:true,childList:true,characterData:true})}catch(_){}
-['render','open','stageView','baseView','partyView','itemView','bookView'].forEach(name=>{
- const fn=window[name];if(typeof fn!=='function'||fn.__v7536)return;
- const w=function(){const z=fn.apply(this,arguments);stamp();requestAnimationFrame(stamp);return z};
- w.__v7536=true;window[name]=w;
-});
-window.__DOD_VERSION_7536={version:V,authoritative:true};
-stamp();setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
-window.addEventListener('load',()=>{stamp();setTimeout(stamp,1200)},{once:true});
-})();
-</script>
-
-
 <style id="v07537-map-structural-fix">
 /* Structural fix:
    The artwork owns every gold/black plaque.
@@ -8073,6 +8034,27 @@ try{obs.observe(document.getElementById('overlay')||document.body,{subtree:true,
 ['stageView','render','open'].forEach(n=>{const f=window[n];if(typeof f!=='function'||f.__v7537)return;const w=function(){const z=f.apply(this,arguments);requestAnimationFrame(sync);return z};w.__v7537=true;window[n]=w});
 window.__DOD_MAP_7537={version:V,frameOwner:'background-art',htmlFrame:false};
 sync();setTimeout(sync,200);setTimeout(sync,900);
+})();
+</script>
+
+
+<script id="v07538-version-owner">
+(()=>{
+'use strict';
+const V='v0.75.38';
+function stamp(){
+ const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
+ if(b){b.id='buildVersion';b.textContent=V}
+ const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+['render','open','stageView','baseView'].forEach(n=>{
+ const f=window[n];if(typeof f!=='function'||f.__v7538)return;
+ const w=function(){const z=f.apply(this,arguments);stamp();return z};
+ w.__v7538=true;window[n]=w;
+});
+window.__DOD_VERSION_7538={version:V,removed7536Observer:true};
+stamp();setTimeout(stamp,0);setTimeout(stamp,900);
 })();
 </script>
 
