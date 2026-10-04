@@ -1984,9 +1984,9 @@ window.__forge53={
  function bankPanel57(){const total=S.gold+S.bank;open('モフルク銀行',`<div class="bank57"><div class="sectionTitle">🏦 モフルク銀行</div><div class="bankSummary"><div><span>手持ち</span><b>${S.gold.toLocaleString()}G</b></div><div><span>預金</span><b class="rar-phantom">${S.bank.toLocaleString()}G</b></div><div><span>総資産</span><b>${total.toLocaleString()}G</b></div></div><p class="small">全滅時に失うのは手持ちGの25%。預金は保護されます。</p><div class="bankActions"><button class="miniBtn" data-dep57="100">100G預ける</button><button class="miniBtn" data-dep57="1000">1,000G預ける</button><button class="miniBtn" data-dep57="all">全額預ける</button><button class="miniBtn" data-wd57="100">100G引出</button><button class="miniBtn" data-wd57="1000">1,000G引出</button><button class="miniBtn" data-wd57="all">全額引出</button></div></div>`);document.querySelectorAll('[data-dep57]').forEach(b=>b.onclick=()=>{let v=b.dataset.dep57==='all'?S.gold:+b.dataset.dep57;bankMove('deposit',v);setTimeout(bankPanel57,0)});document.querySelectorAll('[data-wd57]').forEach(b=>b.onclick=()=>{let v=b.dataset.wd57==='all'?S.bank:+b.dataset.wd57;bankMove('withdraw',v);setTimeout(bankPanel57,0)})}
  baseView=function(){
   let injured=S.hp.some((h,i)=>h<maxHp(i))||S.mp.some((m,i)=>m<maxMp(i));
-  open('星降りの拠点',`<div class="base57Hero"><div class="base57Castle">🏰 ✦</div><h2>星降りの拠点</h2><p class="small">冒険の準備・育成・収集をここで整える</p></div><div class="base57Status"><div><span>手持ち</span><b>${S.gold.toLocaleString()}G</b></div><div><span>預金</span><b>${S.bank.toLocaleString()}G</b></div><div><span>仲間</span><b>${S.monsterCompanions.length}体</b></div></div><div class="inn57"><h3>🛏️ 星見の宿屋</h3><p class="small">パーティ全員のHP・MPを無料で全回復します。</p><button id="inn57">${injured?'休んで全回復':'HP・MPは満タン'}</button></div><div class="sectionTitle" style="margin-top:10px">拠点施設</div><div class="facGrid57"><button class="fac57" data-f57="shop"><b>🏪</b><strong>ショップ</strong><small>装備・薬草・上薬草・特薬草・生命の雫</small></button><button class="fac57" data-f57="forge"><b>⚒️</b><strong>星鍛冶屋</strong><small>素材化・装備を+10まで強化</small></button><button class="fac57" data-f57="bank"><b>🏦</b><strong>モフルク銀行</strong><small>全滅からゴールドを守る</small></button><button class="fac57" data-f57="ranch"><b>🐾</b><strong>モンスター牧場</strong><small>仲間・希少個体・絆・編成</small></button><button class="fac57" data-f57="party"><b>⚔️</b><strong>パーティ</strong><small>3人の装備と能力を確認</small></button><button class="fac57" data-f57="book"><b>📖</b><strong>図鑑</strong><small>COLLECTION・DROP・BEST品質</small></button><button class="fac57" data-f57="items"><b>🎒</b><strong>倉庫</strong><small>装備・回復薬・素材を整理</small></button><button class="fac57" data-f57="profile"><b>🪪</b><strong>冒険者プロフィール</strong><small>ID・中断データ・保存ガイド</small></button><button class="fac57" data-f57="saveguard"><b>💾</b><strong>セーブ保護</strong><small>救出・バックアップ・復元</small></button></div>`);
+  open('星降りの拠点',`<div class="base57Hero"><div class="base57Castle">🏰 ✦</div><h2>星降りの拠点</h2><p class="small">冒険の準備・育成・収集をここで整える</p></div><div class="base57Status"><div><span>手持ち</span><b>${S.gold.toLocaleString()}G</b></div><div><span>預金</span><b>${S.bank.toLocaleString()}G</b></div><div><span>仲間</span><b>${S.monsterCompanions.length}体</b></div></div><div class="inn57"><h3>🛏️ 星見の宿屋</h3><p class="small">パーティ全員のHP・MPを無料で全回復します。</p><button id="inn57">${injured?'休んで全回復':'HP・MPは満タン'}</button></div><div class="sectionTitle" style="margin-top:10px">拠点施設</div><div class="facGrid57"><button class="fac57" data-f57="shop"><b>🏪</b><strong>ショップ</strong><small>装備・薬草・上薬草・特薬草・生命の雫</small></button><button class="fac57" data-f57="forge"><b>⚒️</b><strong>星鍛冶屋</strong><small>素材化・装備を+10まで強化</small></button><button class="fac57" type="button" data-f57="alchemy7518"><b aria-hidden="true">⚒️</b><strong>錬成工房</strong><small>素材を集めて装備を錬成</small></button><button class="fac57" data-f57="bank"><b>🏦</b><strong>モフルク銀行</strong><small>全滅からゴールドを守る</small></button><button class="fac57" data-f57="ranch"><b>🐾</b><strong>モンスター牧場</strong><small>仲間・希少個体・絆・編成</small></button><button class="fac57" data-f57="party"><b>⚔️</b><strong>パーティ</strong><small>3人の装備と能力を確認</small></button><button class="fac57" data-f57="book"><b>📖</b><strong>図鑑</strong><small>COLLECTION・DROP・BEST品質</small></button><button class="fac57" data-f57="items"><b>🎒</b><strong>倉庫</strong><small>装備・回復薬・素材を整理</small></button><button class="fac57" data-f57="profile"><b>🪪</b><strong>冒険者プロフィール</strong><small>ID・中断データ・保存ガイド</small></button><button class="fac57" data-f57="saveguard"><b>💾</b><strong>セーブ保護</strong><small>救出・バックアップ・復元</small></button></div>`);
   let inn=document.getElementById('inn57');if(inn)inn.onclick=healAtInn57;
-  document.querySelectorAll('[data-f57]').forEach(b=>b.onclick=()=>{let f=b.dataset.f57;if(f==='shop'){open('ショップ','');shopView('回復')}else if(f==='forge')window.forgeView53();else if(f==='bank')bankPanel57();else if(f==='ranch')ranch57();else if(f==='party')partyView();else if(f==='book')bookView();else if(f==='items')itemView();else if(f==='profile'){if(window.__profile741)window.__profile741.open();else toast('プロフィールを開けませんでした')}if(f==='saveguard')saveGuardView()});
+  document.querySelectorAll('[data-f57]').forEach(b=>b.onclick=()=>{let f=b.dataset.f57;if(f==='shop'){open('ショップ','');shopView('回復')}else if(f==='forge')window.forgeView53();else if(f==='alchemy7518'){const fv=window.__DOD_FORGE_7518?.view;if(typeof fv==='function')fv();else toast('錬成工房を読み込めません')}else if(f==='bank')bankPanel57();else if(f==='ranch')ranch57();else if(f==='party')partyView();else if(f==='book')bookView();else if(f==='items')itemView();else if(f==='profile'){if(window.__profile741)window.__profile741.open();else toast('プロフィールを開けませんでした')}if(f==='saveguard')saveGuardView()});
  };
  window.ranch57=ranch57;window.bankPanel57=bankPanel57;
  const logo=document.querySelector('.logo small');if(logo)logo.textContent=VERSION57;document.title='どろダン / DROP OF DUNGEON v0.57 STARFALL BASE';save();render();
@@ -7093,7 +7093,7 @@ function forgeView(){
  document.querySelectorAll('[data-craft7518]').forEach(b=>b.onclick=()=>craft(b.dataset.craft7518));
 }
 function addEntry(){
- const body=document.getElementById('obody');if(!body||document.getElementById('forgeBtn7518'))return;
+ const body=document.getElementById('obody');if(!body||body.querySelector('.facGrid57')||document.getElementById('forgeBtn7518'))return;
  /* Only inject into the base/home view where the bank is present. */
  if(!body.textContent.includes('モフルク銀行'))return;
  const b=document.createElement('button');b.id='forgeBtn7518';b.className='miniBtn';b.type='button';b.textContent='⚒ 錬成工房';b.onclick=forgeView;
@@ -7110,7 +7110,7 @@ addEntry();stamp();setTimeout(()=>{addEntry();stamp()},400);
 
 
 <style id="v07519-forge-card-style">
-#forgeCard7519{touch-action:manipulation}
+#forgeCard7519,#obody .facGrid57 [data-f57="alchemy7518"]{touch-action:manipulation}
 </style>
 <script id="v07519-forge-card">
 (()=>{
@@ -7196,18 +7196,45 @@ finish();setTimeout(finish,0);setTimeout(finish,350);
 </script>
 
 
-<script id="v07524-final-base-repair">
+<script id="v07525-live-base-forge-fix">
 (()=>{
 'use strict';
-const V='v0.75.24';
-function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
-function forgeEntry(){const body=document.getElementById('obody');if(!body)return;const grid=body.querySelector('.baseFacilities');if(!grid)return;let b=grid.querySelector('[data-fac="forge"]');if(!b){b=document.createElement('button');b.className='facility';b.type='button';b.dataset.fac='forge';b.innerHTML='<b>⚒️</b><span>錬成工房<small>素材を集めて装備を錬成</small></span>';const shop=grid.querySelector('[data-fac="shop"]');if(shop)shop.after(b);else grid.appendChild(b)}b.onclick=()=>{const f=window.__DOD_FORGE_7518?.view;if(typeof f==='function')f();else toast('錬成工房を読み込めません')};document.getElementById('forgeBtn7518')?.remove()}
+const V='v0.75.25';
+function stamp(){
+ const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
+ if(b){b.id='buildVersion';if(b.textContent!==V)b.textContent=V}
+ const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;
+ const title='どろダン / DROP OF DUNGEON '+V;if(document.title!==title)document.title=title;
+}
+function openAlchemy(){
+ const view=window.__DOD_FORGE_7518?.view;
+ if(typeof view==='function')return view();
+ toast('錬成工房を読み込めません');
+}
+function forgeEntry(){
+ const body=document.getElementById('obody');if(!body)return;
+ const grid=body.querySelector('.facGrid57');if(!grid)return;
+ let b=grid.querySelector('[data-f57="alchemy7518"]');
+ if(!b){
+  b=document.createElement('button');b.className='fac57';b.type='button';b.dataset.f57='alchemy7518';
+  b.innerHTML='<b aria-hidden="true">⚒️</b><strong>錬成工房</strong><small>素材を集めて装備を錬成</small>';
+  const smith=grid.querySelector('[data-f57="forge"]');
+  if(smith)smith.after(b);else grid.appendChild(b);
+ }
+ b.onclick=openAlchemy;
+ body.querySelector('#forgeBtn7518')?.remove();
+}
 function finish(){forgeEntry();stamp()}
-const ob=window.baseView;if(typeof ob==='function')window.baseView=function(){const z=ob.apply(this,arguments);finish();requestAnimationFrame(finish);setTimeout(finish,0);return z};
-const oo=window.open;if(typeof oo==='function')window.open=function(){const z=oo.apply(this,arguments);setTimeout(finish,0);return z};
-const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);finish();return z};
-window.__DOD_REPAIR_7524={version:V,disabledExclusive7492Stamp:true,forgeRepair:true};
-finish();setTimeout(finish,0);setTimeout(finish,500);
+const ob=window.baseView;
+if(typeof ob==='function')window.baseView=function(){const z=ob.apply(this,arguments);finish();requestAnimationFrame(finish);setTimeout(finish,0);return z};
+const oo=window.open;
+if(typeof oo==='function')window.open=function(){const z=oo.apply(this,arguments);setTimeout(finish,0);return z};
+const rr=window.render;
+if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);finish();return z};
+window.__DOD_REPAIR_7525={version:V,baseGrid:'.facGrid57',workshop:'alchemy7518',smith:'forge',forgeRepair:true};
+finish();setTimeout(finish,0);setTimeout(finish,500);setTimeout(finish,1000);
+// Historical art modules schedule a one-time build label on load; settle the label afterwards.
+window.addEventListener('load',()=>setTimeout(finish,800),{once:true});
 })();
 </script>
 
