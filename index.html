@@ -8019,9 +8019,9 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.56';
+const V='v0.75.57';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
-const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300};
+const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350};
 function names(){try{return partyNames()}catch(_){return []}}
 function aliveSlot(i){return Number(S?.hp?.[i]||0)>0}
 function livingEnemy(){return typeof living==='function'&&living().length>0}
@@ -8105,5 +8105,78 @@ stamp();
 })();
 </script>
 <!-- ===== /v0.75.56 ===== -->
+
+
+<!-- ===== v0.75.57 NINE HERO BATTLE MOTIONS ===== -->
+<style id="v07557-nine-motion-style">
+.heroGhost7557{position:absolute;z-index:29;pointer-events:none;object-fit:contain;transform-origin:50% 72%;will-change:transform,opacity,filter}
+.fx7557{position:absolute;z-index:31;pointer-events:none;will-change:transform,opacity}
+.toaGhost7557{animation:toa7557 .34s cubic-bezier(.18,.8,.2,1) forwards}
+@keyframes toa7557{0%{transform:translate(0,0) scale(1)}20%{opacity:.2;transform:translate(12px,-3px) scale(.92)}48%{opacity:1;transform:translate(var(--dx),var(--dy)) scale(1.12)}65%{transform:translate(var(--dx2),var(--dy2)) scale(1.05)}100%{transform:translate(0,0) scale(1)}}
+.pivotGhost7557{animation:pivot7557 .42s ease-out forwards}
+@keyframes pivot7557{0%{transform:translateY(0) scale(1)}35%{transform:translateY(-8px) scale(1.06);filter:brightness(1.25)}100%{transform:translateY(0) scale(1)}}
+.liliaGhost7557{animation:mage7557 .48s ease-out forwards}.noaGhost7557{animation:recoil7557 .36s ease-out forwards}
+@keyframes mage7557{0%{transform:translateY(0)}40%{transform:translateY(-12px) scale(1.06);filter:brightness(1.3)}100%{transform:translateY(0)}}
+@keyframes recoil7557{0%{transform:translateX(0)}32%{transform:translateX(-8px) rotate(-2deg)}100%{transform:translateX(0)}}
+.selenaGhost7557,.zephalGhost7557{animation:dash7557 .40s cubic-bezier(.16,.84,.22,1) forwards}
+@keyframes dash7557{0%{transform:translate(0,0) scale(1)}20%{opacity:.35;transform:translate(-8px,0) scale(.96)}52%{opacity:1;transform:translate(var(--dx),var(--dy)) scale(1.12)}68%{transform:translate(var(--dx2),var(--dy2)) scale(1.04)}100%{transform:translate(0,0) scale(1)}}
+.kaguraGhost7557{animation:kagura7557 .44s cubic-bezier(.12,.82,.18,1) forwards}
+@keyframes kagura7557{0%{transform:translate(0,0)}22%{opacity:.15;transform:translate(-5px,0)}48%,70%{opacity:1;transform:translate(var(--dx2),var(--dy2)) scale(1.08)}100%{transform:translate(0,0)}}
+.leonGhost7557{animation:leon7557 .46s cubic-bezier(.2,.75,.2,1) forwards}
+@keyframes leon7557{0%{transform:translate(0,0)}28%{transform:translate(-10px,2px) scale(.98)}62%{transform:translate(var(--dx),var(--dy)) scale(1.14)}100%{transform:translate(0,0)}}
+.azGhost7557{animation:az7557 .46s ease-out forwards}
+@keyframes az7557{0%{transform:translateY(0)}35%{transform:translateY(-7px) rotate(-3deg);filter:brightness(1.15)}100%{transform:translateY(0)}}
+.slash7557{width:92px;height:8px;border-radius:50%;background:linear-gradient(90deg,transparent,#fff 45%,#bde8ff 55%,transparent);box-shadow:0 0 12px #a8ddff;transform:rotate(-18deg);animation:slash7557 .20s ease-out forwards}
+.slash7557.second{transform:rotate(24deg);filter:hue-rotate(235deg)}
+@keyframes slash7557{0%{opacity:0;scale:.35}35%{opacity:1;scale:1.2}100%{opacity:0;scale:1.5}}
+.magicRing7557{width:46px;height:46px;border:3px solid #ff7e9f;border-radius:50%;box-shadow:0 0 14px #ff557f,inset 0 0 10px #ffd4df;animation:ring7557 .38s ease-out forwards}
+.magicRing7557:after{content:"✦";position:absolute;inset:5px;text-align:center;font-size:24px;color:#fff}
+@keyframes ring7557{0%{opacity:0;transform:scale(.2) rotate(0)}50%{opacity:1;transform:scale(1) rotate(70deg)}100%{opacity:0;transform:scale(1.3) rotate(120deg)}}
+.bolt7557{width:18px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 7px #ffe0ea,0 0 16px #ff466e;animation:bolt7557 var(--dur,.28s) linear forwards}
+.starBolt7557{background:#e9fbff;box-shadow:0 0 8px #fff,0 0 17px #67d9ff}
+@keyframes bolt7557{to{transform:translate(var(--tx),var(--ty)) scale(.7);opacity:.35}}
+.scan7557{width:58px;height:58px;border:2px solid #7cf7e8;border-radius:50%;box-shadow:0 0 14px #4de0ff;animation:scan7557 .38s ease-out forwards}
+.scan7557:before,.scan7557:after{content:"";position:absolute;background:#b9fff7}.scan7557:before{left:27px;top:-8px;width:2px;height:74px}.scan7557:after{top:27px;left:-8px;height:2px;width:74px}
+@keyframes scan7557{0%{opacity:0;transform:scale(1.6) rotate(-30deg)}50%{opacity:1;transform:scale(1) rotate(0)}100%{opacity:0;transform:scale(.72) rotate(25deg)}}
+.lance7557{width:110px;height:5px;border-radius:50%;background:linear-gradient(90deg,transparent,#dfffe9,#66f3b0);box-shadow:0 0 10px #55dfb0;transform-origin:0 50%;animation:lance7557 .22s ease-out forwards}
+@keyframes lance7557{0%{opacity:0;scale:.2 1}40%{opacity:1;scale:1.1 1}100%{opacity:0;scale:1.35 1}}
+.heavy7557{width:115px;height:8px;border-radius:50%;background:linear-gradient(90deg,transparent,#d8f5ff,#54b8e8);box-shadow:0 0 12px #4cb3e7;animation:lance7557 .26s ease-out forwards}
+.soul7557{width:30px;height:38px;border-radius:50% 50% 44% 44%;background:radial-gradient(circle at 50% 35%,#e8d8ff 0 14%,#7a3bd1 36%,#23103e 72%,transparent 75%);box-shadow:0 0 14px #6d36bb;animation:soul7557 .34s ease-in forwards}
+.soul7557:after{content:"";position:absolute;left:7px;bottom:-13px;border-left:8px solid transparent;border-right:8px solid transparent;border-top:17px solid #542795}
+@keyframes soul7557{0%{opacity:.3;transform:translate(0,0) scale(.65)}55%{opacity:1}100%{opacity:.15;transform:translate(var(--tx),var(--ty)) scale(1.15)}}
+</style>
+<script id="v07557-nine-hero-motions">
+(()=>{
+'use strict';
+const V='v0.75.57';
+const NINE=new Set(['トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','アズライル']);
+const base=window.__DOD_PARTY_MOTION_7549;if(!base||typeof base.motionSlot!=='function')return;
+const original=base.motionSlot;
+function battle(){return document.getElementById('battle')}
+function hero(slot,name){const b=battle();if(!b)return null;return b.querySelector(`.hqHuman749.slot${slot} img[data-hero="${name}"]`)}
+function enemy(idx){const b=battle();if(!b)return null;return b.querySelector(`.enemy[data-i="${idx}"]`)||b.querySelector('.enemy:not(.dead)')}
+function point(el,b){const r=el.getBoundingClientRect(),br=b.getBoundingClientRect();return {x:r.left-br.left+r.width*.5,y:r.top-br.top+r.height*.48,r,br}}
+function ghost(slot,name,cls){const b=battle(),img=hero(slot,name);if(!b||!img)return null;const r=img.getBoundingClientRect(),br=b.getBoundingClientRect();if(!r.width)return null;const g=img.cloneNode(false);g.removeAttribute('data-hero');g.className='heroGhost7557 '+cls;Object.assign(g.style,{left:(r.left-br.left)+'px',top:(r.top-br.top)+'px',width:r.width+'px',height:r.height+'px'});b.appendChild(g);return {b,g,r,br}}
+function fx(b,cls,x,y,life=450){const z=document.createElement('i');z.className='fx7557 '+cls;Object.assign(z.style,{left:x+'px',top:y+'px'});b.appendChild(z);setTimeout(()=>z.remove(),life);return z}
+function targetData(slot,name,idx,cls){const q=ghost(slot,name,cls),e=enemy(idx);if(!q||!e)return null;const ep=point(e,q.b),sx=q.r.left-q.br.left+q.r.width*.62,sy=q.r.top-q.br.top+q.r.height*.42;return {...q,ep,sx,sy,dx:ep.x-sx,dy:ep.y-sy}}
+function dash(q,ratio=.72){q.g.style.setProperty('--dx',(q.dx*ratio)+'px');q.g.style.setProperty('--dy',(q.dy*ratio)+'px');q.g.style.setProperty('--dx2',(q.dx*.88)+'px');q.g.style.setProperty('--dy2',(q.dy*.88)+'px')}
+function cleanup(q,ms=520){setTimeout(()=>q.g.remove(),ms)}
+function toa(slot,idx){const q=targetData(slot,'トア',idx,'toaGhost7557');if(!q)return false;dash(q,.78);setTimeout(()=>fx(q.b,'slash7557',q.ep.x-46,q.ep.y,240),150);cleanup(q,420);return true}
+function pivot(slot,idx){const q=targetData(slot,'ピボット',idx,'pivotGhost7557');if(!q)return false;setTimeout(()=>fx(q.b,'scan7557',q.ep.x-29,q.ep.y-29,420),70);setTimeout(()=>{const z=fx(q.b,'bolt7557 starBolt7557',q.sx,q.sy,330);z.style.setProperty('--tx',q.dx+'px');z.style.setProperty('--ty',q.dy+'px')},120);cleanup(q,470);return true}
+function lilia(slot,idx){const q=targetData(slot,'リリア',idx,'liliaGhost7557');if(!q)return false;setTimeout(()=>fx(q.b,'magicRing7557',q.sx-23,q.sy-23,420),45);setTimeout(()=>{const z=fx(q.b,'bolt7557',q.sx,q.sy,360);z.style.setProperty('--tx',q.dx+'px');z.style.setProperty('--ty',q.dy+'px');z.style.setProperty('--dur','.30s')},115);cleanup(q,520);return true}
+function selena(slot,idx){const q=targetData(slot,'セレナ',idx,'selenaGhost7557');if(!q)return false;dash(q,.78);setTimeout(()=>fx(q.b,'slash7557',q.ep.x-48,q.ep.y-10,230),130);setTimeout(()=>fx(q.b,'slash7557 second',q.ep.x-45,q.ep.y+8,230),210);cleanup(q,470);return true}
+function noa(slot,idx){const q=targetData(slot,'ノア',idx,'noaGhost7557');if(!q)return false;setTimeout(()=>{const z=fx(q.b,'bolt7557 starBolt7557',q.sx,q.sy,330);z.style.setProperty('--tx',q.dx+'px');z.style.setProperty('--ty',q.dy+'px');z.style.setProperty('--dur','.24s')},75);cleanup(q,420);return true}
+function kagura(slot,idx){const q=targetData(slot,'カグラ',idx,'kaguraGhost7557');if(!q)return false;dash(q,.82);setTimeout(()=>fx(q.b,'slash7557 second',q.ep.x-52,q.ep.y-5,260),245);cleanup(q,500);return true}
+function zephal(slot,idx){const q=targetData(slot,'ゼファル',idx,'zephalGhost7557');if(!q)return false;dash(q,.82);setTimeout(()=>fx(q.b,'lance7557',q.ep.x-82,q.ep.y,250),145);cleanup(q,460);return true}
+function leon(slot,idx){const q=targetData(slot,'レオンハルト',idx,'leonGhost7557');if(!q)return false;dash(q,.70);setTimeout(()=>fx(q.b,'heavy7557',q.ep.x-90,q.ep.y,290),190);cleanup(q,520);return true}
+function az(slot,idx){const q=targetData(slot,'アズライル',idx,'azGhost7557');if(!q)return false;setTimeout(()=>{const z=fx(q.b,'soul7557',q.sx,q.sy-12,420);z.style.setProperty('--tx',q.dx+'px');z.style.setProperty('--ty',q.dy+'px')},80);cleanup(q,500);return true}
+const MAP={トア:toa,ピボット:pivot,リリア:lilia,セレナ:selena,ノア:noa,カグラ:kagura,ゼファル:zephal,レオンハルト:leon,アズライル:az};
+base.motionSlot=function(slot,idx=null){const name=typeof partyNames==='function'?partyNames()[slot]:null;if(NINE.has(name)){const fn=MAP[name];return fn?fn(slot,idx):false}return original(slot,idx)};
+base.v07557={version:V,names:[...NINE],readOnly:true};
+function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);stamp();return z};stamp();
+})();
+</script>
+<!-- ===== /v0.75.57 ===== -->
 
 </body></html>
