@@ -7906,4 +7906,37 @@ window.__DOD_NAV_7544={version:V,depth:()=>stack.length,back:backOrClose,ensureE
 </script>
 <!-- ===== /v0.75.44 ===== -->
 
+\n\n<!-- ===== v0.75.45 FOREST BOSS -> ICE FIELD PROGRESSION REPAIR ===== -->
+<script id="v07545-forest-ice-progression">
+(()=>{
+'use strict';
+const V='v0.75.45';
+const FOREST_BOSS='森の主・月狼';
+let repaired=false;
+function bossDefeated(s){return !!s?.clears?.fb||Number(s?.kills?.[FOREST_BOSS]||0)>0}
+function repair(){
+ S.clears=S.clears||{};
+ if(Number(S.kills?.[FOREST_BOSS]||0)>0&&!S.clears.fb){S.clears.fb=true;repaired=true}
+ const i1=stages.find(x=>x.id==='i1');
+ const i2=stages.find(x=>x.id==='i2');
+ const ib=stages.find(x=>x.id==='ib');
+ if(i1){i1.unlock=s=>bossDefeated(s);i1.unlockText='迷いの森ボス撃破で解放'}
+ if(i2){i2.unlock=s=>bossDefeated(s)&&(s.lv||1)>=15;i2.unlockText='迷いの森ボス撃破＋Lv15で解放'}
+ if(ib){ib.unlock=s=>bossDefeated(s)&&(s.lv||1)>=18;ib.unlockText='迷いの森ボス撃破＋Lv18で解放'}
+ if(repaired){repaired=false;try{save()}catch(_){}}
+}
+function stamp(){
+ const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}
+ const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+function finishStamp(){stamp();requestAnimationFrame(stamp);setTimeout(stamp,0)}
+const render0=window.render;if(typeof render0==='function')window.render=function(){repair();const z=render0.apply(this,arguments);finishStamp();return z};
+const stage0=window.stageView;if(typeof stage0==='function')window.stageView=function(){repair();const z=stage0.apply(this,arguments);finishStamp();return z};
+repair();stamp();setTimeout(()=>{repair();stamp()},350);setTimeout(stamp,900);
+window.__DOD_ICE_PROGRESS_7545={version:V,repair,bossDefeated};
+})();
+</script>
+<!-- ===== /v0.75.45 ===== -->
+
 </body></html>
