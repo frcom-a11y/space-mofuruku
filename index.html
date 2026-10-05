@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.71';
+const V='v0.75.72';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8182,7 +8182,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.71';
+const V='v0.75.72';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8315,7 +8315,7 @@ function dispatch(slot,idx){const n=partyNames()[slot];if(n==='フェンリル'|
 @keyframes enemyImpact769{0%{opacity:0;scale:.2}40%{opacity:1;scale:1.2}100%{opacity:0;scale:2.8}}
 </style>
 <script id="v07569-enemy-motion">
-(()=>{'use strict';const V='v0.75.71';
+(()=>{'use strict';const V='v0.75.72';
 const original=window.enemyTurn;if(typeof original!=='function')return;
 const R=()=>document.getElementById('battle');
 function EP(i){const r=R(),e=r?.querySelector(`.enemy[data-i="${i}"]`);if(!r||!e)return null;const candidates=[...e.querySelectorAll('.monsterArt,.svgSprite,.sprite img,.sprite svg,.sprite canvas,.monster,.sprite>*')];let img=candidates.find(x=>{const q=x.getBoundingClientRect(),cs=getComputedStyle(x);return q.width>8&&q.height>8&&cs.display!=='none'&&cs.visibility!=='hidden'&&+cs.opacity!==0})||e.querySelector('.sprite')||e;const x=img.getBoundingClientRect(),br=r.getBoundingClientRect();return{x:x.left-br.left+x.width*.5,y:x.top-br.top+x.height*.55,img,r,e}}
@@ -8327,9 +8327,9 @@ function animateEnemy(ei,pi,name,done){const a=EP(ei),b=PP(pi);if(!a||!b){setTim
  const g=a.img.cloneNode(true);g.removeAttribute?.('id');g.classList.add('enemyGhost769');const rr=a.img.getBoundingClientRect(),br=a.r.getBoundingClientRect();Object.assign(g.style,{position:'absolute',display:'block',visibility:'visible',opacity:'1',left:rr.left-br.left+'px',top:rr.top-br.top+'px',width:rr.width+'px',height:rr.height+'px'});const ratio=k==='heavy'||k==='large'?.72:k==='pounce'?.96:k==='dive'?.92:k==='bounce'?.82:.88;g.style.setProperty('--dx',((b.x-a.x)*ratio)+'px');g.style.setProperty('--dy',((b.y-a.y)*ratio)+'px');const oldVis=a.img.style.visibility;a.img.style.setProperty('visibility','hidden','important');a.r.appendChild(g);setTimeout(()=>{g.remove();if(oldVis)a.img.style.visibility=oldVis;else a.img.style.removeProperty('visibility');impact(b);done()},300)}
 window.enemyTurn=function(){const attackers=living().slice();if(!attackers.length)return;let cursor=0;
  function next(){if(cursor>=attackers.length){S.guard=false;if(!aliveParty().length)wipe();try{render()}catch(_){}return}const e=attackers[cursor++];if(!e||e.hp<=0)return next();let ap=aliveParty();if(!ap.length)return;const pi=ap[Math.floor(Math.random()*ap.length)],def=statsFor(pi).def;
- if(e.charge){let d=Math.max(1,e.atk*2-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));animateEnemy(E.indexOf(e),pi,e.name,()=>{partyDamage(pi,d);e.charge=false;showLog(`${e.name}の強攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}
- else if(Math.random()<.2){e.charge=true;showLog(`⚠ ${e.name}が力を溜めている！`);setTimeout(next,100)}
- else{let d=Math.max(1,e.atk-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));animateEnemy(E.indexOf(e),pi,e.name,()=>{partyDamage(pi,d);showLog(`${e.name}の攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}}
+ if(e.charge){let d=Math.max(1,e.atk*2-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));(window.__DOD_ENEMY_MOTION_7569?.bossAttack&&e.boss?window.__DOD_ENEMY_MOTION_7569.bossAttack.bind(null,e.name,E.indexOf(e),pi):animateEnemy.bind(null,E.indexOf(e),pi,e.name))(()=>{partyDamage(pi,d);e.charge=false;showLog(`${e.name}の強攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}
+ else if(Math.random()<.2){e.charge=true;try{window.__DOD_ENEMY_MOTION_7569?.bossCharge?.(e.name,E.indexOf(e))}catch(_){}showLog(`⚠ ${e.name}が力を溜めている！`);setTimeout(next,100)}
+ else{let d=Math.max(1,e.atk-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));(window.__DOD_ENEMY_MOTION_7569?.bossAttack&&e.boss?window.__DOD_ENEMY_MOTION_7569.bossAttack.bind(null,e.name,E.indexOf(e),pi):animateEnemy.bind(null,E.indexOf(e),pi,e.name))(()=>{partyDamage(pi,d);showLog(`${e.name}の攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}}
  next();
 };
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp();window.__DOD_ENEMY_MOTION_7569={version:V,kind};
@@ -8350,4 +8350,32 @@ function type(n){if(/スライム/.test(n))return'bounce';if(/ゴブリン/.test
 api.kind=type;window.__DOD_MONSTER_TYPES_7571={version:V,type,map:{bounce:'跳ね体当たり',weapon:'武器突進',pounce:'飛びかかり',spore:'胞子弾',sting:'毒針',dive:'急降下',magic:'魔法弾',breath:'ブレス',heavy:'重量攻撃'}};
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp()})();
 </script><!-- ===== /v0.75.71 ===== -->
+<!-- ===== v0.75.72 BOSS MOTIONS ===== -->
+<style id="v07572-boss-style">
+.bossFx772{position:absolute;z-index:90;pointer-events:none;transform:translate(-50%,-50%)}
+.shock772{width:28px;height:14px;border:4px solid #e7c57a;border-radius:50%;box-shadow:0 0 14px #ffd77b;animation:shock772 .42s ease-out forwards}@keyframes shock772{to{opacity:0;transform:translate(-50%,-50%) scale(7,4)}}
+.claw772{width:90px;height:7px;border-radius:50%;background:#e9f3ff;box-shadow:0 0 12px #a6c7ff;animation:claw772 .18s ease-out forwards}@keyframes claw772{0%{opacity:0;scale:.3}35%{opacity:1;scale:1.15}100%{opacity:0;scale:1.6}}
+.iceRing772{width:52px;height:26px;border:4px solid #9df1ff;border-radius:50%;box-shadow:0 0 16px #8cecff;animation:ring772 .45s ease-out forwards}.fireCharge772{width:24px;height:24px;border-radius:50%;background:radial-gradient(circle,#fff,#ffd16a 25%,#ff542d 58%,transparent 72%);box-shadow:0 0 20px #ff6935;animation:charge772 .7s ease-in-out infinite alternate}
+@keyframes ring772{0%{opacity:0;scale:.2}45%{opacity:1;scale:1.2}100%{opacity:0;scale:3.5}}@keyframes charge772{to{transform:translate(-50%,-50%) scale(1.8);filter:brightness(1.4)}}
+.pillar772{width:18px;height:75px;background:linear-gradient(#fff,#8de9ff,#3c9be4);clip-path:polygon(50% 0,100% 100%,0 100%);animation:pillar772 .34s ease-out forwards}@keyframes pillar772{0%{opacity:0;transform:translate(-50%,20%) scaleY(.1)}45%{opacity:1;transform:translate(-50%,-50%) scaleY(1.1)}100%{opacity:0;transform:translate(-50%,-55%) scaleY(1.3)}}
+.breath772{width:60px;height:26px;border-radius:50%;background:linear-gradient(90deg,#fff2b8,#ff9b43,#e92e20);box-shadow:0 0 18px #ff6234;animation:breath772 .42s linear forwards}@keyframes breath772{to{transform:translate(var(--dx),var(--dy)) scale(1.5,.9);opacity:.2}}
+</style>
+<script id="v07572-boss-motion">
+(()=>{'use strict';const V='v0.75.72',api=window.__DOD_ENEMY_MOTION_7569;if(!api)return;
+const R=()=>document.getElementById('battle'),ELEM=i=>R()?.querySelector(`.enemy[data-i="${i}"]`);
+function pos(el){const r=R(),a=el.getBoundingClientRect(),b=r.getBoundingClientRect();return{x:a.left-b.left+a.width*.5,y:a.top-b.top+a.height*.5,r}}
+function fx(cls,x,y,ms=500){const r=R(),z=document.createElement('i');z.className='bossFx772 '+cls;z.style.left=x+'px';z.style.top=y+'px';r.appendChild(z);setTimeout(()=>z.remove(),ms);return z}
+function partyPos(i){const e=document.querySelectorAll('#party .pcard')[i];return e?pos(e):null}
+function bossPos(i){const e=ELEM(i);return e?pos(e.querySelector('.sprite')||e):null}
+function charge(name,i){const p=bossPos(i);if(!p)return;if(name==='焔竜王・ヴォルガノス')fx('fireCharge772',p.x,p.y-15,900);else if(name==='氷雪の女王・フロスティア')fx('iceRing772',p.x,p.y,700);else if(name==='森の主・月狼'){for(let n=0;n<3;n++)setTimeout(()=>fx('claw772',p.x-35,p.y-10+n*12,260),n*80)}else fx('shock772',p.x,p.y+25,600)}
+function attack(name,ei,pi,done){const a=bossPos(ei),b=partyPos(pi);if(!a||!b)return done();
+ if(name==='草原キング'){fx('shock772',a.x,a.y+25,480);setTimeout(()=>{fx('shock772',b.x,b.y,360);done()},360);return}
+ if(name==='森の主・月狼'){const el=ELEM(ei)?.querySelector('.sprite');if(el)el.animate([{opacity:1},{opacity:0},{opacity:1}],{duration:240});for(let n=0;n<3;n++)setTimeout(()=>{const z=fx('claw772',b.x-45,b.y-18+n*16,220);z.style.transform=`translate(-50%,-50%) rotate(${n===1?15:-18}deg)`},150+n*75);setTimeout(done,410);return}
+ if(name==='氷雪の女王・フロスティア'){fx('iceRing772',b.x,b.y+10,450);setTimeout(()=>fx('pillar772',b.x,b.y,390),170);setTimeout(done,480);return}
+ if(name==='焔竜王・ヴォルガノス'){const z=fx('breath772',a.x,a.y,480);z.style.setProperty('--dx',(b.x-a.x)+'px');z.style.setProperty('--dy',(b.y-a.y)+'px');setTimeout(done,430);return}
+ done();
+}
+api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={version:V,names:['草原キング','森の主・月狼','氷雪の女王・フロスティア','焔竜王・ヴォルガノス']};
+})();
+</script><!-- ===== /v0.75.72 ===== -->
 </body></html>
