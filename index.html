@@ -7988,7 +7988,7 @@ window.__DOD_ICE_PROGRESS_7545={version:V,repair,bossDefeated};
 const V='v0.75.52',SUPPORTED=new Set(['キーボ','ミア','ナーヴァ']),busy=[false,false,false];
 function names(){try{const p=typeof partyNames==='function'?partyNames():[];return Array.isArray(p)?p.slice(0,3):[]}catch(_){return []}}
 function battle(){return document.getElementById('battle')}
-function enemyEl(){const b=battle();if(!b)return null;const i=Number.isInteger(target)?target:0;return b.querySelector(`.enemy[data-i="${i}"]`)||b.querySelector('.enemy:not(.dead)')||b.querySelector('.enemy')}
+let motionTargetIndex=null;function enemyEl(){const b=battle();if(!b)return null;const i=Number.isInteger(motionTargetIndex)?motionTargetIndex:(Number.isInteger(target)?target:0);return b.querySelector(`.enemy[data-i="${i}"]`)||b.querySelector('.enemy:not(.dead)')||b.querySelector('.enemy')}
 function live(slot,name){const b=battle();if(!b||names()[slot]!==name)return null;const img=b.querySelector(`.hqHuman749.slot${slot} img[data-hero="${name}"]`);return img?{b,img}:null}
 function clone(slot,name,cls,motionClass){if(busy[slot]||!SUPPORTED.has(name)||names()[slot]!==name)return null;const q=live(slot,name);if(!q)return null;const {b,img}=q,br=b.getBoundingClientRect(),ir=img.getBoundingClientRect();if(!ir.width||!ir.height)return null;busy[slot]=true;b.classList.add(motionClass);const g=img.cloneNode(false);g.removeAttribute('data-hero');g.className='heroGhost7548 '+cls;Object.assign(g.style,{left:(ir.left-br.left)+'px',top:(ir.top-br.top)+'px',width:ir.width+'px',height:ir.height+'px'});b.appendChild(g);return {b,g,br,ir,motionClass}}
 function cleanup(slot,q,ms){setTimeout(()=>{q.g.remove();q.b.classList.remove(q.motionClass);busy[slot]=false},ms)}
@@ -7997,7 +7997,7 @@ function kibo(slot){const q=clone(slot,'キーボ','kiboGhost7548','motionKibo75
 function mia(slot){const q=clone(slot,'ミア','miaGhost7548','motionMia7548');if(!q)return false;const er=enemyEl()?.getBoundingClientRect(),{b,br,ir}=q;if(er){const sx=ir.left-br.left+ir.width*.62,sy=ir.top-br.top+ir.height*.32,ex=er.left-br.left+er.width*.5,ey=er.top-br.top+er.height*.48;setTimeout(()=>{const o=document.createElement('i');o.className='orb7548';Object.assign(o.style,{left:sx+'px',top:sy+'px'});o.style.setProperty('--tx',(ex-sx)+'px');o.style.setProperty('--ty',(ey-sy)+'px');b.appendChild(o);setTimeout(()=>o.remove(),450)},105);impact(b,ex,ey,430)}cleanup(slot,q,590);return true}
 function narva(slot){const q=clone(slot,'ナーヴァ','narvaGhost7548','motionNarva7548');if(!q)return false;const er=enemyEl()?.getBoundingClientRect(),{b,br,ir}=q;if(er){const sx=ir.left-br.left+ir.width*.69,sy=ir.top-br.top+ir.height*.43,ex=er.left-br.left+er.width*.5,ey=er.top-br.top+er.height*.5,dx=ex-sx,dy=ey-sy;setTimeout(()=>{const layer=document.createElement('i');layer.className='narvaFlail7551';const links=[];for(let i=0;i<18;i++){const z=document.createElement('i');z.className='flailLink7551';layer.appendChild(z);links.push(z)}const ball=document.createElement('i');ball.className='flailBall7551';layer.appendChild(ball);const arcs=[];for(let i=0;i<3;i++){const a=document.createElement('i');a.className='flailArc7551';layer.appendChild(a);arcs.push(a)}b.appendChild(layer);const total=500,t0=performance.now();function pos(t){if(t<.16){const u=t/.16;return [sx-18*u,sy+8*u]}if(t<.57){const u=(t-.16)/.41;return [sx+dx*u,sy+dy*u-Math.sin(Math.PI*u)*Math.min(92,Math.max(48,Math.abs(dx)*.24))]}if(t<.70){return [ex,ey]}const u=(t-.70)/.30;return [ex+(sx-ex)*u,ey+(sy-ey)*u-Math.sin(Math.PI*u)*28]}function frame(now){const t=Math.min(1,(now-t0)/total),bp=pos(t);ball.style.left=bp[0]+'px';ball.style.top=bp[1]+'px';ball.style.opacity=t<.04||t>.98?'0':'1';ball.style.transform=`rotate(${t*620}deg) scale(${t>.54&&t<.72?1.16:1})`;for(let i=0;i<links.length;i++){const u=(i+1)/(links.length+1),x=sx+(bp[0]-sx)*u,y=sy+(bp[1]-sy)*u+Math.sin(u*Math.PI*2+t*8)*Math.sin(Math.PI*u)*5;const nx=i===links.length-1?bp[0]:sx+(bp[0]-sx)*((i+2)/(links.length+1)),ny=i===links.length-1?bp[1]:sy+(bp[1]-sy)*((i+2)/(links.length+1));links[i].style.left=x+'px';links[i].style.top=y+'px';links[i].style.rotate=(Math.atan2(ny-y,nx-x)*180/Math.PI+(i%2?78:0))+'deg';links[i].style.opacity=t<.05||t>.97?'0':'1'}arcs.forEach((a,i)=>{const show=t>.22&&t<.76&&((Math.floor(t*34)+i*2)%5<2);a.style.opacity=show?'.82':'0';a.style.left=(bp[0]+Math.sin(t*39+i*2.1)*19)+'px';a.style.top=(bp[1]+Math.cos(t*31+i*1.7)*18)+'px';a.style.rotate=(Math.sin(t*27+i)*55)+'deg'});if(t<1)requestAnimationFrame(frame);else layer.remove()}requestAnimationFrame(frame);setTimeout(()=>{const h=document.createElement('i');h.className='flailHit7551';Object.assign(h.style,{left:ex+'px',top:ey+'px'});b.appendChild(h);setTimeout(()=>h.remove(),260);impact(b,ex,ey,0)},405);setTimeout(()=>layer.remove(),760)},55)}cleanup(slot,q,780);return true}
 function motionName(slot,p=names(),hp=S?.hp){const name=Array.isArray(p)?p[slot]:null;return SUPPORTED.has(name)&&Number(hp?.[slot]||0)>0?name:null}
-function motionSlot(slot){const name=motionName(slot);if(name==='キーボ')return kibo(slot);if(name==='ミア')return mia(slot);if(name==='ナーヴァ')return narva(slot);return false}
+function motionSlot(slot,enemyIndex=null){const name=motionName(slot);motionTargetIndex=Number.isInteger(enemyIndex)?enemyIndex:null;try{if(name==='キーボ')return kibo(slot);if(name==='ミア')return mia(slot);if(name==='ナーヴァ')return narva(slot);return false}finally{motionTargetIndex=null}}
 function stamp(){const x=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(x){x.id='buildVersion';x.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
 const attack0=window.attack;
 if(typeof attack0==='function')window.attack=function(){const leader=names()[0]||'キーボ';if((S?.hp?.[0]||0)>0)motionSlot(0);const log0=window.showLog,toast0=window.toast;try{if(typeof log0==='function')window.showLog=function(t){if(t==='キーボの攻撃！')t=leader+'の攻撃！';return log0.apply(this,[t,...Array.prototype.slice.call(arguments,1)])};if(typeof toast0==='function')window.toast=function(t){if(t==='キーボは戦闘不能')t=leader+'は戦闘不能';return toast0.apply(this,[t,...Array.prototype.slice.call(arguments,1)])};return attack0.apply(this,arguments)}finally{if(log0)window.showLog=log0;if(toast0)window.toast=toast0;stamp()}};
@@ -8015,11 +8015,11 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 
 
 
-<!-- ===== v0.75.55 ONE-PUSH ONE-ACTOR BATTLE SEQUENCER + MOTION RECONNECT ===== -->
-<script id="v07555-one-actor-turns">
+<!-- ===== v0.75.56 TARGET-SYNCED ONE-ACTOR BATTLE ===== -->
+<script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.55';
+const V='v0.75.56';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8039,7 +8039,7 @@ function calcCompanion(slot){
  const d=Math.floor(st.atk*mult*(.86+Math.random()*.25)*(crit?1.65:1));
  return {d,crit};
 }
-function animate(slot){try{return !!window.__DOD_PARTY_MOTION_7549?.motionSlot?.(slot)}catch(_){return false}}
+function animate(slot,idx){try{return !!window.__DOD_PARTY_MOTION_7549?.motionSlot?.(slot,idx)}catch(_){return false}}
 function applyHit(slot,idx,d,crit,token){
  if(token!==seqToken)return;
  if(!E[idx]||E[idx].hp<=0){idx=firstEnemy();if(idx<0){busy=false;return}}
@@ -8053,7 +8053,7 @@ function actorAttack(slot){
  const idx=firstEnemy();if(idx<0)return;
  const name=names()[slot]||'';
  busy=true;const token=++seqToken;
- animate(slot);
+ animate(slot,idx);
  if(slot===0){
    const st=statsFor(0),crit=Math.random()<st.crit/100,d=Math.floor(st.atk*(.85+Math.random()*.3)*(crit?1.8:1));
    showLog(name+'の攻撃！');
@@ -8104,6 +8104,6 @@ window.__DOD_TURN_7553={version:V,onePush,state:()=>({nextSlot,busy,enemyDue}),r
 stamp();
 })();
 </script>
-<!-- ===== /v0.75.55 ===== -->
+<!-- ===== /v0.75.56 ===== -->
 
 </body></html>
