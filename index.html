@@ -8182,7 +8182,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.60';
+const V='v0.75.61';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8261,5 +8261,55 @@ stamp();
 })();
 </script>
 <!-- ===== /v0.75.60 ===== -->
+
+
+<!-- ===== v0.75.61 DIRECT TEST ROSTER ===== -->
+<style id="v07561-direct-test-style">
+.testHero761{outline:1px solid rgba(255,214,82,.65);background:linear-gradient(90deg,rgba(70,48,12,.45),transparent)}
+.testBadge761{display:inline-block;padding:1px 6px;margin-left:5px;border-radius:999px;background:#6b4d0b;color:#ffe990;font-size:10px;font-weight:900}
+.testNote761{margin:8px 0;padding:9px;border:1px solid rgba(255,215,90,.5);border-radius:10px;background:rgba(55,39,10,.72);font-size:12px;color:#ffe9a6}
+</style>
+<script id="v07561-direct-test-roster">
+(()=>{
+'use strict';
+const V='v0.75.61';
+const TEST=['トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','アズライル'];
+let testParty=null;
+const realParty=()=>Array.isArray(S.partyFree7438)?S.partyFree7438.slice(0,3):['キーボ',...(S.partySlots||[])].slice(0,3);
+const originalPartyNames=partyNames;
+partyNames=function(){return testParty?testParty.slice():originalPartyNames.apply(this,arguments)};
+function esc(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function portrait(n){const src=window.__DOD_VISUAL7459?.[n];return src?`<span class="partyPortrait7459"><img src="${src}" alt="${esc(n)}" draggable="false"></span>`:''}
+function lv(n){const g=S.charGrowth?.[n];if(g&&Number.isFinite(g.lv))return g.lv;return ['リリア','セレナ','ノア','カグラ'].includes(n)?30:50}
+function choose(slot,n){
+ if(!TEST.includes(n)||slot<0||slot>2)return;
+ if(!testParty)testParty=realParty();
+ const other=testParty.indexOf(n);
+ if(other>=0)[testParty[slot],testParty[other]]=[testParty[other],testParty[slot]];
+ else testParty[slot]=n;
+ S.hp[slot]=maxHp(slot);S.mp[slot]=maxMp(slot);
+ render();show();
+}
+function show(){
+ if(!testParty)testParty=realParty();
+ open('パーティ TEST',`<div class="testNote761"><b>🎬 戦闘アニメ確認専用</b><br>TESTキャラは所持扱いになりません。ガチャ履歴・所持データには保存されず、リロードで元の編成へ戻ります。</div>
+ <div class="partyScreen7459"><section class="partyPanel7459"><h3>現在のテスト編成</h3><div class="partyCurrent7459">${testParty.map((n,i)=>`<div class="partyCurrentSlot7459">${portrait(n)}<b>${i+1}枠 ${esc(n)}</b><small>Lv.${lv(n)}</small><span>${i===0?'操作キャラクター':'仲間'}</span></div>`).join('')}</div></section>
+ <section class="partyPanel7459"><h3>アニメーション確認キャラ</h3>${TEST.map(n=>{const slot=testParty.indexOf(n);return `<div class="partyRow7459 testHero761 ${slot>=0?'isActive':''}">${portrait(n)}<div class="partyInfo7459"><b>${esc(n)}<span class="testBadge761">TEST</span></b><span>${esc(BASE_MEMBERS[n]?.role||'')}</span><em>${slot>=0?`${slot+1}枠に編成中`:'一時編成可能'}</em></div><div class="partyButtons7459">${[0,1,2].map(i=>`<button type="button" data-testhero761="${esc(n)}" data-testslot761="${i}" ${slot===i?'disabled':''}>${i+1}枠${slot===i?' ✓':''}</button>`).join('')}</div></div>`}).join('')}</section>
+ <button class="miniBtn" data-endtest761>TEST終了</button></div>`);
+ document.querySelectorAll('[data-testhero761]').forEach(b=>b.onclick=()=>choose(+b.dataset.testslot761,b.dataset.testhero761));
+ document.querySelector('[data-endtest761]')?.addEventListener('click',()=>{testParty=null;render();document.getElementById('overlay')?.classList.remove('open')});
+}
+const party0=partyView;
+partyView=function(mode='members'){
+ if(['members','free7438','heroes7436','complete7439','safe7445'].includes(mode))return show();
+ return party0.apply(this,arguments);
+};
+function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+const r0=render;render=function(){const z=r0.apply(this,arguments);stamp();return z};
+window.__DOD_DIRECT_TEST_7561={version:V,show,state:()=>({testParty:testParty?.slice()||null,realParty:realParty()})};
+stamp();
+})();
+</script>
+<!-- ===== /v0.75.61 ===== -->
 
 </body></html>
