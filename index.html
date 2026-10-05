@@ -8182,7 +8182,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.61';
+const V='v0.75.62';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8311,5 +8311,59 @@ stamp();
 })();
 </script>
 <!-- ===== /v0.75.61 ===== -->
+
+
+<!-- ===== v0.75.62 FIVE HERO POLISH ===== -->
+<style id="v07562-five-polish-style">
+.burst762{position:absolute;z-index:38;pointer-events:none;width:22px;height:22px;border-radius:50%;transform:translate(-50%,-50%);animation:burst762 .34s cubic-bezier(.1,.72,.2,1) forwards}
+@keyframes burst762{0%{opacity:0;transform:translate(-50%,-50%) scale(.12)}22%{opacity:1;transform:translate(-50%,-50%) scale(.65)}58%{opacity:1;transform:translate(-50%,-50%) scale(2.3)}100%{opacity:0;transform:translate(-50%,-50%) scale(3.4)}}
+.liliaBurst762{background:radial-gradient(circle,#fff 0 14%,#ffd7e5 16% 30%,#ff557f 34% 54%,rgba(255,64,112,.18) 58% 70%,transparent 73%);box-shadow:0 0 16px #fff,0 0 30px #ff557f,0 0 48px #ff2f68}
+.noaBurst762{background:radial-gradient(circle,#fff 0 12%,#dffaff 14% 28%,#58dfff 31% 48%,rgba(60,145,255,.18) 53% 70%,transparent 73%);box-shadow:0 0 16px #fff,0 0 30px #4ad9ff,0 0 50px #3b7cff}
+.azBurst762{background:radial-gradient(circle,#eee0ff 0 10%,#a55cf4 14% 29%,#40136d 34% 55%,rgba(25,4,43,.25) 60% 72%,transparent 75%);box-shadow:0 0 16px #b56bff,0 0 35px #6423a4,0 0 52px #1b082d}
+.ring762{position:absolute;z-index:37;pointer-events:none;width:20px;height:20px;border:3px solid currentColor;border-radius:50%;transform:translate(-50%,-50%);animation:ring762 .34s ease-out forwards}
+@keyframes ring762{0%{opacity:.9;transform:translate(-50%,-50%) scale(.3)}100%{opacity:0;transform:translate(-50%,-50%) scale(4.5)}}
+.spark762{position:absolute;z-index:39;pointer-events:none;width:5px;height:22px;border-radius:50%;background:#fff;transform-origin:50% 0;animation:spark762 .34s ease-out forwards}
+@keyframes spark762{to{opacity:0;transform:translate(var(--sx),var(--sy)) rotate(var(--rot)) scale(.3)}}
+.heroGhost762{position:absolute;z-index:98;pointer-events:none;object-fit:contain;object-position:center bottom;transform-origin:50% 82%;will-change:transform,opacity,filter}
+.zephalGhost762{animation:zephal762 .42s cubic-bezier(.1,.88,.16,1) forwards;filter:drop-shadow(0 0 10px #65f5b7)}
+@keyframes zephal762{0%{transform:translate(0,0) scale(1)}18%{opacity:.3;transform:translate(-16px,0) scale(.94)}50%{opacity:1;transform:translate(var(--dx),var(--dy)) scale(1.18)}68%{opacity:.75;transform:translate(var(--passx),var(--passy)) scale(1.10)}100%{opacity:1;transform:translate(0,0) scale(1)}}
+.leonGhost762{animation:leon762 .48s cubic-bezier(.16,.78,.16,1) forwards;filter:drop-shadow(0 8px 8px rgba(0,0,0,.35))}
+@keyframes leon762{0%{transform:translate(0,0) scale(1)}25%{transform:translate(-18px,4px) scale(.97)}62%{transform:translate(var(--dx),var(--dy)) scale(1.22)}72%{transform:translate(var(--dx2),var(--dy2)) scale(1.15)}100%{transform:translate(0,0) scale(1)}}
+</style>
+<script id="v07562-five-polish">
+(()=>{
+'use strict';
+const V='v0.75.62';
+const api=window.__DOD_NINE_MOTION_7559;if(!api||typeof api.dispatch!=='function')return;
+const old=api.dispatch;
+function b(){return document.getElementById('battle')}
+function e(idx){const x=b();return x?.querySelector(`.enemy[data-i="${idx}"]`)||x?.querySelector('.enemy:not(.dead)')}
+function h(slot,name){const x=b(),box=x?.querySelector(`.hqHuman749.slot${slot}.hero-${name}`)||x?.querySelector(`.hqHuman749.slot${slot}`);return box?.querySelector(`img[data-hero="${name}"]`)||box?.querySelector('img')}
+function pt(el,root){const r=el.getBoundingClientRect(),br=root.getBoundingClientRect();return{x:r.left-br.left+r.width*.5,y:r.top-br.top+r.height*.48,r,br}}
+function burst(idx,kind,color){
+ const root=b(),en=e(idx);if(!root||!en)return;const p=pt(en,root);
+ const z=document.createElement('i');z.className=`burst762 ${kind}`;z.style.left=p.x+'px';z.style.top=p.y+'px';root.appendChild(z);
+ const ring=document.createElement('i');ring.className='ring762';ring.style.color=color;ring.style.left=p.x+'px';ring.style.top=p.y+'px';root.appendChild(ring);
+ for(let i=0;i<8;i++){const q=document.createElement('i');q.className='spark762';q.style.left=p.x+'px';q.style.top=p.y+'px';const a=Math.PI*2*i/8,dist=30+(i%3)*8;q.style.setProperty('--sx',Math.cos(a)*dist+'px');q.style.setProperty('--sy',Math.sin(a)*dist+'px');q.style.setProperty('--rot',(i*45)+'deg');q.style.background=color;root.appendChild(q);setTimeout(()=>q.remove(),390)}
+ setTimeout(()=>{z.remove();ring.remove()},390);
+}
+function clone(slot,name,cls){const root=b(),img=h(slot,name);if(!root||!img)return null;const r=img.getBoundingClientRect(),br=root.getBoundingClientRect();if(!r.width)return null;const g=img.cloneNode(false);g.removeAttribute('data-hero');g.className='heroGhost762 '+cls;Object.assign(g.style,{left:r.left-br.left+'px',top:r.top-br.top+'px',width:r.width+'px',height:r.height+'px'});img.style.setProperty('visibility','hidden','important');root.appendChild(g);return{root,img,g,r,br}}
+function move(slot,name,idx,cls,pass=false){const q=clone(slot,name,cls),en=e(idx);if(!q||!en)return false;const ep=pt(en,q.root),sx=q.r.left-q.br.left+q.r.width*.55,sy=q.r.top-q.br.top+q.r.height*.55,dx=ep.x-sx,dy=ep.y-sy;q.g.style.setProperty('--dx',(dx*.84)+'px');q.g.style.setProperty('--dy',(dy*.84)+'px');q.g.style.setProperty('--dx2',(dx*.91)+'px');q.g.style.setProperty('--dy2',(dy*.91)+'px');q.g.style.setProperty('--passx',(dx*1.14)+'px');q.g.style.setProperty('--passy',(dy*1.06)+'px');setTimeout(()=>{q.g.remove();q.img.style.removeProperty('visibility')},560);return true}
+function dispatch(slot,idx){
+ const name=partyNames()[slot];
+ if(name==='リリア'){const ok=old(slot,idx);setTimeout(()=>burst(idx,'liliaBurst762','#ff86aa'),385);return ok}
+ if(name==='ノア'){const ok=old(slot,idx);setTimeout(()=>burst(idx,'noaBurst762','#7be7ff'),285);return ok}
+ if(name==='アズライル'){const ok=old(slot,idx);setTimeout(()=>burst(idx,'azBurst762','#9d5ae8'),340);return ok}
+ if(name==='ゼファル'){const ok=move(slot,name,idx,'zephalGhost762',true);setTimeout(()=>burst(idx,'noaBurst762','#72ffc4'),245);return ok}
+ if(name==='レオンハルト'){const ok=move(slot,name,idx,'leonGhost762');setTimeout(()=>burst(idx,'noaBurst762','#8bdfff'),300);return ok}
+ return old(slot,idx);
+}
+api.dispatch=dispatch;
+window.__DOD_FIVE_POLISH_7562={version:V,names:['リリア','ノア','アズライル','ゼファル','レオンハルト']};
+function stamp(){const x=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(x){x.id='buildVersion';x.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+stamp();
+})();
+</script>
+<!-- ===== /v0.75.62 ===== -->
 
 </body></html>
