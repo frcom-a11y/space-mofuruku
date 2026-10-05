@@ -7943,22 +7943,31 @@ window.__DOD_ICE_PROGRESS_7545={version:V,repair,bossDefeated};
 
 <!-- ===== v0.75.46 KEEBO NORMAL ATTACK MOTION PROTOTYPE ===== -->
 <style id="v07546-keebo-motion-style">
-#battle .hqHuman749.kibo749.keeboLunge7546{animation:keeboLunge7546 360ms cubic-bezier(.18,.88,.22,1) both!important;will-change:transform,filter;transform-origin:50% 82%;z-index:80!important}
-@keyframes keeboLunge7546{0%{transform:translate3d(0,0,0) scale(1);filter:drop-shadow(0 7px 7px rgba(0,0,0,.30))}18%{transform:translate3d(-10px,5px,0) scale(.94) rotate(-2deg)}55%{transform:translate3d(92px,-52px,0) scale(1.18) rotate(5deg);filter:drop-shadow(-18px 14px 5px rgba(0,0,0,.20)) brightness(1.16)}72%{transform:translate3d(104px,-57px,0) scale(1.12) rotate(3deg)}100%{transform:translate3d(0,0,0) scale(1);filter:drop-shadow(0 7px 7px rgba(0,0,0,.30))}}
-#battle .keeboTrail7546{position:absolute;left:25%;bottom:22%;width:132px;height:18px;z-index:76;pointer-events:none;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(235,249,255,.32),rgba(255,255,255,.94),rgba(134,220,255,.18),transparent);transform:rotate(-22deg) scaleX(.15);transform-origin:left center;animation:keeboTrail7546 300ms ease-out forwards;filter:blur(.4px);box-shadow:0 0 14px rgba(214,245,255,.65)}
-@keyframes keeboTrail7546{0%{opacity:0;transform:rotate(-22deg) scaleX(.08)}30%{opacity:1}62%{opacity:1;transform:rotate(-22deg) scaleX(1.05)}100%{opacity:0;transform:translate(38px,-24px) rotate(-22deg) scaleX(.48)}}
-#battle .keeboImpact7546{position:absolute;right:18%;top:30%;width:70px;height:70px;z-index:77;pointer-events:none;border-radius:50%;border:5px solid rgba(255,255,255,.92);animation:keeboImpact7546 230ms ease-out forwards;box-shadow:0 0 20px rgba(170,229,255,.8),inset 0 0 16px rgba(255,255,255,.7)}
-@keyframes keeboImpact7546{0%{opacity:0;transform:scale(.18) rotate(-20deg)}25%{opacity:1}100%{opacity:0;transform:scale(1.65) rotate(20deg)}}
+#battle.keeboMotion7546 .hqHuman749.kibo749{visibility:hidden!important}
+#battle .keeboGhost7546{position:absolute;z-index:90;pointer-events:none;object-fit:contain;object-position:center bottom;will-change:transform,filter,opacity;transform-origin:50% 82%;animation:keeboGhostLunge7546 430ms cubic-bezier(.18,.88,.22,1) both;filter:drop-shadow(0 8px 8px rgba(0,0,0,.34))}
+@keyframes keeboGhostLunge7546{0%{transform:translate3d(0,0,0) scale(1) rotate(0)}15%{transform:translate3d(-14px,7px,0) scale(.94) rotate(-3deg)}52%{transform:translate3d(125px,-58px,0) scale(1.20) rotate(6deg);filter:drop-shadow(-22px 16px 5px rgba(0,0,0,.22)) brightness(1.12)}68%{transform:translate3d(142px,-62px,0) scale(1.14) rotate(4deg)}100%{transform:translate3d(0,0,0) scale(1) rotate(0)}}
+#battle .keeboTrail7546{position:absolute;left:25%;bottom:22%;width:150px;height:20px;z-index:86;pointer-events:none;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(235,249,255,.28),rgba(255,255,255,.95),rgba(134,220,255,.16),transparent);transform:rotate(-22deg) scaleX(.15);transform-origin:left center;animation:keeboTrail7546 260ms ease-out forwards}
+@keyframes keeboTrail7546{0%{opacity:0;transform:rotate(-22deg) scaleX(.12)}28%{opacity:1}100%{opacity:0;transform:rotate(-22deg) scaleX(1.35)}}
+#battle .keeboImpact7546{position:absolute;right:16%;top:23%;width:78px;height:78px;z-index:87;pointer-events:none;border-radius:50%;border:5px solid rgba(255,255,255,.92);animation:keeboImpact7546 240ms ease-out forwards;box-shadow:0 0 22px rgba(170,229,255,.8),inset 0 0 18px rgba(255,255,255,.7)}
+@keyframes keeboImpact7546{0%{opacity:0;transform:scale(.18) rotate(-20deg)}25%{opacity:1}100%{opacity:0;transform:scale(1.7) rotate(20deg)}}
 </style>
 <script id="v07546-keebo-motion">
 (()=>{
 'use strict';
 const V='v0.75.46';let busy=false;
-function keeboVisual(){const battle=document.getElementById('battle');if(!battle)return null;return battle.querySelector('.hqHuman749.kibo749 img[data-hero="キーボ"]')?.parentElement||battle.querySelector('.hqHuman749.kibo749')||null}
-function motion(){if(busy)return;const battle=document.getElementById('battle'),hero=keeboVisual();if(!battle||!hero)return;busy=true;hero.classList.remove('keeboLunge7546');void hero.offsetWidth;hero.classList.add('keeboLunge7546');const trail=document.createElement('i');trail.className='keeboTrail7546';battle.appendChild(trail);setTimeout(()=>{const impact=document.createElement('i');impact.className='keeboImpact7546';battle.appendChild(impact);setTimeout(()=>impact.remove(),260)},150);setTimeout(()=>{hero.classList.remove('keeboLunge7546');trail.remove();busy=false},390)}
-function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+function live(){const b=document.getElementById('battle'),img=b?.querySelector('.hqHuman749.kibo749 img[data-hero="キーボ"]');return b&&img?{b,img}:null}
+function motion(){
+ if(busy)return;const q=live();if(!q)return;const {b,img}=q,br=b.getBoundingClientRect(),ir=img.getBoundingClientRect();if(!ir.width||!ir.height)return;
+ busy=true;b.classList.add('keeboMotion7546');
+ const g=img.cloneNode(false);g.removeAttribute('data-hero');g.className='keeboGhost7546';
+ Object.assign(g.style,{left:(ir.left-br.left)+'px',top:(ir.top-br.top)+'px',width:ir.width+'px',height:ir.height+'px'});b.appendChild(g);
+ const trail=document.createElement('i');trail.className='keeboTrail7546';b.appendChild(trail);
+ setTimeout(()=>{const impact=document.createElement('i');impact.className='keeboImpact7546';b.appendChild(impact);setTimeout(()=>impact.remove(),270)},190);
+ setTimeout(()=>{g.remove();trail.remove();b.classList.remove('keeboMotion7546');busy=false},460);
+}
+function stamp(){const x=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(x){x.id='buildVersion';x.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
 const attack0=window.attack;if(typeof attack0==='function'){window.attack=function(){if(S?.hp?.[0]>0)motion();const r=attack0.apply(this,arguments);stamp();return r};const ab=document.getElementById('attack');if(ab)ab.onclick=window.attack}
-stamp();setTimeout(stamp,350);setTimeout(stamp,950);window.__DOD_KEEBO_MOTION_7546={version:V,motion,keeboVisual};
+stamp();setTimeout(stamp,350);setTimeout(stamp,950);window.__DOD_KEEBO_MOTION_7546={version:V,motion,live};
 })();
 </script>
 <!-- ===== /v0.75.46 ===== -->
