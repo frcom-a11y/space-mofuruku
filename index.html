@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.69';
+const V='v0.75.70';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8182,7 +8182,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.69';
+const V='v0.75.70';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8315,16 +8315,16 @@ function dispatch(slot,idx){const n=partyNames()[slot];if(n==='フェンリル'|
 @keyframes enemyImpact769{0%{opacity:0;scale:.2}40%{opacity:1;scale:1.2}100%{opacity:0;scale:2.8}}
 </style>
 <script id="v07569-enemy-motion">
-(()=>{'use strict';const V='v0.75.69';
+(()=>{'use strict';const V='v0.75.70';
 const original=window.enemyTurn;if(typeof original!=='function')return;
 const R=()=>document.getElementById('battle');
-function EP(i){const r=R(),e=r?.querySelector(`.enemy[data-i="${i}"]`),img=e?.querySelector('.sprite img,.sprite svg');if(!r||!e)return null;const x=(img||e).getBoundingClientRect(),b=r.getBoundingClientRect();return{x:x.left-b.left+x.width*.5,y:x.top-b.top+x.height*.55,img:img||e,r}}
+function EP(i){const r=R(),e=r?.querySelector(`.enemy[data-i="${i}"]`);if(!r||!e)return null;const candidates=[...e.querySelectorAll('.monsterArt,.svgSprite,.sprite img,.sprite svg,.sprite canvas,.monster,.sprite>*')];let img=candidates.find(x=>{const q=x.getBoundingClientRect(),cs=getComputedStyle(x);return q.width>8&&q.height>8&&cs.display!=='none'&&cs.visibility!=='hidden'&&+cs.opacity!==0})||e.querySelector('.sprite')||e;const x=img.getBoundingClientRect(),br=r.getBoundingClientRect();return{x:x.left-br.left+x.width*.5,y:x.top-br.top+x.height*.55,img,r,e}}
 function PP(i){const r=R(),cards=document.querySelectorAll('#party .pcard'),e=cards[i];if(!r||!e)return null;const x=e.getBoundingClientRect(),b=r.getBoundingClientRect();return{x:x.left-b.left+x.width*.5,y:x.top-b.top+x.height*.35,r}}
 function kind(n){if(/フェアリー|ウィスプ|魔|メイジ|眼|エア|クラウド|精霊/i.test(n))return'magic';if(/ビー|バット|鳥|ドラゴン|ワイバーン/i.test(n))return'fly';if(/ゴーレム|巨|オーガ|トロル|ヒュドラ|ボス/i.test(n))return'large';return'melee'}
 function impact(p){const z=document.createElement('i');z.className='enemyImpact769';z.style.left=p.x+'px';z.style.top=p.y+'px';p.r.appendChild(z);setTimeout(()=>z.remove(),300)}
 function animateEnemy(ei,pi,name,done){const a=EP(ei),b=PP(pi);if(!a||!b){setTimeout(done,0);return}const k=kind(name);
  if(k==='magic'||k==='fly'){const z=document.createElement('i');z.className='enemyOrb769'+(k==='magic'?' magic':'');z.style.left=a.x+'px';z.style.top=a.y+'px';z.style.setProperty('--dx',(b.x-a.x)+'px');z.style.setProperty('--dy',(b.y-a.y)+'px');a.r.appendChild(z);setTimeout(()=>{z.remove();impact(b);done()},280);return}
- const g=a.img.cloneNode(true);g.classList.add('enemyGhost769');const rr=a.img.getBoundingClientRect(),br=a.r.getBoundingClientRect();Object.assign(g.style,{left:rr.left-br.left+'px',top:rr.top-br.top+'px',width:rr.width+'px',height:rr.height+'px'});g.style.setProperty('--dx',((b.x-a.x)*(k==='large'?.58:.72))+'px');g.style.setProperty('--dy',((b.y-a.y)*(k==='large'?.58:.72))+'px');a.img.style.visibility='hidden';a.r.appendChild(g);setTimeout(()=>{g.remove();a.img.style.visibility='';impact(b);done()},300)}
+ const g=a.img.cloneNode(true);g.removeAttribute?.('id');g.classList.add('enemyGhost769');const rr=a.img.getBoundingClientRect(),br=a.r.getBoundingClientRect();Object.assign(g.style,{position:'absolute',display:'block',visibility:'visible',opacity:'1',left:rr.left-br.left+'px',top:rr.top-br.top+'px',width:rr.width+'px',height:rr.height+'px'});g.style.setProperty('--dx',((b.x-a.x)*(k==='large'?.72:.88))+'px');g.style.setProperty('--dy',((b.y-a.y)*(k==='large'?.72:.88))+'px');const oldVis=a.img.style.visibility;a.img.style.setProperty('visibility','hidden','important');a.r.appendChild(g);setTimeout(()=>{g.remove();if(oldVis)a.img.style.visibility=oldVis;else a.img.style.removeProperty('visibility');impact(b);done()},300)}
 window.enemyTurn=function(){const attackers=living().slice();if(!attackers.length)return;let cursor=0;
  function next(){if(cursor>=attackers.length){S.guard=false;if(!aliveParty().length)wipe();try{render()}catch(_){}return}const e=attackers[cursor++];if(!e||e.hp<=0)return next();let ap=aliveParty();if(!ap.length)return;const pi=ap[Math.floor(Math.random()*ap.length)],def=statsFor(pi).def;
  if(e.charge){let d=Math.max(1,e.atk*2-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));animateEnemy(E.indexOf(e),pi,e.name,()=>{partyDamage(pi,d);e.charge=false;showLog(`${e.name}の強攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}
