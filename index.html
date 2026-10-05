@@ -7972,4 +7972,46 @@ stamp();setTimeout(stamp,350);setTimeout(stamp,950);window.__DOD_KEEBO_MOTION_75
 </script>
 <!-- ===== /v0.75.46 ===== -->
 
+
+
+<!-- ===== v0.75.47 MIA + NARVA BATTLE MOTION PROTOTYPE ===== -->
+<style id="v07547-party-motion-style">
+#battle.miaMotion7547 .hqHuman749.mia749{visibility:hidden!important}
+#battle.narvaMotion7547 .hqHuman749.hero-ナーヴァ{visibility:hidden!important}
+#battle .partyGhost7547{position:absolute;z-index:91;pointer-events:none;object-fit:contain;object-position:center bottom;transform-origin:50% 82%;will-change:transform,filter,opacity}
+#battle .miaGhost7547{animation:miaCast7547 520ms ease-in-out both;filter:drop-shadow(0 8px 8px rgba(0,0,0,.3))}
+@keyframes miaCast7547{0%{transform:translate3d(0,0,0) scale(1)}22%{transform:translate3d(0,7px,0) scale(.96)}52%{transform:translate3d(0,-28px,0) scale(1.10);filter:drop-shadow(0 0 18px rgba(154,220,255,.95)) brightness(1.18)}75%{transform:translate3d(0,-22px,0) scale(1.06)}100%{transform:translate3d(0,0,0) scale(1)}}
+#battle .miaOrb7547{position:absolute;z-index:94;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,#fff 0 17%,#9deaff 30%,#8f7cff 58%,rgba(113,75,255,.05) 72%);box-shadow:0 0 11px #fff,0 0 25px #72dfff,0 0 42px rgba(145,93,255,.9);animation:miaOrbFly7547 390ms cubic-bezier(.22,.72,.22,1) forwards}
+@keyframes miaOrbFly7547{0%{opacity:.15;transform:translate3d(0,0,0) scale(.35)}20%{opacity:1;transform:translate3d(calc(var(--tx)*.12),calc(var(--ty)*.12),0) scale(1.15)}82%{opacity:1;transform:translate3d(calc(var(--tx)*.9),calc(var(--ty)*.9),0) scale(.9)}100%{opacity:0;transform:translate3d(var(--tx),var(--ty),0) scale(1.7)}}
+#battle .miaBurst7547{position:absolute;z-index:93;width:82px;height:82px;margin:-41px 0 0 -41px;border-radius:50%;pointer-events:none;border:4px solid rgba(216,248,255,.95);box-shadow:0 0 18px #8fe8ff,inset 0 0 24px #9a79ff;animation:miaBurst7547 260ms ease-out forwards}
+@keyframes miaBurst7547{0%{opacity:0;transform:scale(.15)}25%{opacity:1}100%{opacity:0;transform:scale(1.75)}}
+#battle .narvaGhost7547{animation:narvaWhip7547 500ms cubic-bezier(.2,.75,.2,1) both;filter:drop-shadow(0 8px 8px rgba(0,0,0,.32))}
+@keyframes narvaWhip7547{0%{transform:translate3d(0,0,0) rotate(0) scale(1)}20%{transform:translate3d(-16px,4px,0) rotate(-5deg) scale(.96)}48%{transform:translate3d(20px,-9px,0) rotate(7deg) scale(1.08)}66%{transform:translate3d(9px,-4px,0) rotate(3deg) scale(1.03)}100%{transform:translate3d(0,0,0) rotate(0) scale(1)}}
+#battle .narvaChain7547{position:absolute;z-index:93;height:7px;left:0;top:0;pointer-events:none;transform-origin:0 50%;border-radius:5px;background:repeating-linear-gradient(90deg,#e8f0f5 0 7px,#647684 7px 11px,#c9d5dc 11px 17px,#485966 17px 21px);box-shadow:0 0 8px rgba(214,238,255,.75);animation:narvaChain7547 420ms ease-out forwards}
+@keyframes narvaChain7547{0%{opacity:0;transform:rotate(var(--ang)) scaleX(.04)}18%{opacity:1}55%{opacity:1;transform:rotate(var(--ang)) scaleX(1)}76%{opacity:1;transform:rotate(var(--ang)) scaleX(.94)}100%{opacity:0;transform:rotate(var(--ang)) scaleX(.08)}}
+#battle .narvaImpact7547{position:absolute;z-index:94;width:64px;height:64px;margin:-32px 0 0 -32px;pointer-events:none;border-radius:50%;border:4px solid rgba(235,248,255,.95);box-shadow:0 0 18px rgba(145,215,255,.9);animation:narvaImpact7547 230ms ease-out forwards}
+@keyframes narvaImpact7547{0%{opacity:0;transform:scale(.15) rotate(-20deg)}25%{opacity:1}100%{opacity:0;transform:scale(1.65) rotate(24deg)}}
+@media(prefers-reduced-motion:reduce){#battle .partyGhost7547,#battle .miaOrb7547,#battle .miaBurst7547,#battle .narvaChain7547,#battle .narvaImpact7547{animation-duration:1ms!important}}
+</style>
+<script id="v07547-party-motion">
+(()=>{
+'use strict';
+const V='v0.75.47',busy={ミア:false,ナーヴァ:false};
+function battle(){return document.getElementById('battle')}
+function hero(name){const b=battle();if(!b)return null;const img=b.querySelector(`.hqHuman749 img[data-hero="${name}"]`);return img?{b,img}:null}
+function enemy(){const b=battle();if(!b)return null;const el=b.querySelector(`.enemy[data-i="${typeof target==='number'?target:0}"]`)||b.querySelector('.enemy');return el||null}
+function cloneHero(name,cls){const q=hero(name);if(!q||busy[name])return null;const {b,img}=q,br=b.getBoundingClientRect(),ir=img.getBoundingClientRect();if(!ir.width||!ir.height)return null;busy[name]=true;const g=img.cloneNode(false);g.removeAttribute('data-hero');g.className='partyGhost7547 '+cls;Object.assign(g.style,{left:(ir.left-br.left)+'px',top:(ir.top-br.top)+'px',width:ir.width+'px',height:ir.height+'px'});b.appendChild(g);return {b,g,br,ir}}
+function mia(){const q=cloneHero('ミア','miaGhost7547');if(!q)return;const {b,g,br,ir}=q;b.classList.add('miaMotion7547');const er=(enemy()?.getBoundingClientRect());if(er){const sx=ir.left-br.left+ir.width*.64,sy=ir.top-br.top+ir.height*.34,ex=er.left-br.left+er.width*.5,ey=er.top-br.top+er.height*.48;setTimeout(()=>{const o=document.createElement('i');o.className='miaOrb7547';Object.assign(o.style,{left:sx+'px',top:sy+'px'});o.style.setProperty('--tx',(ex-sx)+'px');o.style.setProperty('--ty',(ey-sy)+'px');b.appendChild(o);setTimeout(()=>o.remove(),430)},120);setTimeout(()=>{const x=document.createElement('i');x.className='miaBurst7547';Object.assign(x.style,{left:ex+'px',top:ey+'px'});b.appendChild(x);setTimeout(()=>x.remove(),290)},430)}setTimeout(()=>{g.remove();b.classList.remove('miaMotion7547');busy.ミア=false},550)}
+function narva(){const q=cloneHero('ナーヴァ','narvaGhost7547');if(!q)return;const {b,g,br,ir}=q;b.classList.add('narvaMotion7547');const er=(enemy()?.getBoundingClientRect());if(er){const sx=ir.left-br.left+ir.width*.68,sy=ir.top-br.top+ir.height*.46,ex=er.left-br.left+er.width*.48,ey=er.top-br.top+er.height*.5,dx=ex-sx,dy=ey-sy,len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)*180/Math.PI;setTimeout(()=>{const c=document.createElement('i');c.className='narvaChain7547';Object.assign(c.style,{left:sx+'px',top:sy+'px',width:len+'px'});c.style.setProperty('--ang',ang+'deg');b.appendChild(c);setTimeout(()=>c.remove(),460)},80);setTimeout(()=>{const x=document.createElement('i');x.className='narvaImpact7547';Object.assign(x.style,{left:ex+'px',top:ey+'px'});b.appendChild(x);setTimeout(()=>x.remove(),260)},260)}setTimeout(()=>{g.remove();b.classList.remove('narvaMotion7547');busy.ナーヴァ=false},530)}
+function partyMotion(){if(!Array.isArray(S?.party))return;const names=typeof partyNames==='function'?partyNames():S.party;for(let i=1;i<Math.min(3,names.length);i++){if((S.hp?.[i]||0)<=0)continue;if(names[i]==='ミア')mia();else if(names[i]==='ナーヴァ')narva()}}
+function stamp(){const x=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(x){x.id='buildVersion';x.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+const ca0=window.companionActions;if(typeof ca0==='function')window.companionActions=function(){partyMotion();const r=ca0.apply(this,arguments);stamp();return r};
+const a0=window.attack;if(typeof a0==='function')window.attack=function(){const r=a0.apply(this,arguments);stamp();return r};
+const r0=window.render;if(typeof r0==='function')window.render=function(){const r=r0.apply(this,arguments);stamp();return r};
+const ab=document.getElementById('attack');if(ab&&typeof window.attack==='function')ab.onclick=window.attack;
+stamp();setTimeout(stamp,350);setTimeout(stamp,950);window.__DOD_PARTY_MOTION_7547={version:V,mia,narva,partyMotion};
+})();
+</script>
+<!-- ===== /v0.75.47 ===== -->
+
 </body></html>
