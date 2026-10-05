@@ -8015,11 +8015,11 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 
 
 
-<!-- ===== v0.75.53 ONE-PUSH ONE-ACTOR BATTLE SEQUENCER ===== -->
-<script id="v07553-one-actor-turns">
+<!-- ===== v0.75.54 ONE-PUSH ONE-ACTOR BATTLE SEQUENCER ===== -->
+<script id="v07554-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.53';
+const V='v0.75.54';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8045,6 +8045,7 @@ function applyHit(slot,idx,d,crit,token){
  if(!E[idx]||E[idx].hp<=0){idx=firstEnemy();if(idx<0){busy=false;return}}
  hit(idx,d,crit);
  busy=false;
+ if(typeof finish==='function'&&finish()){enemyDue=false;nextSlot=0;return}
  try{render()}catch(_){}
 }
 function actorAttack(slot){
@@ -8087,7 +8088,7 @@ const ab=document.getElementById('attack');if(ab)ab.onclick=onePush;
 const auto=document.getElementById('auto');
 if(auto)auto.onclick=()=>{
  S.auto=!S.auto;render();clearInterval(timer);
- if(S.auto)timer=setInterval(()=>{if(S.auto&&!busy)onePush()},650);
+ if(S.auto)timer=setInterval(()=>{if(S.auto&&!busy)onePush()},500);
 };
 const ten=document.getElementById('ten');
 if(ten)ten.onclick=()=>{
@@ -8095,7 +8096,7 @@ if(ten)ten.onclick=()=>{
  timer=setInterval(()=>{
   if(S.battle>=goal||!S.auto){clearInterval(timer);if(S.battle>=goal){S.auto=false;S.run623=null}render();return}
   if(!busy&&!document.getElementById('battleFlow623')?.classList.contains('show'))onePush();
- },600);
+ },480);
 };
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
 const renderBefore=window.render;if(typeof renderBefore==='function')window.render=function(){const z=renderBefore.apply(this,arguments);stamp();return z};
@@ -8103,6 +8104,6 @@ window.__DOD_TURN_7553={version:V,onePush,state:()=>({nextSlot,busy,enemyDue}),r
 stamp();
 })();
 </script>
-<!-- ===== /v0.75.53 ===== -->
+<!-- ===== /v0.75.54 ===== -->
 
 </body></html>
