@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.58';
+const V='v0.75.59';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8035,7 +8035,7 @@ function calcCompanion(slot){
  const d=Math.floor(st.atk*mult*(.86+Math.random()*.25)*(crit?1.65:1));
  return {d,crit};
 }
-function animate(slot,idx){try{return !!window.__DOD_PARTY_MOTION_7549?.motionSlot?.(slot,idx)}catch(_){return false}}
+function animate(slot,idx){try{if(window.__DOD_NINE_MOTION_7559?.dispatch?.(slot,idx))return true;return !!window.__DOD_PARTY_MOTION_7549?.motionSlot?.(slot,idx)}catch(_){return false}}
 function applyHit(slot,idx,d,crit,token){
  if(token!==seqToken)return;
  if(!E[idx]||E[idx].hp<=0){idx=firstEnemy();if(idx<0){busy=false;return}}
@@ -8144,7 +8144,7 @@ stamp();
 <script id="v07558-nine-hero-motions">
 (()=>{
 'use strict';
-const V='v0.75.58';
+const V='v0.75.59';
 const NINE=new Set(['トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','アズライル']);
 const base=window.__DOD_PARTY_MOTION_7549;if(!base||typeof base.motionSlot!=='function')return;
 const original=base.motionSlot;
@@ -8167,7 +8167,9 @@ function zephal(slot,idx){const q=targetData(slot,'ゼファル',idx,'zephalGhos
 function leon(slot,idx){const q=targetData(slot,'レオンハルト',idx,'leonGhost7557');if(!q)return false;dash(q,.70);setTimeout(()=>fx(q.b,'heavy7557',q.ep.x-90,q.ep.y,290),190);cleanup(q,520);return true}
 function az(slot,idx){const q=targetData(slot,'アズライル',idx,'azGhost7557');if(!q)return false;setTimeout(()=>{const z=fx(q.b,'soul7557',q.sx,q.sy-12,420);z.style.setProperty('--tx',q.dx+'px');z.style.setProperty('--ty',q.dy+'px')},80);cleanup(q,500);return true}
 const MAP={トア:toa,ピボット:pivot,リリア:lilia,セレナ:selena,ノア:noa,カグラ:kagura,ゼファル:zephal,レオンハルト:leon,アズライル:az};
-base.motionSlot=function(slot,idx=null){const name=typeof partyNames==='function'?partyNames()[slot]:null;if(NINE.has(name)){const fn=MAP[name];return fn?fn(slot,idx):false}return original(slot,idx)};
+function dispatch(slot,idx=null){const name=typeof partyNames==='function'?partyNames()[slot]:null;if(NINE.has(name)){const fn=MAP[name];return fn?fn(slot,idx):false}return false}
+base.motionSlot=function(slot,idx=null){return dispatch(slot,idx)||original(slot,idx)};
+window.__DOD_NINE_MOTION_7559={version:'v0.75.59',dispatch,names:[...NINE]};
 base.v07558={version:V,names:[...NINE],readOnly:true};
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
 const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);stamp();return z};stamp();
@@ -8180,7 +8182,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.58';
+const V='v0.75.59';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
