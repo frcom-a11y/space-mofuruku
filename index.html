@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.70';
+const V='v0.75.71';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8182,7 +8182,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.70';
+const V='v0.75.71';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8315,16 +8315,16 @@ function dispatch(slot,idx){const n=partyNames()[slot];if(n==='フェンリル'|
 @keyframes enemyImpact769{0%{opacity:0;scale:.2}40%{opacity:1;scale:1.2}100%{opacity:0;scale:2.8}}
 </style>
 <script id="v07569-enemy-motion">
-(()=>{'use strict';const V='v0.75.70';
+(()=>{'use strict';const V='v0.75.71';
 const original=window.enemyTurn;if(typeof original!=='function')return;
 const R=()=>document.getElementById('battle');
 function EP(i){const r=R(),e=r?.querySelector(`.enemy[data-i="${i}"]`);if(!r||!e)return null;const candidates=[...e.querySelectorAll('.monsterArt,.svgSprite,.sprite img,.sprite svg,.sprite canvas,.monster,.sprite>*')];let img=candidates.find(x=>{const q=x.getBoundingClientRect(),cs=getComputedStyle(x);return q.width>8&&q.height>8&&cs.display!=='none'&&cs.visibility!=='hidden'&&+cs.opacity!==0})||e.querySelector('.sprite')||e;const x=img.getBoundingClientRect(),br=r.getBoundingClientRect();return{x:x.left-br.left+x.width*.5,y:x.top-br.top+x.height*.55,img,r,e}}
 function PP(i){const r=R(),cards=document.querySelectorAll('#party .pcard'),e=cards[i];if(!r||!e)return null;const x=e.getBoundingClientRect(),b=r.getBoundingClientRect();return{x:x.left-b.left+x.width*.5,y:x.top-b.top+x.height*.35,r}}
 function kind(n){if(/フェアリー|ウィスプ|魔|メイジ|眼|エア|クラウド|精霊/i.test(n))return'magic';if(/ビー|バット|鳥|ドラゴン|ワイバーン/i.test(n))return'fly';if(/ゴーレム|巨|オーガ|トロル|ヒュドラ|ボス/i.test(n))return'large';return'melee'}
 function impact(p){const z=document.createElement('i');z.className='enemyImpact769';z.style.left=p.x+'px';z.style.top=p.y+'px';p.r.appendChild(z);setTimeout(()=>z.remove(),300)}
-function animateEnemy(ei,pi,name,done){const a=EP(ei),b=PP(pi);if(!a||!b){setTimeout(done,0);return}const k=kind(name);
- if(k==='magic'||k==='fly'){const z=document.createElement('i');z.className='enemyOrb769'+(k==='magic'?' magic':'');z.style.left=a.x+'px';z.style.top=a.y+'px';z.style.setProperty('--dx',(b.x-a.x)+'px');z.style.setProperty('--dy',(b.y-a.y)+'px');a.r.appendChild(z);setTimeout(()=>{z.remove();impact(b);done()},280);return}
- const g=a.img.cloneNode(true);g.removeAttribute?.('id');g.classList.add('enemyGhost769');const rr=a.img.getBoundingClientRect(),br=a.r.getBoundingClientRect();Object.assign(g.style,{position:'absolute',display:'block',visibility:'visible',opacity:'1',left:rr.left-br.left+'px',top:rr.top-br.top+'px',width:rr.width+'px',height:rr.height+'px'});g.style.setProperty('--dx',((b.x-a.x)*(k==='large'?.72:.88))+'px');g.style.setProperty('--dy',((b.y-a.y)*(k==='large'?.72:.88))+'px');const oldVis=a.img.style.visibility;a.img.style.setProperty('visibility','hidden','important');a.r.appendChild(g);setTimeout(()=>{g.remove();if(oldVis)a.img.style.visibility=oldVis;else a.img.style.removeProperty('visibility');impact(b);done()},300)}
+function animateEnemy(ei,pi,name,done){const a=EP(ei),b=PP(pi);if(!a||!b){setTimeout(done,0);return}const k=(window.__DOD_ENEMY_MOTION_7569?.kind||kind)(name);
+ if(k==='magic'||k==='fly'||k==='spore'||k==='sting'||k==='breath'){const z=document.createElement('i');z.className=(k==='spore'?'spore771':k==='sting'?'sting771':k==='breath'?'breath771':'enemyOrb769'+(k==='magic'?' magic':''));z.style.left=a.x+'px';z.style.top=a.y+'px';z.style.setProperty('--dx',(b.x-a.x)+'px');z.style.setProperty('--dy',(b.y-a.y)+'px');a.r.appendChild(z);setTimeout(()=>{z.remove();impact(b);done()},k==='sting'?240:k==='spore'?320:k==='breath'?340:280);return}
+ const g=a.img.cloneNode(true);g.removeAttribute?.('id');g.classList.add('enemyGhost769');const rr=a.img.getBoundingClientRect(),br=a.r.getBoundingClientRect();Object.assign(g.style,{position:'absolute',display:'block',visibility:'visible',opacity:'1',left:rr.left-br.left+'px',top:rr.top-br.top+'px',width:rr.width+'px',height:rr.height+'px'});const ratio=k==='heavy'||k==='large'?.72:k==='pounce'?.96:k==='dive'?.92:k==='bounce'?.82:.88;g.style.setProperty('--dx',((b.x-a.x)*ratio)+'px');g.style.setProperty('--dy',((b.y-a.y)*ratio)+'px');const oldVis=a.img.style.visibility;a.img.style.setProperty('visibility','hidden','important');a.r.appendChild(g);setTimeout(()=>{g.remove();if(oldVis)a.img.style.visibility=oldVis;else a.img.style.removeProperty('visibility');impact(b);done()},300)}
 window.enemyTurn=function(){const attackers=living().slice();if(!attackers.length)return;let cursor=0;
  function next(){if(cursor>=attackers.length){S.guard=false;if(!aliveParty().length)wipe();try{render()}catch(_){}return}const e=attackers[cursor++];if(!e||e.hp<=0)return next();let ap=aliveParty();if(!ap.length)return;const pi=ap[Math.floor(Math.random()*ap.length)],def=statsFor(pi).def;
  if(e.charge){let d=Math.max(1,e.atk*2-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));animateEnemy(E.indexOf(e),pi,e.name,()=>{partyDamage(pi,d);e.charge=false;showLog(`${e.name}の強攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}
@@ -8335,4 +8335,19 @@ window.enemyTurn=function(){const attackers=living().slice();if(!attackers.lengt
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp();window.__DOD_ENEMY_MOTION_7569={version:V,kind};
 })();
 </script><!-- ===== /v0.75.69 ===== -->
+<!-- ===== v0.75.71 MONSTER ATTACK TYPES ===== -->
+<style id="v07571-monster-types-style">
+.spore771,.breath771,.sting771{position:absolute;z-index:86;pointer-events:none;will-change:transform,opacity}
+.spore771{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,#eaffc4 0 10%,#9ae66d 24%,rgba(94,168,68,.45) 48%,transparent 72%);box-shadow:0 0 13px #9ae66d;animation:proj771 .32s linear forwards}
+.sting771{width:34px;height:5px;border-radius:50%;background:#f7e774;box-shadow:0 0 9px #f2d82f;animation:proj771 .24s linear forwards}
+.breath771{width:45px;height:18px;border-radius:50%;background:linear-gradient(90deg,#fff0,rgba(255,133,70,.85),#fff4c4);filter:blur(1px);box-shadow:0 0 14px #ff7a45;animation:proj771 .34s linear forwards}
+@keyframes proj771{to{transform:translate(var(--dx),var(--dy)) scale(.75);opacity:.15}}
+</style>
+<script id="v07571-monster-types">
+(()=>{'use strict';const V='v0.75.71',api=window.__DOD_ENEMY_MOTION_7569;if(!api)return;
+const oldKind=api.kind;
+function type(n){if(/スライム/.test(n))return'bounce';if(/ゴブリン/.test(n))return'weapon';if(/オオカミ|月狼|大牙|ウルフ/.test(n))return'pounce';if(/キノコ/.test(n))return'spore';if(/ビー/.test(n))return'sting';if(/コウモリ|バット/.test(n))return'dive';if(/フェアリー/.test(n))return'magic';if(/リザード|サラマンダー|竜|ドラゴン/.test(n))return'breath';if(/キング|女王/.test(n))return'heavy';return oldKind?oldKind(n):'melee'}
+api.kind=type;window.__DOD_MONSTER_TYPES_7571={version:V,type,map:{bounce:'跳ね体当たり',weapon:'武器突進',pounce:'飛びかかり',spore:'胞子弾',sting:'毒針',dive:'急降下',magic:'魔法弾',breath:'ブレス',heavy:'重量攻撃'}};
+function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp()})();
+</script><!-- ===== /v0.75.71 ===== -->
 </body></html>
