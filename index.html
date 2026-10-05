@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.77';
+const V='v0.75.78';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8183,7 +8183,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.77';
+const V='v0.75.78';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8388,7 +8388,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.75.77';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.75.78';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8402,27 +8402,22 @@ const r0=render;render=function(){const z=r0.apply(this,arguments);ui();stamp();
 window.__DOD_SE_7574={version:V,play,hero,enemy,cfg};
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp()})();
 </script><!-- ===== /v0.75.74 ===== -->
-<!-- ===== v0.75.76 PROCEDURAL BGM ===== -->
-<style id="v07576-bgm-style">
-.bgmPanel776{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px;max-width:118px}.bgmPanel776 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.bgmPanel776 input{width:48px;height:12px}
+<!-- ===== v0.75.78 SAFE BGM ON TOP OF WORKING SE ===== -->
+<style id="v07578-safe-bgm-style">
+.bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
-<script id="v07576-procedural-bgm">
-(()=>{'use strict';const V='v0.75.77',KEY='dod_bgm_7576';let cfg={on:true,vol:.20},ctx=null,master=null,current='',timer=null,step=0;try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}if(cfg.on&&cfg.vol>0&&cfg.vol<.15)cfg.vol=.20
-const SONGS={base:{bpm:86,notes:[48,55,60,55,50,57,62,57]},battle:{bpm:132,notes:[45,52,57,52,48,55,60,55]},boss:{bpm:112,notes:[38,45,50,38,41,48,53,41]},mythic:{bpm:94,notes:[34,41,46,53,36,43,48,55]},gacha:{bpm:105,notes:[60,64,67,72,67,64,62,69]}};
-function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();master=ctx.createGain();master.gain.value=cfg.on?cfg.vol:0;master.connect(ctx.destination)}if(ctx.state==='suspended')ctx.resume();return ctx}
-function hz(m){return 440*Math.pow(2,(m-69)/12)}
-function note(m,d=.18,v=.18,type='triangle'){const c=C();if(!c||!cfg.on)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.value=hz(m);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(master);o.start(t);o.stop(t+d)}
-function beat(){const song=SONGS[current];if(!song||!cfg.on)return;const n=song.notes[step%song.notes.length];note(n,.22,.16,current==='boss'||current==='mythic'?'sawtooth':'triangle');if(step%2===0)note(n-12,.16,.08,'sine');if((current==='boss'||current==='battle')&&step%4===2)note(n+7,.09,.055,'square');step++}
-function start(name){if(!SONGS[name])name='battle';if(current===name&&timer)return;stop(false);current=name;step=0;if(!cfg.on)return;C();const ms=60000/SONGS[name].bpm/2;timer=setInterval(beat,ms);beat()}
-function stop(clear=true){if(timer){clearInterval(timer);timer=null}if(clear)current=''}
-function scene(){try{const st=stage();if(document.getElementById('overlay')?.classList.contains('open')){const t=document.getElementById('otitle')?.textContent||'';if(/召喚|ガチャ|星降り/.test(t))return'gacha';if(/拠点|パーティ|倉庫|ショップ|錬成/.test(t))return'base'}if(st?.mythic||/神話|深淵/.test(st?.name||''))return'mythic';if(st?.boss||E?.some?.(e=>e.boss))return'boss';return'battle'}catch(_){return'battle'}}
-function sync(){const n=scene();if(n!==current)start(n)}
-function saveCfg(){try{localStorage.setItem(KEY,JSON.stringify(cfg))}catch(_){}if(master)master.gain.setTargetAtTime(cfg.on?cfg.vol:0,ctx.currentTime,.08)}
-function ui(){const b=document.getElementById('battle');if(!b||b.querySelector('.bgmPanel776'))return;const x=document.createElement('div');x.className='bgmPanel776';x.innerHTML=`<button type="button" data-bgm776>${cfg.on?'🎵 BGM':'🔇 BGM'}</button><input data-bgmv776 type="range" min="0" max="100" value="${Math.round(cfg.vol*100)}" aria-label="BGM音量">`;b.appendChild(x);x.querySelector('[data-bgm776]').onclick=async()=>{cfg.on=!cfg.on;const c=C();if(c&&c.state==='suspended')try{await c.resume()}catch(_){}saveCfg();if(cfg.on){current='';stop(false);note(72,.12,.22,'sine');setTimeout(()=>{start(scene());const bt=x.querySelector('[data-bgm776]');if(bt)bt.textContent=timer?'🎵 BGM ON':'⚠ BGM'},130)}else{stop(false);x.querySelector('[data-bgm776]').textContent='🔇 BGM'}};x.querySelector('[data-bgmv776]').oninput=e=>{cfg.vol=Math.max(0,Math.min(.5,+e.target.value/100));saveCfg()}}
-document.addEventListener('pointerdown',async()=>{const c=C();if(c&&c.state==='suspended')try{await c.resume()}catch(_){}if(cfg.on&&!timer){note(67,.08,.10,'sine');start(scene())}},{once:true,capture:true});
-const r0=render;render=function(){const z=r0.apply(this,arguments);ui();sync();stamp();return z};
-const o0=open;open=function(){const z=o0.apply(this,arguments);setTimeout(sync,0);return z};
-ui();window.__DOD_BGM_7576={version:V,start,stop,sync,scene,cfg};
+<script id="v07578-safe-bgm">
+(()=>{'use strict';const V='v0.75.78',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
+const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
+function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
+function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
+function scene(){try{const t=document.getElementById('otitle')?.textContent||'',st=stage();if(/召喚|ガチャ|星降り/.test(t))return'gacha';if(/拠点|パーティ|倉庫|ショップ|錬成/.test(t))return'base';if(st?.mythic||/神話|深淵/.test(st?.name||''))return'mythic';if(st?.boss||E?.some?.(e=>e.boss))return'boss'}catch(_){}return'battle'}
+function start(){if(!cfg.on)return;sceneName=scene();clearInterval(timer);step=0;const run=()=>{const a=songs[sceneName]||songs.battle;tone(a[step++%a.length])};run();timer=setInterval(run,280)}
+function stop(){clearInterval(timer);timer=null}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(cfg))}catch(_){}}
+function ui(){const b=document.getElementById('battle');if(!b||b.querySelector('.bgmSafe778'))return;const x=document.createElement('div');x.className='bgmSafe778';x.innerHTML=`<button data-bgms778>🎵 BGM OFF</button><input data-bgmv778 type="range" min="0" max="40" value="${Math.round(cfg.vol*100)}">`;b.appendChild(x);const bt=x.querySelector('[data-bgms778]');bt.onclick=async()=>{const c=ensure();if(!c)return;if(c.state!=='running')try{await c.resume()}catch(_){}cfg.on=!cfg.on;save();if(cfg.on){tone(72,.1);start();bt.textContent='🎵 BGM ON'}else{stop();bt.textContent='🎵 BGM OFF'}};x.querySelector('[data-bgmv778]').oninput=e=>{cfg.vol=+e.target.value/100;if(gain)gain.gain.value=cfg.vol;save()}}
+const r0=render;render=function(){const z=r0.apply(this,arguments);ui();if(cfg.on&&sceneName!==scene())start();stamp();return z};ui();
+window.__DOD_BGM_SAFE_7578={version:V,start,stop,cfg};
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp()})();
-</script><!-- ===== /v0.75.76 ===== -->
+</script><!-- ===== /v0.75.78 ===== -->
 </body></html>
