@@ -8014,4 +8014,95 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <!-- ===== /v0.75.49 ===== -->
 
 
+
+<!-- ===== v0.75.53 ONE-PUSH ONE-ACTOR BATTLE SEQUENCER ===== -->
+<script id="v07553-one-actor-turns">
+(()=>{
+'use strict';
+const V='v0.75.53';
+let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
+const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300};
+function names(){try{return partyNames()}catch(_){return []}}
+function aliveSlot(i){return Number(S?.hp?.[i]||0)>0}
+function livingEnemy(){return typeof living==='function'&&living().length>0}
+function firstEnemy(){return E.findIndex(e=>e.hp>0)}
+function nextAlive(from){
+ for(let n=0;n<3;n++){const i=(from+n)%3;if(aliveSlot(i))return i}
+ return -1;
+}
+function calcCompanion(slot){
+ const st=statsFor(slot),name=names()[slot];let mult=1;
+ if(name==='ミア'&&S.mp[slot]>=2&&Math.random()<.45){S.mp[slot]-=2;mult=1.35;showLog('ミアの魔法弾！')}
+ else if(name==='トア'&&Math.random()<.3){mult=1.25;showLog('トアのかみつき！')}
+ else if(name==='黄金スライム'&&Math.random()<.35){mult=1.45;showLog('黄金スライムのきらめき！')}
+ const crit=Math.random()<st.crit/100;
+ const d=Math.floor(st.atk*mult*(.86+Math.random()*.25)*(crit?1.65:1));
+ return {d,crit};
+}
+function animate(slot){try{window.__DOD_BATTLE_MOTION_7548?.motionSlot?.(slot)}catch(_){}}
+function applyHit(slot,idx,d,crit,token){
+ if(token!==seqToken)return;
+ if(!E[idx]||E[idx].hp<=0){idx=firstEnemy();if(idx<0){busy=false;return}}
+ hit(idx,d,crit);
+ busy=false;
+ try{render()}catch(_){}
+}
+function actorAttack(slot){
+ if(busy||!livingEnemy())return;
+ const idx=firstEnemy();if(idx<0)return;
+ const name=names()[slot]||'';
+ busy=true;const token=++seqToken;
+ animate(slot);
+ if(slot===0){
+   const st=statsFor(0),crit=Math.random()<st.crit/100,d=Math.floor(st.atk*(.85+Math.random()*.3)*(crit?1.8:1));
+   showLog(name+'の攻撃！');
+   setTimeout(()=>applyHit(slot,idx,d,crit,token),HIT_MS[name]||250);
+ }else{
+   const {d,crit}=calcCompanion(slot);
+   setTimeout(()=>applyHit(slot,idx,d,crit,token),HIT_MS[name]||220);
+ }
+ nextSlot=slot+1;
+ if(nextSlot>=3){nextSlot=0;enemyDue=true}
+}
+function doEnemyTurn(){
+ if(busy)return;
+ if(!livingEnemy()){enemyDue=false;nextSlot=0;return}
+ busy=true;enemyDue=false;nextSlot=0;
+ try{enemyTurn();render()}finally{busy=false}
+}
+function onePush(){
+ if(busy)return;
+ if(typeof finish==='function'&&finish())return;
+ if(enemyDue){doEnemyTurn();return}
+ let slot=nextAlive(nextSlot);
+ if(slot<0)return;
+ // If the search wrapped to an earlier slot, all remaining actors were KO: enemy acts now.
+ if(slot<nextSlot){doEnemyTurn();return}
+ actorAttack(slot);
+}
+const attackBefore=window.attack;
+window.attack=onePush;
+const ab=document.getElementById('attack');if(ab)ab.onclick=onePush;
+// Rebind AUTO so every tick advances exactly one actor/enemy phase.
+const auto=document.getElementById('auto');
+if(auto)auto.onclick=()=>{
+ S.auto=!S.auto;render();clearInterval(timer);
+ if(S.auto)timer=setInterval(()=>{if(S.auto&&!busy)onePush()},650);
+};
+const ten=document.getElementById('ten');
+if(ten)ten.onclick=()=>{
+ let goal=S.battle+10;S.run623={start:S.battle,goal};S.auto=true;render();clearInterval(timer);
+ timer=setInterval(()=>{
+  if(S.battle>=goal||!S.auto){clearInterval(timer);if(S.battle>=goal){S.auto=false;S.run623=null}render();return}
+  if(!busy&&!document.getElementById('battleFlow623')?.classList.contains('show'))onePush();
+ },600);
+};
+function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+const renderBefore=window.render;if(typeof renderBefore==='function')window.render=function(){const z=renderBefore.apply(this,arguments);stamp();return z};
+window.__DOD_TURN_7553={version:V,onePush,state:()=>({nextSlot,busy,enemyDue}),reset:()=>{nextSlot=0;busy=false;enemyDue=false;seqToken++}};
+stamp();
+})();
+</script>
+<!-- ===== /v0.75.53 ===== -->
+
 </body></html>
