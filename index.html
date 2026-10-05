@@ -1043,7 +1043,7 @@ function supportRescue739(code){
   // 実行直前の状態を専用キーへ退避。通常の3世代バックアップとは別に残す。
   try{localStorage.setItem('dropHunter010_preSupportRescue739',JSON.stringify(S))}catch(_){}
   S.clears=S.clears||{};
-  ['gb','fb','ib','vb','cb','sb','g1','g2'].forEach(k=>S.clears[k]=true);
+  ['gb','fb','ib','vb','cb','sb','g1','g2','gr1','gr2','grb'].forEach(k=>S.clears[k]=true);
   // 本人申告・運営確認済みの到達Lvへ戻す。現在値が140を超えている場合は下げない。
   S.lv=Math.max(Number.isFinite(+S.lv)?+S.lv:1,140);
   S.exp=0;
@@ -2889,8 +2889,8 @@ radial-gradient(circle at 72% 18%,rgba(255,195,80,.22) 0 1px,transparent 2px);ba
  Object.assign(MONSTERS,newMons);
  const unlock711=s=>!!s.clears.sb;
  const add=[
-  {id:'g1',area:'紅蓮魔界',name:'紅蓮魔界1',recommended:60,unlock:unlock711,unlockText:'天空遺跡ボス撃破で解放',enemies:['フレイムハウンド','マグマゴーレム','イグニスサーペント','ヘルスコーピオン','ブレイズデビル'],mult:6.35,next:'紅蓮魔界2'},
-  {id:'g2',area:'紅蓮魔界',name:'紅蓮魔界2',recommended:65,unlock:s=>!!s.clears.g1,unlockText:'紅蓮魔界1クリアで解放',enemies:['ブレイズデビル','ヘルスコーピオン','イグニスサーペント','マグマゴーレム','フレイムハウンド'],mult:6.85,next:'？？？'}
+  {id:'gr1',area:'紅蓮魔界',name:'紅蓮魔界1',recommended:60,unlock:unlock711,unlockText:'天空遺跡ボス撃破で解放',enemies:['フレイムハウンド','マグマゴーレム','イグニスサーペント','ヘルスコーピオン','ブレイズデビル'],mult:6.35,next:'紅蓮魔界2'},
+  {id:'gr2',area:'紅蓮魔界',name:'紅蓮魔界2',recommended:65,unlock:s=>!!s.clears.gr1,unlockText:'紅蓮魔界1クリアで解放',enemies:['ブレイズデビル','ヘルスコーピオン','イグニスサーペント','マグマゴーレム','フレイムハウンド'],mult:6.85,next:'？？？'}
  ];
  add.forEach(st=>{if(!stages.some(x=>x.id===st.id))stages.push(st)});
  const sb=stages.find(x=>x.id==='sb');if(sb)sb.next='紅蓮魔界1';
@@ -2909,8 +2909,8 @@ radial-gradient(circle at 72% 18%,rgba(255,195,80,.22) 0 1px,transparent 2px);ba
 (function(){
  'use strict';
  const required711=[
-  {id:'g1',area:'紅蓮魔界',name:'紅蓮魔界1',recommended:60,unlock:s=>!!s.clears.sb,unlockText:'天空遺跡ボス撃破で解放',enemies:['フレイムハウンド','マグマゴーレム','イグニスサーペント','ヘルスコーピオン','ブレイズデビル'],mult:6.35,next:'紅蓮魔界2'},
-  {id:'g2',area:'紅蓮魔界',name:'紅蓮魔界2',recommended:65,unlock:s=>!!s.clears.g1,unlockText:'紅蓮魔界1クリアで解放',enemies:['ブレイズデビル','ヘルスコーピオン','イグニスサーペント','マグマゴーレム','フレイムハウンド'],mult:6.85,next:'？？？'}
+  {id:'gr1',area:'紅蓮魔界',name:'紅蓮魔界1',recommended:60,unlock:s=>!!s.clears.sb,unlockText:'天空遺跡ボス撃破で解放',enemies:['フレイムハウンド','マグマゴーレム','イグニスサーペント','ヘルスコーピオン','ブレイズデビル'],mult:6.35,next:'紅蓮魔界2'},
+  {id:'gr2',area:'紅蓮魔界',name:'紅蓮魔界2',recommended:65,unlock:s=>!!s.clears.gr1,unlockText:'紅蓮魔界1クリアで解放',enemies:['ブレイズデビル','ヘルスコーピオン','イグニスサーペント','マグマゴーレム','フレイムハウンド'],mult:6.85,next:'？？？'}
  ];
  function ensure711(){
    required711.forEach(st=>{
@@ -2935,9 +2935,9 @@ radial-gradient(circle at 72% 18%,rgba(255,195,80,.22) 0 1px,transparent 2px);ba
 (function(){
  'use strict';
  function orderGuren711(){
-   const g1=stages.find(x=>x.id==='g1'),g2=stages.find(x=>x.id==='g2');
+   const g1=stages.find(x=>x.id==='gr1'),g2=stages.find(x=>x.id==='gr2');
    if(!g1||!g2)return;
-   const rest=stages.filter(x=>x.id!=='g1'&&x.id!=='g2');
+   const rest=stages.filter(x=>x.id!=='gr1'&&x.id!=='gr2');
    const sb=rest.findIndex(x=>x.id==='sb');
    if(sb>=0)rest.splice(sb+1,0,g1,g2);else rest.push(g1,g2);
    stages.splice(0,stages.length,...rest);
@@ -2990,12 +2990,12 @@ radial-gradient(circle at 72% 18%,rgba(255,195,80,.22) 0 1px,transparent 2px);ba
   '黒炎騎士':{hp:10,mp:2,atk:6,def:6},
   'マグマドラゴン':{hp:11,mp:3,atk:8,def:5}
  });
- const gb={id:'gb',area:'紅蓮魔界',name:'紅蓮魔界ボス',recommended:70,
-  unlock:s=>!!s.clears.g2&&s.lv>=70,unlockText:'紅蓮魔界2クリア＋Lv70で解放',
+ const gb={id:'grb',area:'紅蓮魔界',name:'紅蓮魔界ボス',recommended:70,
+  unlock:s=>!!s.clears.gr2&&s.lv>=70,unlockText:'紅蓮魔界2クリア＋Lv70で解放',
   boss:true,bossMonster:'煉獄魔王・ヴァルグレイン',enemies:['煉獄魔王・ヴァルグレイン'],mult:7.55,next:'紅蓮魔界を踏破！'};
- if(!stages.some(x=>x.id==='gb'))stages.push(gb); else Object.assign(stages.find(x=>x.id==='gb'),gb);
- const g2=stages.find(x=>x.id==='g2');if(g2)g2.next='紅蓮魔界ボス';
- function order712(){const ids=['g1','g2','gb'],found=ids.map(id=>stages.find(x=>x.id===id)).filter(Boolean),rest=stages.filter(x=>!ids.includes(x.id)),sb=rest.findIndex(x=>x.id==='sb');if(sb>=0)rest.splice(sb+1,0,...found);else rest.push(...found);stages.splice(0,stages.length,...rest)}
+ if(!stages.some(x=>x.id==='grb'))stages.push(gb); else Object.assign(stages.find(x=>x.id==='grb'),gb);
+ const g2=stages.find(x=>x.id==='gr2');if(g2)g2.next='紅蓮魔界ボス';
+ function order712(){const ids=['gr1','gr2','grb'],found=ids.map(id=>stages.find(x=>x.id===id)).filter(Boolean),rest=stages.filter(x=>!ids.includes(x.id)),sb=rest.findIndex(x=>x.id==='sb');if(sb>=0)rest.splice(sb+1,0,...found);else rest.push(...found);stages.splice(0,stages.length,...rest)}
  order712();
  Object.keys(MONSTERS).forEach(n=>{if(!Number.isFinite(S.kills[n]))S.kills[n]=0});
  // 灼熱: 紅蓮魔界では長期戦ほど熱ダメージが増える（上限あり）。
@@ -4313,7 +4313,7 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
   '煉獄獣フェンリル':[{n:'煉獄獣の黒炎毛',r:8,rar:'RARE',type:'素材',desc:'消えない黒炎を帯びた希少な毛'},{n:'煉獄牙フェンリル',r:1450,rar:'PHANTOM',type:'武器',atk:72,def:5,crit:21,desc:'攻撃+72 / 防御+5 / 会心+21%'}],
   '獄炎魔王イグナディオス':[{n:'獄炎王の魔核',r:7,rar:'RARE',type:'素材',desc:'紅蓮魔界を統べる魔王の心核'},{n:'獄炎大剣イグナディオス',r:1150,rar:'PHANTOM',type:'武器',atk:82,def:10,crit:18,desc:'攻撃+82 / 防御+10 / 会心+18%'}]
  });
- const g1=stages.find(x=>x.id==='g1'),g2=stages.find(x=>x.id==='g2'),gb=stages.find(x=>x.id==='gb');
+ const g1=stages.find(x=>x.id==='gr1'),g2=stages.find(x=>x.id==='gr2'),gb=stages.find(x=>x.id==='grb');
  const normals=['フレイムハウンド','マグマゴーレム','イグニスサーペント','ヘルスコーピオン','ブレイズデビル'];
  if(g1){g1.enemies=[...normals];g1.next='紅蓮魔界2';}
  if(g2){g2.enemies=['ブレイズデビル','ヘルスコーピオン','イグニスサーペント','マグマゴーレム','フレイムハウンド'];g2.next='紅蓮魔界ボス';}
@@ -4353,7 +4353,7 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
  const G1=['フレイムハウンド','マグマゴーレム','イグニスサーペント','ヘルスコーピオン','ブレイズデビル'];
  const G2=['ブレイズデビル','ヘルスコーピオン','イグニスサーペント','マグマゴーレム','フレイムハウンド'];
  function lockGuren7426(){
-   const g1=stages.find(x=>x.id==='g1'),g2=stages.find(x=>x.id==='g2'),gb=stages.find(x=>x.id==='gb');
+   const g1=stages.find(x=>x.id==='gr1'),g2=stages.find(x=>x.id==='gr2'),gb=stages.find(x=>x.id==='grb');
    if(g1){g1.enemies=G1.slice();g1.next='紅蓮魔界2';}
    if(g2){g2.enemies=G2.slice();g2.next='紅蓮魔界ボス';}
    if(gb){gb.bossMonster='獄炎魔王イグナディオス';gb.enemies=['獄炎魔王イグナディオス'];gb.next='紅蓮魔界を踏破！';}
@@ -7601,7 +7601,7 @@ function renderList7527(){
   return `<div class="stageRoot7527">${areas7527().map(area=>{const info=areaInfo7527(area);return `<div class="stageAreaBlock7527"><div class="stageAreaHead7527"><div><b>${h(area)}</b><div class="stageHint7527">エリア進行と未取得要素をまとめて確認</div></div><div class="stageAreaMeta7527"><span class="stageChip7527">推奨Lv ${info.minLv}〜</span><span class="stageChip7527 ${info.clear===info.total?'good':'warn'}">クリア ${info.clear}/${info.total}</span><span class="stageChip7527 ${info.missing?'warn':'good'}">未取得DROP ${info.missing}</span></div></div>${info.stages.map(stageCard7527).join('')}</div>`}).join('')}</div>`;
 }
 function renderMap7527(){
-  const areas=areas7527(),pages=[]; for(let i=0;i<areas.length;i+=6) pages.push(areas.slice(i,i+6));
+  const allAreas=areas7527(),areas=S.clears?.gb?allAreas.filter(a=>a!=='草原'):['草原'],pages=[]; for(let i=0;i<areas.length;i+=6) pages.push(areas.slice(i,i+6));
   if(UI.page>=pages.length) UI.page=Math.max(0,pages.length-1);
   const page=pages[UI.page]||[];
   const nodes=page.map((area,i)=>{const pos=POS[i]||{x:50,y:50},inf=areaInfo7527(area);const anyUnlocked=inf.unlocked>0;const flag=inf.current?`<span class="flag warn">現在地</span>`:inf.missing?`<span class="flag warn">未取得DROPあり</span>`:inf.clear===inf.total?`<span class="flag good">攻略済み</span>`:`<span class="flag">探索可能</span>`;return `<button class="worldNode7527 ${anyUnlocked?'':'locked'} ${inf.current?'current':''}" style="left:${pos.x}%;top:${pos.y}%" data-area7527="${h(area)}"><span class="name">${h(area)}</span><span class="meta">推奨Lv ${inf.minLv}〜<br>クリア ${inf.clear}/${inf.total}</span>${flag}</button>`;}).join('');
@@ -7727,7 +7727,7 @@ function bind7527(){
 <script id="v07542-map-single-controller">
 (()=>{
 'use strict';
-const V='v0.75.43',ART_W=911,ART_H=1157;
+const V='v0.75.44',ART_W=911,ART_H=1157;
 let frame=0,busy=false,watchedRoot=null;
 const overlay=document.getElementById('overlay');
 function schedule(){
@@ -7800,5 +7800,110 @@ window.__DOD_MAP_7541=window.__DOD_MAP_7542;
 sync();setTimeout(schedule,250);setTimeout(schedule,900);
 })();
 </script>
+\n\n<!-- ===== v0.75.44 OVERLAY BACK STACK + EARLY STAGE INTEGRITY ===== -->
+<script id="v07544-back-stack-stage-integrity">
+(()=>{
+'use strict';
+const V='v0.75.44';
+const overlay=document.getElementById('overlay'),body=document.getElementById('obody'),title=document.getElementById('otitle'),closeBtn=document.getElementById('close');
+const stack=[];
+let restoring=false;
+const call=(fn,...args)=>typeof fn==='function'?fn(...args):undefined;
+function stamp(){
+ const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
+ if(b){b.id='buildVersion';b.textContent=V}
+ const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
+ document.title='どろダン / DROP OF DUNGEON '+V;
+}
+function ensureEarlyStages(){
+ if(!S.__stageIdFix7544){
+  const old=String(S.stageId||''),lv=Number(S.lv)||1;
+  if(S.clears?.sb&&old==='g1'&&lv>=60)S.stageId='gr1';
+  else if(S.clears?.sb&&old==='g2'&&lv>=65)S.stageId='gr2';
+  else if(S.clears?.sb&&old==='gb'&&lv>=70)S.stageId='grb';
+  S.__stageIdFix7544=1;
+ }
+ const grass=[
+  {id:'g1',area:'草原',name:'はじまりの草原 1',recommended:1,unlock:s=>true,unlockText:'最初から解放',enemies:['スライム','ゴブリン','オオカミ','ホーンラビット','ポイズンビー'],mult:1},
+  {id:'g2',area:'草原',name:'はじまりの草原 2',recommended:3,unlock:s=>(s.lv||1)>=3,unlockText:'Lv3で解放',enemies:['ゴブリン','オオカミ','ホーンラビット','ポイズンビー','スライム'],mult:1.25},
+  {id:'gb',area:'草原',name:'草原ボス',recommended:5,unlock:s=>(s.lv||1)>=5,unlockText:'Lv5で解放',boss:true,bossMonster:'草原の大牙',enemies:['草原の大牙'],mult:1.8,next:'迷いの森 1'}
+ ];
+ grass.forEach(def=>{const st=stages.find(x=>x.id===def.id);if(st)Object.assign(st,def);else stages.push(def)});
+ const ids=['g1','g2','gb'],front=ids.map(id=>stages.find(x=>x.id===id)).filter(Boolean),rest=stages.filter(x=>!ids.includes(x.id));
+ stages.splice(0,stages.length,...front,...rest);
+ const forest=stages.find(x=>x.id==='f1');if(forest){forest.unlock=s=>!!s.clears?.gb;forest.unlockText='草原ボス撃破で解放'}
+ if(!S.stageId||!stages.some(x=>x.id===S.stageId))S.stageId='g1';
+ if((S.lv||1)<=1&&!S.clears?.gb&&S.stageId!=='g1'){S.stageId='g1';S.battle=1}
+}
+function route(){
+ if(!overlay?.classList.contains('open'))return null;
+ const t=(title?.textContent||'').trim(),q=s=>body?.querySelector(s),key=(x)=>({key:x,run:null});
+ if(!t||t==='冒険者登録')return null;
+ if(t==='星降りの拠点')return {key:'base',run:()=>call(window.baseView)};
+ if(t==='ショップ')return {key:'shop',run:()=>call(window.shopView,typeof shopTab!=='undefined'?shopTab:'回復')};
+ if(t==='パーティ')return {key:'party',run:()=>call(window.partyView)};
+ if(t==='持ち物・装備')return {key:'items',run:()=>call(window.itemView,typeof itemTab!=='undefined'?itemTab:undefined)};
+ if(t==='モンスター図鑑'||t==='図鑑')return {key:'book',run:()=>call(window.bookView)};
+ if(t==='ステージ')return {key:'stage',run:()=>call(window.stageView)};
+ if(t.endsWith(' エリア')){const area=t.slice(0,-4);return {key:'area:'+area,run:()=>call(window.__DOD_STAGE_WORLD_7527?.areaDetail7527,area)}}
+ if(t==='ステージ詳細'){
+  const id=q('[data-stage-select7527]')?.dataset.stageSelect7527||q('[data-stage-detail7527]')?.dataset.stageDetail7527;
+  if(id)return {key:'stage-detail:'+id,run:()=>call(window.__DOD_STAGE_WORLD_7527?.stageDetail7527,id)};
+ }
+ if(t==='星鍛冶屋')return {key:'smith',run:()=>call(window.forgeView53)};
+ if(t==='錬成工房')return {key:'alchemy',run:()=>call(window.__DOD_FORGE_7518?.view)};
+ if(t==='モンスター牧場')return {key:'ranch',run:()=>call(window.ranch57)};
+ if(t==='モフルク銀行')return {key:'bank',run:()=>call(window.bankPanel57)};
+ if(t==='冒険者プロフィール')return {key:'profile',run:()=>call(window.__profile741?.open)};
+ if(t==='セーブ保護・救出')return {key:'saveguard',run:()=>call(window.saveGuardView)};
+ if(t==='中断データの保存方法')return {key:'backup-guide',run:()=>call(window.__profile741?.guide)};
+ if(t==='キャラクター装備'){
+  const hero=(q('h2')?.textContent||'').trim().split(/\s+/)[0];
+  if(hero)return {key:'hero-equip:'+hero,run:()=>call(window.heroEquipmentView7501,hero)};
+ }
+ if(t==='キャラクター詳細'){
+  const hero=(q('h2')?.textContent||'').trim().split(/\s+/)[0];
+  if(hero)return {key:'hero-detail:'+hero,run:()=>call(window.__DOD_DIAGNOSTICS_7512?.heroDetail||window.heroDetail65,hero)};
+ }
+ if(t==='モンスター詳細'){
+  const mon=(q('h2')?.textContent||'').trim();
+  if(mon)return {key:'monster-detail:'+mon,run:()=>call(window.__DOD_DIAGNOSTICS_7512?.monsterInfo,mon)};
+ }
+ return null;
+}
+const open0=window.open;
+window.open=function(t,b){
+ if(!restoring){
+  if(!overlay?.classList.contains('open'))stack.length=0;
+  else{
+   const r=route();
+   if(r?.run&&stack.at(-1)?.key!==r.key)stack.push(r);
+  }
+ }
+ const z=open0.apply(this,arguments);stamp();return z;
+};
+function backOrClose(e){
+ if(e){e.preventDefault();e.stopPropagation()}
+ while(stack.length){
+  const r=stack.pop();if(typeof r?.run!=='function')continue;
+  restoring=true;
+  try{r.run()}finally{restoring=false}
+  stamp();return;
+ }
+ overlay?.classList.remove('open');
+}
+if(closeBtn)closeBtn.onclick=backOrClose;
+const spawn0=window.spawn;if(typeof spawn0==='function')window.spawn=function(){ensureEarlyStages();return spawn0.apply(this,arguments)};
+const render0=window.render;if(typeof render0==='function')window.render=function(){ensureEarlyStages();const z=render0.apply(this,arguments);stamp();return z};
+const stage0=window.stageView;if(typeof stage0==='function')window.stageView=function(){ensureEarlyStages();const z=stage0.apply(this,arguments);stamp();return z};
+ensureEarlyStages();
+if((S.lv||1)<=1&&!S.clears?.gb&&S.stageId!=='g1'){S.stageId='g1';S.battle=1}
+try{save()}catch(_){}
+try{render()}catch(_){}
+stamp();setTimeout(stamp,300);setTimeout(stamp,900);
+window.__DOD_NAV_7544={version:V,depth:()=>stack.length,back:backOrClose,ensureEarlyStages};
+})();
+</script>
+<!-- ===== /v0.75.44 ===== -->
 
 </body></html>
