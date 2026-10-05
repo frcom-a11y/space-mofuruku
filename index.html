@@ -7925,11 +7925,7 @@ function repair(){
  if(ib){ib.unlock=s=>bossDefeated(s)&&(s.lv||1)>=18;ib.unlockText='迷いの森ボス撃破＋Lv18で解放'}
  if(repaired){repaired=false;try{save()}catch(_){}}
 }
-function stamp(){
- const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}
- const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;
- document.title='どろダン / DROP OF DUNGEON '+V;
-}
+function stamp(){}
 function finishStamp(){stamp();requestAnimationFrame(stamp);setTimeout(stamp,0)}
 const render0=window.render;if(typeof render0==='function')window.render=function(){repair();const z=render0.apply(this,arguments);finishStamp();return z};
 const stage0=window.stageView;if(typeof stage0==='function')window.stageView=function(){repair();const z=stage0.apply(this,arguments);finishStamp();return z};
@@ -8019,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.57';
+const V='v0.75.58';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8107,8 +8103,8 @@ stamp();
 <!-- ===== /v0.75.56 ===== -->
 
 
-<!-- ===== v0.75.57 NINE HERO BATTLE MOTIONS ===== -->
-<style id="v07557-nine-motion-style">
+<!-- ===== v0.75.58 NINE HERO BATTLE MOTIONS - ROBUST ===== -->
+<style id="v07558-nine-motion-style">
 .heroGhost7557{position:absolute;z-index:29;pointer-events:none;object-fit:contain;transform-origin:50% 72%;will-change:transform,opacity,filter}
 .fx7557{position:absolute;z-index:31;pointer-events:none;will-change:transform,opacity}
 .toaGhost7557{animation:toa7557 .34s cubic-bezier(.18,.8,.2,1) forwards}
@@ -8145,22 +8141,22 @@ stamp();
 .soul7557:after{content:"";position:absolute;left:7px;bottom:-13px;border-left:8px solid transparent;border-right:8px solid transparent;border-top:17px solid #542795}
 @keyframes soul7557{0%{opacity:.3;transform:translate(0,0) scale(.65)}55%{opacity:1}100%{opacity:.15;transform:translate(var(--tx),var(--ty)) scale(1.15)}}
 </style>
-<script id="v07557-nine-hero-motions">
+<script id="v07558-nine-hero-motions">
 (()=>{
 'use strict';
-const V='v0.75.57';
+const V='v0.75.58';
 const NINE=new Set(['トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','アズライル']);
 const base=window.__DOD_PARTY_MOTION_7549;if(!base||typeof base.motionSlot!=='function')return;
 const original=base.motionSlot;
 function battle(){return document.getElementById('battle')}
-function hero(slot,name){const b=battle();if(!b)return null;return b.querySelector(`.hqHuman749.slot${slot} img[data-hero="${name}"]`)}
+function hero(slot,name){const b=battle();if(!b)return null;const box=b.querySelector(`.hqHuman749.slot${slot}.hero-${name}`)||b.querySelector(`.hqHuman749.slot${slot}`);return box?.querySelector(`img[data-hero="${name}"]`)||box?.querySelector('img')||null}
 function enemy(idx){const b=battle();if(!b)return null;return b.querySelector(`.enemy[data-i="${idx}"]`)||b.querySelector('.enemy:not(.dead)')}
 function point(el,b){const r=el.getBoundingClientRect(),br=b.getBoundingClientRect();return {x:r.left-br.left+r.width*.5,y:r.top-br.top+r.height*.48,r,br}}
-function ghost(slot,name,cls){const b=battle(),img=hero(slot,name);if(!b||!img)return null;const r=img.getBoundingClientRect(),br=b.getBoundingClientRect();if(!r.width)return null;const g=img.cloneNode(false);g.removeAttribute('data-hero');g.className='heroGhost7557 '+cls;Object.assign(g.style,{left:(r.left-br.left)+'px',top:(r.top-br.top)+'px',width:r.width+'px',height:r.height+'px'});b.appendChild(g);return {b,g,r,br}}
+function ghost(slot,name,cls){const b=battle(),img=hero(slot,name);if(!b||!img)return null;const r=img.getBoundingClientRect(),br=b.getBoundingClientRect();if(!r.width)return null;const g=img.cloneNode(false);g.removeAttribute('data-hero');g.className='heroGhost7557 '+cls;Object.assign(g.style,{left:(r.left-br.left)+'px',top:(r.top-br.top)+'px',width:r.width+'px',height:r.height+'px'});img.style.setProperty('visibility','hidden','important');b.appendChild(g);return {b,g,r,br,img}}
 function fx(b,cls,x,y,life=450){const z=document.createElement('i');z.className='fx7557 '+cls;Object.assign(z.style,{left:x+'px',top:y+'px'});b.appendChild(z);setTimeout(()=>z.remove(),life);return z}
 function targetData(slot,name,idx,cls){const q=ghost(slot,name,cls),e=enemy(idx);if(!q||!e)return null;const ep=point(e,q.b),sx=q.r.left-q.br.left+q.r.width*.62,sy=q.r.top-q.br.top+q.r.height*.42;return {...q,ep,sx,sy,dx:ep.x-sx,dy:ep.y-sy}}
 function dash(q,ratio=.72){q.g.style.setProperty('--dx',(q.dx*ratio)+'px');q.g.style.setProperty('--dy',(q.dy*ratio)+'px');q.g.style.setProperty('--dx2',(q.dx*.88)+'px');q.g.style.setProperty('--dy2',(q.dy*.88)+'px')}
-function cleanup(q,ms=520){setTimeout(()=>q.g.remove(),ms)}
+function cleanup(q,ms=520){setTimeout(()=>{q.g.remove();q.img?.style.removeProperty('visibility')},ms)}
 function toa(slot,idx){const q=targetData(slot,'トア',idx,'toaGhost7557');if(!q)return false;dash(q,.78);setTimeout(()=>fx(q.b,'slash7557',q.ep.x-46,q.ep.y,240),150);cleanup(q,420);return true}
 function pivot(slot,idx){const q=targetData(slot,'ピボット',idx,'pivotGhost7557');if(!q)return false;setTimeout(()=>fx(q.b,'scan7557',q.ep.x-29,q.ep.y-29,420),70);setTimeout(()=>{const z=fx(q.b,'bolt7557 starBolt7557',q.sx,q.sy,330);z.style.setProperty('--tx',q.dx+'px');z.style.setProperty('--ty',q.dy+'px')},120);cleanup(q,470);return true}
 function lilia(slot,idx){const q=targetData(slot,'リリア',idx,'liliaGhost7557');if(!q)return false;setTimeout(()=>fx(q.b,'magicRing7557',q.sx-23,q.sy-23,420),45);setTimeout(()=>{const z=fx(q.b,'bolt7557',q.sx,q.sy,360);z.style.setProperty('--tx',q.dx+'px');z.style.setProperty('--ty',q.dy+'px');z.style.setProperty('--dur','.30s')},115);cleanup(q,520);return true}
@@ -8172,11 +8168,37 @@ function leon(slot,idx){const q=targetData(slot,'レオンハルト',idx,'leonGh
 function az(slot,idx){const q=targetData(slot,'アズライル',idx,'azGhost7557');if(!q)return false;setTimeout(()=>{const z=fx(q.b,'soul7557',q.sx,q.sy-12,420);z.style.setProperty('--tx',q.dx+'px');z.style.setProperty('--ty',q.dy+'px')},80);cleanup(q,500);return true}
 const MAP={トア:toa,ピボット:pivot,リリア:lilia,セレナ:selena,ノア:noa,カグラ:kagura,ゼファル:zephal,レオンハルト:leon,アズライル:az};
 base.motionSlot=function(slot,idx=null){const name=typeof partyNames==='function'?partyNames()[slot]:null;if(NINE.has(name)){const fn=MAP[name];return fn?fn(slot,idx):false}return original(slot,idx)};
-base.v07557={version:V,names:[...NINE],readOnly:true};
+base.v07558={version:V,names:[...NINE],readOnly:true};
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
 const rr=window.render;if(typeof rr==='function')window.render=function(){const z=rr.apply(this,arguments);stamp();return z};stamp();
 })();
 </script>
-<!-- ===== /v0.75.57 ===== -->
+<!-- ===== /v0.75.58 ===== -->
+
+
+<!-- ===== v0.75.58 AUTHORITATIVE VERSION LOCK ===== -->
+<script id="v07558-version-lock">
+(()=>{
+'use strict';
+const V='v0.75.58';
+let writing=false;
+function stamp(){
+ if(writing)return;writing=true;
+ try{
+  const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');
+  if(b){if(b.id!=='buildVersion')b.id='buildVersion';if(b.textContent!==V)b.textContent=V}
+  const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;
+  const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t;
+ }finally{writing=false}
+}
+stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,350);setTimeout(stamp,1000);
+const mo=new MutationObserver(()=>queueMicrotask(stamp));
+const watch=()=>[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}));
+watch();
+window.addEventListener('pageshow',stamp,{passive:true});
+window.__DOD_VERSION_7558={version:V,stamp};
+})();
+</script>
+<!-- ===== /v0.75.58 ===== -->
 
 </body></html>
