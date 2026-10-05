@@ -4213,7 +4213,7 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
   if(st.area==='呪われた古城'&&!st.boss&&E.length&&E[0].name!=='黄金スライム'&&Math.random()<0.06){
    const i=Math.floor(Math.random()*E.length),b=MONSTERS['デスリーパー'],mx=Math.floor((b.hp+S.lv*4)*st.mult);
    E[i]={name:'デスリーパー',base:'デスリーパー',icon:b.icon,hp:mx,max:mx,atk:Math.floor((b.atk+S.lv)*st.mult),xp:Math.floor((b.xp+S.lv*2)*st.mult),charge:false,rareCastle:true};
-   S.seen['デスリーパー']=true;stopAuto('レア敵 デスリーパー出現');render();
+   S.seen['デスリーパー']=true;render();
   }
  };
  if(typeof render==='function')render();
@@ -4329,7 +4329,7 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
   if(st.area==='紅蓮魔界'&&!st.boss&&E.length&&E[0].name!=='黄金スライム'&&Math.random()<0.06){
    const i=Math.floor(Math.random()*E.length),b=MONSTERS['煉獄獣フェンリル'],mx=Math.floor((b.hp+S.lv*4)*st.mult);
    E[i]={name:'煉獄獣フェンリル',base:'煉獄獣フェンリル',icon:b.icon,hp:mx,max:mx,atk:Math.floor((b.atk+S.lv)*st.mult),xp:Math.floor((b.xp+S.lv*2)*st.mult),charge:false,rareGuren7425:true};
-   S.seen['煉獄獣フェンリル']=true;stopAuto('RARE 煉獄獣フェンリル出現');render();
+   S.seen['煉獄獣フェンリル']=true;render();
   }
  };
  function stamp7425(){
@@ -4441,7 +4441,7 @@ function lock7429(){
 }
 ['灼熱マグマゴーレム','イフリート'].forEach(n=>{if(!Number.isFinite(S.kills[n]))S.kills[n]=0;(drops[n]||[]).forEach(d=>{if(!Number.isFinite(S.dropFound[d.n]))S.dropFound[d.n]=0})});
 const spawnBefore7429=spawn;
-spawn=function(){lock7429();spawnBefore7429();const st=stage();if(st.area==='灼熱の火山'&&!st.boss&&E.length&&E[0].name!=='黄金スライム'&&Math.random()<.05){const i=Math.floor(Math.random()*E.length),b=MONSTERS['イフリート'],mx=Math.floor((b.hp+S.lv*4)*st.mult);E[i]={name:'イフリート',base:'イフリート',icon:b.icon,hp:mx,max:mx,atk:Math.floor((b.atk+S.lv)*st.mult),xp:Math.floor((b.xp+S.lv*2)*st.mult),charge:false,rareVolcano7429:true};S.seen['イフリート']=true;stopAuto('RARE イフリート出現');render();}};
+spawn=function(){lock7429();spawnBefore7429();const st=stage();if(st.area==='灼熱の火山'&&!st.boss&&E.length&&E[0].name!=='黄金スライム'&&Math.random()<.05){const i=Math.floor(Math.random()*E.length),b=MONSTERS['イフリート'],mx=Math.floor((b.hp+S.lv*4)*st.mult);E[i]={name:'イフリート',base:'イフリート',icon:b.icon,hp:mx,max:mx,atk:Math.floor((b.atk+S.lv)*st.mult),xp:Math.floor((b.xp+S.lv*2)*st.mult),charge:false,rareVolcano7429:true};S.seen['イフリート']=true;render();}};
 const renderBefore7429=render;
 render=function(){lock7429();const r=renderBefore7429.apply(this,arguments);lock7429();const bv=document.getElementById('buildVersion');if(bv)bv.textContent=VER;const sm=document.querySelector('.logo small');if(sm)sm.textContent=VER;document.title='どろダン / DROP OF DUNGEON '+VER;return r};
 lock7429();save();render();
@@ -4526,7 +4526,7 @@ spawn=function(){
      atk:Math.floor((b.atk+S.lv)*st.mult),xp:Math.floor((b.xp+S.lv*2)*st.mult),
      charge:false,rareSky7434:true};
    S.seen['スノーラビット']=true;
-   if(typeof stopAuto==='function')stopAuto('RARE スノーラビット出現');
+   
    render();
  }
 };
@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.72';
+const V='v0.75.73';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8182,7 +8182,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.72';
+const V='v0.75.73';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8378,4 +8378,8 @@ function attack(name,ei,pi,done){const a=bossPos(ei),b=partyPos(pi);if(!a||!b)re
 api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={version:V,names:['草原キング','森の主・月狼','氷雪の女王・フロスティア','焔竜王・ヴォルガノス']};
 })();
 </script><!-- ===== /v0.75.72 ===== -->
+<!-- ===== v0.75.73 MID-BOSS CONTINUE ===== -->
+<script id="v07573-midboss-continue">
+(()=>{'use strict';const V='v0.75.73';window.__DOD_MIDBOSS_CONTINUE_7573={version:V,continueOnRareEncounter:true,preservedStops:['finalBoss','mythic','wipe','rareDrop']};function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp()})();
+</script><!-- ===== /v0.75.73 ===== -->
 </body></html>
