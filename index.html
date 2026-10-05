@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.73';
+const V='v0.75.74';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8039,6 +8039,7 @@ function animate(slot,idx){try{if(window.__DOD_NINE_MOTION_7559?.dispatch?.(slot
 function applyHit(slot,idx,d,crit,token){
  if(token!==seqToken)return;
  if(!E[idx]||E[idx].hp<=0){idx=firstEnemy();if(idx<0){busy=false;return}}
+ try{window.__DOD_SE_7574?.play(window.__DOD_SE_7574.hero(names()[slot]||''))}catch(_){}
  hit(idx,d,crit);
  busy=false;
  if(typeof finish==='function'&&finish()){enemyDue=false;nextSlot=0;return}
@@ -8182,7 +8183,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.73';
+const V='v0.75.74';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8327,9 +8328,9 @@ function animateEnemy(ei,pi,name,done){const a=EP(ei),b=PP(pi);if(!a||!b){setTim
  const g=a.img.cloneNode(true);g.removeAttribute?.('id');g.classList.add('enemyGhost769');const rr=a.img.getBoundingClientRect(),br=a.r.getBoundingClientRect();Object.assign(g.style,{position:'absolute',display:'block',visibility:'visible',opacity:'1',left:rr.left-br.left+'px',top:rr.top-br.top+'px',width:rr.width+'px',height:rr.height+'px'});const ratio=k==='heavy'||k==='large'?.72:k==='pounce'?.96:k==='dive'?.92:k==='bounce'?.82:.88;g.style.setProperty('--dx',((b.x-a.x)*ratio)+'px');g.style.setProperty('--dy',((b.y-a.y)*ratio)+'px');const oldVis=a.img.style.visibility;a.img.style.setProperty('visibility','hidden','important');a.r.appendChild(g);setTimeout(()=>{g.remove();if(oldVis)a.img.style.visibility=oldVis;else a.img.style.removeProperty('visibility');impact(b);done()},300)}
 window.enemyTurn=function(){const attackers=living().slice();if(!attackers.length)return;let cursor=0;
  function next(){if(cursor>=attackers.length){S.guard=false;if(!aliveParty().length)wipe();try{render()}catch(_){}return}const e=attackers[cursor++];if(!e||e.hp<=0)return next();let ap=aliveParty();if(!ap.length)return;const pi=ap[Math.floor(Math.random()*ap.length)],def=statsFor(pi).def;
- if(e.charge){let d=Math.max(1,e.atk*2-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));(window.__DOD_ENEMY_MOTION_7569?.bossAttack&&e.boss?window.__DOD_ENEMY_MOTION_7569.bossAttack.bind(null,e.name,E.indexOf(e),pi):animateEnemy.bind(null,E.indexOf(e),pi,e.name))(()=>{partyDamage(pi,d);e.charge=false;showLog(`${e.name}の強攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}
+ if(e.charge){let d=Math.max(1,e.atk*2-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));(window.__DOD_ENEMY_MOTION_7569?.bossAttack&&e.boss?window.__DOD_ENEMY_MOTION_7569.bossAttack.bind(null,e.name,E.indexOf(e),pi):animateEnemy.bind(null,E.indexOf(e),pi,e.name))(()=>{try{window.__DOD_SE_7574?.play(window.__DOD_SE_7574.enemy(e.name))}catch(_){}partyDamage(pi,d);e.charge=false;showLog(`${e.name}の強攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}
  else if(Math.random()<.2){e.charge=true;try{window.__DOD_ENEMY_MOTION_7569?.bossCharge?.(e.name,E.indexOf(e))}catch(_){}showLog(`⚠ ${e.name}が力を溜めている！`);setTimeout(next,100)}
- else{let d=Math.max(1,e.atk-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));(window.__DOD_ENEMY_MOTION_7569?.bossAttack&&e.boss?window.__DOD_ENEMY_MOTION_7569.bossAttack.bind(null,e.name,E.indexOf(e),pi):animateEnemy.bind(null,E.indexOf(e),pi,e.name))(()=>{partyDamage(pi,d);showLog(`${e.name}の攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}}
+ else{let d=Math.max(1,e.atk-def);if(S.guard)d=Math.max(1,Math.floor(d*.35));(window.__DOD_ENEMY_MOTION_7569?.bossAttack&&e.boss?window.__DOD_ENEMY_MOTION_7569.bossAttack.bind(null,e.name,E.indexOf(e),pi):animateEnemy.bind(null,E.indexOf(e),pi,e.name))(()=>{try{window.__DOD_SE_7574?.play(window.__DOD_SE_7574.enemy(e.name))}catch(_){}partyDamage(pi,d);showLog(`${e.name}の攻撃！ ${partyNames()[pi]}に${d}ダメージ`);setTimeout(next,80)})}}
  next();
 };
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp();window.__DOD_ENEMY_MOTION_7569={version:V,kind};
@@ -8382,4 +8383,23 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 <script id="v07573-midboss-continue">
 (()=>{'use strict';const V='v0.75.73';window.__DOD_MIDBOSS_CONTINUE_7573={version:V,continueOnRareEncounter:true,preservedStops:['finalBoss','mythic','wipe','rareDrop']};function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp()})();
 </script><!-- ===== /v0.75.73 ===== -->
+<!-- ===== v0.75.74 COMBAT SE ===== -->
+<style id="v07574-se-style">
+.sePanel774{position:absolute;right:7px;bottom:126px;z-index:120;display:flex;gap:5px;align-items:center;background:#061326dd;border:1px solid #8a7440;border-radius:10px;padding:5px 7px;font-size:10px}.sePanel774 button{font-size:10px;padding:4px 7px;border-radius:8px}.sePanel774 input{width:64px}
+</style>
+<script id="v07574-combat-se">
+(()=>{'use strict';const V='v0.75.74';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
+function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
+function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
+function play(k){if(!cfg.on)return;switch(k){case'slash':noise(.07,.55);tone(520,.07,'sawtooth',.25,-260);break;case'magic':tone(620,.13,'sine',.45,360);setTimeout(()=>tone(240,.09,'triangle',.4,-100),80);break;case'heavy':tone(105,.13,'square',.55,-45);noise(.11,.65);break;case'wolf':tone(310,.09,'sawtooth',.22,-120);setTimeout(()=>noise(.08,.45),55);break;case'impact':tone(130,.08,'square',.42,-55);noise(.08,.55);break;case'enemyMagic':tone(390,.13,'triangle',.35,-130);break;case'breath':noise(.22,.6);tone(95,.2,'sawtooth',.25,70);break;case'boss':tone(72,.22,'square',.6,-25);noise(.18,.7);break;}}
+function hero(name){if(/フェンリル|ヴォルク/.test(name))return'wolf';if(/ミア|リリア|アズライル|ピボット/.test(name))return'magic';if(/ナーヴァ|レオンハルト/.test(name))return'heavy';return'slash'}
+function enemy(name){if(/フェアリー|キノコ/.test(name))return'enemyMagic';if(/リザード|サラマンダー|竜/.test(name))return'breath';if(/キング|女王|月狼/.test(name))return'boss';return'impact'}
+function ui(){const b=document.getElementById('battle');if(!b||b.querySelector('.sePanel774'))return;const x=document.createElement('div');x.className='sePanel774';x.innerHTML=`<button type="button" data-se774>${cfg.on?'🔊 SE':'🔇 SE'}</button><input data-sev774 type="range" min="0" max="100" value="${Math.round(cfg.vol*100)}" aria-label="SE音量">`;b.appendChild(x);x.querySelector('[data-se774]').onclick=()=>{cfg.on=!cfg.on;saveCfg();x.querySelector('[data-se774]').textContent=cfg.on?'🔊 SE':'🔇 SE';if(cfg.on){C();play('magic')}};x.querySelector('[data-sev774]').oninput=e=>{cfg.vol=Math.max(0,Math.min(1,+e.target.value/100));saveCfg()}}
+function saveCfg(){try{localStorage.setItem(KEY,JSON.stringify(cfg))}catch(_){}}
+document.addEventListener('pointerdown',()=>C(),{once:true,capture:true});
+const r0=render;render=function(){const z=r0.apply(this,arguments);ui();stamp();return z};ui();
+window.__DOD_SE_7574={version:V,play,hero,enemy,cfg};
+function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp()})();
+</script><!-- ===== /v0.75.74 ===== -->
 </body></html>
