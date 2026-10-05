@@ -8015,11 +8015,11 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 
 
 
-<!-- ===== v0.75.54 ONE-PUSH ONE-ACTOR BATTLE SEQUENCER ===== -->
-<script id="v07554-one-actor-turns">
+<!-- ===== v0.75.55 ONE-PUSH ONE-ACTOR BATTLE SEQUENCER + MOTION RECONNECT ===== -->
+<script id="v07555-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.54';
+const V='v0.75.55';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8039,7 +8039,7 @@ function calcCompanion(slot){
  const d=Math.floor(st.atk*mult*(.86+Math.random()*.25)*(crit?1.65:1));
  return {d,crit};
 }
-function animate(slot){try{window.__DOD_BATTLE_MOTION_7548?.motionSlot?.(slot)}catch(_){}}
+function animate(slot){try{return !!window.__DOD_PARTY_MOTION_7549?.motionSlot?.(slot)}catch(_){return false}}
 function applyHit(slot,idx,d,crit,token){
  if(token!==seqToken)return;
  if(!E[idx]||E[idx].hp<=0){idx=firstEnemy();if(idx<0){busy=false;return}}
@@ -8104,6 +8104,6 @@ window.__DOD_TURN_7553={version:V,onePush,state:()=>({nextSlot,busy,enemyDue}),r
 stamp();
 })();
 </script>
-<!-- ===== /v0.75.54 ===== -->
+<!-- ===== /v0.75.55 ===== -->
 
 </body></html>
