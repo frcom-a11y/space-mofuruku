@@ -8182,7 +8182,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.59';
+const V='v0.75.60';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8202,5 +8202,64 @@ window.__DOD_VERSION_7558={version:V,stamp};
 })();
 </script>
 <!-- ===== /v0.75.58 ===== -->
+
+
+<!-- ===== v0.75.60 SESSION-ONLY ANIMATION TEST ROSTER ===== -->
+<style id="v07560-test-roster-style">
+.animTest760{border:1px solid rgba(255,215,90,.55);background:rgba(45,34,16,.82);border-radius:12px;padding:10px;margin:8px 0}
+.animTest760 b{color:#ffe58a}.animTestBadge760{font-size:11px;color:#ffe58a}
+</style>
+<script id="v07560-session-test-roster">
+(()=>{
+'use strict';
+const V='v0.75.60';
+const TEST=['トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','アズライル'];
+const REAL=()=>new Set(['キーボ','ミア','トア',...(S.legend62?.pivot?['ピボット']:[]),...(S.gachaHeroes7490||[])]);
+const originalParty=()=>Array.isArray(S.partyFree7438)?S.partyFree7438.slice(0,3):partyNames().slice(0,3);
+const realParty=originalParty();
+let tempParty=realParty.slice();
+let enabled=false;
+function isTest(n){return TEST.includes(n)&&!REAL().has(n)}
+function level(n){const g=S.charGrowth?.[n];if(g&&Number.isFinite(g.lv))return g.lv;return ['リリア','セレナ','ノア','カグラ'].includes(n)?30:50}
+function setTemp(slot,name){
+ if(!enabled||slot<0||slot>2||!TEST.includes(name))return;
+ const other=tempParty.indexOf(name);
+ if(other>=0)[tempParty[slot],tempParty[other]]=[tempParty[other],tempParty[slot]];
+ else tempParty[slot]=name;
+ S.hp[slot]=maxHp(slot);S.mp[slot]=maxMp(slot);
+ render();openTest();
+}
+function withTemp(fn){
+ if(!enabled)return fn();
+ const pf=S.partyFree7438,ps=S.partySlots;
+ S.partyFree7438=tempParty.slice();S.partySlots=tempParty.slice(1);
+ try{return fn()}finally{S.partyFree7438=pf;S.partySlots=ps}
+}
+const pn0=partyNames;
+partyNames=function(){return enabled?tempParty.slice():pn0.apply(this,arguments)};
+function openTest(){
+ if(!enabled)return;
+ const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const img=n=>{const src=window.__DOD_VISUAL7459?.[n];return src?`<span class="partyPortrait7459"><img src="${src}" alt="${esc(n)}" draggable="false"></span>`:''};
+ open('戦闘アニメ確認',`<div class="animTest760"><b>アニメーション確認モード</b><div class="small">この画面だけの一時編成です。ガチャ所持データには追加されず、再読み込みで解除されます。</div></div>
+ <div class="partyScreen7459"><section class="partyPanel7459"><h3>現在のテスト編成</h3><div class="partyCurrent7459">${tempParty.map((n,i)=>`<div class="partyCurrentSlot7459">${img(n)}<b>${i+1}枠 ${esc(n)}</b><small>Lv.${level(n)}</small></div>`).join('')}</div></section>
+ <section class="partyPanel7459"><h3>確認対象9キャラ</h3>${TEST.map(n=>{const slot=tempParty.indexOf(n);return `<div class="partyRow7459 ${slot>=0?'isActive':''}" data-test760="${esc(n)}">${img(n)}<div class="partyInfo7459"><b>${esc(n)} <span class="animTestBadge760">TEST</span></b><span>${esc(BASE_MEMBERS[n]?.role||'')}</span><em>${REAL().has(n)?'所持済み':'一時確認のみ'}</em></div><div class="partyButtons7459">${[0,1,2].map(i=>`<button type="button" data-t760="${esc(n)}" data-ts760="${i}" ${slot===i?'disabled':''}>${i+1}枠${slot===i?' ✓':''}</button>`).join('')}</div></div>`}).join('')}</section>
+ <button class="miniBtn" data-close760>確認モードを終了</button></div>`);
+ document.querySelectorAll('[data-t760]').forEach(b=>b.onclick=()=>setTemp(+b.dataset.ts760,b.dataset.t760));
+ document.querySelector('[data-close760]')?.addEventListener('click',()=>{enabled=false;tempParty=realParty.slice();render();document.getElementById('overlay')?.classList.remove('open')});
+}
+function addButton(){
+ const body=document.getElementById('obody');if(!body||body.querySelector('[data-animtest760]'))return;
+ if(!body.querySelector('.partyScreen7459'))return;
+ const b=document.createElement('button');b.type='button';b.className='miniBtn';b.dataset.animtest760='1';b.textContent='🎬 9キャラ戦闘アニメ確認';b.onclick=()=>{enabled=true;tempParty=realParty.slice();openTest()};body.prepend(b);
+}
+const pv0=partyView;partyView=function(){const z=pv0.apply(this,arguments);setTimeout(addButton,0);return z};
+const r0=render;render=function(){const z=withTemp(()=>r0.apply(this,arguments));stamp();return z};
+function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}
+window.__DOD_ANIM_TEST_7560={version:V,enable:()=>{enabled=true;tempParty=realParty.slice();openTest()},disable:()=>{enabled=false;tempParty=realParty.slice();render()},state:()=>({enabled,tempParty:tempParty.slice(),realParty:realParty.slice()})};
+stamp();
+})();
+</script>
+<!-- ===== /v0.75.60 ===== -->
 
 </body></html>
