@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.85';
+const V='v0.75.86';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8183,7 +8183,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.85';
+const V='v0.75.86';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8388,7 +8388,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.75.85';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.75.86';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8407,7 +8407,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.75.85',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
+(()=>{'use strict';const V='v0.75.86',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8422,7 +8422,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.75.85';let busy=false;
+(()=>{'use strict';const V='v0.75.86';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
@@ -8446,4 +8446,16 @@ const sp0=window.spawn;window.spawn=function(){const z=sp0.apply(this,arguments)
 window.__DOD_BALANCE_A_7585={version:V,design:{equal:'普通',plus5:'やや楽',plus10:'楽勝',out5:1.25,out10:1.55,in5:.78,in10:.58,healthyNormalHitCap:.40,hydraExcluded:true},normalize};
 })();
 </script><!-- ===== /v0.75.85 ===== -->
+<!-- ===== v0.75.86 B POISON SWAMP ===== -->
+<script id="v07586-swamp">
+(()=>{'use strict';const V='v0.75.86',M={'ポイズンスライム':{icon:'slime',hp:150,atk:34,xp:105,recruit:430},'沼牙ウルフ':{icon:'wolf',hp:165,atk:38,xp:118,recruit:520},'ヴェノムビー':{icon:'poisonbee',hp:138,atk:41,xp:124,recruit:560},'毒胞子キノコ':{icon:'mushroom',hp:178,atk:39,xp:132,recruit:490},'沼地の大蛇':{icon:'grassfang',hp:420,atk:48,xp:320,recruit:0}};
+Object.entries(M).forEach(([n,v])=>{MONSTERS[n]={...(MONSTERS[n]||{}),...v};monBase[n]=MONSTERS[n];if(!Number.isFinite(S.kills[n]))S.kills[n]=0});
+const D={'ポイズンスライム':[{n:'毒粘液',r:5,rar:'NORMAL',type:'素材',desc:'毒沼のスライムから採れる粘液'}],'沼牙ウルフ':[{n:'沼狼の牙',r:6,rar:'NORMAL',type:'素材',desc:'沼地を駆ける狼の牙'}],'ヴェノムビー':[{n:'猛毒針',r:6,rar:'NORMAL',type:'素材',desc:'巨大蜂の毒針'}],'毒胞子キノコ':[{n:'毒胞子袋',r:5,rar:'NORMAL',type:'素材',desc:'濃縮された毒胞子'}],'沼地の大蛇':[{n:'大蛇の毒鱗',r:3,rar:'RARE',type:'素材',desc:'沼地の大蛇が残す毒鱗'}]};
+Object.entries(D).forEach(([n,a])=>{drops[n]=a;S.dropFound=S.dropFound||{};a.forEach(d=>{if(!Number.isFinite(S.dropFound[d.n]))S.dropFound[d.n]=0})});
+const defs=[{id:'sw1_7586',area:'毒沼地',name:'瘴気の毒沼 1',recommended:46,unlock:s=>(s.lv||1)>=46,unlockText:'Lv46で解放',enemies:['ポイズンスライム','沼牙ウルフ','ヴェノムビー'],mult:3.7},{id:'sw2_7586',area:'毒沼地',name:'瘴気の毒沼 2',recommended:50,unlock:s=>!!s.clears?.sw1_7586||(s.lv||1)>=50,unlockText:'毒沼地1クリア または Lv50',enemies:['毒胞子キノコ','ヴェノムビー','沼牙ウルフ','沼地の大蛇'],mult:4.1},{id:'swm_7586',area:'毒沼地',name:'毒沼地・大蛇の巣',recommended:53,unlock:s=>!!s.clears?.sw2_7586||(s.lv||1)>=53,unlockText:'毒沼地2クリア または Lv53',enemies:['沼地の大蛇','毒胞子キノコ','ヴェノムビー'],mult:4.5}];
+defs.forEach(d=>{const x=stages.find(s=>s.id===d.id);if(x)Object.assign(x,d);else stages.push(d)});const hy=stages.find(x=>x.id==='hydra7500');if(hy){hy.unlock=s=>!!s.clears?.swm_7586||(s.lv||1)>=55;hy.unlockText='大蛇の巣クリア または Lv55';hy.recommended=55}
+const f0=window.finish;window.finish=function(){let x;try{x=stage()}catch(_){}const clear=x?.area==='毒沼地'&&!x?.boss&&living().length===0,z=f0.apply(this,arguments);if(clear){S.clears=S.clears||{};S.clears[x.id]=true;try{save()}catch(_){}}return z};
+window.__DOD_SWAMP_7586={version:V,monsters:Object.keys(M),stages:defs.map(x=>x.id),hydra:'hydra7500',codexLinked:true};
+})();
+</script><!-- ===== /v0.75.86 ===== -->
 </body></html>
