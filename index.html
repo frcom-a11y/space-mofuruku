@@ -8420,4 +8420,12 @@ const r0=render;render=function(){const z=r0.apply(this,arguments);ui();if(cfg.o
 window.__DOD_BGM_SAFE_7578={version:V,start,stop,cfg};
 function stamp(){const b=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(b){b.id='buildVersion';b.textContent=V}const sm=document.querySelector('.logo small');if(sm)sm.textContent=V;document.title='どろダン / DROP OF DUNGEON '+V}stamp()})();
 </script><!-- ===== /v0.75.78 ===== -->
+<!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
+<script id="v07581-final-version-lock">
+(()=>{'use strict';const V='v0.75.81';let busy=false;
+function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
+stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
+const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
+})();
+</script><!-- ===== /v0.75.81 ===== -->
 </body></html>
