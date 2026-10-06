@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.79';
+const V='v0.75.80';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8183,7 +8183,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.79';
+const V='v0.75.80';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8388,7 +8388,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.75.79';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.75.80';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8407,15 +8407,15 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.75.79',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
+(()=>{'use strict';const V='v0.75.80',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
-const BATTLE79={lead:[69,72,74,76,74,72,69,67,69,72,76,79,76,74,72,71],bass:[45,45,48,48,41,41,43,43,45,45,48,48,41,43,45,40],chord:[[57,60,64],[57,60,64],[60,64,67],[60,64,67],[53,57,60],[53,57,60],[55,59,62],[55,59,62]]};
+const ADVENTURE80={lead:[72,74,76,79,76,74,72,69,71,72,74,76,79,81,79,76,74,76,77,81,79,77,76,72,69,72,74,76,74,72,71,67],bass:[48,48,45,45,50,50,43,43,48,48,45,45,50,50,43,43,41,41,48,48,45,45,50,50,43,43,45,45,48,48,43,43],chords:[[60,64,67],[57,60,64],[62,65,69],[55,59,62],[60,64,67],[57,60,64],[62,65,69],[55,59,62],[53,57,60],[60,64,67],[57,60,64],[62,65,69],[55,59,62],[57,60,64],[60,64,67],[55,59,62]]};
 function voice(m,d,v,type='triangle',when=0){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+when;o.type=type;o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
-function battleBeat79(){const i=step++%16;voice(BATTLE79.lead[i],.18,.085,i%4===3?'sine':'triangle');voice(BATTLE79.bass[i],.16,.055,'sine');if(i%2===0){const ch=BATTLE79.chord[(i/2)%8];ch.forEach((n,k)=>voice(n,.25,.024,'triangle',k*.008))}if(i%4===0){voice(33,.06,.045,'square');voice(45,.05,.025,'sine',.02)}if(i%4===2)voice(40,.045,.025,'square')}
+function adventureBeat80(){const i=step++%32,n=ADVENTURE80.lead[i],bass=ADVENTURE80.bass[i];voice(n,.19,.068,i%8===6?'sine':'triangle');if(i%2===1)voice(n+12,.08,.022,'sine');voice(bass,.18,.045,'sine');if(i%2===0){const ch=ADVENTURE80.chords[(i/2)%16];ch.forEach((x,k)=>voice(x,.28,.018,k===1?'sine':'triangle',k*.01))}if(i%4===0){voice(36,.055,.026,'sine');voice(48,.045,.018,'triangle',.025)}if(i%4===2)voice(43,.04,.014,'square');if(i%8===7)voice(n+7,.10,.018,'sine')}
 function scene(){try{const t=document.getElementById('otitle')?.textContent||'',st=stage();if(/召喚|ガチャ|星降り/.test(t))return'gacha';if(/拠点|パーティ|倉庫|ショップ|錬成/.test(t))return'base';if(st?.mythic||/神話|深淵/.test(st?.name||''))return'mythic';if(st?.boss||E?.some?.(e=>e.boss))return'boss'}catch(_){}return'battle'}
-function start(){if(!cfg.on)return;sceneName=scene();clearInterval(timer);step=0;if(sceneName==='battle'){battleBeat79();timer=setInterval(battleBeat79,150);return}const run=()=>{const a=songs[sceneName]||songs.battle;tone(a[step++%a.length])};run();timer=setInterval(run,280)}
+function start(){if(!cfg.on)return;sceneName=scene();clearInterval(timer);step=0;if(sceneName==='battle'){adventureBeat80();timer=setInterval(adventureBeat80,170);return}const run=()=>{const a=songs[sceneName]||songs.battle;tone(a[step++%a.length])};run();timer=setInterval(run,280)}
 function stop(){clearInterval(timer);timer=null}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(cfg))}catch(_){}}
 function ui(){const b=document.getElementById('battle');if(!b||b.querySelector('.bgmSafe778'))return;const x=document.createElement('div');x.className='bgmSafe778';x.innerHTML=`<button data-bgms778>🎵 BGM OFF</button><input data-bgmv778 type="range" min="0" max="40" value="${Math.round(cfg.vol*100)}">`;b.appendChild(x);const bt=x.querySelector('[data-bgms778]');bt.onclick=async()=>{const c=ensure();if(!c)return;if(c.state!=='running')try{await c.resume()}catch(_){}cfg.on=!cfg.on;save();if(cfg.on){tone(72,.1);start();bt.textContent='🎵 BGM ON'}else{stop();bt.textContent='🎵 BGM OFF'}};x.querySelector('[data-bgmv778]').oninput=e=>{cfg.vol=+e.target.value/100;if(gain)gain.gain.value=cfg.vol;save()}}
