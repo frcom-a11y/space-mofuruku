@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.94';
+const V='v0.75.95';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8183,7 +8183,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.94';
+const V='v0.75.95';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8388,7 +8388,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.75.94';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.75.95';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8407,7 +8407,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.75.94',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
+(()=>{'use strict';const V='v0.75.95',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8422,7 +8422,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.75.94';let busy=false;
+(()=>{'use strict';const V='v0.75.95';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
@@ -8458,35 +8458,20 @@ const f0=window.finish;window.finish=function(){let x;try{x=stage()}catch(_){}co
 window.__DOD_SWAMP_7586={version:V,monsters:Object.keys(M),stages:defs.map(x=>x.id),hydra:'hydra7500',codexLinked:true};
 })();
 </script><!-- ===== /v0.75.86 ===== -->
-<!-- ===== v0.75.94 CLEAN ASSET ARCHITECTURE ===== -->
-<style id="v07594-clean">
-#app.swamp794 #battle{background:
-radial-gradient(circle at 72% 18%,#b54cff55 0 7%,transparent 8%),
-radial-gradient(ellipse at 50% 82%,#7dff6530 0 18%,transparent 48%),
-linear-gradient(180deg,#241538 0%,#13271f 52%,#071611 100%)!important}
-#app.swamp794 #battle:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(100deg,transparent 0 58px,#07110c88 60px 67px,transparent 69px 130px);opacity:.35}
-.cleanMon794{width:135px;height:145px;margin:auto;position:relative;filter:drop-shadow(0 8px 7px #000b)}
-.cleanMon794 svg{width:100%;height:100%;overflow:visible}
-#audio794{position:absolute;left:8px;top:58px;z-index:126;width:31px;height:31px;border:1px solid #607d9d;border-radius:9px;background:#0a2037e8;color:#fff;font-size:16px;padding:0}
-#audioPop794{position:absolute;left:8px;top:92px;z-index:127;display:none;background:#07182aee;border:1px solid #607d9d;border-radius:9px;padding:4px}#audioPop794.open{display:block}#audioPop794 .sePanel774,#audioPop794 .bgmSafe778{position:static!important;right:auto!important;top:auto!important;bottom:auto!important;margin:2px!important}
-#app.hydra794 #enemies{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;position:relative!important}
-#app.hydra794 #enemies .enemy{width:100%!important;min-width:0!important;z-index:6!important}
-#app.hydra794 #enemies .enemy .sprite{visibility:hidden!important;height:260px!important}
-#hydra794{position:absolute;z-index:4;left:50%;top:68px;transform:translateX(-50%);width:min(90vw,570px);height:285px;pointer-events:none;filter:drop-shadow(0 10px 9px #000c)}
+<!-- ===== v0.75.95 STABILITY FINAL ===== -->
+<style id="v07595-stable-style">
+#audio795{position:absolute;left:8px;top:58px;z-index:126;width:31px;height:31px;border:1px solid #607d9d;border-radius:9px;background:#0a2037e8;color:#fff;font-size:16px;padding:0;touch-action:manipulation}
+#audioPop795{position:absolute;left:8px;top:92px;z-index:127;display:none;background:#07182aee;border:1px solid #607d9d;border-radius:9px;padding:4px}#audioPop795.open{display:block}
+#audioPop795 .sePanel774,#audioPop795 .bgmSafe778{position:static!important;right:auto!important;top:auto!important;bottom:auto!important;margin:2px!important}
+#app.hydra795 #enemies{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important}
+#app.hydra795 #enemies .enemy{min-width:0!important;width:100%!important}
 </style>
-<script id="v07594-clean-assets">
-(()=>{'use strict';const V='v0.75.94';
-const S={
-'ポイズンスライム':`<svg viewBox="0 0 140 140"><defs><radialGradient id="g1"><stop stop-color="#b8ff53"/><stop offset=".3" stop-color="#762b9f"/><stop offset="1" stop-color="#24112f"/></radialGradient></defs><path d="M14 109Q18 61 42 31Q70 7 98 31Q123 62 126 109Q100 130 70 125Q39 130 14 109Z" fill="url(#g1)" stroke="#8dff67" stroke-width="5"/><path d="M31 98Q70 116 110 98" fill="none" stroke="#a8ff5a" stroke-width="4" opacity=".55"/><circle cx="50" cy="76" r="8" fill="#ff54f4"/><circle cx="90" cy="76" r="8" fill="#ff54f4"/><path d="M51 98Q70 110 90 96" fill="none" stroke="#e5c9ff" stroke-width="5"/><circle cx="72" cy="49" r="13" fill="#baff54" opacity=".4"/></svg>`,
-'沼牙ウルフ':`<svg viewBox="0 0 150 140"><path d="M17 111L30 58L45 22L61 49Q77 34 94 48L121 20L116 61Q137 83 125 113Q97 130 72 122Q43 132 17 111Z" fill="#1b2628" stroke="#a044dc" stroke-width="5"/><path d="M29 73Q12 57 10 37M118 72Q139 54 141 35" stroke="#8cff67" stroke-width="7"/><circle cx="55" cy="78" r="7" fill="#e65bff"/><circle cx="96" cy="76" r="7" fill="#e65bff"/><path d="M55 100L74 110L97 97" fill="none" stroke="#f2e9df" stroke-width="6"/><path d="M64 105L69 119M88 103L84 118" stroke="#fff" stroke-width="3"/></svg>`,
-'ヴェノムビー':`<svg viewBox="0 0 150 140"><ellipse cx="76" cy="82" rx="39" ry="30" fill="#23132d" stroke="#b74bdf" stroke-width="5"/><path d="M46 68H108M41 83H113M48 98H105" stroke="#7c309c" stroke-width="10"/><ellipse cx="45" cy="45" rx="34" ry="15" fill="#dcb8ff" opacity=".82" transform="rotate(-28 45 45)"/><ellipse cx="108" cy="44" rx="34" ry="15" fill="#dcb8ff" opacity=".82" transform="rotate(28 108 44)"/><circle cx="61" cy="77" r="8" fill="#ff4bea"/><path d="M115 83L148 91L115 101Z" fill="#b8ff5a"/><path d="M56 45L48 20M96 45L105 19" stroke="#a8ff61" stroke-width="4"/></svg>`,
-'毒胞子キノコ':`<svg viewBox="0 0 140 140"><path d="M51 72Q43 106 50 127H90Q98 103 87 72Z" fill="#d7cfac" stroke="#83a75d" stroke-width="5"/><path d="M12 72Q22 20 70 16Q119 20 128 72Q98 59 70 65Q40 58 12 72Z" fill="#71278e" stroke="#c75bed" stroke-width="5"/><circle cx="40" cy="45" r="9" fill="#c8ff63"/><circle cx="79" cy="31" r="8" fill="#c8ff63"/><circle cx="105" cy="53" r="7" fill="#c8ff63"/><circle cx="61" cy="98" r="6" fill="#492745"/><circle cx="81" cy="98" r="6" fill="#492745"/><path d="M61 113Q71 121 83 111" fill="none" stroke="#492745" stroke-width="5"/></svg>`,
-'沼地の大蛇':`<svg viewBox="0 0 160 145"><path d="M20 127Q0 90 35 70Q62 54 49 29Q81 4 111 31Q142 60 113 82Q91 98 135 126Z" fill="#192a23" stroke="#8844bd" stroke-width="5"/><path d="M49 30L41 10L64 26M108 33L129 17L119 48" fill="#3f1c55" stroke="#a857d1" stroke-width="4"/><circle cx="74" cy="50" r="7" fill="#d951ff"/><circle cx="101" cy="50" r="7" fill="#d951ff"/><path d="M73 68Q88 80 105 67" fill="none" stroke="#f3e6dc" stroke-width="6"/><path d="M90 75L94 99" stroke="#d956ff" stroke-width="5"/><path d="M32 112Q72 127 122 111" fill="none" stroke="#8cff65" stroke-width="4" opacity=".55"/></svg>`
-};
-function hydra(){return `<svg viewBox="0 0 560 300"><g fill="#182922" stroke="#8848bd" stroke-width="7"><path d="M55 270Q25 195 91 143Q112 124 120 86Q137 50 169 62Q199 78 188 119Q178 145 203 270Z"/><path d="M199 270Q184 180 220 112Q232 61 279 43Q327 63 337 113Q370 180 354 270Z"/><path d="M350 270Q376 173 368 135Q354 98 384 70Q420 48 444 78Q447 119 467 139Q530 197 499 270Z"/></g><g fill="#e04cff"><circle cx="151" cy="93" r="10"/><circle cx="282" cy="76" r="10"/><circle cx="417" cy="96" r="10"/></g><g stroke="#f0e5dc" stroke-width="8"><path d="M130 119L153 136L177 116"/><path d="M257 101L283 121L310 99"/><path d="M395 121L420 138L447 117"/></g><g stroke="#baff61" stroke-width="5" opacity=".6"><path d="M82 250Q150 275 210 249"/><path d="M208 249Q280 278 354 249"/><path d="M354 249Q424 276 493 249"/></g></svg>`}
-function audio(){const app=document.getElementById('app');if(!app)return;let b=document.getElementById('audio794'),p=document.getElementById('audioPop794');if(!b){b=document.createElement('button');b.id='audio794';b.textContent='🔊';app.appendChild(b);p=document.createElement('div');p.id='audioPop794';app.appendChild(p);b.onclick=()=>p.classList.toggle('open')}const se=document.querySelector('.sePanel774'),bg=document.querySelector('.bgmSafe778');if(se&&se.parentNode!==p)p.appendChild(se);if(bg&&bg.parentNode!==p)p.appendChild(bg)}
-function paint(){let st;try{st=stage()}catch(_){return}const app=document.getElementById('app'),sw=st?.area==='毒沼地',hy=st?.id==='hydra7500';app?.classList.toggle('swamp794',sw);app?.classList.toggle('hydra794',hy);document.getElementById('hydra794')?.remove();if(hy){const root=document.getElementById('enemies');if(root){root.querySelectorAll('.enemy .sprite').forEach(x=>{x.innerHTML='';x.style.visibility='hidden'});const d=document.createElement('div');d.id='hydra794';d.innerHTML=hydra();root.appendChild(d)}}else if(sw){document.querySelectorAll('#enemies .enemy').forEach((el,i)=>{const n=E[i]?.base||E[i]?.name,svg=S[n];if(!svg)return;const box=el.querySelector('.sprite');if(!box)return;box.style.visibility='visible';box.innerHTML=`<div class="cleanMon794" aria-label="${n}">${svg}</div>`})}audio()}
-const r0=window.render;window.render=function(){const z=r0.apply(this,arguments);paint();return z};const sp0=window.spawn;window.spawn=function(){const z=sp0.apply(this,arguments);setTimeout(paint,0);return z};paint();window.__DOD_CLEAN_ASSET_7594={version:V,rasterEnemyAssets:false,pureBackground:true,hydraSingle:true,audioFixed:true};
+<script id="v07595-stability">
+(()=>{'use strict';const V='v0.75.95';
+function fixHydra(){let st;try{st=stage()}catch(_){return}const app=document.getElementById('app'),hy=st?.id==='hydra7500';app?.classList.toggle('hydra795',hy);if(!hy)return;const labels=['左首','中央首','右首'];E.forEach((e,i)=>{if(!e)return;if(e.hydraHead7500){e.base='沼地の災厄・ヒュドラ';e.name=`ヒュドラ・${labels[i]||'首'}`;if(!Number.isFinite(e.maxHp)||e.maxHp<100)e.maxHp=2916;if(!Number.isFinite(e.hp))e.hp=e.maxHp;if(!Number.isFinite(e.lv))e.lv=Math.max(55,S.lv||55)}})}
+function audio(){const app=document.getElementById('app');if(!app)return;document.querySelectorAll('#audio795,#audioPop795').forEach((x,i)=>{if(i>0)x.remove()});let b=document.getElementById('audio795'),p=document.getElementById('audioPop795');if(!b){b=document.createElement('button');b.id='audio795';b.textContent='🔊';app.appendChild(b)}if(!p){p=document.createElement('div');p.id='audioPop795';app.appendChild(p)}b.onclick=()=>p.classList.toggle('open');const ses=[...document.querySelectorAll('.sePanel774')],bgs=[...document.querySelectorAll('.bgmSafe778')];ses.slice(1).forEach(x=>x.remove());bgs.slice(1).forEach(x=>x.remove());if(ses[0]&&ses[0].parentNode!==p)p.appendChild(ses[0]);if(bgs[0]&&bgs[0].parentNode!==p)p.appendChild(bgs[0])}
+function sync(){fixHydra();audio()}
+const r0=window.render;window.render=function(){const z=r0.apply(this,arguments);sync();return z};const sp0=window.spawn;window.spawn=function(){const z=sp0.apply(this,arguments);setTimeout(sync,0);return z};sync();window.__DOD_STABILITY_7595={version:V,audioSingleton:true,hydraNamesFixed:true,threeHeadsViewport:true,legacyArtPreserved:true};
 })();
-</script><!-- ===== /v0.75.94 ===== -->
+</script><!-- ===== /v0.75.95 ===== -->
 </body></html>
