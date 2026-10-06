@@ -1206,7 +1206,7 @@ $("#targetClose").onclick=()=>{$("#targetSheet").classList.remove('open');target
 $("#herb").onclick=()=>{if(!S.herb)return toast("薬草がない");openTarget("薬草を使う相手",i=>{if(S.hp[i]<=0)return toast("戦闘不能には使えない");S.herb--;let b=S.hp[i];S.hp[i]=Math.min(maxHp(i),S.hp[i]+35);floatText("+"+(S.hp[i]-b),18+i*31,72,"heal");render()})};
 function renderSkills(){let u=skillDefs.filter(s=>S.lv>=s[1]);$("#skillList").innerHTML=u.map(s=>`<button class="skill" data-sk="${s[0]}"><b>${s[0]}</b><small>MP${s[2]} / ${s[3]}</small></button>`).join("")+(u.length?`<div class="small">次の技：${(skillDefs.find(s=>S.lv<s[1])||['全習得'])[0]}</div>`:'');document.querySelectorAll('[data-sk]').forEach(b=>b.onclick=()=>useSkill(b.dataset.sk))}
 $("#skillsBtn").onclick=()=>{renderSkills();$("#skillSheet").classList.add("open")};$("#skillClose").onclick=()=>$("#skillSheet").classList.remove("open");
-function useSkill(n){let s=skillDefs.find(x=>x[0]===n);if(S.hp[0]<=0)return toast("キーボは戦闘不能");if(S.mp[0]<s[2])return toast("MPが足りない");if(n==="ヒール"){$("#skillSheet").classList.remove("open");openTarget("ヒールの対象",i=>{S.mp[0]-=s[2];let b=S.hp[i];S.hp[i]=Math.min(maxHp(i),S.hp[i]+45+S.lv*2);showLog(`キーボは${partyNames()[i]}にヒール！`);floatText("+"+(S.hp[i]-b),18+i*31,72,"heal");render()});return}S.mp[0]-=s[2];$("#skillSheet").classList.remove("open");let st=statsFor(0);if(n==="風刃")E.forEach((e,i)=>hit(i,Math.floor(st.atk*1.15)));else if(n==="二連斬り"){hit(target,Math.floor(st.atk*.85));hit(target,Math.floor(st.atk*.85))}else{let mult={強撃:1.55,火炎斬り:1.8,アイス:2.1,"会心斬り":2.4,"奥義・紅蓮":3.4}[n]||1.5;hit(target,Math.floor(st.atk*mult),n==="会心斬り")}showLog(`キーボは「${n}」！`);endTurn()}
+function useSkill(n){let sk=skillDefs.find(x=>x[0]===n);if(S.hp[0]<=0)return toast("キーボは戦闘不能");if(!sk||S.mp[0]<sk[2])return toast("MPが足りない");if(n==="ヒール"){$("#skillSheet").classList.remove("open");openTarget("ヒールの対象",i=>{S.mp[0]-=sk[2];window.__DOD_KIBO_SKILLS_7582?.heal(i,()=>{let b=S.hp[i];S.hp[i]=Math.min(maxHp(i),S.hp[i]+45+S.lv*2);showLog(`キーボは${partyNames()[i]}にヒール！`);floatText("+"+(S.hp[i]-b),18+i*31,72,"heal");try{window.__DOD_SE_7574?.play('magic')}catch(_){}render()})});return}S.mp[0]-=sk[2];$("#skillSheet").classList.remove("open");let st=statsFor(0),idx=target;showLog(`キーボは「${n}」！`);window.__DOD_KIBO_SKILLS_7582?.motion(n,idx,()=>{try{window.__DOD_SE_7574?.play(n==="奥義・紅蓮"||n==="火炎斬り"?'heavy':n==="アイス"||n==="風刃"?'magic':'slash')}catch(_){}if(n==="風刃")E.forEach((e,i)=>hit(i,Math.floor(st.atk*1.15)));else if(n==="二連斬り"){hit(idx,Math.floor(st.atk*.85));hit(idx,Math.floor(st.atk*.85))}else{let mult={強撃:1.55,火炎斬り:1.8,アイス:2.1,"会心斬り":2.4,"奥義・紅蓮":3.4}[n]||1.5;hit(idx,Math.floor(st.atk*mult),n==="会心斬り")}endTurn()})}
 $("#auto").onclick=()=>{S.auto=!S.auto;render();clearInterval(timer);if(S.auto)timer=setInterval(()=>{if(S.auto)attack()},900)};$("#ten").onclick=()=>{let goal=S.battle+10;S.run623={start:S.battle,goal};S.auto=true;render();clearInterval(timer);timer=setInterval(()=>{if(S.battle>=goal||!S.auto){clearInterval(timer);if(S.battle>=goal){S.auto=false;S.run623=null}render();return}if(!document.getElementById('battleFlow623')?.classList.contains('show'))attack()},750)};
 function showFx(h,kind=""){$("#fxcard").className="fxcard"+(kind==="phantom"?" phantomCard phantomPulse":kind==="rare"?" rareCard rarePulse":"");$("#fxcard").innerHTML=h;$("#fx").classList.add("show")}$("#fx").onclick=()=>{$("#fx").classList.remove("show");render()};function open(t,b){$("#otitle").textContent=t;$("#obody").innerHTML=b;$("#overlay").classList.add("open");$("#overlay").scrollTop=0;$("#obody").scrollTop=0;window.scrollTo(0,0)}$("#close").onclick=()=>$("#overlay").classList.remove("open");
 function equipTo(i,n){let x=item(n),type=x.type;if(!["武器","防具","アクセサリー"].includes(type))return;for(let j=0;j<3;j++)if(j!==i&&S.equipment[j][type]===n)S.equipment[j][type]="";S.equipment[i][type]=n;toast(`${partyNames()[i]}が${n}を装備`);render()}
@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.81';
+const V='v0.75.82';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8183,7 +8183,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.81';
+const V='v0.75.82';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8388,7 +8388,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.75.81';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.75.82';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8407,7 +8407,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.75.81',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
+(()=>{'use strict';const V='v0.75.82',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8422,10 +8422,30 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.75.81';let busy=false;
+(()=>{'use strict';const V='v0.75.82';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
 })();
 </script><!-- ===== /v0.75.81 ===== -->
+<!-- ===== v0.75.82 KIBO SKILL MOTIONS ===== -->
+<style id="v07582-kibo-skills-style">
+.ksFx782{position:absolute;z-index:100;pointer-events:none;transform:translate(-50%,-50%)}
+.ksSlash782{width:105px;height:8px;border-radius:50%;background:linear-gradient(90deg,transparent,#fff,#8edfff,transparent);box-shadow:0 0 15px #65caff;animation:ksSlash782 .25s ease-out forwards}@keyframes ksSlash782{0%{opacity:0;scale:.25}40%{opacity:1;scale:1.15}100%{opacity:0;scale:1.7}}
+.ksFire782{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,#fff6b0,#ff8b36 32%,#ef2920 58%,transparent 73%);box-shadow:0 0 22px #ff5630;animation:ksBurst782 .38s ease-out forwards}
+.ksIce782{width:24px;height:78px;background:linear-gradient(#fff,#a9f3ff,#3d9fe5);clip-path:polygon(50% 0,100% 100%,0 100%);animation:ksIce782 .38s ease-out forwards}
+.ksWind782{width:80px;height:80px;border:5px solid #bfffe7;border-left-color:transparent;border-radius:50%;box-shadow:0 0 16px #5fffc4;animation:ksSpin782 .35s linear forwards}
+.ksHeal782{width:55px;height:55px;border:4px solid #8dffad;border-radius:50%;box-shadow:0 0 20px #7cff9c;animation:ksBurst782 .5s ease-out forwards}
+.ksGuren782{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle,#fff8bc 0 10%,#ffb13b 20%,#ef3225 48%,rgba(130,0,0,.35) 65%,transparent 75%);box-shadow:0 0 28px #ff3425,0 0 55px #b50000;animation:ksGuren782 .55s ease-out forwards}
+@keyframes ksBurst782{0%{opacity:0;scale:.2}45%{opacity:1;scale:1.2}100%{opacity:0;scale:3.2}}@keyframes ksIce782{0%{opacity:0;transform:translate(-50%,20%) scaleY(.1)}50%{opacity:1;transform:translate(-50%,-50%) scaleY(1.1)}100%{opacity:0;transform:translate(-50%,-60%) scaleY(1.4)}}@keyframes ksSpin782{to{opacity:0;transform:translate(-50%,-50%) rotate(420deg) scale(2)}}@keyframes ksGuren782{0%{opacity:0;scale:.15}35%{opacity:1;scale:1.2}70%{opacity:1;scale:3}100%{opacity:0;scale:5}}
+</style>
+<script id="v07582-kibo-skills">
+(()=>{'use strict';const V='v0.75.82';
+function R(){return document.getElementById('battle')}function ep(i){const r=R(),e=r?.querySelector(`.enemy[data-i="${i}"]`);if(!r||!e)return null;const a=e.getBoundingClientRect(),b=r.getBoundingClientRect();return{x:a.left-b.left+a.width*.5,y:a.top-b.top+a.height*.5,r}}function pp(i){const r=R(),e=document.querySelectorAll('#party .pcard')[i];if(!r||!e)return null;const a=e.getBoundingClientRect(),b=r.getBoundingClientRect();return{x:a.left-b.left+a.width*.5,y:a.top-b.top+a.height*.4,r}}
+function fx(cls,p,ms=600,rot=0){if(!p)return;const z=document.createElement('i');z.className='ksFx782 '+cls;z.style.left=p.x+'px';z.style.top=p.y+'px';if(rot)z.style.rotate=rot+'deg';p.r.appendChild(z);setTimeout(()=>z.remove(),ms)}
+function motion(n,idx,done){const p=ep(idx);if(!p)return done();if(n==='強撃'){fx('ksSlash782',p,320,-20);setTimeout(done,260)}else if(n==='火炎斬り'){fx('ksSlash782',p,300,-18);setTimeout(()=>fx('ksFire782',p,430),130);setTimeout(done,360)}else if(n==='アイス'){fx('ksIce782',p,430);setTimeout(done,360)}else if(n==='会心斬り'){fx('ksSlash782',p,260,-28);setTimeout(()=>fx('ksSlash782',p,260,24),90);setTimeout(done,300)}else if(n==='奥義・紅蓮'){fx('ksSlash782',p,300,-22);setTimeout(()=>fx('ksGuren782',p,600),140);setTimeout(done,520)}else if(n==='風刃'){fx('ksWind782',p,430);setTimeout(done,350)}else if(n==='二連斬り'){fx('ksSlash782',p,240,-24);setTimeout(()=>fx('ksSlash782',p,240,28),100);setTimeout(done,300)}else done()}
+function heal(i,done){const p=pp(i);fx('ksHeal782',p,560);setTimeout(done,400)}
+window.__DOD_KIBO_SKILLS_7582={version:V,motion,heal};
+})();
+</script><!-- ===== /v0.75.82 ===== -->
 </body></html>
