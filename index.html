@@ -6197,7 +6197,7 @@ window.renderSkills=function(){
  $('#skillList').innerHTML=u.map(s=>`<button class="skill" data-sk7508="${s.n}"><b>${s.n}</b><small>MP${s.c} / ${s.d}</small></button>`).join('');
  document.querySelectorAll('[data-sk7508]').forEach(b=>b.onclick=()=>{
   const sk=(DEF[n]||[]).find(x=>x.n===b.dataset.sk7508);if(!sk)return toast('スキル情報がありません');
-  if(!TEN.includes(n)){return}
+  if(!TEN.includes(n)){return useSkill(b.dataset.sk7508)}
   if(!window.__DOD_SKILL_PERFORM_7508(0,sk,target))return toast('MPが足りない');
   $('#skillSheet')?.classList.remove('open');render();endTurn();
  });
@@ -8015,7 +8015,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.75.83';
+const V='v0.75.84';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8183,7 +8183,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.75.83';
+const V='v0.75.84';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8388,7 +8388,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.75.83';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.75.84';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8407,7 +8407,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.75.83',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
+(()=>{'use strict';const V='v0.75.84',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.on=false;
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8422,25 +8422,14 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.75.83';let busy=false;
+(()=>{'use strict';const V='v0.75.84';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
 })();
 </script><!-- ===== /v0.75.81 ===== -->
-<!-- ===== v0.75.83 SAFE SKILL FX + AUTO LEVEL CLOSE ===== -->
-<style id="v07583-safe-skill-style">
-.skillFx783{position:absolute;z-index:101;pointer-events:none;transform:translate(-50%,-50%);width:76px;height:8px;border-radius:50%;background:linear-gradient(90deg,transparent,#fff,#79d9ff,transparent);box-shadow:0 0 14px #61cfff;animation:sf783 .38s ease-out forwards}.skillFx783.fire{width:32px;height:32px;border-radius:50%;background:radial-gradient(circle,#fff6ad,#ff8c32 32%,#ef2f20 58%,transparent 73%);box-shadow:0 0 22px #ff4c2e}.skillFx783.ice{width:26px;height:70px;border-radius:0;background:linear-gradient(#fff,#a7f1ff,#3d9ee5);clip-path:polygon(50% 0,100% 100%,0 100%)}.skillFx783.heal{width:50px;height:50px;border:4px solid #87ffad;border-radius:50%;background:transparent;box-shadow:0 0 18px #72ff9b}.skillFx783.guren{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle,#fff7a8,#ffad37 22%,#e82c20 50%,transparent 74%);box-shadow:0 0 30px #ff3325}
-@keyframes sf783{0%{opacity:0;scale:.25}45%{opacity:1;scale:1.15}100%{opacity:0;scale:3}}
-</style>
-<script id="v07583-safe-skill-fx">
-(()=>{'use strict';const V='v0.75.83';
-function posEnemy(){const r=document.getElementById('battle'),e=r?.querySelector('.enemy.selected:not(.dead)')||r?.querySelector('.enemy:not(.dead)');if(!r||!e)return null;const a=e.getBoundingClientRect(),b=r.getBoundingClientRect();return{x:a.left-b.left+a.width*.5,y:a.top-b.top+a.height*.55,r}}
-function add(cls,p){if(!p)return;const z=document.createElement('i');z.className='skillFx783 '+cls;z.style.left=p.x+'px';z.style.top=p.y+'px';p.r.appendChild(z);setTimeout(()=>z.remove(),500)}
-function fx(n){const p=posEnemy();if(!p)return;if(n==='火炎斬り')add('fire',p);else if(n==='アイス')add('ice',p);else if(n==='奥義・紅蓮')add('guren',p);else if(n!=='ヒール')add('',p)}
-document.addEventListener('click',e=>{const b=e.target.closest?.('[data-sk]');if(!b)return;const n=b.dataset.sk;if(n)requestAnimationFrame(()=>fx(n))},true);
-const show0=showFx;showFx=function(h,kind=''){const z=show0.apply(this,arguments);if(/LEVEL UP!/.test(String(h))){setTimeout(()=>{const el=document.getElementById('fx');if(el?.classList.contains('show')&&/LEVEL UP!/.test(document.getElementById('fxcard')?.textContent||'')){el.classList.remove('show');render()}},2000)}return z};
-window.__DOD_SAFE_SKILL_FX_7583={version:V,fx};
-})();
-</script><!-- ===== /v0.75.83 ===== -->
+<!-- ===== v0.75.84 SKILL ROUTE FIX + LEVEL AUTO CLOSE ===== -->
+<script id="v07584-skill-route-fix">
+(()=>{'use strict';const V='v0.75.84';const show0=showFx;showFx=function(h,kind=''){const z=show0.apply(this,arguments);if(/LEVEL UP!/.test(String(h)))setTimeout(()=>{const el=document.getElementById('fx'),card=document.getElementById('fxcard');if(el?.classList.contains('show')&&/LEVEL UP!/.test(card?.textContent||'')){el.classList.remove('show');render()}},2000);return z};window.__DOD_SKILL_ROUTE_7584={version:V,kiboLegacyRoute:true};})();
+</script><!-- ===== /v0.75.84 ===== -->
 </body></html>
