@@ -2,7 +2,7 @@
 <html lang="ja"><head>
 <meta charset="utf-8">
 <script id="swamp-art-source">window.DOD_SWAMP_ART={"hydra":"./assets/art/85eb811d96356598f6e9b130.webp","background":"./assets/art/eb14c569733cc83700690e4a.webp","swamp_slime":"./assets/art/9bda1871e89602aec87bf8c3.webp","swamp_wolf":"./assets/art/15e4a76c7a1b8f7b6ebb553a.webp","swamp_bee":"./assets/art/9b3b62a58f448c654b285649.webp","swamp_mushroom":"./assets/art/d3826c98cee7dc52b525437c.webp","swamp_snake":"./assets/art/47c4a9e384362a5083c9cdb3.webp"};window.DOD_GRASS_ART={"background":"./assets/art/3c8f5836c881937fb7223a3d.webp","slime":"./assets/art/ea1da922702e5a08efe1edb4.webp","goblin":"./assets/art/7eff583f94da5a236d6e71f0.webp","wolf":"./assets/art/ee089c7e6e8d1db5a4185324.webp","hornrabbit":"./assets/art/d50b46245f0dca48c8f8643e.webp","poisonbee":"./assets/art/4ab369301eb9981e99b668f9.webp","grassfang":"./assets/art/918c6e491092f7254e3caa32.webp"};window.DOD_FOREST_ART={"morikinoko":"./assets/art/d176e2bf42cd454cbab37fcb.webp","leaffairy":"./assets/art/36773c5f716706a7ed51a2ff.webp","shadowbat":"./assets/art/3c942369de2ccf5609c70ad2.webp","moonwolf":"./assets/art/fd6345f4dc37db7d11838562.webp","background":"./assets/art/40a7872a7eda2377a22c5942.webp"};window.DOD_ICE_ART={"\u30b9\u30ce\u30fc\u30e9\u30d3\u30c3\u30c8":"./assets/art/1f50d686be6f4538524026f1.webp","\u30a2\u30a4\u30b9\u30a6\u30eb\u30d5":"./assets/art/87f667e970009e828aacc61f.webp","\u30d5\u30ed\u30b9\u30c8\u30b9\u30e9\u30a4\u30e0":"./assets/art/8917ade498d5aa46f02ba50a.webp","\u30d5\u30ed\u30b9\u30c8\u30d5\u30a7\u30a2\u30ea\u30fc":"./assets/art/d82746d9bdaf3445a3ff30a0.webp","\u6c37\u96ea\u306e\u5973\u738b\u30fb\u30d5\u30ed\u30b9\u30c6\u30a3\u30a2":"./assets/art/dbcf25e30b99e52646ee90c2.webp","background":"./assets/art/2dbc990125db7ee4cdfff5e6.webp"};</script>
-<script src="assets.js"></script><script src="guren_assets.js"></script><script src="sky_assets.js"></script><script id="volcano-assets-inline">window.VOLCANO_ASSETS={"volcano_bg.jpg":"./assets/art/61d64bec7c72eabaaf7e1fdd.jpg","magma_slime.png":"./assets/art/0e5fdbd298990740d584d135.webp","flame_lizard.png":"./assets/art/1cca6410a5afc8d1627d6d25.webp","flame_bat.png":"./assets/art/7dc4cce19eb68d1fde4f1581.webp","salamander.png":"./assets/art/2cc440492f2ea23797ddb5d0.webp","magma_golem.png":"./assets/art/0a54e0eba90f00304f1cc027.webp","ifrit.png":"./assets/art/b13d44ad526ec65ba33c0af1.webp","volganos.png":"./assets/art/8fb91d093050e59304c7fd95.webp"};</script>
+<script src="assets.js"></script><script src="guren_assets.js"></script><script id="sky-assets-inline">window.SKY_ASSETS={"sky_air.png": "./assets/art/v07606-sky_air.webp", "sky_golem.png": "./assets/art/v07606-sky_golem.webp", "sky_hawk.png": "./assets/art/v07606-sky_hawk.webp", "sky_cloud.png": "./assets/art/v07606-sky_cloud.webp", "sky_fairy.png": "./assets/art/v07606-sky_fairy.webp", "sky_rare.png": "./assets/art/v07606-sky_rare.webp", "sky_boss.png": "./assets/art/v07606-sky_boss.webp", "sky_bg.jpg": "./assets/art/v07606-sky_bg.webp"};</script><script id="volcano-assets-inline">window.VOLCANO_ASSETS={"magma_slime.png": "./assets/art/v07606-magma_slime.webp", "flame_lizard.png": "./assets/art/v07606-flame_lizard.webp", "flame_bat.png": "./assets/art/v07606-flame_bat.webp", "salamander.png": "./assets/art/v07606-salamander.webp", "magma_golem.png": "./assets/art/v07606-magma_golem.webp", "ifrit.png": "./assets/art/v07606-ifrit.webp", "volganos.png": "./assets/art/v07606-volganos.webp", "volcano_bg.jpg": "./assets/art/v07606-volcano_bg.webp"};</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#061326"><title>どろダン / DROP OF DUNGEON v0.73.8</title>
 <style>
@@ -1864,10 +1864,6 @@ window.__forge53={
 #lavaField54:before{content:"";position:absolute;left:-10%;right:-10%;bottom:-18px;height:42px;background:radial-gradient(ellipse at center,#ffcf4a 0 14%,#ff5a12 16% 42%,#64131c 45% 70%,transparent 72%);background-size:120px 42px;filter:drop-shadow(0 -8px 16px #ff5b18aa);animation:lava54 3s linear infinite}
 #lavaField54:after{content:"✦  ·  ✦   · ✦  ·  ✦";position:absolute;left:0;right:0;top:12%;color:#ffb13b;font-size:18px;letter-spacing:24px;text-shadow:0 0 10px #ff4d00;animation:embers54 2.4s ease-in-out infinite alternate}
 @keyframes lava54{to{transform:translateX(60px)}}@keyframes embers54{from{transform:translateY(18px);opacity:.35}to{transform:translateY(-20px);opacity:.9}}
-.volcano54 .enemy[data-monster="マグマスライム"] .sprite{filter:sepia(.5) saturate(3.2) hue-rotate(330deg) drop-shadow(0 0 10px #ff641c)}
-.volcano54 .enemy[data-monster="フレイムリザード"] .sprite,.volcano54 .enemy[data-monster="サラマンダー"] .sprite{filter:sepia(.4) saturate(2.8) hue-rotate(330deg) drop-shadow(0 0 12px #ff6a20)}
-.volcano54 .enemy[data-monster="炎翼バット"] .sprite{filter:saturate(2.4) hue-rotate(320deg) drop-shadow(0 0 11px #ff5a19)}
-.volcano54 .enemy[data-monster="焔竜王・ヴォルガノス"] .sprite{transform:scale(1.38);transform-origin:center bottom;filter:saturate(2.5) hue-rotate(330deg) drop-shadow(0 0 18px #ff4d00)}
 .volcano54 .enemy[data-monster="焔竜王・ヴォルガノス"] .ebox{border-color:#ff8738!important;box-shadow:0 0 13px #ff4d0066}
 .fireBadge54{display:inline-block;padding:2px 6px;border:1px solid #ff8b3d;border-radius:7px;background:#43150d;color:#ffd091;font-size:9px;font-weight:900}.burn54{color:#ff9b55!important;text-shadow:0 0 7px #ff4a00}.dragon54{color:#ffd28c!important;text-shadow:0 0 10px #ff4a00}
 </style>
@@ -4425,16 +4421,15 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
 #app.volcano7429 #battle{background-image:linear-gradient(180deg,rgba(20,0,0,.04),rgba(35,0,0,.08)),url("" )!important;background-size:cover!important;background-position:center 42%!important;background-repeat:no-repeat!important;background-color:#310600!important;box-shadow:inset 0 0 54px rgba(255,77,0,.18)!important}
 #app.volcano7429 #battle:before,#app.volcano7429 #battle:after{display:none!important;content:none!important}
 #app.volcano7429 #lavaField54{display:none!important}
-#app.volcano7429 .enemy .monsterArt{
- mix-blend-mode:screen!important;
- border-radius:0!important;
- filter:saturate(1.12) contrast(1.12) drop-shadow(0 7px 6px rgba(0,0,0,.72))!important;
- max-height:118px!important;
-}
-#app.volcano7429 .enemy.boss .monsterArt{max-height:150px!important}
-@media(max-width:390px){#app.volcano7429 .enemy .monsterArt{max-height:104px!important}#app.volcano7429 .enemy.boss .monsterArt{max-height:132px!important}}
+
 #app.volcano7429 .enemy[data-monster="イフリート"] .ebox{border-color:#c45cff!important;box-shadow:0 0 14px rgba(196,92,255,.65)!important}
 #app.volcano7429 .enemy[data-monster="焔竜王・ヴォルガノス"] .ebox{border-color:#ff6b35!important;box-shadow:0 0 18px rgba(255,68,0,.65)!important}
+
+#app.volcano7429 #enemies,#app.sky7434 #enemies{top:7%!important;height:46%!important}
+#app.volcanoBoss #enemies,#app.skyBoss #enemies{height:56%!important}
+#app.volcano7429 #enemies .enemy .sprite,#app.sky7434 #enemies .enemy .sprite{min-height:0!important;height:auto!important;flex:1 1 0!important;padding-top:12px!important;box-sizing:border-box}
+#app.volcano7429 #enemies .enemy .monsterArt,#app.sky7434 #enemies .enemy .monsterArt{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center bottom!important;margin:0!important;mix-blend-mode:normal!important;filter:drop-shadow(0 6px 5px #17371988)!important}
+#app.volcanoBoss #enemies .enemy.boss,#app.skyBoss #enemies .enemy.boss{flex:0 0 86%!important;width:86%!important;max-width:86%!important}
 </style>
 <script id="v07429-volcano-dedicated-script">
 (function(){
@@ -4497,23 +4492,13 @@ lock7429();save();render();
 #app.sky7434 #battle{
   background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;
 }
-#app.sky7434 #enemies .monsterArt{
-  width:auto!important;height:auto!important;max-width:96%!important;max-height:112px!important;
-  object-fit:contain!important;object-position:center bottom!important;margin:auto!important;
-  border:0!important;border-radius:0!important;clip-path:none!important;-webkit-clip-path:none!important;
-  filter:drop-shadow(0 8px 7px rgba(0,25,65,.48)) drop-shadow(0 0 9px rgba(90,195,255,.35))!important;
-}
-#app.sky7434 #enemies .enemy.boss .monsterArt{max-height:158px!important;max-width:100%!important}
 #app.sky7434 #enemies .enemy[data-monster="スノーラビット"] .ebox{
   border-color:#79d9ff!important;box-shadow:0 0 15px rgba(85,205,255,.72)!important;
 }
 #app.sky7434 #enemies .enemy[data-monster="天空機神・アストライオス"] .ebox{
   border-color:#e8ce68!important;box-shadow:0 0 18px rgba(255,220,100,.62)!important;
 }
-@media(max-width:390px){
- #app.sky7434 #enemies .monsterArt{max-height:102px!important}
- #app.sky7434 #enemies .enemy.boss .monsterArt{max-height:142px!important}
-}
+
 </style>
 <script>
 (()=>{
@@ -4609,6 +4594,8 @@ function syncStageVisual7435(){
   app.classList.toggle('forestBoss',area==='迷いの森'&&!!st?.boss);
   app.classList.toggle('iceBattle',area==='氷の雪原');
   app.classList.toggle('iceBoss',area==='氷の雪原'&&!!st?.boss);
+  app.classList.toggle('volcanoBoss',volcano&&!!st?.boss);
+  app.classList.toggle('skyBoss',sky&&!!st?.boss);
   app.classList.toggle('sky7434',sky);
   app.classList.toggle('volcano7429',volcano);
   if(swamp&&window.DOD_SWAMP_ART?.background){battle.style.setProperty('background-image',`url("${DOD_SWAMP_ART.background}")`,'important');
@@ -8076,7 +8063,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.76.05';
+const V='v0.76.06';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8244,7 +8231,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.76.05';
+const V='v0.76.06';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8453,7 +8440,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.76.05';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.76.06';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8474,7 +8461,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.76.05',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
+(()=>{'use strict';const V='v0.76.06',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8490,7 +8477,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.76.05';let busy=false;
+(()=>{'use strict';const V='v0.76.06';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
