@@ -1138,34 +1138,10 @@ function repairProgressFromLevel(){
  }catch(e){toast("進行状況の修復に失敗しました")}
 }
 
-const SUPPORT_RESCUE_CODE739="DOD-140-PIVOT-500K";
-function supportRescue739(code){
- try{
-  if(String(code||'').trim().toUpperCase()!==SUPPORT_RESCUE_CODE739)return toast('復旧コードが違います');
-  S.supportRescue=S.supportRescue||{};
-  if(S.supportRescue.lv140_739)return toast('この救済はすでに適用済みです');
-  // 今回はLv自体が28まで巻き戻っていることを実機画面で確認済み。
-  // 正しい専用コード＋未適用のセーブだけを条件にし、Lv条件では弾かない。
-  // 実行直前の状態を専用キーへ退避。通常の3世代バックアップとは別に残す。
-  try{localStorage.setItem('dropHunter010_preSupportRescue739',JSON.stringify(S))}catch(_){}
-  S.clears=S.clears||{};
-  ['gb','fb','ib','vb','cb','sb','g1','g2','gr1','gr2','grb'].forEach(k=>S.clears[k]=true);
-  // 本人申告・運営確認済みの到達Lvへ戻す。現在値が140を超えている場合は下げない。
-  S.lv=Math.max(Number.isFinite(+S.lv)?+S.lv:1,140);
-  S.exp=0;
-  S.legend62=S.legend62||{};S.legend62.pivot=true;
-  S.unlockedHeroes=Array.isArray(S.unlockedHeroes)?S.unlockedHeroes:[];
-  if(!S.unlockedHeroes.includes('ピボット'))S.unlockedHeroes.push('ピボット');
-  S.owned=Array.isArray(S.owned)?S.owned:[];
-  ['星導剣・アストラ','星天衣・セレスティア','運命盤・オルビス'].forEach(n=>{if(!S.owned.includes(n))S.owned.push(n);S.dropFound=S.dropFound||{};S.dropFound[n]=true});
-  // お詫び分は「残高を50万にする」ではなく現在残高へ50万Gを一度だけ加算。
-  S.gold=(Number.isFinite(+S.gold)?+S.gold:0)+500000;
-  S.supportRescue.lv140_739={appliedAt:Date.now(),code:'LV140'};
-  if(!save())throw new Error('save failed');
-  render();
-  alert('データ救済が完了しました。\n\n・Lv140相当へ復旧\n・ダンジョン進行を復旧\n・ピボットを復旧\n・LEGEND装備3種を復旧\n・500,000Gを付与\n\n現在残っている所持品等は維持されています。');
-  setTimeout(()=>stageView(),250);
- }catch(e){toast('データ救済に失敗しました')}
+// Retired public compensation path: direct calls must not modify any save data.
+function supportRescue739(){
+ toast('共通復旧コードの受付は終了しました。バックアップからの復元をご利用ください。');
+ return false;
 }
 function makePlayerId741(){
  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789", bytes=new Uint8Array(8);
@@ -1232,10 +1208,9 @@ function maybeBackupWarning741(){
 window.__profile741={open:()=>profileView741(false),register:registrationView741,guide:backupGuide741,exportSuspend:exportSuspend741};
 function saveGuardView(){
  const rows=rescueCandidates().map((v,i)=>`<div class="row"><span><b>${v.k===KEY?'現在':v.k.includes('backup')?'自動バックアップ':'旧セーブ'}：${v.k}</b><br><small>Lv${v.x.lv||1} / ${Number(v.x.gold||0).toLocaleString()}G / 進行${Object.keys(v.x.clears||{}).filter(k=>v.x.clears[k]).length}件${v.t?' / '+new Date(v.t).toLocaleString('ja-JP'):''}</small></span><button class="miniBtn" data-rescue="${i}">復元</button></div>`).join('');
- open("セーブ保護・救出",`<div class="panel"><div class="sectionTitle">セーブ保護</div><p class="small">本セーブ＋自動バックアップ2世代で保存します。旧セーブキーは削除しません。</p><div class="bankActions"><button class="miniBtn" id="saveExport">バックアップを書き出す</button><button class="miniBtn" id="saveImport">バックアップを読み込む</button><input id="saveImportFile" type="file" accept="application/json,.json" style="display:none"></div></div><div class="panel"><div class="sectionTitle">進行状況の修復</div><p class="small">Lvは残っているのにダンジョンが未解放になった場合、Lvから過去エリアのボス撃破フラグだけを復元します。所持品・G・仲間は変更しません。</p><button class="miniBtn" id="progressRepair">進行状況を修復</button></div><div class="panel"><div class="sectionTitle">運営サポート用データ救済</div><p class="small">不具合対応で復旧コードを案内された場合のみ使用してください。対象外のセーブには適用されません。</p><input id="supportRescueCode" type="text" autocomplete="off" autocapitalize="characters" placeholder="復旧コード" style="width:100%;box-sizing:border-box;margin:6px 0 10px;padding:12px;border-radius:10px"><button class="miniBtn" id="supportRescueRun">復旧コードを適用</button></div><div class="panel"><div class="sectionTitle">端末内セーブ救出</div>${rows||'<p class="small">復元できるセーブは見つかりませんでした。</p>'}</div>`);
+ open("セーブ保護・救出",`<div class="panel"><div class="sectionTitle">セーブ保護</div><p class="small">本セーブ＋自動バックアップ2世代で保存します。旧セーブキーは削除しません。</p><div class="bankActions"><button class="miniBtn" id="saveExport">バックアップを書き出す</button><button class="miniBtn" id="saveImport">バックアップを読み込む</button><input id="saveImportFile" type="file" accept="application/json,.json" style="display:none"></div></div><div class="panel"><div class="sectionTitle">進行状況の修復</div><p class="small">Lvは残っているのにダンジョンが未解放になった場合、Lvから過去エリアのボス撃破フラグだけを復元します。所持品・G・仲間は変更しません。</p><button class="miniBtn" id="progressRepair">進行状況を修復</button></div><div class="panel"><div class="sectionTitle">端末内セーブ救出</div>${rows||'<p class="small">復元できるセーブは見つかりませんでした。</p>'}</div>`);
  const list=rescueCandidates();document.querySelectorAll('[data-rescue]').forEach(b=>b.onclick=()=>{let v=list[+b.dataset.rescue];if(v&&confirm(`Lv${v.x.lv||1} のデータを復元しますか？`))applyImportedSave(v.x,v.k)});
  const pr=$('#progressRepair');if(pr)pr.onclick=()=>{if(confirm('現在のLvから過去エリアのボス撃破フラグを修復しますか？\n所持品・G・仲間は変更しません。'))repairProgressFromLevel()};
- const sr=$('#supportRescueRun'),sc=$('#supportRescueCode');if(sr&&sc)sr.onclick=()=>{const c=String(sc.value||'').trim();if(!c)return toast('復旧コードを入力してください');if(confirm('今回の不具合救済をこのセーブに適用しますか？\n実行前データは専用バックアップへ退避します。'))supportRescue739(c)};
  const ex=$('#saveExport');if(ex)ex.onclick=()=>{save();const blob=new Blob([JSON.stringify({__dodBackup:1,exportedAt:Date.now(),version:"v0.74.81",state:S},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='drodun-save-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);toast('バックアップを書き出しました')};
  const im=$('#saveImport'),fi=$('#saveImportFile');if(im&&fi){im.onclick=()=>fi.click();fi.onchange=()=>{let f=fi.files&&fi.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{let x=parseSaveRaw(String(r.result||''));if(!x)return toast('有効なバックアップではありません');if(confirm(`Lv${x.lv||1} のバックアップを読み込みますか？`))applyImportedSave(x,'ファイル')};r.readAsText(f)}}
 }
@@ -8155,7 +8130,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.76.19';
+const V='v0.76.20';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8323,7 +8298,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.76.19';
+const V='v0.76.20';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8532,7 +8507,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.76.19';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.76.20';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8553,7 +8528,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.76.19',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
+(()=>{'use strict';const V='v0.76.20',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8569,7 +8544,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.76.19';let busy=false;
+(()=>{'use strict';const V='v0.76.20';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
@@ -8607,7 +8582,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script><!-- ===== /v0.75.86 ===== -->
 
-<!-- v0.76.19: one approved bone boss encounter; existing content remains intact. -->
+<!-- v0.76.20: one approved bone boss encounter; existing content remains intact. -->
 <style id="dod-bone-07613-style">
 #battle.dodBone7613{background:radial-gradient(ellipse at 50% 30%,#dbc9ab 0,#84745e 34%,#302b2a 68%,#111620 100%)!important;touch-action:none}
 #battle.dodBone7613:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#d9c7a212 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8626,7 +8601,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-bone-07613">
 (()=>{
  'use strict';
- const VERSION='v0.76.19',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
+ const VERSION='v0.76.20',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -8728,7 +8703,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.19: one approved iron boss encounter; existing content remains intact. -->
+<!-- v0.76.20: one approved iron boss encounter; existing content remains intact. -->
 <style id="dod-iron-07615-style">
 #battle.dodIron7615{background:radial-gradient(ellipse at 50% 30%,#8b4b43 0,#45323a 34%,#191e29 68%,#0c111b 100%)!important;touch-action:none}
 #battle.dodIron7615:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#dd765912 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8747,7 +8722,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-iron-07615">
 (()=>{
  'use strict';
- const VERSION='v0.76.19',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
+ const VERSION='v0.76.20',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -8849,7 +8824,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.19: one approved sea boss encounter; existing content remains intact. -->
+<!-- v0.76.20: one approved sea boss encounter; existing content remains intact. -->
 <style id="dod-sea-07616-style">
 #battle.dodSea7616{background:radial-gradient(ellipse at 50% 30%,#368d9d 0,#164657 34%,#102739 68%,#08101d 100%)!important;touch-action:none}
 #battle.dodSea7616:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#7ee8ed12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8868,7 +8843,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-sea-07616">
 (()=>{
  'use strict';
- const VERSION='v0.76.19',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
+ const VERSION='v0.76.20',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -8970,7 +8945,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.19: one approved storm boss encounter; existing content remains intact. -->
+<!-- v0.76.20: one approved storm boss encounter; existing content remains intact. -->
 <style id="dod-storm-07617-style">
 #battle.dodStorm7617{background:radial-gradient(ellipse at 50% 30%,#6b719e 0,#373c61 34%,#181f38 68%,#0c101d 100%)!important;touch-action:none}
 #battle.dodStorm7617:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b5c9ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8989,7 +8964,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-storm-07617">
 (()=>{
  'use strict';
- const VERSION='v0.76.19',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
+ const VERSION='v0.76.20',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9092,7 +9067,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.19: one approved underworld boss encounter; existing content remains intact. -->
+<!-- v0.76.20: one approved underworld boss encounter; existing content remains intact. -->
 <style id="dod-underworld-07618-style">
 #battle.dodUnderworld7618{background:radial-gradient(ellipse at 50% 30%,#465da4 0,#242c59 34%,#111b34 68%,#080d1a 100%)!important;touch-action:none}
 #battle.dodUnderworld7618:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#6898ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9111,7 +9086,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-underworld-07618">
 (()=>{
  'use strict';
- const VERSION='v0.76.19',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
+ const VERSION='v0.76.20',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9213,7 +9188,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.19: one approved titan boss encounter; existing content remains intact. -->
+<!-- v0.76.20: one approved titan boss encounter; existing content remains intact. -->
 <style id="dod-titan-07619-style">
 #battle.dodTitan7619{background:radial-gradient(ellipse at 50% 30%,#7f9672 0,#475b46 34%,#232e2c 68%,#111820 100%)!important;touch-action:none}
 #battle.dodTitan7619:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#a8d09b12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9232,7 +9207,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-titan-07619">
 (()=>{
  'use strict';
- const VERSION='v0.76.19',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
+ const VERSION='v0.76.20',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
