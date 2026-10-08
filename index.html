@@ -2514,7 +2514,7 @@ window.__forge53={
   spawn=function(){spawnBefore622();rebalance622();render();};
   // Castle and upper boss definitions are finalized by later modules. Defer this existing
   // initial encounter until those modules are ready; other areas keep their timing.
-  if(stage().area==='呪われた古城'||S.stageId==='grb'||S.stageId==='mythic30_abyss'){
+  if(stage().area==='呪われた古城'||['gr1','gr2','grb','mythic30_abyss'].includes(S.stageId)){
     document.addEventListener('DOMContentLoaded',()=>{spawn();render()},{once:true});
   }else{
     spawn();
@@ -4282,17 +4282,17 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
 
 <!-- ===== v0.74.81 GUREN MAKAI DEDICATED MONSTER SET ===== -->
 <style id="v07425-guren-monsters">
-#app.guren711 #enemies .monsterArt[alt^="guren_"]{
-  width:118%!important;max-width:118%!important;max-height:128px!important;height:128px!important;
-  object-fit:cover!important;object-position:center 47%!important;border-radius:24px!important;
-  filter:drop-shadow(0 0 8px rgba(255,72,24,.58)) drop-shadow(0 8px 7px rgba(0,0,0,.72))!important;
-  -webkit-mask-image:radial-gradient(ellipse 48% 46% at 50% 50%,#000 0%,#000 70%,rgba(0,0,0,.72) 84%,transparent 100%)!important;
-  mask-image:radial-gradient(ellipse 48% 46% at 50% 50%,#000 0%,#000 70%,rgba(0,0,0,.72) 84%,transparent 100%)!important;
+/* Alpha art fits within each enemy's column below its name and HP. */
+#app.guren711 #enemies{top:7%!important;height:48%!important}
+#app.guren711 #enemies .enemy:not(.boss):has(.monsterArt[alt^="guren_"]) .sprite{min-height:0!important;height:clamp(100px,32vw,160px)!important;flex:0 0 auto!important;padding-top:10px!important;box-sizing:border-box}
+#app.guren711 #enemies:has(.enemy:nth-child(2):last-child) .enemy:not(.boss):has(.monsterArt[alt^="guren_"]) .sprite{height:170px!important}
+#app.guren711 #enemies:has(.enemy:only-child) .enemy:not(.boss):has(.monsterArt[alt^="guren_"]) .sprite{height:210px!important}
+#app.guren711 #enemies .enemy .monsterArt[alt^="guren_"]{
+ width:100%!important;max-width:100%!important;height:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center bottom!important;
+ border-radius:0!important;transform:none!important;-webkit-mask-image:none!important;mask-image:none!important;
+ filter:drop-shadow(0 5px 4px rgba(24,7,8,.55))!important;
 }
-#app.guren711 #enemies .monsterArt[alt="guren_fenrir"]{
-  max-height:144px!important;height:144px!important;
-  filter:drop-shadow(0 0 10px rgba(180,56,255,.78)) drop-shadow(0 8px 7px rgba(0,0,0,.76))!important;
-}
+#app.guren711 #enemies .enemy .monsterArt[alt="guren_fenrir"]{filter:drop-shadow(0 0 5px rgba(180,56,255,.45)) drop-shadow(0 5px 4px rgba(24,7,8,.55))!important}
 /* Selected winged boss uses full alpha art rather than the legacy crop/mask. */
 #app.guren711 #enemies:has(.monsterArt[alt="guren_ignadios"]){top:7%!important;height:52%!important}
 #app.guren711 #enemies .enemy.boss:has(.monsterArt[alt="guren_ignadios"]){flex:0 0 84%!important;width:84%!important;max-width:84%!important}
@@ -4302,8 +4302,6 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
  border-radius:0!important;-webkit-mask-image:none!important;mask-image:none!important;filter:drop-shadow(0 5px 5px #25101a88)!important;
 }
 @media(max-width:390px){
- #app.guren711 #enemies .monsterArt[alt^="guren_"]{max-height:112px!important;height:112px!important}
- #app.guren711 #enemies .monsterArt[alt="guren_fenrir"]{max-height:126px!important;height:126px!important}
  #app.guren711 #enemies .enemy.boss .monsterArt[alt="guren_ignadios"]{height:100%!important;max-height:100%!important}
 }
 </style>
@@ -4312,12 +4310,12 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
  'use strict';
  const VER='v0.74.81';
  const GART={
-  guren_flame_hound:GUREN_ASSETS["guren_flame_hound.jpg"],
-  guren_magma_golem:GUREN_ASSETS["guren_magma_golem.jpg"],
-  guren_ignis_serpent:GUREN_ASSETS["guren_ignis_serpent.jpg"],
-  guren_hell_scorpion:GUREN_ASSETS["guren_hell_scorpion.jpg"],
-  guren_blaze_devil:GUREN_ASSETS["guren_blaze_devil.jpg"],
-  guren_fenrir:GUREN_ASSETS["guren_fenrir.jpg"],
+  guren_flame_hound:"./assets/art/v07612-guren_flame_hound.webp",
+  guren_magma_golem:"./assets/art/v07612-guren_magma_golem.webp",
+  guren_ignis_serpent:"./assets/art/v07612-guren_ignis_serpent.webp",
+  guren_hell_scorpion:"./assets/art/v07612-guren_hell_scorpion.webp",
+  guren_blaze_devil:"./assets/art/v07612-guren_blaze_devil.webp",
+  guren_fenrir:"./assets/art/v07612-guren_fenrir.webp",
   guren_ignadios:"./assets/art/v07610-guren_ignadios.webp"
  };
  const svgBefore7425=svgMonster;
@@ -8091,7 +8089,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.76.11';
+const V='v0.76.12';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8259,7 +8257,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.76.11';
+const V='v0.76.12';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8468,7 +8466,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.76.11';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.76.12';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8489,7 +8487,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.76.11',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
+(()=>{'use strict';const V='v0.76.12',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8505,7 +8503,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.76.11';let busy=false;
+(()=>{'use strict';const V='v0.76.12';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
