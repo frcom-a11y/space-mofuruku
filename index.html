@@ -7731,7 +7731,12 @@ function stageFilter7607(){const count=stages.filter(matches7607).length;return 
 const POS=[{x:17,y:26},{x:50,y:18},{x:79,y:28},{x:26,y:59},{x:58,y:54},{x:80,y:73}];
 const h=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const uniq=a=>[...new Set(a)];
-function areas7527(){return uniq(stages.map(s=>s.area));}
+function areas7527(){
+  // Keep map pages stable when normal stages are registered before older areas.
+  const order=['草原','迷いの森','氷の雪原','灼熱の火山','神話領域','呪われた古城','天空遺跡','紅蓮魔界','毒沼地','竜骸の墓場','黒鉄の要塞','海底神殿','雷鳴の祭壇','冥王の玉座','巨神の墓所','虚空の裂け目','星域の終焉'];
+  const present=uniq(stages.map(s=>s.area));
+  return [...order.filter(area=>present.includes(area)),...present.filter(area=>!order.includes(area))];
+}
 function areaStages7527(area){return stages.filter(s=>s.area===area);}
 function stageMonsters7527(st){return uniq((st.boss?[st.bossMonster||st.enemies?.[0]]:st.enemies||[]).filter(Boolean));}
 function stageDrops7527(st){
@@ -8210,7 +8215,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.76.26';
+const V='v0.76.27';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8378,7 +8383,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.76.26';
+const V='v0.76.27';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8587,7 +8592,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.76.26';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.76.27';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8608,7 +8613,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.76.26',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
+(()=>{'use strict';const V='v0.76.27',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8624,7 +8629,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.76.26';let busy=false;
+(()=>{'use strict';const V='v0.76.27';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
@@ -8662,7 +8667,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script><!-- ===== /v0.75.86 ===== -->
 
-<!-- v0.76.26: one approved bone boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved bone boss encounter; existing content remains intact. -->
 <style id="dod-bone-07613-style">
 #battle.dodBone7613{background:radial-gradient(ellipse at 50% 30%,#dbc9ab 0,#84745e 34%,#302b2a 68%,#111620 100%)!important;touch-action:none}
 #battle.dodBone7613:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#d9c7a212 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8681,7 +8686,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-bone-07613">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
+ const VERSION='v0.76.27',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -8783,7 +8788,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved iron boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved iron boss encounter; existing content remains intact. -->
 <style id="dod-iron-07615-style">
 #battle.dodIron7615{background:radial-gradient(ellipse at 50% 30%,#8b4b43 0,#45323a 34%,#191e29 68%,#0c111b 100%)!important;touch-action:none}
 #battle.dodIron7615:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#dd765912 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8802,7 +8807,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-iron-07615">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
+ const VERSION='v0.76.27',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -8904,7 +8909,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved sea boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved sea boss encounter; existing content remains intact. -->
 <style id="dod-sea-07616-style">
 #battle.dodSea7616{background:radial-gradient(ellipse at 50% 30%,#368d9d 0,#164657 34%,#102739 68%,#08101d 100%)!important;touch-action:none}
 #battle.dodSea7616:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#7ee8ed12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8923,7 +8928,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-sea-07616">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
+ const VERSION='v0.76.27',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9025,7 +9030,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved storm boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved storm boss encounter; existing content remains intact. -->
 <style id="dod-storm-07617-style">
 #battle.dodStorm7617{background:radial-gradient(ellipse at 50% 30%,#6b719e 0,#373c61 34%,#181f38 68%,#0c101d 100%)!important;touch-action:none}
 #battle.dodStorm7617:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b5c9ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9044,7 +9049,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-storm-07617">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
+ const VERSION='v0.76.27',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9147,7 +9152,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved underworld boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved underworld boss encounter; existing content remains intact. -->
 <style id="dod-underworld-07618-style">
 #battle.dodUnderworld7618{background:radial-gradient(ellipse at 50% 30%,#465da4 0,#242c59 34%,#111b34 68%,#080d1a 100%)!important;touch-action:none}
 #battle.dodUnderworld7618:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#6898ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9166,7 +9171,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-underworld-07618">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
+ const VERSION='v0.76.27',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9268,7 +9273,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved titan boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved titan boss encounter; existing content remains intact. -->
 <style id="dod-titan-07619-style">
 #battle.dodTitan7619{background:radial-gradient(ellipse at 50% 30%,#7f9672 0,#475b46 34%,#232e2c 68%,#111820 100%)!important;touch-action:none}
 #battle.dodTitan7619:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#a8d09b12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9287,7 +9292,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-titan-07619">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
+ const VERSION='v0.76.27',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9389,7 +9394,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved void boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved void boss encounter; existing content remains intact. -->
 <style id="dod-void-07621-style">
 #battle.dodVoid7621{background:radial-gradient(ellipse at 50% 30%,#864356 0,#442541 34%,#24162e 68%,#0d0c1a 100%)!important;touch-action:none}
 #battle.dodVoid7621:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#df668f12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9408,7 +9413,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-void-07621">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='void_boss_07621',NAME='虚空の魔皇',ICON='dod_void_a_07621';
+ const VERSION='v0.76.27',ID='void_boss_07621',NAME='虚空の魔皇',ICON='dod_void_a_07621';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9510,7 +9515,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved star boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved star boss encounter; existing content remains intact. -->
 <style id="dod-star-07622-style">
 #battle.dodStar7622{background:radial-gradient(ellipse at 50% 30%,#644264 0,#35243f 34%,#1b1935 68%,#090d1d 100%)!important;touch-action:none}
 #battle.dodStar7622:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#d58bff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9529,7 +9534,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-star-07622">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='star_boss_07622',NAME='星域の終焉竜',ICON='dod_star_b_07622';
+ const VERSION='v0.76.27',ID='star_boss_07622',NAME='星域の終焉竜',ICON='dod_star_b_07622';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9632,7 +9637,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved mythic100 boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved mythic100 boss encounter; existing content remains intact. -->
 <style id="dod-mythic100-07623-style">
 #battle.dodMythic1007623{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic1007623:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9650,7 +9655,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic100-07623">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='mythic100_boss_07623',NAME='三獄の魔獣',ICON='dod_mythic100_b_07623';
+ const VERSION='v0.76.27',ID='mythic100_boss_07623',NAME='三獄の魔獣',ICON='dod_mythic100_b_07623';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9752,7 +9757,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved mythic200 boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved mythic200 boss encounter; existing content remains intact. -->
 <style id="dod-mythic200-07624-style">
 #battle.dodMythic2007624{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic2007624:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9770,7 +9775,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic200-07624">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='mythic200_boss_07624',NAME='六翼の堕天王',ICON='dod_mythic200_a_07624';
+ const VERSION='v0.76.27',ID='mythic200_boss_07624',NAME='六翼の堕天王',ICON='dod_mythic200_a_07624';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9871,7 +9876,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: one approved mythic300 boss encounter; existing content remains intact. -->
+<!-- v0.76.27: one approved mythic300 boss encounter; existing content remains intact. -->
 <style id="dod-mythic300-07625-style">
 #battle.dodMythic3007625{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic3007625:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9889,7 +9894,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic300-07625">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',ID='mythic300_boss_07625',NAME='終焉の星喰竜',ICON='dod_mythic300_a_07625';
+ const VERSION='v0.76.27',ID='mythic300_boss_07625',NAME='終焉の星喰竜',ICON='dod_mythic300_a_07625';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9991,7 +9996,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.26: two normal stages in the existing dragon-bone area. -->
+<!-- v0.76.27: two normal stages in the existing dragon-bone area. -->
 <style id="dod-bone-route-07626-style">
 #battle.dodBoneRoute7626{background:#292838 url('assets/art/bone-background-07626.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodBoneRoute7626:before{display:none!important}
@@ -10008,7 +10013,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-bone-route-07626">
 (()=>{
  'use strict';
- const VERSION='v0.76.26',IDS=['bone_path1_07626','bone_path2_07626'];
+ const VERSION='v0.76.27',IDS=['bone_path1_07626','bone_path2_07626'];
  const ART={bone_hound_07626:'assets/art/bone-hound-07626.webp',bone_bat_07626:'assets/art/bone-bat-07626.webp',bone_soldier_07626:'assets/art/bone-soldier-07626.webp'};
  const CFG={'竜骨ハウンド':{hp:850,atk:220,xp:360},'骨翼バット':{hp:650,atk:250,xp:380},'墓場の骨兵':{hp:1100,atk:260,xp:440}};
  Object.assign(BASE_MEMBERS,{'竜骨ハウンド':{hp:78,mp:18,atk:17,def:9,role:'仲間モンスター'},'骨翼バット':{hp:58,mp:25,atk:18,def:7,role:'仲間モンスター'},'墓場の骨兵':{hp:90,mp:15,atk:16,def:13,role:'仲間モンスター'}});
