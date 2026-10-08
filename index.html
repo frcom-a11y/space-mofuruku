@@ -811,9 +811,9 @@ html,body{height:100%;margin:0;overflow:hidden!important;overscroll-behavior:non
 
 <!-- ===== v0.74.81 MYTHIC CLEAN BATTLE ART ===== -->
 <style id="v07414-mythic-clean-art">
-/* The mythic background already contains the abyss beast. Hide only the old concept-art sprite,
-   which had baked-in presentation text. Enemy box/name/HP and TARGET remain intact. */
-#app.mythic735 .enemy[data-monster="深淵の堕天獣"] .sprite{display:none!important}
+/* Keep the original abyss ruins; frame their lower portion so the embedded old
+   beast is outside the field, then show the selected isolated boss below its HUD. */
+#app.mythic735 .enemy[data-monster="深淵の堕天獣"] .sprite{display:flex!important}
 </style>
 <!-- ===== /v0.74.81 MYTHIC CLEAN BATTLE ART ===== -->
 
@@ -2512,9 +2512,9 @@ window.__forge53={
     });
   }
   spawn=function(){spawnBefore622();rebalance622();render();};
-  // Castle definitions are finalized by later modules. Defer this existing
+  // Castle and upper boss definitions are finalized by later modules. Defer this existing
   // initial encounter until those modules are ready; other areas keep their timing.
-  if(stage().area==='呪われた古城'){
+  if(stage().area==='呪われた古城'||S.stageId==='grb'||S.stageId==='mythic30_abyss'){
     document.addEventListener('DOMContentLoaded',()=>{spawn();render()},{once:true});
   }else{
     spawn();
@@ -3828,7 +3828,7 @@ stamp73();requestAnimationFrame(stamp73);setTimeout(stamp73,550);
 
 <!-- ===== v0.73.8 LV30 MYTHIC: ABYSS FALLEN BEAST ===== -->
 <style id="v0735-mythic30-style">
-#app.mythic735 #battle{background-image:linear-gradient(180deg,rgba(4,2,16,.10),rgba(10,0,20,.22)),var(--dod-asset-20-bg)!important;background-size:cover!important;background-position:center!important}
+#app.mythic735 #battle{background-image:linear-gradient(180deg,rgba(4,2,16,.10),rgba(10,0,20,.22)),url("./assets/art/v07610-mythic_bg.webp")!important;background-size:cover!important;background-position:center!important}
 #app.mythic735 .enemy[data-monster="深淵の堕天獣"]{width:68%!important;max-width:500px!important}
 #app.mythic735 .enemy[data-monster="深淵の堕天獣"] .sprite{width:100%!important;height:auto!important;filter:drop-shadow(0 0 18px #f000ff99)}
 #app.mythic735 .enemy[data-monster="深淵の堕天獣"] .sprite img{display:block;width:100%;height:auto;object-fit:contain;border-radius:18px;mix-blend-mode:screen}
@@ -3839,7 +3839,7 @@ stamp73();requestAnimationFrame(stamp73);setTimeout(stamp73,550);
 (function(){
 'use strict';
 const VER='v0.74.81', NAME='深淵の堕天獣', ID='mythic30_abyss';
-const BOSS_ART=DOD_ASSETS["dod_asset_21_e2f58fa2e323.png"];
+const BOSS_ART="./assets/art/v07610-mythic_abyss.webp";
 // Register the selected B-plan as the first implemented mythic domain.
 if(window.__mythicStage73?.register)window.__mythicStage73.register({id:'mythic_lv30',unlockLv:30,label:'深淵の堕天獣',implemented:true});
 MONSTERS[NAME]={icon:'mythicAbyss735',hp:2200,atk:58,xp:3500,recruit:3500,mythic:true};
@@ -3968,15 +3968,14 @@ setTimeout(bindProfile746,250);
 .pivotBattle613{height:43%!important;bottom:0!important}
 .pivotBattle613 img{width:132%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important}
 .pivotBattle613 .pivotName613{display:none!important}
-/* Mythic concept art: crop away presentation text and keep the creature as the battlefield focal point. */
-#app.mythic735 #battle{background-position:62% center!important;background-size:cover!important}
-#app.mythic735 .enemy[data-monster="深淵の堕天獣"]{width:52%!important;max-width:360px!important}
-#app.mythic735 .enemy[data-monster="深淵の堕天獣"] .sprite{height:190px!important;overflow:hidden!important;border-radius:34px!important;background:transparent!important}
-#app.mythic735 .enemy[data-monster="深淵の堕天獣"] .sprite img{
-  width:138%!important;height:138%!important;max-width:none!important;object-fit:cover!important;object-position:52% 51%!important;
-  transform:translate(-14%,-13%)!important;border-radius:0!important;mix-blend-mode:normal!important;
-  -webkit-mask-image:radial-gradient(ellipse 48% 44% at 52% 51%,#000 0%,#000 68%,rgba(0,0,0,.7) 82%,transparent 100%)!important;
-  mask-image:radial-gradient(ellipse 48% 44% at 52% 51%,#000 0%,#000 68%,rgba(0,0,0,.7) 82%,transparent 100%)!important;
+/* Selected mythic art is a full transparent sprite, with no baked-in labels. */
+#app.mythic735 #battle{background-position:center bottom!important;background-size:auto 215%!important}
+#app.mythic735 #enemies{top:7%!important;left:4%!important;right:4%!important;height:50%!important}
+#app.mythic735 #enemies .enemy[data-monster="深淵の堕天獣"]{width:100%!important;max-width:100%!important;flex:0 0 100%!important}
+#app.mythic735 #enemies .enemy[data-monster="深淵の堕天獣"] .sprite{height:auto!important;min-height:0!important;flex:1 1 0!important;overflow:visible!important;border-radius:0!important;background:transparent!important;padding-top:10px!important;box-sizing:border-box}
+#app.mythic735 #enemies .enemy[data-monster="深淵の堕天獣"] .sprite img{
+ width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center bottom!important;
+ transform:none!important;border-radius:0!important;mix-blend-mode:normal!important;-webkit-mask-image:none!important;mask-image:none!important;
 }
 </style>
 <script id="v0748-battle-quality-script">
@@ -4288,15 +4287,18 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
   max-height:144px!important;height:144px!important;
   filter:drop-shadow(0 0 10px rgba(180,56,255,.78)) drop-shadow(0 8px 7px rgba(0,0,0,.76))!important;
 }
+/* Selected winged boss uses full alpha art rather than the legacy crop/mask. */
+#app.guren711 #enemies:has(.monsterArt[alt="guren_ignadios"]){top:7%!important;height:52%!important}
+#app.guren711 #enemies .enemy.boss:has(.monsterArt[alt="guren_ignadios"]){flex:0 0 84%!important;width:84%!important;max-width:84%!important}
+#app.guren711 #enemies .enemy.boss:has(.monsterArt[alt="guren_ignadios"]) .sprite{height:auto!important;min-height:0!important;flex:1 1 0!important;padding-top:10px!important;box-sizing:border-box}
 #app.guren711 #enemies .enemy.boss .monsterArt[alt="guren_ignadios"]{
-  width:132%!important;max-width:132%!important;max-height:178px!important;height:178px!important;
-  object-position:center 43%!important;
-  filter:drop-shadow(0 0 12px rgba(255,56,20,.92)) drop-shadow(0 9px 8px rgba(0,0,0,.82))!important;
+ width:100%!important;max-width:100%!important;height:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center bottom!important;transform:none!important;
+ border-radius:0!important;-webkit-mask-image:none!important;mask-image:none!important;filter:drop-shadow(0 5px 5px #25101a88)!important;
 }
 @media(max-width:390px){
  #app.guren711 #enemies .monsterArt[alt^="guren_"]{max-height:112px!important;height:112px!important}
  #app.guren711 #enemies .monsterArt[alt="guren_fenrir"]{max-height:126px!important;height:126px!important}
- #app.guren711 #enemies .enemy.boss .monsterArt[alt="guren_ignadios"]{max-height:154px!important;height:154px!important}
+ #app.guren711 #enemies .enemy.boss .monsterArt[alt="guren_ignadios"]{height:100%!important;max-height:100%!important}
 }
 </style>
 <script id="v07425-guren-monster-script">
@@ -4310,7 +4312,7 @@ const b=document.getElementById('buildVersion');if(b)b.textContent=VER;document.
   guren_hell_scorpion:GUREN_ASSETS["guren_hell_scorpion.jpg"],
   guren_blaze_devil:GUREN_ASSETS["guren_blaze_devil.jpg"],
   guren_fenrir:GUREN_ASSETS["guren_fenrir.jpg"],
-  guren_ignadios:GUREN_ASSETS["guren_ignadios.jpg"]
+  guren_ignadios:"./assets/art/v07610-guren_ignadios.webp"
  };
  const svgBefore7425=svgMonster;
  svgMonster=function(t,gold=false){
@@ -8083,7 +8085,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.76.09';
+const V='v0.76.10';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8251,7 +8253,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.76.09';
+const V='v0.76.10';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8460,7 +8462,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.76.09';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.76.10';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8481,7 +8483,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.76.09',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
+(()=>{'use strict';const V='v0.76.10',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8497,7 +8499,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.76.09';let busy=false;
+(()=>{'use strict';const V='v0.76.10';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
