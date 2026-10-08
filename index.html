@@ -1239,7 +1239,7 @@ function showDrop(n,rar){showFx(`<h1 class="dropTitle">${rar==="PHANTOM"?'PHANTO
 function addExp(x){S.exp+=x;let req=needExp(S.lv);if(S.exp>=req){S.exp-=req;let old=S.lv,oldSt=statsFor(0),oldH=maxHp(0),oldM=maxMp(0);S.lv++;S.hp=[0,1,2].map(i=>maxHp(i));S.mp=[0,1,2].map(i=>maxMp(i));let ns=statsFor(0);showFx(`<h1>LEVEL UP!</h1><h2>Lv.${old} → Lv.${S.lv}</h2><div class="growth"><div>HP<br><b>${oldH} → ${maxHp(0)}</b></div><div>MP<br><b>${oldM} → ${maxMp(0)}</b></div><div>攻撃力<br><b>${oldSt.atk} → ${ns.atk}</b></div><div>防御力<br><b>${oldSt.def} → ${ns.def}</b></div></div>${skillDefs.find(s=>s[1]===S.lv)?`<div class="newskill">NEW SKILL! 「${skillDefs.find(s=>s[1]===S.lv)[0]}」</div>`:''}`)}}
 function afterBattleHeal(){let vals=S.hp.map((h,i)=>{if(h<=0)return 0;let r=10+Math.floor(Math.random()*6),b=h;S.hp[i]=Math.min(maxHp(i),h+r);return S.hp[i]-b});toast(`戦闘後回復　${partyNames().map((n,i)=>`${n}+${vals[i]}`).join(' / ')}`)}
 function battleFlow623(title,sub='',kind='',ms=850){let x=document.getElementById('battleFlow623');if(!x)return Promise.resolve();x.className='show '+(kind==='boss'?'bfBoss623':kind==='stage'?'bfStage623':'');x.innerHTML=`<div class="bfCard623"><div class="bfTitle623">${title}</div>${sub?`<div class="bfSub623">${sub}</div>`:''}</div>`;return new Promise(r=>setTimeout(()=>{x.className='';x.innerHTML='';r()},ms))}
-function finish(){if(living().length)return false;let xp=E.reduce((a,e)=>a+e.xp,0),g=Math.floor((8+E.length*7+Math.random()*10+(E.some(e=>e.golden)?250:0))*stage().mult),boss=!!stage().boss;let beforeDrops=Object.assign({},S.dropFound||{});E.forEach(e=>{S.kills[e.name]=(S.kills[e.name]||0)+1;rollRecruit(e);rollDrops(e)});if(stage().id==='hydra7500')S.kills['沼地の災厄・ヒュドラ']=(S.kills['沼地の災厄・ヒュドラ']||0)+1;let got=[];Object.keys(S.dropFound||{}).forEach(n=>{let d=(S.dropFound[n]||0)-(beforeDrops[n]||0);if(d>0)got.push(`${n}${d>1?' ×'+d:''}`)});if(boss)S.clears[stage().id]=true;S.gold+=g;addExp(xp);addMonsterExp(xp);afterBattleHeal();let clearedBattle=S.battle;S.battle++;render();let reward=`EXP +${xp}　+${g}G${got.length?`<div class="bfDrop623">DROP：${got.slice(0,3).join(' / ')}</div>`:''}`;let runEnd=S.run623&&S.battle>=S.run623.goal;if(boss){battleFlow623('BOSS DEFEATED',reward,'boss',950).then(()=>battleFlow623('STAGE CLEAR',`${stage().next||'次のステージ'}${(stage().next||'').includes('今後追加')?'':' が解放された！'}`,'stage',1050)).then(()=>{spawn();render()});return true}if(runEnd){let r=S.run623;S.run623=null;S.auto=false;battleFlow623('STAGE CLEAR',`${r.start}戦目 → ${clearedBattle}戦目<br>10戦完走`,'stage',1050).then(()=>{spawn();render()});return true}compactClear64(xp,g,got);setTimeout(()=>{spawn();render()},S.auto?300:520);return true}
+function finish(){if(living().length)return false;let xp=E.reduce((a,e)=>a+e.xp,0),g=Math.floor((8+E.length*7+Math.random()*10+(E.some(e=>e.golden)?250:0))*stage().mult),boss=!!stage().boss;let beforeDrops=Object.assign({},S.dropFound||{});E.forEach(e=>{S.kills[e.name]=(S.kills[e.name]||0)+1;rollRecruit(e);rollDrops(e)});if(stage().id==='hydra7500')S.kills['沼地の災厄・ヒュドラ']=(S.kills['沼地の災厄・ヒュドラ']||0)+1;let got=[];Object.keys(S.dropFound||{}).forEach(n=>{let d=(S.dropFound[n]||0)-(beforeDrops[n]||0);if(d>0)got.push(`${n}${d>1?' ×'+d:''}`)});let gurenClear=!boss&&['gr1','gr2'].includes(stage().id)&&S.battle>=10&&!S.clears[stage().id];if(boss||gurenClear)S.clears[stage().id]=true;S.gold+=g;addExp(xp);addMonsterExp(xp);afterBattleHeal();let clearedBattle=S.battle;S.battle++;render();let reward=`EXP +${xp}　+${g}G${got.length?`<div class="bfDrop623">DROP：${got.slice(0,3).join(' / ')}</div>`:''}`;let runEnd=S.run623&&S.battle>=S.run623.goal;let gurenNote=stage().id==='gr1'?'紅蓮魔界2 が解放された！':stage().id==='gr2'?(S.lv>=70?'紅蓮魔界ボス が解放された！':'紅蓮魔界ボスはプレイヤーLv70で解放'):'';if(gurenClear)save();if(boss){battleFlow623('BOSS DEFEATED',reward,'boss',950).then(()=>battleFlow623('STAGE CLEAR',`${stage().next||'次のステージ'}${(stage().next||'').includes('今後追加')?'':' が解放された！'}`,'stage',1050)).then(()=>{spawn();render()});return true}if(runEnd){let r=S.run623;S.run623=null;S.auto=false;battleFlow623('STAGE CLEAR',`${r.start}戦目 → ${clearedBattle}戦目<br>10戦完走${gurenNote?'<br>'+gurenNote:''}`,'stage',1050).then(()=>{spawn();render()});return true}if(gurenClear&&!S.run623){S.auto=false;save();battleFlow623('STAGE CLEAR',gurenNote,'stage',1050).then(()=>{spawn();render()});return true}compactClear64(xp,g,got);setTimeout(()=>{spawn();render()},S.auto?300:520);return true}
 function endTurn(){if(finish())return;companionActions();if(finish())return;let idx=E.findIndex(e=>e.hp>0);if(idx>=0)target=idx;enemyTurn();render()}
 function attack(){if(S.hp[0]<=0)return toast("キーボは戦闘不能");let st=statsFor(0),crit=Math.random()<st.crit/100,d=Math.floor(st.atk*(.85+Math.random()*.3)*(crit?1.8:1));showLog("キーボの攻撃！");hit(target,d,crit);endTurn()}
 $("#attack").onclick=attack;$("#guard").onclick=()=>{if(S.hp[0]<=0)return toast("キーボは戦闘不能");S.guard=true;showLog("キーボは防御の構え！");companionActions();if(!finish())enemyTurn();render()};
@@ -2973,6 +2973,12 @@ radial-gradient(circle at 72% 18%,rgba(255,195,80,.22) 0 1px,transparent 2px);ba
    const sb=stages.find(x=>x.id==='sb');if(sb)sb.next='紅蓮魔界1';
  }
  ensure711();
+ // The active saved battle number proves how many wins were completed here.
+ // Repair only the current Guren stage, never infer progress from player level.
+ if(['gr1','gr2'].includes(S.stageId)&&Number(S.battle)>10&&!S.clears[S.stageId]){
+   S.clears[S.stageId]=true;
+   save();
+ }
  const oldStage711=stageView;
  stageView=function(){ensure711();return oldStage711.apply(this,arguments)};
  const oldRender711=render;
@@ -8085,7 +8091,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.76.10';
+const V='v0.76.11';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8253,7 +8259,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.76.10';
+const V='v0.76.11';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8462,7 +8468,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.76.10';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.76.11';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8483,7 +8489,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.76.10',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
+(()=>{'use strict';const V='v0.76.11',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8499,7 +8505,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.76.10';let busy=false;
+(()=>{'use strict';const V='v0.76.11';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
