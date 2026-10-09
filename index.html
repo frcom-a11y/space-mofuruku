@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="ja"><head>
 <meta charset="utf-8">
+<script id="home-transfer-boot7639">
+(()=>{'use strict';let existing=true;try{existing=['dropHunter010','dropHunter010_backup1','dropHunter010_backup2','dropHunter09','dropHunter08','dropHunter07'].some(k=>{try{const v=JSON.parse(localStorage.getItem(k)||'null'),s=v&&v.__dodBackup?v.state:v;return s&&typeof s==='object'&&Number.isFinite(+s.lv)&&+s.lv>=1}catch(_){return false}})}catch(_){}let cookies='';try{cookies=document.cookie}catch(_){}window.__dodHomeBoot7639={existing,cookies,standalone:!!navigator.standalone||!!(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)};})();
+</script>
+
 <script id="swamp-art-source">window.DOD_SWAMP_ART={"hydra":"./assets/art/85eb811d96356598f6e9b130.webp","background":"./assets/art/eb14c569733cc83700690e4a.webp","swamp_slime":"./assets/art/9bda1871e89602aec87bf8c3.webp","swamp_wolf":"./assets/art/15e4a76c7a1b8f7b6ebb553a.webp","swamp_bee":"./assets/art/9b3b62a58f448c654b285649.webp","swamp_mushroom":"./assets/art/d3826c98cee7dc52b525437c.webp","swamp_snake":"./assets/art/47c4a9e384362a5083c9cdb3.webp"};window.DOD_GRASS_ART={"background":"./assets/art/3c8f5836c881937fb7223a3d.webp","slime":"./assets/art/ea1da922702e5a08efe1edb4.webp","goblin":"./assets/art/7eff583f94da5a236d6e71f0.webp","wolf":"./assets/art/ee089c7e6e8d1db5a4185324.webp","hornrabbit":"./assets/art/d50b46245f0dca48c8f8643e.webp","poisonbee":"./assets/art/4ab369301eb9981e99b668f9.webp","grassfang":"./assets/art/918c6e491092f7254e3caa32.webp"};window.DOD_FOREST_ART={"morikinoko":"./assets/art/d176e2bf42cd454cbab37fcb.webp","leaffairy":"./assets/art/36773c5f716706a7ed51a2ff.webp","shadowbat":"./assets/art/3c942369de2ccf5609c70ad2.webp","moonwolf":"./assets/art/fd6345f4dc37db7d11838562.webp","background":"./assets/art/40a7872a7eda2377a22c5942.webp"};window.DOD_ICE_ART={"\u30b9\u30ce\u30fc\u30e9\u30d3\u30c3\u30c8":"./assets/art/1f50d686be6f4538524026f1.webp","\u30a2\u30a4\u30b9\u30a6\u30eb\u30d5":"./assets/art/87f667e970009e828aacc61f.webp","\u30d5\u30ed\u30b9\u30c8\u30b9\u30e9\u30a4\u30e0":"./assets/art/8917ade498d5aa46f02ba50a.webp","\u30d5\u30ed\u30b9\u30c8\u30d5\u30a7\u30a2\u30ea\u30fc":"./assets/art/d82746d9bdaf3445a3ff30a0.webp","\u6c37\u96ea\u306e\u5973\u738b\u30fb\u30d5\u30ed\u30b9\u30c6\u30a3\u30a2":"./assets/art/dbcf25e30b99e52646ee90c2.webp","background":"./assets/art/2dbc990125db7ee4cdfff5e6.webp"};</script>
 <script src="assets.js"></script><script src="guren_assets.js"></script><script id="sky-assets-inline">window.SKY_ASSETS={"sky_air.png": "./assets/art/v07606-sky_air.webp", "sky_golem.png": "./assets/art/v07606-sky_golem.webp", "sky_hawk.png": "./assets/art/v07606-sky_hawk.webp", "sky_cloud.png": "./assets/art/v07606-sky_cloud.webp", "sky_fairy.png": "./assets/art/v07606-sky_fairy.webp", "sky_rare.png": "./assets/art/v07606-sky_rare.webp", "sky_boss.png": "./assets/art/v07606-sky_boss.webp", "sky_bg.jpg": "./assets/art/v07606-sky_bg.webp"};</script><script id="volcano-assets-inline">window.VOLCANO_ASSETS={"magma_slime.png": "./assets/art/v07606-magma_slime.webp", "flame_lizard.png": "./assets/art/v07606-flame_lizard.webp", "flame_bat.png": "./assets/art/v07606-flame_bat.webp", "salamander.png": "./assets/art/v07606-salamander.webp", "magma_golem.png": "./assets/art/v07606-magma_golem.webp", "ifrit.png": "./assets/art/v07606-ifrit.webp", "volganos.png": "./assets/art/v07606-volganos.webp", "volcano_bg.jpg": "./assets/art/v07606-volcano_bg.webp"};</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
@@ -8369,7 +8373,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.76.38';
+const V='v0.76.39';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8537,7 +8541,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.76.38';
+const V='v0.76.39';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8746,7 +8750,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.76.38';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.76.39';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8767,7 +8771,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.76.38',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
+(()=>{'use strict';const V='v0.76.39',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8783,7 +8787,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.76.38';let busy=false;
+(()=>{'use strict';const V='v0.76.39';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
@@ -8821,7 +8825,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script><!-- ===== /v0.75.86 ===== -->
 
-<!-- v0.76.38: one approved bone boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved bone boss encounter; existing content remains intact. -->
 <style id="dod-bone-07613-style">
 #battle.dodBone7613{background:radial-gradient(ellipse at 50% 30%,#dbc9ab 0,#84745e 34%,#302b2a 68%,#111620 100%)!important;touch-action:none}
 #battle.dodBone7613:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#d9c7a212 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8840,7 +8844,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-bone-07613">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
+ const VERSION='v0.76.39',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -8942,7 +8946,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved iron boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved iron boss encounter; existing content remains intact. -->
 <style id="dod-iron-07615-style">
 #battle.dodIron7615{background:radial-gradient(ellipse at 50% 30%,#8b4b43 0,#45323a 34%,#191e29 68%,#0c111b 100%)!important;touch-action:none}
 #battle.dodIron7615:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#dd765912 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8961,7 +8965,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-iron-07615">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
+ const VERSION='v0.76.39',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9063,7 +9067,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved sea boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved sea boss encounter; existing content remains intact. -->
 <style id="dod-sea-07616-style">
 #battle.dodSea7616{background:radial-gradient(ellipse at 50% 30%,#368d9d 0,#164657 34%,#102739 68%,#08101d 100%)!important;touch-action:none}
 #battle.dodSea7616:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#7ee8ed12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9082,7 +9086,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-sea-07616">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
+ const VERSION='v0.76.39',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9184,7 +9188,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved storm boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved storm boss encounter; existing content remains intact. -->
 <style id="dod-storm-07617-style">
 #battle.dodStorm7617{background:radial-gradient(ellipse at 50% 30%,#6b719e 0,#373c61 34%,#181f38 68%,#0c101d 100%)!important;touch-action:none}
 #battle.dodStorm7617:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b5c9ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9203,7 +9207,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-storm-07617">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
+ const VERSION='v0.76.39',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9306,7 +9310,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved underworld boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved underworld boss encounter; existing content remains intact. -->
 <style id="dod-underworld-07618-style">
 #battle.dodUnderworld7618{background:radial-gradient(ellipse at 50% 30%,#465da4 0,#242c59 34%,#111b34 68%,#080d1a 100%)!important;touch-action:none}
 #battle.dodUnderworld7618:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#6898ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9325,7 +9329,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-underworld-07618">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
+ const VERSION='v0.76.39',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9427,7 +9431,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved titan boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved titan boss encounter; existing content remains intact. -->
 <style id="dod-titan-07619-style">
 #battle.dodTitan7619{background:radial-gradient(ellipse at 50% 30%,#7f9672 0,#475b46 34%,#232e2c 68%,#111820 100%)!important;touch-action:none}
 #battle.dodTitan7619:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#a8d09b12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9446,7 +9450,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-titan-07619">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
+ const VERSION='v0.76.39',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9548,7 +9552,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved void boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved void boss encounter; existing content remains intact. -->
 <style id="dod-void-07621-style">
 #battle.dodVoid7621{background:radial-gradient(ellipse at 50% 30%,#864356 0,#442541 34%,#24162e 68%,#0d0c1a 100%)!important;touch-action:none}
 #battle.dodVoid7621:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#df668f12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9567,7 +9571,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-void-07621">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='void_boss_07621',NAME='虚空の魔皇',ICON='dod_void_a_07621';
+ const VERSION='v0.76.39',ID='void_boss_07621',NAME='虚空の魔皇',ICON='dod_void_a_07621';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9669,7 +9673,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved star boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved star boss encounter; existing content remains intact. -->
 <style id="dod-star-07622-style">
 #battle.dodStar7622{background:radial-gradient(ellipse at 50% 30%,#644264 0,#35243f 34%,#1b1935 68%,#090d1d 100%)!important;touch-action:none}
 #battle.dodStar7622:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#d58bff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9688,7 +9692,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-star-07622">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='star_boss_07622',NAME='星域の終焉竜',ICON='dod_star_b_07622';
+ const VERSION='v0.76.39',ID='star_boss_07622',NAME='星域の終焉竜',ICON='dod_star_b_07622';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9791,7 +9795,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved mythic100 boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved mythic100 boss encounter; existing content remains intact. -->
 <style id="dod-mythic100-07623-style">
 #battle.dodMythic1007623{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic1007623:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9809,7 +9813,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic100-07623">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='mythic100_boss_07623',NAME='三獄の魔獣',ICON='dod_mythic100_b_07623';
+ const VERSION='v0.76.39',ID='mythic100_boss_07623',NAME='三獄の魔獣',ICON='dod_mythic100_b_07623';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9911,7 +9915,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved mythic200 boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved mythic200 boss encounter; existing content remains intact. -->
 <style id="dod-mythic200-07624-style">
 #battle.dodMythic2007624{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic2007624:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9929,7 +9933,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic200-07624">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='mythic200_boss_07624',NAME='六翼の堕天王',ICON='dod_mythic200_a_07624';
+ const VERSION='v0.76.39',ID='mythic200_boss_07624',NAME='六翼の堕天王',ICON='dod_mythic200_a_07624';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -10030,7 +10034,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: one approved mythic300 boss encounter; existing content remains intact. -->
+<!-- v0.76.39: one approved mythic300 boss encounter; existing content remains intact. -->
 <style id="dod-mythic300-07625-style">
 #battle.dodMythic3007625{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic3007625:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -10048,7 +10052,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic300-07625">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',ID='mythic300_boss_07625',NAME='終焉の星喰竜',ICON='dod_mythic300_a_07625';
+ const VERSION='v0.76.39',ID='mythic300_boss_07625',NAME='終焉の星喰竜',ICON='dod_mythic300_a_07625';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -10150,7 +10154,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: two normal stages in the existing dragon-bone area. -->
+<!-- v0.76.39: two normal stages in the existing dragon-bone area. -->
 <style id="dod-bone-route-07626-style">
 #battle.dodBoneRoute7626{background:#292838 url('assets/art/bone-background-07626.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodBoneRoute7626:before{display:none!important}
@@ -10167,7 +10171,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-bone-route-07626">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',IDS=['bone_path1_07626','bone_path2_07626'];
+ const VERSION='v0.76.39',IDS=['bone_path1_07626','bone_path2_07626'];
  const ART={bone_hound_07626:'assets/art/bone-hound-07626.webp',bone_bat_07626:'assets/art/bone-bat-07626.webp',bone_soldier_07626:'assets/art/bone-soldier-07626.webp'};
  const CFG={'竜骨ハウンド':{hp:850,atk:220,xp:360},'骨翼バット':{hp:650,atk:250,xp:380},'墓場の骨兵':{hp:1100,atk:260,xp:440}};
  Object.assign(BASE_MEMBERS,{'竜骨ハウンド':{hp:78,mp:18,atk:17,def:9,role:'仲間モンスター'},'骨翼バット':{hp:58,mp:25,atk:18,def:7,role:'仲間モンスター'},'墓場の骨兵':{hp:90,mp:15,atk:16,def:13,role:'仲間モンスター'}});
@@ -10221,7 +10225,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: two normal stages in the existing dragon-iron area. -->
+<!-- v0.76.39: two normal stages in the existing dragon-iron area. -->
 <style id="dod-iron-route-07628-style">
 #battle.dodIronRoute7628{background:#292838 url('assets/art/iron-background-07628.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodIronRoute7628:before{display:none!important}
@@ -10238,7 +10242,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-iron-route-07628">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',IDS=['iron_path1_07628','iron_path2_07628'];
+ const VERSION='v0.76.39',IDS=['iron_path1_07628','iron_path2_07628'];
  const ART={iron_hound_07628:'assets/art/iron-hound-07628.webp',iron_gargoyle_07628:'assets/art/iron-gargoyle-07628.webp',iron_sentinel_07628:'assets/art/iron-sentinel-07628.webp'};
  const CFG={'黒鉄ハウンド':{hp:1150,atk:270,xp:500},'要塞ガーゴイル':{hp:1050,atk:310,xp:580},'黒鉄の番兵':{hp:1450,atk:260,xp:540}};
  Object.assign(BASE_MEMBERS,{'黒鉄ハウンド':{hp:82,mp:18,atk:18,def:10,role:'仲間モンスター'},'要塞ガーゴイル':{hp:76,mp:25,atk:19,def:9,role:'仲間モンスター'},'黒鉄の番兵':{hp:100,mp:15,atk:17,def:15,role:'仲間モンスター'}});
@@ -10292,7 +10296,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: two normal stages in the existing dragon-iron area. -->
+<!-- v0.76.39: two normal stages in the existing dragon-iron area. -->
 <style id="dod-sea-route-07629-style">
 #battle.dodSeaRoute7629{background:#292838 url('assets/art/sea-background-07629.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodSeaRoute7629:before{display:none!important}
@@ -10309,7 +10313,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-sea-route-07629">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',IDS=['sea_path1_07629','sea_path2_07629'];
+ const VERSION='v0.76.39',IDS=['sea_path1_07629','sea_path2_07629'];
  const ART={sea_crab_07629:'assets/art/sea-crab-07629.webp',sea_jellyfish_07629:'assets/art/sea-jellyfish-07629.webp',sea_knight_07629:'assets/art/sea-knight-07629.webp'};
  const CFG={'深海クラブ':{hp:1350,atk:310,xp:600},'神殿クラゲ':{hp:1250,atk:350,xp:680},'潮騎士':{hp:1700,atk:300,xp:640}};
  Object.assign(BASE_MEMBERS,{'深海クラブ':{hp:88,mp:18,atk:19,def:12,role:'仲間モンスター'},'神殿クラゲ':{hp:80,mp:30,atk:20,def:10,role:'仲間モンスター'},'潮騎士':{hp:108,mp:20,atk:19,def:16,role:'仲間モンスター'}});
@@ -10363,7 +10367,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: two normal stages in the existing thunder altar area. -->
+<!-- v0.76.39: two normal stages in the existing thunder altar area. -->
 <style id="dod-thunder-route-07630-style">
 #battle.dodThunderRoute7630{background:#292838 url('assets/art/thunder-background-07630.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodThunderRoute7630:before{display:none!important}
@@ -10380,7 +10384,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-thunder-route-07630">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',IDS=['thunder_path1_07630','thunder_path2_07630'];
+ const VERSION='v0.76.39',IDS=['thunder_path1_07630','thunder_path2_07630'];
  const ART={thunder_wolf_07630:'assets/art/thunder-wolf-07630.webp',thunder_jellyfish_07630:'assets/art/thunder-jellyfish-07630.webp',thunder_soldier_07630:'assets/art/thunder-soldier-07630.webp'};
  const CFG={'雷牙ウルフ':{hp:1500,atk:350,xp:700},'放電クラゲ':{hp:1400,atk:390,xp:780},'雷鎧の兵士':{hp:1900,atk:340,xp:740}};
  Object.assign(BASE_MEMBERS,{'雷牙ウルフ':{hp:92,mp:20,atk:21,def:12,role:'仲間モンスター'},'放電クラゲ':{hp:84,mp:32,atk:22,def:10,role:'仲間モンスター'},'雷鎧の兵士':{hp:114,mp:22,atk:21,def:17,role:'仲間モンスター'}});
@@ -10434,7 +10438,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: two normal stages in the existing underworld throne area. -->
+<!-- v0.76.39: two normal stages in the existing underworld throne area. -->
 <style id="dod-underworld-route-07631-style">
 #battle.dodUnderworldRoute7631{background:#292838 url('assets/art/underworld-background-07631.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodUnderworldRoute7631:before{display:none!important}
@@ -10451,7 +10455,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-underworld-route-07631">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',IDS=['underworld_path1_07631','underworld_path2_07631'];
+ const VERSION='v0.76.39',IDS=['underworld_path1_07631','underworld_path2_07631'];
  const ART={underworld_ghost_07631:'assets/art/underworld-ghost-07631.webp',underworld_hound_07631:'assets/art/underworld-hound-07631.webp',underworld_soldier_07631:'assets/art/underworld-soldier-07631.webp'};
  const CFG={'蒼炎の亡霊':{hp:1650,atk:390,xp:800},'冥府の番犬':{hp:1550,atk:430,xp:880},'冥鎧の兵士':{hp:2100,atk:380,xp:840}};
  Object.assign(BASE_MEMBERS,{'蒼炎の亡霊':{hp:96,mp:28,atk:23,def:12,role:'仲間モンスター'},'冥府の番犬':{hp:88,mp:24,atk:24,def:11,role:'仲間モンスター'},'冥鎧の兵士':{hp:120,mp:24,atk:23,def:18,role:'仲間モンスター'}});
@@ -10505,7 +10509,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: two normal stages in the existing giant tomb area. -->
+<!-- v0.76.39: two normal stages in the existing giant tomb area. -->
 <style id="dod-titan-route-07632-style">
 #battle.dodTitanRoute7632{background:#292838 url('assets/art/titan-background-07632.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodTitanRoute7632:before{display:none!important}
@@ -10522,7 +10526,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-titan-route-07632">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',IDS=['titan_path1_07632','titan_path2_07632'];
+ const VERSION='v0.76.39',IDS=['titan_path1_07632','titan_path2_07632'];
  const ART={titan_golem_07632:'assets/art/titan-golem-07632.webp',titan_guard_07632:'assets/art/titan-guard-07632.webp',titan_beast_07632:'assets/art/titan-beast-07632.webp'};
  const CFG={'石甲ゴーレム':{hp:2000,atk:430,xp:900},'祭壇の守衛':{hp:1900,atk:470,xp:980},'雷角ビースト':{hp:2450,atk:420,xp:940}};
  Object.assign(BASE_MEMBERS,{'石甲ゴーレム':{hp:130,mp:22,atk:25,def:20,role:'仲間モンスター'},'祭壇の守衛':{hp:106,mp:26,atk:26,def:17,role:'仲間モンスター'},'雷角ビースト':{hp:124,mp:24,atk:27,def:16,role:'仲間モンスター'}});
@@ -10576,7 +10580,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: two normal stages in the existing void rift area. -->
+<!-- v0.76.39: two normal stages in the existing void rift area. -->
 <style id="dod-void-route-07633-style">
 #battle.dodVoidRoute7633{background:#292838 url('assets/art/void-background-07633.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodVoidRoute7633:before{display:none!important}
@@ -10593,7 +10597,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-void-route-07633">
 (()=>{
  'use strict';
- const VERSION='v0.76.38',IDS=['void_path1_07633','void_path2_07633'];
+ const VERSION='v0.76.39',IDS=['void_path1_07633','void_path2_07633'];
  const ART={void_jellyfish_07633:'assets/art/void-jellyfish-07633.webp',void_beast_07633:'assets/art/void-beast-07633.webp',void_soldier_07633:'assets/art/void-soldier-07633.webp'};
  const CFG={'虚空クラゲ':{hp:2300,atk:470,xp:1000},'裂け目の影獣':{hp:2200,atk:510,xp:1080},'虚鎧の兵士':{hp:2800,atk:460,xp:1040}};
  Object.assign(BASE_MEMBERS,{'虚空クラゲ':{hp:102,mp:36,atk:27,def:14,role:'仲間モンスター'},'裂け目の影獣':{hp:112,mp:26,atk:29,def:15,role:'仲間モンスター'},'虚鎧の兵士':{hp:138,mp:28,atk:27,def:21,role:'仲間モンスター'}});
@@ -10647,7 +10651,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.38: duplicate summon stars, additive 5% per rank above one. -->
+<!-- v0.76.39: duplicate summon stars, additive 5% per rank above one. -->
 <style id="hero-stars-07634-style">
 .heroStars7634{display:inline-flex;gap:1px;white-space:nowrap;font-size:12px;vertical-align:middle;margin:3px 5px;color:#ffd765}.heroStars7634 .high{color:#c491ff}.heroStars7634 .empty{color:#586273}.heroStars7634 small{margin-left:4px;color:#e8e3f7;font-size:10px}.starInfo7634{font-size:11px;line-height:1.6;color:#e1d4ff}
 </style>
@@ -10817,5 +10821,33 @@ paint();
 @keyframes thunderImpact7638{0%,100%{transform:none}28%{transform:translate(5px,-3px)}48%{transform:translate(-4px,2px)}68%{transform:translate(2px,-1px)}}
 @media(prefers-reduced-motion:reduce){.legendCut7636{animation:none}.legendCut7636:before,.legendCut7636:after{display:none}.legendBolt7636{display:none}.legendBand7636,.legendContent7636{animation:none}.legendPortrait7636{transform:none}}
 </style>
+
+<!-- v0.76.39: save-compatible Home Screen transfer; local saves remain authoritative. -->
+<script id="home-transfer7639">
+(()=>{'use strict';
+ const boot=window.__dodHomeBoot7639||{existing:true,cookies:'',standalone:false},PREFIX='dod_home7639',PATH=location.pathname.slice(0,location.pathname.lastIndexOf('/')+1)||'/',MAX=6000,CHUNK=3000,AGE=7*86400000;
+ let timer=null,seq=0,pending=false,lastRaw='',ready=false;
+ function jar(raw){const out={};String(raw||'').split(';').forEach(part=>{const i=part.indexOf('=');if(i>0)out[part.slice(0,i).trim()]=part.slice(i+1)});return out}
+ function cookie(k,v){document.cookie=k+'='+v+'; Path='+PATH+'; Max-Age=604800; SameSite=Lax'+(location.protocol==='https:'?'; Secure':'')}
+ function b64(bytes){let s='';for(let i=0;i<bytes.length;i++)s+=String.fromCharCode(bytes[i]);return btoa(s)}
+ function bytes(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}
+ async function digest(b){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',b)),x=>x.toString(16).padStart(2,'0')).join('')}
+ async function encode(raw){const b=new TextEncoder().encode(raw),gz=typeof CompressionStream==='function';const data=gz?new Uint8Array(await new Response(new Blob([b]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer()):b;return {data:b64(data),fmt:gz?'gzip':'json',hash:await digest(data)}}
+ async function decode(meta,j){if(!meta||meta.v!==1||!Number.isInteger(meta.n)||meta.n<1||meta.n>2||!Number.isFinite(meta.at)||meta.at>Date.now()+60000||Date.now()-meta.at>AGE)throw Error('expired');let raw='';for(let i=0;i<meta.n;i++){const p=j[PREFIX+'_'+i];if(!p||p.length>CHUNK)throw Error('missing');raw+=p}if(raw.length>MAX)throw Error('size');const b=bytes(raw);if(await digest(b)!==meta.hash)throw Error('integrity');let text;if(meta.fmt==='gzip'){if(typeof DecompressionStream!=='function')throw Error('unsupported');const reader=new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip')).getReader(),chunks=[];let size=0;while(true){const r=await reader.read();if(r.done)break;size+=r.value.length;if(size>2000000){await reader.cancel();throw Error('size')}chunks.push(r.value)}const joined=new Uint8Array(size);let at=0;for(const c of chunks){joined.set(c,at);at+=c.length}text=new TextDecoder().decode(joined)}else if(meta.fmt==='json')text=new TextDecoder().decode(b);else throw Error('format');const x=JSON.parse(text);if(x.__dodHome!==1||!parseSaveRaw(JSON.stringify(x.state)))throw Error('save');return x}
+ function invalidate(){ready=false;lastRaw='';try{cookie(PREFIX,'');for(let i=0;i<2;i++)cookie(PREFIX+'_'+i,'')}catch(_){} }
+ async function snapshot(force=false){const run=++seq;if(pending)return false;let raw='';try{const current=localStorage.getItem(KEY),state=parseSaveRaw(current);if(!state||!state.playerProfile?.id){invalidate();return false}const settings={};for(const k of ['dod_se_7574','dod_bgm_safe778']){const v=localStorage.getItem(k);if(v)settings[k]=v}raw=JSON.stringify({__dodHome:1,state,settings});if(!force&&ready&&raw===lastRaw)return true;const pack=await encode(raw);if(run!==seq)return false;if(pack.data.length>MAX){invalidate();return false}const n=Math.ceil(pack.data.length/CHUNK);for(let i=0;i<2;i++)cookie(PREFIX+'_'+i,i<n?pack.data.slice(i*CHUNK,(i+1)*CHUNK):'');const meta={v:1,n,fmt:pack.fmt,hash:pack.hash,at:Date.now()};cookie(PREFIX,btoa(JSON.stringify(meta)));const j=jar(document.cookie);if(j[PREFIX]!==btoa(JSON.stringify(meta))||Array.from({length:n},(_,i)=>j[PREFIX+'_'+i]||'').join('')!==pack.data)throw Error('cookies blocked');ready=true;lastRaw=raw;return true}catch(_){if(run===seq)invalidate();return false}}
+ function schedule(){if(boot.standalone||pending)return;clearTimeout(timer);timer=setTimeout(()=>snapshot(),400)}
+ const saveBefore=save;save=function(...args){const ok=saveBefore.apply(this,args);if(ok)schedule();return ok};
+ function copySettings(settings){for(const k of ['dod_se_7574','dod_bgm_safe778'])if(typeof settings?.[k]==='string'&&!localStorage.getItem(k)){try{const x=JSON.parse(settings[k]);if(x&&typeof x==='object')localStorage.setItem(k,settings[k])}catch(_){}}}
+ function install(state,settings){const raw=JSON.stringify(state);if(!parseSaveRaw(raw))throw Error('invalid');const old=localStorage.getItem(KEY);if(old)localStorage.setItem(KEY+'_before_home_transfer',old);localStorage.setItem(KEY,raw);if(localStorage.getItem(KEY)!==raw)throw Error('write');copySettings(settings);location.reload()}
+ function importFile(file,status){if(!file)return;if(file.size>2000000){status.textContent='ファイルが大きすぎます。どろダンの中断データを選んでください。';return}const reader=new FileReader();reader.onload=()=>{try{const wrapped=JSON.parse(String(reader.result)),state=wrapped?.__dodHome===1?wrapped.state:parseSaveRaw(String(reader.result));if(!state||!parseSaveRaw(JSON.stringify(state)))throw Error('invalid');const name=state.playerProfile?.name||'冒険者';if(!confirm(name+' / Lv'+state.lv+' のデータを引き継ぎますか？\n現在のデータは退避してから置き換えます。'))return;install(state,wrapped?.__dodHome===1?wrapped.settings:null)}catch(_){status.textContent='読み込めませんでした。ファイルが正しいか、保存が許可されているか確認してください。'}};reader.onerror=()=>{status.textContent='ファイルを読み込めませんでした。'};reader.readAsText(file)}
+ function transferView(){open('ホーム画面への引き継ぎ',`<button class="miniBtn" id="homeBack7639">プロフィールへ戻る</button><div class="panel"><div class="sectionTitle">ブラウザで育てたデータを引き継ぐ</div><p class="small">今のセーブを引き継ぎ用に準備してから、共有メニューの「ホーム画面に追加」を使ってください。対応するiPhoneでは、ホーム画面版の初回起動時に自動で受け取ります。</p><button class="miniBtn" id="homePrepare7639" style="min-height:46px;width:100%">現在のデータで引き継ぎを準備</button><p id="homeStatus7639" class="small" role="status" aria-live="polite">準備完了を確認してから追加してください。</p></div><div class="panel"><div class="sectionTitle">すでに追加済み・自動で引き継げない場合</div><p class="small">元のブラウザで「引き継ぎファイルを保存」→ファイルに保存。ホーム画面版でこの画面を開き、「引き継ぎファイルを読み込む」を選んでください。既存の中断データも読み込めます。</p><div class="bankActions"><button class="miniBtn" id="homeExport7639">引き継ぎファイルを保存</button><button class="miniBtn" id="homeImport7639">引き継ぎファイルを読み込む</button></div><input id="homeFile7639" type="file" accept="application/json,.json" style="display:none"><p class="small">追加済みのホーム画面版とは自動同期しません。元のブラウザのセーブはそのまま残ります。</p></div>`);document.getElementById('homeBack7639').onclick=()=>profileView741(false);const status=document.getElementById('homeStatus7639'),btn=document.getElementById('homePrepare7639');btn.onclick=async()=>{btn.disabled=true;status.textContent='引き継ぎを準備しています…';clearTimeout(timer);const ok=save();clearTimeout(timer);const done=ok&&await snapshot(true);btn.disabled=false;status.textContent=done?'準備完了！ このまま共有 →「ホーム画面に追加」で追加してください。初回起動時にこのデータを受け取ります。':'自動引き継ぎを準備できませんでした。下の「引き継ぎファイルを保存」を使って引き継げます。'};document.getElementById('homeExport7639').onclick=exportSuspend741;document.getElementById('homeImport7639').onclick=()=>document.getElementById('homeFile7639').click();document.getElementById('homeFile7639').onchange=e=>importFile(e.target.files?.[0],status)}
+ function addButton(){const body=document.getElementById('obody');if(!body||document.getElementById('homeEntry7639'))return;const box=document.createElement('div');box.className='panel';const button=document.createElement('button');button.id='homeEntry7639';button.className='miniBtn';button.style.cssText='width:100%;min-height:46px';button.textContent=boot.standalone?'引き継ぎ・データ復旧':'ホーム画面へ引き継ぐ';button.onclick=transferView;box.appendChild(button);body.appendChild(box)}
+ const profileBefore=profileView741;profileView741=function(...args){const r=profileBefore.apply(this,args);addButton();return r};const registerBefore=registrationView741;registrationView741=function(...args){const r=registerBefore.apply(this,args);addButton();return r};
+ window.__DOD_HOME_TRANSFER7639={open:transferView,prepare:()=>snapshot(true)};
+ async function receive(){if(boot.existing||!boot.standalone){schedule();return}const j=jar(boot.cookies);if(!j[PREFIX])return;pending=true;const veil=document.createElement('div');veil.id='homeReceiving7639';veil.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#081729;color:#fff;display:grid;place-items:center;padding:24px;text-align:center';veil.textContent='冒険データを引き継いでいます…';document.body.appendChild(veil);try{const meta=JSON.parse(atob(j[PREFIX]));const data=await Promise.race([decode(meta,j),new Promise((_,reject)=>setTimeout(()=>reject(Error('timeout')),5000))]);if(S.playerProfile||S.lv>1||S.gold!==defaultState.gold||S.stageId!==defaultState.stageId)throw Error('progress');install(data.state,data.settings)}catch(_){setTimeout(()=>toast('自動で引き継げませんでした。「引き継ぎ・データ復旧」からファイルを読み込めます。'),300)}finally{pending=false;veil.remove()}}
+ receive();
+})();
+</script>
 
 </body></html>
