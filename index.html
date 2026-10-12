@@ -8386,7 +8386,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.76.103';
+const V='v0.76.104';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8570,7 +8570,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.76.103';
+const V='v0.76.104';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8779,7 +8779,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.76.103';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.76.104';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8800,7 +8800,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.76.103',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
+(()=>{'use strict';const V='v0.76.104',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8816,7 +8816,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.76.103';let busy=false;
+(()=>{'use strict';const V='v0.76.104';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
@@ -8854,7 +8854,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script><!-- ===== /v0.75.86 ===== -->
 
-<!-- v0.76.103: one approved bone boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved bone boss encounter; existing content remains intact. -->
 <style id="dod-bone-07613-style">
 #battle.dodBone7613{background:radial-gradient(ellipse at 50% 30%,#dbc9ab 0,#84745e 34%,#302b2a 68%,#111620 100%)!important;touch-action:none}
 #battle.dodBone7613:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#d9c7a212 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8873,7 +8873,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-bone-07613">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
+ const VERSION='v0.76.104',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -8975,7 +8975,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved iron boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved iron boss encounter; existing content remains intact. -->
 <style id="dod-iron-07615-style">
 #battle.dodIron7615{background:radial-gradient(ellipse at 50% 30%,#8b4b43 0,#45323a 34%,#191e29 68%,#0c111b 100%)!important;touch-action:none}
 #battle.dodIron7615:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#dd765912 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8994,7 +8994,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-iron-07615">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
+ const VERSION='v0.76.104',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9096,7 +9096,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved sea boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved sea boss encounter; existing content remains intact. -->
 <style id="dod-sea-07616-style">
 #battle.dodSea7616{background:radial-gradient(ellipse at 50% 30%,#368d9d 0,#164657 34%,#102739 68%,#08101d 100%)!important;touch-action:none}
 #battle.dodSea7616:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#7ee8ed12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9115,7 +9115,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-sea-07616">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
+ const VERSION='v0.76.104',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9217,7 +9217,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved storm boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved storm boss encounter; existing content remains intact. -->
 <style id="dod-storm-07617-style">
 #battle.dodStorm7617{background:radial-gradient(ellipse at 50% 30%,#6b719e 0,#373c61 34%,#181f38 68%,#0c101d 100%)!important;touch-action:none}
 #battle.dodStorm7617:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b5c9ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9236,7 +9236,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-storm-07617">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
+ const VERSION='v0.76.104',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9339,7 +9339,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved underworld boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved underworld boss encounter; existing content remains intact. -->
 <style id="dod-underworld-07618-style">
 #battle.dodUnderworld7618{background:radial-gradient(ellipse at 50% 30%,#465da4 0,#242c59 34%,#111b34 68%,#080d1a 100%)!important;touch-action:none}
 #battle.dodUnderworld7618:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#6898ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9358,7 +9358,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-underworld-07618">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
+ const VERSION='v0.76.104',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9460,7 +9460,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved titan boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved titan boss encounter; existing content remains intact. -->
 <style id="dod-titan-07619-style">
 #battle.dodTitan7619{background:radial-gradient(ellipse at 50% 30%,#7f9672 0,#475b46 34%,#232e2c 68%,#111820 100%)!important;touch-action:none}
 #battle.dodTitan7619:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#a8d09b12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9479,7 +9479,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-titan-07619">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
+ const VERSION='v0.76.104',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9581,7 +9581,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved void boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved void boss encounter; existing content remains intact. -->
 <style id="dod-void-07621-style">
 #battle.dodVoid7621{background:radial-gradient(ellipse at 50% 30%,#864356 0,#442541 34%,#24162e 68%,#0d0c1a 100%)!important;touch-action:none}
 #battle.dodVoid7621:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#df668f12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9600,7 +9600,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-void-07621">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='void_boss_07621',NAME='虚空の魔皇',ICON='dod_void_a_07621';
+ const VERSION='v0.76.104',ID='void_boss_07621',NAME='虚空の魔皇',ICON='dod_void_a_07621';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9702,7 +9702,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved star boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved star boss encounter; existing content remains intact. -->
 <style id="dod-star-07622-style">
 #battle.dodStar7622{background:radial-gradient(ellipse at 50% 30%,#644264 0,#35243f 34%,#1b1935 68%,#090d1d 100%)!important;touch-action:none}
 #battle.dodStar7622:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#d58bff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9721,7 +9721,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-star-07622">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='star_boss_07622',NAME='星域の終焉竜',ICON='dod_star_b_07622';
+ const VERSION='v0.76.104',ID='star_boss_07622',NAME='星域の終焉竜',ICON='dod_star_b_07622';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9824,7 +9824,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved mythic100 boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved mythic100 boss encounter; existing content remains intact. -->
 <style id="dod-mythic100-07623-style">
 #battle.dodMythic1007623{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic1007623:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9842,7 +9842,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic100-07623">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='mythic100_boss_07623',NAME='三獄の魔獣',ICON='dod_mythic100_b_07623';
+ const VERSION='v0.76.104',ID='mythic100_boss_07623',NAME='三獄の魔獣',ICON='dod_mythic100_b_07623';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9944,7 +9944,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved mythic200 boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved mythic200 boss encounter; existing content remains intact. -->
 <style id="dod-mythic200-07624-style">
 #battle.dodMythic2007624{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic2007624:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9962,7 +9962,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic200-07624">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='mythic200_boss_07624',NAME='六翼の堕天王',ICON='dod_mythic200_a_07624';
+ const VERSION='v0.76.104',ID='mythic200_boss_07624',NAME='六翼の堕天王',ICON='dod_mythic200_a_07624';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -10063,7 +10063,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: one approved mythic300 boss encounter; existing content remains intact. -->
+<!-- v0.76.104: one approved mythic300 boss encounter; existing content remains intact. -->
 <style id="dod-mythic300-07625-style">
 #battle.dodMythic3007625{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic3007625:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -10081,7 +10081,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic300-07625">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',ID='mythic300_boss_07625',NAME='終焉の星喰竜',ICON='dod_mythic300_a_07625';
+ const VERSION='v0.76.104',ID='mythic300_boss_07625',NAME='終焉の星喰竜',ICON='dod_mythic300_a_07625';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -10183,7 +10183,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: two normal stages in the existing dragon-bone area. -->
+<!-- v0.76.104: two normal stages in the existing dragon-bone area. -->
 <style id="dod-bone-route-07626-style">
 #battle.dodBoneRoute7626{background:#292838 url('assets/art/bone-background-07626.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodBoneRoute7626:before{display:none!important}
@@ -10200,7 +10200,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-bone-route-07626">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',IDS=['bone_path1_07626','bone_path2_07626'];
+ const VERSION='v0.76.104',IDS=['bone_path1_07626','bone_path2_07626'];
  const ART={bone_hound_07626:'assets/art/bone-hound-07626.webp',bone_bat_07626:'assets/art/bone-bat-07626.webp',bone_soldier_07626:'assets/art/bone-soldier-07626.webp'};
  const CFG={'竜骨ハウンド':{hp:850,atk:220,xp:360},'骨翼バット':{hp:650,atk:250,xp:380},'墓場の骨兵':{hp:1100,atk:260,xp:440}};
  Object.assign(BASE_MEMBERS,{'竜骨ハウンド':{hp:78,mp:18,atk:17,def:9,role:'仲間モンスター'},'骨翼バット':{hp:58,mp:25,atk:18,def:7,role:'仲間モンスター'},'墓場の骨兵':{hp:90,mp:15,atk:16,def:13,role:'仲間モンスター'}});
@@ -10254,7 +10254,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: two normal stages in the existing dragon-iron area. -->
+<!-- v0.76.104: two normal stages in the existing dragon-iron area. -->
 <style id="dod-iron-route-07628-style">
 #battle.dodIronRoute7628{background:#292838 url('assets/art/iron-background-07628.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodIronRoute7628:before{display:none!important}
@@ -10271,7 +10271,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-iron-route-07628">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',IDS=['iron_path1_07628','iron_path2_07628'];
+ const VERSION='v0.76.104',IDS=['iron_path1_07628','iron_path2_07628'];
  const ART={iron_hound_07628:'assets/art/iron-hound-07628.webp',iron_gargoyle_07628:'assets/art/iron-gargoyle-07628.webp',iron_sentinel_07628:'assets/art/iron-sentinel-07628.webp'};
  const CFG={'黒鉄ハウンド':{hp:1150,atk:270,xp:500},'要塞ガーゴイル':{hp:1050,atk:310,xp:580},'黒鉄の番兵':{hp:1450,atk:260,xp:540}};
  Object.assign(BASE_MEMBERS,{'黒鉄ハウンド':{hp:82,mp:18,atk:18,def:10,role:'仲間モンスター'},'要塞ガーゴイル':{hp:76,mp:25,atk:19,def:9,role:'仲間モンスター'},'黒鉄の番兵':{hp:100,mp:15,atk:17,def:15,role:'仲間モンスター'}});
@@ -10325,7 +10325,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: two normal stages in the existing dragon-iron area. -->
+<!-- v0.76.104: two normal stages in the existing dragon-iron area. -->
 <style id="dod-sea-route-07629-style">
 #battle.dodSeaRoute7629{background:#292838 url('assets/art/sea-background-07629.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodSeaRoute7629:before{display:none!important}
@@ -10342,7 +10342,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-sea-route-07629">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',IDS=['sea_path1_07629','sea_path2_07629'];
+ const VERSION='v0.76.104',IDS=['sea_path1_07629','sea_path2_07629'];
  const ART={sea_crab_07629:'assets/art/sea-crab-07629.webp',sea_jellyfish_07629:'assets/art/sea-jellyfish-07629.webp',sea_knight_07629:'assets/art/sea-knight-07629.webp'};
  const CFG={'深海クラブ':{hp:1350,atk:310,xp:600},'神殿クラゲ':{hp:1250,atk:350,xp:680},'潮騎士':{hp:1700,atk:300,xp:640}};
  Object.assign(BASE_MEMBERS,{'深海クラブ':{hp:88,mp:18,atk:19,def:12,role:'仲間モンスター'},'神殿クラゲ':{hp:80,mp:30,atk:20,def:10,role:'仲間モンスター'},'潮騎士':{hp:108,mp:20,atk:19,def:16,role:'仲間モンスター'}});
@@ -10396,7 +10396,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: two normal stages in the existing thunder altar area. -->
+<!-- v0.76.104: two normal stages in the existing thunder altar area. -->
 <style id="dod-thunder-route-07630-style">
 #battle.dodThunderRoute7630{background:#292838 url('assets/art/thunder-background-07630.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodThunderRoute7630:before{display:none!important}
@@ -10413,7 +10413,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-thunder-route-07630">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',IDS=['thunder_path1_07630','thunder_path2_07630'];
+ const VERSION='v0.76.104',IDS=['thunder_path1_07630','thunder_path2_07630'];
  const ART={thunder_wolf_07630:'assets/art/thunder-wolf-07630.webp',thunder_jellyfish_07630:'assets/art/thunder-jellyfish-07630.webp',thunder_soldier_07630:'assets/art/thunder-soldier-07630.webp'};
  const CFG={'雷牙ウルフ':{hp:1500,atk:350,xp:700},'放電クラゲ':{hp:1400,atk:390,xp:780},'雷鎧の兵士':{hp:1900,atk:340,xp:740}};
  Object.assign(BASE_MEMBERS,{'雷牙ウルフ':{hp:92,mp:20,atk:21,def:12,role:'仲間モンスター'},'放電クラゲ':{hp:84,mp:32,atk:22,def:10,role:'仲間モンスター'},'雷鎧の兵士':{hp:114,mp:22,atk:21,def:17,role:'仲間モンスター'}});
@@ -10467,7 +10467,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: two normal stages in the existing underworld throne area. -->
+<!-- v0.76.104: two normal stages in the existing underworld throne area. -->
 <style id="dod-underworld-route-07631-style">
 #battle.dodUnderworldRoute7631{background:#292838 url('assets/art/underworld-background-07631.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodUnderworldRoute7631:before{display:none!important}
@@ -10484,7 +10484,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-underworld-route-07631">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',IDS=['underworld_path1_07631','underworld_path2_07631'];
+ const VERSION='v0.76.104',IDS=['underworld_path1_07631','underworld_path2_07631'];
  const ART={underworld_ghost_07631:'assets/art/underworld-ghost-07631.webp',underworld_hound_07631:'assets/art/underworld-hound-07631.webp',underworld_soldier_07631:'assets/art/underworld-soldier-07631.webp'};
  const CFG={'蒼炎の亡霊':{hp:1650,atk:390,xp:800},'冥府の番犬':{hp:1550,atk:430,xp:880},'冥鎧の兵士':{hp:2100,atk:380,xp:840}};
  Object.assign(BASE_MEMBERS,{'蒼炎の亡霊':{hp:96,mp:28,atk:23,def:12,role:'仲間モンスター'},'冥府の番犬':{hp:88,mp:24,atk:24,def:11,role:'仲間モンスター'},'冥鎧の兵士':{hp:120,mp:24,atk:23,def:18,role:'仲間モンスター'}});
@@ -10538,7 +10538,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: two normal stages in the existing giant tomb area. -->
+<!-- v0.76.104: two normal stages in the existing giant tomb area. -->
 <style id="dod-titan-route-07632-style">
 #battle.dodTitanRoute7632{background:#292838 url('assets/art/titan-background-07632.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodTitanRoute7632:before{display:none!important}
@@ -10555,7 +10555,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-titan-route-07632">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',IDS=['titan_path1_07632','titan_path2_07632'];
+ const VERSION='v0.76.104',IDS=['titan_path1_07632','titan_path2_07632'];
  const ART={titan_golem_07632:'assets/art/titan-golem-07632.webp',titan_guard_07632:'assets/art/titan-guard-07632.webp',titan_beast_07632:'assets/art/titan-beast-07632.webp'};
  const CFG={'石甲ゴーレム':{hp:2000,atk:430,xp:900},'祭壇の守衛':{hp:1900,atk:470,xp:980},'雷角ビースト':{hp:2450,atk:420,xp:940}};
  Object.assign(BASE_MEMBERS,{'石甲ゴーレム':{hp:130,mp:22,atk:25,def:20,role:'仲間モンスター'},'祭壇の守衛':{hp:106,mp:26,atk:26,def:17,role:'仲間モンスター'},'雷角ビースト':{hp:124,mp:24,atk:27,def:16,role:'仲間モンスター'}});
@@ -10609,7 +10609,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: two normal stages in the existing void rift area. -->
+<!-- v0.76.104: two normal stages in the existing void rift area. -->
 <style id="dod-void-route-07633-style">
 #battle.dodVoidRoute7633{background:#292838 url('assets/art/void-background-07633.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodVoidRoute7633:before{display:none!important}
@@ -10626,7 +10626,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-void-route-07633">
 (()=>{
  'use strict';
- const VERSION='v0.76.103',IDS=['void_path1_07633','void_path2_07633'];
+ const VERSION='v0.76.104',IDS=['void_path1_07633','void_path2_07633'];
  const ART={void_jellyfish_07633:'assets/art/void-jellyfish-07633.webp',void_beast_07633:'assets/art/void-beast-07633.webp',void_soldier_07633:'assets/art/void-soldier-07633.webp'};
  const CFG={'虚空クラゲ':{hp:2300,atk:470,xp:1000},'裂け目の影獣':{hp:2200,atk:510,xp:1080},'虚鎧の兵士':{hp:2800,atk:460,xp:1040}};
  Object.assign(BASE_MEMBERS,{'虚空クラゲ':{hp:102,mp:36,atk:27,def:14,role:'仲間モンスター'},'裂け目の影獣':{hp:112,mp:26,atk:29,def:15,role:'仲間モンスター'},'虚鎧の兵士':{hp:138,mp:28,atk:27,def:21,role:'仲間モンスター'}});
@@ -10680,7 +10680,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.103: duplicate summon stars, additive 5% per rank above one. -->
+<!-- v0.76.104: duplicate summon stars, additive 5% per rank above one. -->
 <style id="hero-stars-07634-style">
 .heroStars7634{display:inline-flex;gap:1px;white-space:nowrap;font-size:12px;vertical-align:middle;margin:3px 5px;color:#ffd765}.heroStars7634 .high{color:#c491ff}.heroStars7634 .empty{color:#586273}.heroStars7634 small{margin-left:4px;color:#e8e3f7;font-size:10px}.starInfo7634{font-size:11px;line-height:1.6;color:#e1d4ff}
 </style>
@@ -10851,7 +10851,7 @@ paint();
 @media(prefers-reduced-motion:reduce){.legendCut7636{animation:none}.legendCut7636:before,.legendCut7636:after{display:none}.legendBolt7636{display:none}.legendBand7636,.legendContent7636{animation:none}.legendPortrait7636{transform:none}}
 </style>
 
-<!-- v0.76.103: save-compatible Home Screen transfer; local saves remain authoritative. -->
+<!-- v0.76.104: save-compatible Home Screen transfer; local saves remain authoritative. -->
 <script id="home-transfer7639">
 (()=>{'use strict';
  const boot=window.__dodHomeBoot7639||{existing:true,cookies:'',standalone:false},PREFIX='dod_home7639',PATH=location.pathname.slice(0,location.pathname.lastIndexOf('/')+1)||'/',MAX=6000,CHUNK=3000,AGE=7*86400000;
@@ -10879,7 +10879,7 @@ paint();
 })();
 </script>
 
-<!-- v0.76.103: four boss breeding recipes; existing enemies and parent companions unchanged. -->
+<!-- v0.76.104: four boss breeding recipes; existing enemies and parent companions unchanged. -->
 <style id="breeding7640-style">
 .breed7640{max-width:620px;margin:auto}.breed7640 p{line-height:1.7}.breed7640 select{width:100%;min-height:46px;font-size:16px;padding:8px;border:1px solid #698ab1;border-radius:9px;background:#10243d;color:#fff;box-sizing:border-box}.breedParents7640{display:grid;grid-template-columns:1fr 1fr;gap:8px}.breedParents7640 label{display:block;color:#ffe38c;font-weight:900;margin-bottom:5px}.breedArt7640{height:150px;display:flex;align-items:center;justify-content:center;margin:8px auto}.breedArt7640 img{width:100%;height:100%;max-width:240px;object-fit:contain;filter:drop-shadow(0 0 14px #69ccff55)}.breed7640 h3{margin:8px 0;color:#ffe38c}.breedNeed7640{padding:7px 0;border-bottom:1px solid #496078;font-size:12px;line-height:1.6}.breedNeed7640.ok{color:#a0f1c0}.breedNeed7640.no{color:#ffd1ae}.breed7640 .miniBtn{min-height:44px;white-space:normal}.breedDo7640{width:100%;margin-top:12px;font-size:16px!important;background:linear-gradient(135deg,#315497,#644d92)!important;border-color:#b9d1ff!important}.breed7640 button:disabled{opacity:.45}.breedBook7640{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.breedBook7640>button{padding:10px;font-size:12px;text-align:left;line-height:1.7}.breedBook7640 small{display:block}.breedBirth7640{text-align:center;background:radial-gradient(ellipse at 50% 30%,#324b77,#10243d 65%);border:1px solid #ffe38c;border-radius:14px;padding:18px;animation:breedBirth7640 .55s ease-out}.breedBirth7640 .breedArt7640{height:190px}.breedBirth7640 h2{color:#ffe38c;overflow-wrap:anywhere}@keyframes breedBirth7640{from{opacity:.2;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.breedBirth7640{animation:none}}
 </style>
@@ -11484,10 +11484,22 @@ body.expeditionOpen7696 #backTop7111{display:none!important}
 #monster-expedition .exp-lineup canvas{background:transparent}
 @media(prefers-reduced-motion:reduce){#monster-expedition .battle-friend,#monster-expedition .battle-enemy,#monster-expedition .battle-float,#monster-expedition .battle-stage{animation:none!important}}
 </style>
+<script id="kokemaru76104-register">(()=>{
+ const name='コケまる',icon='kokemaru76104';
+ const src='data:image/webp;base64,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';
+ MONSTERS[name]={icon,hp:68,atk:11,xp:22,recruit:0,expeditionOnly76104:true};
+ BASE_MEMBERS[name]={hp:70,mp:28,atk:10,def:9,role:'苔の精霊'};
+ COMPANION_GROWTH_STYLE[name]={hp:7,mp:3,atk:2,def:2};
+ COMPANION_TRAITS[name]={name:'苔の生命力',desc:'HP+10% / 探索Lv.3から仲間全体のHPを回復する技を使える',hp:.10};
+ COMPANION_SKILLS[name]={name:'苔の体当たり',lv:3,mult:1.35,rate:.32};
+ const oldIcon=svgMonster;
+ svgMonster=function(t,gold=false){if(t===icon)return '<img class="monsterArt kokemaru76104" src="'+src+'" alt="コケまる" draggable="false">';return oldIcon.apply(this,arguments);};
+})();
+</script>
 <script id="expedition7696">
 (()=>{
 "use strict";
-const VERSION='v0.76.103',FIELD='expedition7696',HTML='<div id="monster-expedition">\n<section class="exp-game" aria-label="仲間モンスター専用の遺跡探索">\n <header><span>DROP OF DUNGEON / MONSTER EXPEDITION</span><h2>翠水の忘れられた遺跡</h2><div><b id="exp-floor">地下1階</b><span id="exp-loot">発掘0</span><button type="button" id="exp-party">編成</button></div></header>\n <div class="exp-team" aria-label="探索パーティー"></div>\n <canvas width="352" height="352" role="img" aria-label="明るい苔の遺跡を仲間モンスター3体で探索する画面"></canvas>\n <p class="exp-message" aria-live="polite">赤い「!」の敵に接触でバトル。長押しで探索できます。</p>\n <div class="exp-controls"><div class="exp-pad"><button type="button" data-dir="up" aria-label="上に移動">▲</button><button type="button" data-dir="left" aria-label="左に移動">◀</button><span>MOVE</span><button type="button" data-dir="right" aria-label="右に移動">▶</button><button type="button" data-dir="down" aria-label="下に移動">▼</button></div><button type="button" id="exp-action">調べる<small>結晶・階段</small></button></div>\n <footer>長押し／矢印キー・WASDで移動 · 触れると自動取得<br>敵に接触で戦闘 · 宝箱で回復 · 結晶・階段も自動 · 途中から再開できます</footer>\n <div class="exp-setup" hidden><h3>発掘パーティー</h3><p>所持している仲間モンスターから1〜3体を編成</p><label>先頭<select aria-label="先頭のモンスター"></select></label><label>2体目<select aria-label="2体目のモンスター"></select></label><label>3体目<select aria-label="3体目のモンスター"></select></label><div class="exp-lineup"></div><button type="button" id="exp-start">この仲間で探索する</button><p class="exp-setup-msg" aria-live="polite"></p></div>\n</section></div>\n';
+const VERSION='v0.76.104',FIELD='expedition7696',HTML='<div id="monster-expedition">\n<section class="exp-game" aria-label="仲間モンスター専用の遺跡探索">\n <header><span>DROP OF DUNGEON / MONSTER EXPEDITION</span><h2>翠水の忘れられた遺跡</h2><div><b id="exp-floor">地下1階</b><span id="exp-loot">発掘0</span><button type="button" id="exp-party">編成</button></div></header>\n <div class="exp-team" aria-label="探索パーティー"></div>\n <canvas width="352" height="352" role="img" aria-label="明るい苔の遺跡を仲間モンスター3体で探索する画面"></canvas>\n <p class="exp-message" aria-live="polite">赤い「!」の敵に接触でバトル。長押しで探索できます。</p>\n <div class="exp-controls"><div class="exp-pad"><button type="button" data-dir="up" aria-label="上に移動">▲</button><button type="button" data-dir="left" aria-label="左に移動">◀</button><span>MOVE</span><button type="button" data-dir="right" aria-label="右に移動">▶</button><button type="button" data-dir="down" aria-label="下に移動">▼</button></div><button type="button" id="exp-action">調べる<small>結晶・階段</small></button></div>\n <footer>長押し／矢印キー・WASDで移動 · 触れると自動取得<br>敵に接触で戦闘 · 宝箱で回復 · 結晶・階段も自動 · 途中から再開できます</footer>\n <div class="exp-setup" hidden><h3>発掘パーティー</h3><p>所持している仲間モンスターから1〜3体を編成</p><label>先頭<select aria-label="先頭のモンスター"></select></label><label>2体目<select aria-label="2体目のモンスター"></select></label><label>3体目<select aria-label="3体目のモンスター"></select></label><div class="exp-lineup"></div><button type="button" id="exp-start">この仲間で探索する</button><p class="exp-setup-msg" aria-live="polite"></p></div>\n</section></div>\n';
 const humans=new Set(['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']);
 const owned=()=>[...new Set((S.monsterCompanions||[]).filter(n=>typeof n==='string'&&!humans.has(n)))];
 function stats(name){const b=baseFor(name);return {hp:Math.max(1,Math.floor(b.hp||60)),mp:Math.max(0,Math.floor(b.mp||0)),atk:Math.max(1,Math.floor(b.atk||10)),def:Math.max(0,Math.floor(b.def||0))};}
@@ -11684,24 +11696,40 @@ battlePanel.innerHTML='<div class="battle-top"><b>ENCOUNTER</b><span class="batt
 root.querySelector('.exp-game').append(battlePanel);
 let enemies=[],defeated=new Set(),partyHP={},partyMP={},battle=null,battleBusy=false,kills=0;
 for(const n of team){partyHP[n]=stats(n).hp;partyMP[n]=stats(n).mp;}
-const battleNames={slime:'野生のクリスタルスライム',dragon:'遺跡の若竜',golem:'遺跡の番兵',imp:'遺跡の小悪魔'};
-const enemyBase={slime:{hp:64,atk:12,def:3},dragon:{hp:116,atk:19,def:7},golem:{hp:140,atk:16,def:10},imp:{hp:80,atk:14,def:5}};
-function skill(n){const sk=COMPANION_SKILLS[n];return sk&&compLv(n)>=(sk.lv||1)?{name:sk.name,mult:Math.max(1.3,sk.mult||1.5)}:{name:'集中攻撃',mult:1.6};}
-function spawnEnemies(){if(layout7699){enemies=layout7699.enemies.map(e=>({...e}));return;}enemies=[{id:'e1',x:4,y:4,type:'slime'},{id:'e2',x:17,y:7,type:'imp'},{id:'e3',x:5,y:15,type:'golem'},{id:'e4',x:18,y:16,type:'dragon'},{id:'near',x:9,y:6,type:'imp'}];}
+const battleNames={'コケまる':'コケまる',slime:'野生のクリスタルスライム',dragon:'遺跡の若竜',golem:'遺跡の番兵',imp:'遺跡の小悪魔'};
+const enemyBase={'コケまる':{hp:68,atk:11,def:5},slime:{hp:64,atk:12,def:3},dragon:{hp:116,atk:19,def:7},golem:{hp:140,atk:16,def:10},imp:{hp:80,atk:14,def:5}};
+function skill(n){if(n==='コケまる'&&compLv(n)>=3)return {name:'苔のいやし',mult:1,heal:true};const sk=COMPANION_SKILLS[n];return sk&&compLv(n)>=(sk.lv||1)?{name:sk.name,mult:Math.max(1.3,sk.mult||1.5)}:{name:'集中攻撃',mult:1.6};}
+function spawnEnemies(){if(layout7699){enemies=layout7699.enemies.map(e=>({...e}));addKokemaru76104();return;}enemies=[{id:'e1',x:4,y:4,type:'slime'},{id:'e2',x:17,y:7,type:'imp'},{id:'e3',x:5,y:15,type:'golem'},{id:'e4',x:18,y:16,type:'dragon'},{id:'near',x:9,y:6,type:'imp'}];}
+function addKokemaru76104(){
+ if(!layout7699)return;
+ const r=layout7699,used=new Set([...enemies,...treasures,...crystals,stairs].map(p=>key(p.x,p.y)));
+ const cells=[];for(let y=1;y<22;y++)for(let x=1;x<22;x++)if(r.grid[y][x]==='floor'&&r.distance[y][x]>=4&&!used.has(key(x,y)))cells.push({x,y});
+ if(!cells.length)return;const p=cells[((r.seed^Math.imul(floor,76104))>>>0)%cells.length];enemies.push({...p,id:'kokemaru76104',type:'コケまる'});
+}
+function recruitKokemaru76104(){
+ if(battle.enemy.type!=='コケまる')return '';
+ S.kills=S.kills||{};S.kills['コケまる']=(S.kills['コケまる']||0)+1;
+ if(S.monsterCompanions.includes('コケまる')||Math.random()>=.05)return '';
+ S.monsterCompanions.push('コケまる');ensureGrowth42('コケまる');
+ if(!roster.some(o=>o.id==='コケまる')){roster.push({id:'コケまる',name:'コケまる'});for(const select of selects){const o=document.createElement('option');o.value='コケまる';o.textContent='コケまる / Lv.1';select.append(o);}}
+ partyHP['コケまる']=stats('コケまる').hp;partyMP['コケまる']=stats('コケまる').mp;
+ return ' コケまるが仲間になった！ 編成・入口で選べます。';
+}
+
 function battlePortrait(type){const c=document.createElement('canvas');c.width=128;c.height=128;c.setAttribute('aria-label',battleNames[type]||type);const g=c.getContext('2d');g.scale(3,3);sprite(g,5,10,type);return c;}
 function paintPortraits(){if(!battle)return;battlePanel.querySelector('.battle-enemy').replaceChildren(battlePortrait(battle.enemy.type));const friends=battlePanel.querySelector('.battle-friends');friends.replaceChildren();team.forEach((id,i)=>{const d=document.createElement('div');d.className='battle-friend'+(partyHP[id]<=0?' fallen':'');d.dataset.actor=i;d.append(battlePortrait(id));const name=document.createElement('b');name.textContent=id;d.append(name);friends.append(d);});}
 function battleUI(){if(!battle)return;const actor=team[battle.actor];battlePanel.querySelector('.battle-turn').textContent='TURN '+battle.turn+' · 推奨Lv.'+(3+(floor-1)*3);
  battlePanel.querySelector('.battle-top b').textContent=battle.outcome==='win'?'VICTORY':battle.outcome==='lose'?'全滅':battle.outcome==='escape'?'RETREAT':'ENCOUNTER';
  battlePanel.querySelector('.enemy-name').textContent=(battle.enemy.elite?'◆ 守護者：':'')+battleNames[battle.enemy.type];battlePanel.querySelector('.enemy-hp').textContent='HP '+battle.hp+' / '+battle.maxHP;battlePanel.querySelector('.enemy-info i').style.width=(battle.hp/battle.maxHP*100)+'%';battlePanel.querySelector('.enemy-intent').textContent='次の敵行動：'+(battle.turn%3===0?'猛攻！ 防御で備えよう':'通常攻撃');
  const health=battlePanel.querySelector('.battle-healths');health.style.gridTemplateColumns='repeat('+team.length+',minmax(0,1fr))';health.replaceChildren();team.forEach((id,i)=>{const st=stats(id),d=document.createElement('div');d.className='battle-health'+(i===battle.actor?' active':'');d.innerHTML='<b></b><small class="hp"></small><div class="battle-track"><i></i></div><small class="mp"></small>';d.querySelector('b').textContent=id+' Lv.'+compLv(id);d.querySelector('.hp').textContent='HP '+partyHP[id]+' / '+st.hp;d.querySelector('i').style.width=(partyHP[id]/st.hp*100)+'%';d.querySelector('.mp').textContent='MP '+partyMP[id]+' / '+st.mp;health.append(d);});
- battlePanel.querySelector('[data-command="skill"]').firstChild.textContent=skill(actor).name;battlePanel.querySelector('[data-command="skill"] small').textContent='MP 8 · 強力な攻撃';battlePanel.querySelectorAll('[data-command]').forEach(b=>{b.disabled=battleBusy||battle.outcome!==null||(b.dataset.command==='skill'&&partyMP[actor]<8);});
+ battlePanel.querySelector('[data-command="skill"]').firstChild.textContent=skill(actor).name;battlePanel.querySelector('[data-command="skill"] small').textContent=skill(actor).heal?'MP 8 · 仲間全体HP25%回復':'MP 8 · 強力な攻撃';battlePanel.querySelectorAll('[data-command]').forEach(b=>{b.disabled=battleBusy||battle.outcome!==null||(b.dataset.command==='skill'&&partyMP[actor]<8);});
  const ret=battlePanel.querySelector('.battle-return');ret.hidden=!battle.outcome;ret.textContent=battle.outcome==='win'?'探索へ戻る':'入口へ戻る';
  battlePanel.querySelector('.enemy-intent').hidden=!!battle.outcome;
  battlePanel.querySelector('.battle-actions').hidden=!!battle.outcome;
  if(battle.log)battlePanel.querySelector('.battle-log').textContent=battle.log;
  if(battle.outcome)scheduleReturn7698();
 }
-function beginBattle(enemy){stop();const b=enemyBase[enemy.type],scale=1+(floor-1)*.26;const hp=Math.floor(b.hp*scale*(enemy.elite?1.35:1));battle={enemy:{...enemy},hp,maxHP:hp,atk:Math.floor(b.atk*scale*(enemy.elite?1.2:1)),def:Math.floor(b.def*scale),actor:Math.max(0,team.findIndex(id=>partyHP[id]>0)),turn:1,outcome:null,log:battleNames[enemy.type]+'が現れた！ '+team[Math.max(0,team.findIndex(id=>partyHP[id]>0))]+'の行動を選ぼう。'};battleBusy=false;battlePanel.hidden=false;paintPortraits();battleUI();active?.modal.scrollTo(0,0);persist();}
+function beginBattle(enemy){stop();if(enemy.type==='コケまる'){S.seen=S.seen||{};S.seen['コケまる']=true;}const b=enemyBase[enemy.type],scale=1+(floor-1)*.26;const hp=Math.floor(b.hp*scale*(enemy.elite?1.35:1));battle={enemy:{...enemy},hp,maxHP:hp,atk:Math.floor(b.atk*scale*(enemy.elite?1.2:1)),def:Math.floor(b.def*scale),actor:Math.max(0,team.findIndex(id=>partyHP[id]>0)),turn:1,outcome:null,log:battleNames[enemy.type]+'が現れた！ '+team[Math.max(0,team.findIndex(id=>partyHP[id]>0))]+'の行動を選ぼう。'};battleBusy=false;battlePanel.hidden=false;paintPortraits();battleUI();active?.modal.scrollTo(0,0);persist();}
 function effect(node,kind,value,color=''){node.classList.remove('hit','strike');void node.offsetWidth;node.classList.add(kind);if(value!==null){const float=document.createElement('span');float.className='battle-float '+color;float.textContent=value;node.append(float);setTimeout(()=>float.remove(),750);}setTimeout(()=>node.classList.remove(kind),550);}
 function reward(){
  const gain=Math.min(250,12+floor*3);S.gold+=gain;
@@ -11710,7 +11738,7 @@ function reward(){
  return gain+'G / 仲間EXP '+xp+(ups.length?' · '+ups.join(' / '):'');
 }
 function finishBattle(outcome){if(battle.outcome)return;battle.outcome=outcome;battleBusy=false;
- if(outcome==='win'){defeated.add(battle.enemy.id);kills++;loot++;shards++;battle.log='勝利！ 遺跡の欠片×1 / '+reward()+'。';}
+ if(outcome==='win'){defeated.add(battle.enemy.id);kills++;loot++;shards++;battle.log='勝利！ 遺跡の欠片×1 / '+reward()+'。'+recruitKokemaru76104();}
  else if(outcome==='lose')battle.log='仲間たちは力尽きた。入口で休んで立て直そう。発掘品と銀行は失いません。';
  else battle.log='戦闘から撤退。入口へ戻って仲間を休ませよう。';
  battleUI();persist();
@@ -11719,6 +11747,7 @@ function command(type){if(!battle||battleBusy||battle.outcome)return;if(type==='
  const actor=team[battle.actor],st=stats(actor);if(type==='skill'&&partyMP[actor]<8)return;
  battleBusy=true;const friend=battlePanel.querySelector('[data-actor="'+battle.actor+'"]'),foe=battlePanel.querySelector('.battle-enemy');
  if(type==='guard'){battle.log=actor+'は身を守っている！';effect(friend,'hit',null);}
+ else if(type==='skill'&&skill(actor).heal){partyMP[actor]-=8;let healed=0;for(const n of team){if(partyHP[n]<=0)continue;const old=partyHP[n];partyHP[n]=Math.min(stats(n).hp,old+Math.ceil(stats(n).hp*.25));healed+=partyHP[n]-old;}battle.log=actor+'の苔のいやし！ 仲間全体のHPを合計'+healed+'回復。';effect(friend,'heal',healed,'heal');window.__DOD_SE_7574?.play('heal');}
  else{const sk=skill(actor);if(type==='skill')partyMP[actor]-=8;const damage=Math.max(1,Math.floor(st.atk*(type==='skill'?sk.mult:1)-battle.def*.4));battle.hp=Math.max(0,battle.hp-damage);effect(friend,'strike',null);effect(foe,'hit',damage);battle.log=actor+'の'+(type==='skill'?sk.name:'攻撃')+'！ '+damage+'ダメージ。';if(type==='skill'){const stage=battlePanel.querySelector('.battle-stage');stage.classList.add('flash');setTimeout(()=>stage.classList.remove('flash'),550);}window.__DOD_SE_7574?.play(type==='skill'?'magic':'hit');}
  if(battle.hp<=0){finishBattle('win');return;}
  const powerful=battle.turn%3===0,hit=Math.max(2,Math.floor(battle.atk*(powerful?2:1)-st.def*.35)),taken=type==='guard'?Math.ceil(hit*.25):hit;
