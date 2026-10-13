@@ -114,7 +114,32 @@ window.__DOD_ASC123={species:all123.slice(),added:asc123.map(r=>r.name),families
  function art(name){const fresh=newCompanions7692.find(r=>r.name===name);if(fresh)return svgMonster(fresh.icon);if(!names.includes(name))return iconBefore.call(this,name);if(name==='冥王・蒼炎の支配者')return svgMonster('dod_underworld_a_07618');if(name==='海雷神・ネプトライズ')return svgMonster('neptorise7649');if(name==='雷鳴の轟鎚王')return svgMonster('dod_storm_a_07617');if(name==='海底の神槍王')return svgMonster('dod_sea_a_07616');if(name==='黒鉄の処刑騎士')return svgMonster('dod_iron_a_07615');if(name==='竜骸の墓守')return svgMonster('dod_bone_b_07613');if(name==='獄炎魔王イグナディオス')return svgMonster('guren_ignadios');if(name==='天空機神・アストライオス')return svgMonster('sky_boss');if(name==='ブラッドロード')return svgMonster('castle_bloodlord');const src=name===names[0]?window.DOD_GRASS_ART?.grassfang:name===names[1]?window.DOD_FOREST_ART?.moonwolf:name===names[2]?window.DOD_ICE_ART?.[name]:name===names[3]?window.VOLCANO_ASSETS?.['volganos.png']:null;return src?`<img src="${src}" alt="${esc741(name)}" draggable="false">`:''}
  const iconBefore=companionIcon45;companionIcon45=function(n){return names.includes(n)||newCompanions7692.some(r=>r.name===n)?art(n):iconBefore.apply(this,arguments)};
 // One optional inherited skill. Registry IDs, rather than executable save data, determine effects.
+// Optional inherited bloodline techniques. Existing native/inherited skills remain untouched.
+const lineageDefs124={
+ 'lineage124:スライム':{name:'晶波のしずく',type:'heal',desc:'傷ついた味方を回復する血脈技。探索では仲間全体を回復。'},
+ 'lineage124:竜':{name:'焔竜ブレス',type:'attack',mult:2.1,desc:'竜の親から受け継ぐ強力なブレス。'},
+ 'lineage124:獣':{name:'野生連牙',type:'attack',mult:1.9,desc:'獣の親から受け継ぐ鋭い連撃。'},
+ 'lineage124:悪魔':{name:'宵闇の魔弾',type:'attack',mult:2,desc:'悪魔の親から受け継ぐ魔力の一撃。'},
+ 'lineage124:物質':{name:'鉱晶砕撃',type:'attack',mult:1.8,desc:'物質の親から受け継ぐ重い打撃。'},
+ 'lineage124:精霊':{name:'天祈り',type:'heal',desc:'精霊の親から受け継ぐ回復技。探索では仲間全体を回復。'},
+ 'lineage124:自然':{name:'芽吹きの息吹',type:'heal',desc:'自然の親から受け継ぐ回復技。探索では仲間全体を回復。'},
+ 'lineage124:ゾンビ':{name:'怨霊波',type:'attack',mult:1.9,desc:'ゾンビの親から受け継ぐ霊気の一撃。'},
+ 'lineage124:星竜':{name:'星彩竜息',type:'attack',mult:2.3,desc:'竜と精霊、二つの血脈が交わる特殊ブレス。'},
+ 'lineage124:宵星':{name:'宵明星波',type:'attack',mult:2.3,desc:'悪魔と精霊、二つの血脈が交わる特殊な魔力。'},
+ 'lineage124:根脈':{name:'生命根脈',type:'heal',desc:'物質と自然の血脈が交わる回復技。探索では仲間全体を回復。'}
+};
+function lineageDefinition124(id){const d=lineageDefs124[id];return d?{...d,id,lv:10,cost:8,rate:.26,mult:d.mult||1}:null;}
+function lineageOptions124(r){
+ if(!r.parents.every(p=>owned(p)&&lv(p)>=10))return [];
+ const families=r.parents.map(p=>window.__DOD_ASC123?.families&&Object.keys(window.__DOD_ASC123.families).find(f=>window.__DOD_ASC123.families[f].includes(p))),out=[];
+ families.forEach((f,i)=>{const d=lineageDefinition124('lineage124:'+f);if(d)out.push({...d,from:r.parents[i]});});
+ for(const [a,b,k]of [['竜','精霊','星竜'],['悪魔','精霊','宵星'],['物質','自然','根脈']])if(families.includes(a)&&families.includes(b))out.push({...lineageDefinition124('lineage124:'+k),from:r.parents[0]});
+ return out;
+}
+window.__DOD_LINEAGE124={definition:lineageDefinition124,get:n=>lineageDefinition124(S.monsterGrowth?.[n]?.inheritedSkill7689?.id)};
+
 function inheritedDef7689(id){
+ const lineage=lineageDefinition124(id);if(lineage)return lineage;
  if(id==='heal:leaf')return {id,name:'癒しの葉',lv:6,cost:4,rate:.35,type:'heal',desc:'HP60%未満の味方1体を回復（最大HP18%＋使用者Lv）'};
  if(typeof id!=='string'||!id.startsWith('native:'))return null;
  const source=id.slice(7),s=COMPANION_SKILLS[source];
@@ -132,12 +157,12 @@ function inheritanceOptions7689(r){
   if(prior&&lv(p)>=prior.lv)all.push({...prior,from:p});
   if(['リーフフェアリー','フロストフェアリー'].includes(p)&&lv(p)>=10)all.push({...inheritedDef7689('heal:leaf'),from:p});
  }
- return [...new Map(all.map(x=>[x.id,x])).values()];
+ all.push(...lineageOptions124(r));return [...new Map(all.map(x=>[x.id,x])).values()];
 }
 function inheritanceText7689(n){const sk=inherited7689(n);return sk?sk.name+' / Lv'+sk.lv+'・MP'+sk.cost:'なし'}
 function inheritancePanel7689(r){
  const opts=inheritanceOptions7689(r),current=inherited7689(r.name);
- return '<div class="breedInheritance7689"><label for="breedInherit7689">継承する技（1枠）</label><select id="breedInherit7689"><option value="keep">'+(current?'今の技を保持：'+esc741(current.name):'継承しない')+'</option>'+opts.map(s=>'<option value="'+esc741(s.id)+'">'+esc741(s.name)+' ← '+esc741(s.from)+' / Lv'+s.lv+'・MP'+s.cost+'</option>').join('')+(current?'<option value="none">継承技を外す</option>':'')+'</select><p class="small">親の習得済み技から選べます。発動時は通常行動と置き換わり、MP4を消費。固有技は残ります。精霊の親は「癒しの葉」も継承できます。</p></div>';
+ return '<div class="breedInheritance7689"><label for="breedInherit7689">継承する技（1枠）</label><select id="breedInherit7689"><option value="keep">'+(current?'今の技を保持：'+esc741(current.name):'継承しない')+'</option>'+opts.map(s=>'<option value="'+esc741(s.id)+'">'+esc741(s.name)+' ← '+esc741(s.from)+' / Lv'+s.lv+'・MP'+s.cost+'</option>').join('')+(current?'<option value="none">継承技を外す</option>':'')+'</select><p class="small">親の習得済み技から選べます。発動時は通常行動と置き換わり、表示されたMPを消費。固有技は残ります。精霊の親は「癒しの葉」も継承できます。親2体ともLv10から系統の血脈技も選べます。固有技は残り、血脈技は探索で手動使用できます。</p></div>';
 }
 function inheritanceProposal7689(r){const id=document.getElementById('breedInherit7689')?.value||'keep',sk=inheritanceOptions7689(r).find(x=>x.id===id);return {id,from:sk?.from||null,before:JSON.stringify(S.monsterGrowth?.[r.name]?.inheritedSkill7689??null)}}
 function inheritanceValid7689(r,c){return !!c&&JSON.stringify(S.monsterGrowth?.[r.name]?.inheritedSkill7689??null)===c.before&&(c.id==='keep'||c.id==='none'||inheritanceOptions7689(r).some(x=>x.id===c.id&&x.from===c.from))}
