@@ -863,7 +863,7 @@ html,body{height:100%;margin:0;overflow:hidden!important;overscroll-behavior:non
 <!-- ===== /v0.74.81 MYTHIC BOSS COMPOSITION ===== -->
 
 <style id="expedition-touch76118">
-/* v0.76.140: stable exploration viewport and a thumb-operated round pad */
+/* v0.76.141: stable exploration viewport and a thumb-operated round pad */
 html.expeditionTouch76118,body.expeditionOpen7696{overscroll-behavior:none}
 html.expeditionTouch76118{overflow:hidden}
 #expedition7696-modal{height:100vh;height:100svh;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
@@ -881,7 +881,7 @@ html.expeditionTouch76118{overflow:hidden}
 @media(max-height:600px){#monster-expedition .exp-pad.exp-stick76118{width:116px;height:116px}}
 
 </style>
-<style id="exploration-position76120">/* v0.76.140: saved left / center / right exploration pad placement */
+<style id="exploration-position76120">/* v0.76.141: saved left / center / right exploration pad placement */
 #monster-expedition .exp-controls[data-stick="left"]{flex-direction:row;justify-content:space-between}
 #monster-expedition .exp-controls[data-stick="right"]{flex-direction:row-reverse;justify-content:space-between}
 #monster-expedition .exp-controls[data-stick="center"]{flex-direction:row;justify-content:center}
@@ -1415,6 +1415,22 @@ window.__DOD_PLAYER_GROWTH=(()=>{
 })();
 let E=[],target=0,timer=null,shopTab="武器",itemTab="すべて",targetAction=null;
 function partyNames(){return ["キーボ",...S.partySlots]}
+var individualRuntime141={};
+function monsterSpecies141(n){return S.monsterIndividuals141?.[n]?.species||individualRuntime141?.[n]||n;}
+function hasMonsterSpecies141(n){const species=monsterSpecies141(n);return (S.monsterCompanions||[]).some(key=>monsterSpecies141(key)===species);}
+function registerMonsterDefinition141(key,species){if(key===species||!MONSTERS[species])return;individualRuntime141=individualRuntime141||{};individualRuntime141[key]=species;const copy=table=>{if(table?.[species])Object.defineProperty(table,key,{value:table[species],writable:true,configurable:true,enumerable:false});};copy(MONSTERS);copy(BASE_MEMBERS);try{copy(COMPANION_GROWTH_STYLE);}catch(_){}try{copy(COMPANION_TRAITS);}catch(_){}try{copy(COMPANION_SKILLS);}catch(_){} }
+function syncMonsterIndividuals141(){individualRuntime141=individualRuntime141||{};let meta={...(S.monsterIndividuals141||{})},serial={...(S.monsterInstanceSerial141||{})};for(const n of S.monsterCompanions||[]){if(!MONSTERS[n]&&!meta[n])continue;if(!meta[n])meta[n]={species:n,ordinal:1};const row=meta[n];if(typeof row.species==='string'&&Number.isInteger(row.ordinal)&&row.ordinal>0)serial[row.species]=Math.max(Number(serial[row.species])||0,row.ordinal);}S.monsterIndividuals141=meta;S.monsterInstanceSerial141=serial;for(const [key,row]of Object.entries(meta))if(row&&typeof row.species==='string')registerMonsterDefinition141(key,row.species);}
+function nextMonsterKey141(n){const species=monsterSpecies141(n);let ordinal=Math.max(0,Math.floor(Number(S.monsterInstanceSerial141?.[species])||0))+1,key=ordinal===1?species:species+'【'+ordinal+'】';while(S.monsterIndividuals141?.[key]||S.monsterCompanions?.includes(key)){ordinal++;key=species+'【'+ordinal+'】';}registerMonsterDefinition141(key,species);return {key,species,ordinal};}
+function addMonsterIndividual141(n,requested){syncMonsterIndividuals141();if(!Object.hasOwn(MONSTERS,monsterSpecies141(n)))throw Error('unknown species');const fresh=nextMonsterKey141(n);if(requested&&fresh.key!==requested)throw Error('individual changed');S.monsterIndividuals141={...S.monsterIndividuals141,[fresh.key]:{species:fresh.species,ordinal:fresh.ordinal}};S.monsterInstanceSerial141={...S.monsterInstanceSerial141,[fresh.species]:fresh.ordinal};S.monsterCompanions=[...(S.monsterCompanions||[]),fresh.key];S.monsterGrowth={...(S.monsterGrowth||{}),[fresh.key]:{lv:1,exp:0,bond:0,battles:0,purpose141:fresh.ordinal===1?'grow':'breed'}};registerMonsterDefinition141(fresh.key,fresh.species);ensureGrowth42(fresh.key);return fresh.key;}
+const individualFields141=['monsterCompanions','monsterGrowth','monsterIndividuals141','monsterInstanceSerial141','monsterRecruitWins141','__saveMeta'];
+function snapshotIndividuals141(){return Object.fromEntries(individualFields141.map(k=>[k,{has:Object.hasOwn(S,k),value:S[k]}]));}
+function restoreIndividuals141(before){for(const [k,v]of Object.entries(before)){if(v.has)S[k]=v.value;else delete S[k];}}
+function recruitIndividual141(species,init){const before=snapshotIndividuals141(),keys=[KEY,SAVE_BAK1,SAVE_BAK2,SAVE_META];let disk;try{disk=keys.map(k=>localStorage.getItem(k));const n=addMonsterIndividual141(species);if(init)init(S.monsterGrowth[n]);if(save()===false)throw Error('save');return n;}catch(_){restoreIndividuals141(before);if(disk)keys.forEach((k,j)=>{try{disk[j]===null?localStorage.removeItem(k):localStorage.setItem(k,disk[j]);}catch(_){}});toast('保存できませんでした。仲間の状態を元に戻しました。');return null;}}
+function monsterPurpose141(n){return S.monsterGrowth?.[n]?.purpose141==='breed'?'breed':'grow';}
+function setMonsterPurpose141(n,value){if(!S.monsterCompanions?.includes(n)||!['grow','breed'].includes(value))return false;if(S.auto||window.__DOD_TURN_7553?.state()?.busy||S.expedition7696?.battle&&!S.expedition7696.battle.outcome){toast('戦闘を終えてから変更してください。');return false;}const before=snapshotIndividuals141(),keys=[KEY,SAVE_BAK1,SAVE_BAK2,SAVE_META];let disk;try{disk=keys.map(k=>localStorage.getItem(k));S.monsterGrowth={...S.monsterGrowth,[n]:{...S.monsterGrowth[n],purpose141:value}};if(save()===false)throw Error('save');return true;}catch(_){restoreIndividuals141(before);if(disk)keys.forEach((k,j)=>{try{disk[j]===null?localStorage.removeItem(k):localStorage.setItem(k,disk[j]);}catch(_){}});toast('保存できなかったため用途を元に戻しました。');return false;}}
+function mountMonsterPurpose141(parent,n,refresh){if(!parent||!S.monsterCompanions?.includes(n)||parent.querySelector('.individual-purpose141'))return;const label=document.createElement('label');label.className='individual-purpose141';label.textContent='この仲間の用途 ';const select=document.createElement('select');select.setAttribute('aria-label',n+'の用途');select.style.cssText='width:100%;min-height:44px;font-size:16px;color:#fff;background:#173342;border:1px solid #a99a70;border-radius:8px;margin:6px 0 12px';for(const [value,text]of [['grow','育てる仲間'],['breed','配合用の仲間']]){const opt=document.createElement('option');opt.value=value;opt.textContent=text;select.append(opt);}select.value=monsterPurpose141(n);select.onchange=()=>{if(setMonsterPurpose141(n,select.value)){refresh?.();}else select.value=monsterPurpose141(n);};label.append(select);parent.append(label);}
+function restoreIndividualVitals141(){const boot=window.__individualBoot141;if(!boot)return;const now=partyNames();now.forEach((n,j)=>{if(n!==boot.party[j]||monsterSpecies141(n)===n||!S.monsterCompanions.includes(n))return;if(Number.isFinite(boot.hp[j]))S.hp[j]=Math.min(Math.max(0,boot.hp[j]),maxHp(j));if(Number.isFinite(boot.mp[j]))S.mp[j]=Math.min(Math.max(0,boot.mp[j]),maxMp(j));});}
+
 function baseFor(name){return BASE_MEMBERS[name]||{hp:60,mp:15,atk:11,def:6,role:"仲間"}}
 function maxHp(i){let b=baseFor(partyNames()[i]);return b.hp+(S.lv-1)*(i===0?6:4)}
 function maxMp(i){let b=baseFor(partyNames()[i]);return b.mp+(S.lv-1)*(i===1?3:2)}
@@ -1430,6 +1446,7 @@ function save(){
   return true;
  }catch(e){try{localStorage.setItem(SAVE_META,JSON.stringify({saveError:String(e),failedAt:Date.now()}))}catch(_){} return false}
 }
+syncMonsterIndividuals141();window.__individualBoot141={party:(S.partyFree7438||['キーボ',...(S.partySlots||['ミア','トア'])]).slice(),hp:(S.hp||[]).slice(),mp:(S.mp||[]).slice()};
 function rescueCandidates(){
  const out=[],seen=new Set(),keys=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&/^dropHunter/i.test(k))keys.push(k)}}catch(e){}
  [KEY,SAVE_BAK1,SAVE_BAK2,...FALLBACK,...keys].forEach(k=>{if(seen.has(k))return;seen.add(k);let x=readSaveCandidate(k);if(x)out.push({k,x,t:saveStamp(x)})});
@@ -1727,6 +1744,7 @@ Object.assign(COMPANION_SKILLS,{"草原の大牙":{"name":"大牙突進","lv":5,
 function bondRank(n){let g=ensureGrowth(n),b=g.bond||0;return b>=300?"MAX":b>=160?"A":b>=80?"B":b>=30?"C":"D"}
 function skillTier(n){let l=compLv(n);return l>=20?3:l>=10?2:1}
 function skillPower(n){let sk=COMPANION_SKILLS[n],t=skillTier(n);return sk?sk.mult+(t-1)*.18:1}
+syncMonsterIndividuals141();
 function ensureGrowth42(n){let g=ensureGrowth(n);if(!Number.isFinite(g.bond))g.bond=0;if(!Number.isFinite(g.battles))g.battles=0;return g}
 S.monsterCompanions.forEach(ensureGrowth42);
 companionBase=function(n){let b=BASE_MEMBERS[n]||{hp:60,mp:15,atk:11,def:6,role:"仲間"};if(!isCompanion(n))return b;let lv=compLv(n),k=lv-1,gr=COMPANION_GROWTH_STYLE[n]||{hp:5,mp:2,atk:2,def:1},tr=COMPANION_TRAITS[n]||{},g=ensureGrowth42(n),bondBoost=Math.min(.10,(g.bond||0)/3000);return {...b,hp:Math.floor((b.hp+k*gr.hp)*(1+(tr.hp||0)+bondBoost)),mp:b.mp+k*gr.mp,atk:Math.floor((b.atk+k*gr.atk)*(1+(tr.atk||0)+bondBoost)),def:Math.floor((b.def+k*gr.def)*(1+(tr.def||0)+bondBoost)),role:"仲間モンスター"}}
@@ -1793,7 +1811,7 @@ shopView=function(type){shopTab=type;let arr=shop.filter(x=>x.type===type);$('#o
 setMember=function(slot,name){if(S.partySlots.includes(name)){let other=S.partySlots.indexOf(name)+1;if(other!==slot)S.partySlots[other-1]=slot===1?'ミア':'トア'}S.partySlots[slot-1]=name;S.hp[slot]=maxHp(slot);S.mp[slot]=maxMp(slot);S.equipment[slot]=S.equipment[slot]||{武器:'',防具:'',アクセサリー:''};toast(`${name}を${slot+1}人目に編成`);save();partyView('monsters');render()};
 // 仲間モンスターを人間より尖った性能に。既存特性に追加の戦闘補正を付与
 const _companionBase45=companionBase;
-companionBase=function(n){let b=_companionBase45(n);if(!isCompanion(n))return b;let bonus=n==='黄金スライム'?1.18:1.10;return {...b,hp:Math.floor(b.hp*bonus),atk:Math.floor(b.atk*bonus),def:Math.floor(b.def*bonus),role:'仲間モンスター★'}};
+companionBase=function(n){let b=_companionBase45(n);if(!isCompanion(n))return b;let bonus=monsterSpecies141(n)==='黄金スライム'?1.18:1.10;return {...b,hp:Math.floor(b.hp*bonus),atk:Math.floor(b.atk*bonus),def:Math.floor(b.def*bonus),role:'仲間モンスター★'}};
 // 戦闘画面：編成した仲間モンスターを実際のモンスター姿で表示
 function companionIcon45(n){let key=n==='黄金スライム'?'黄金スライム':n,cfg=MONSTERS[key]||MONSTERS[n];return cfg?svgMonster(cfg.icon,n==='黄金スライム'):''}
 function renderCompanionField45(){let old=document.getElementById('companionField45');if(old)old.remove();let slots=partyNames();if(!slots.slice(1).some(isCompanion))return;let d=document.createElement('div');d.id='companionField45';d.innerHTML=[1,2].map(i=>isCompanion(slots[i])?`<div class="fieldComp45 slot${i}"><div class="fieldArt45">${companionIcon45(slots[i])}</div><b>${slots[i]}</b><small>${COMPANION_TRAITS[slots[i]]?.name||'固有特性'}</small></div>`:'').join('');document.getElementById('battle').appendChild(d)}
@@ -2131,7 +2149,7 @@ save();render();
  S.monsterCompanions.forEach(growth52);
  function rare52(n){return isCompanion(n)&&growth52(n).variant52==='RARE'}
  function bondBonus52(n){return BOND_BONUS52[bondRank(n)]||0}
- function synergy52(){let ms=S.partySlots.filter(isCompanion),out={atk:0,def:0,crit:0,names:[]};for(const x of SYNERGY52){let found=false;for(let i=0;i<ms.length;i++)for(let j=i+1;j<ms.length;j++){let a=ms[i],b=ms[j];if((x.a.includes(a)&&x.b.includes(b))||(x.a.includes(b)&&x.b.includes(a)))found=true}if(found){out.atk+=x.atk||0;out.def+=x.def||0;out.crit+=x.crit||0;out.names.push(x.name)}}return out}
+ function synergy52(){let ms=S.partySlots.filter(isCompanion),out={atk:0,def:0,crit:0,names:[]};for(const x of SYNERGY52){let found=false;for(let i=0;i<ms.length;i++)for(let j=i+1;j<ms.length;j++){let a=monsterSpecies141(ms[i]),b=monsterSpecies141(ms[j]);if((x.a.includes(a)&&x.b.includes(b))||(x.a.includes(b)&&x.b.includes(a)))found=true}if(found){out.atk+=x.atk||0;out.def+=x.def||0;out.crit+=x.crit||0;out.names.push(x.name)}}return out}
  const baseBefore52=companionBase;
  companionBase=function(n){let b=baseBefore52(n);if(!isCompanion(n))return b;let bb=bondBonus52(n),rv=rare52(n)?RARE_STAT52:0;return {...b,hp:Math.floor(b.hp*(1+bb+rv)),mp:Math.floor(b.mp*(1+rv*.5)),atk:Math.floor(b.atk*(1+bb+rv)),def:Math.floor(b.def*(1+bb+rv)),role:rare52(n)?'希少仲間モンスター★':'仲間モンスター★'}};
  baseFor=function(name){return isCompanion(name)?companionBase(name):(BASE_MEMBERS[name]||{hp:60,mp:15,atk:11,def:6,role:'仲間'})};
@@ -2146,8 +2164,8 @@ save();render();
  function relicDrain52(i,d){let ef=relicEffects52(i);if(!ef.lifeSteal||S.hp[i]<=0)return;let h=Math.max(1,Math.floor(d*ef.lifeSteal)),before=S.hp[i];S.hp[i]=Math.min(maxHp(i),S.hp[i]+h);if(S.hp[i]>before)floatText('+'+(S.hp[i]-before),18+i*31,72,'heal')}
  // Recruitment now has a genuine rare-individual roll. Existing companions remain valid NORMAL individuals.
  rollRecruit=function(e){
-  if(e.golden||e.boss||!e.base)return;const cfg=MONSTERS[e.base];if(!cfg||!cfg.recruit||S.monsterCompanions.includes(e.name))return;
-  if(Math.random()<1/cfg.recruit){S.monsterCompanions.push(e.name);let g=growth52(e.name),isRare=Math.random()<RARE_RATE52;g.variant52=isRare?'RARE':'NORMAL';save();stopAuto(`${e.name}が仲間になった`);setTimeout(()=>showFx(`<h1 class="recruitFlash">NEW COMPANION!</h1><div class="dropItem ${isRare?'rare52':''}">${isRare?'✦ 希少個体 ':' '}${e.name}が仲間になった！</div><p class="small">Lv.1から育成開始${isRare?' / 全能力+8%・会心+3%':''}</p>`),180)}
+  if(e.golden||e.boss||!e.base)return;const cfg=MONSTERS[e.base];if(!cfg||!cfg.recruit)return;
+  if(Math.random()<1/cfg.recruit){const isRare=Math.random()<RARE_RATE52,key141=recruitIndividual141(e.name,g=>g.variant52=isRare?'RARE':'NORMAL');if(!key141)return;stopAuto(`${e.name}が仲間になった`);setTimeout(()=>showFx(`<h1 class="recruitFlash">NEW COMPANION!</h1><div class="dropItem ${isRare?'rare52':''}">${isRare?'✦ 希少個体 ':' '}${e.name}が仲間になった！</div><p class="small">Lv.1から育成開始${isRare?' / 全能力+8%・会心+3%':''}</p>`),180)}
  };
  // Golden Slime is a unique special individual.
  if(S.monsterCompanions.includes('黄金スライム')){let g=growth52('黄金スライム');if(g.variant52==='NORMAL')g.variant52='SPECIAL'}
@@ -3069,7 +3087,7 @@ window.heroDetail65=heroDetail65;
  function gearProgress69(){let g=gear69(),got=g.filter(x=>collectedGear69(x.n)).length;return{got,total:g.length,pct:g.length?Math.floor(got/g.length*100):0}}
  function overall69(){let a=monsterProgress69(),b=gearProgress69();return{got:a.got+b.got,total:a.total+b.total,pct:(a.total+b.total)?Math.floor((a.got+b.got)/(a.total+b.total)*100):0}}
  function tabs(){return `<div class="book69tabs">${['モンスター','装備','収集率'].map(t=>`<button class="${t===tab69?'on':''}" data-b69="${t}">${t}</button>`).join('')}</div>`}
- function monsterView(){let m=mons69(),seen=m.filter(n=>S.seen[n]).length,joined=m.filter(n=>S.monsterCompanions.includes(n)).length,kills=Object.values(S.kills).reduce((a,b)=>a+(+b||0),0);return `<div class="book69sum"><div><span>発見</span><b>${seen}/${m.length}</b></div><div><span>仲間</span><b>${joined}</b></div><div><span>総討伐</span><b>${kills}</b></div></div>${m.map(n=>{let seen=!!S.seen[n],cfg=MONSTERS[n],joined=S.monsterCompanions.includes(n),g=joined&&typeof ensureGrowth42==='function'?ensureGrowth42(n):null;return `<div class="book69card ${seen?'':'locked'}" data-book-name7607="${escape7607(seen?n:'')}" data-book-got7607="${seen?1:0}"><div class="book69top"><div><h3 class="${n==='黄金スライム'?'rar-phantom':''}">${seen?n:'???'}</h3><div class="book69meta">${seen?area69(n):'未発見'} / 遭遇 ${seen?(S.encounters56[n]||1):0} / 討伐 ${S.kills[n]||0}</div></div><span class="book69tag ${joined?'book69got':'book69miss'}">${cfg?.recruit?(joined?'✓ 仲間化':'??? 仲間化'):'BOSS'}</span></div>${g?`<div><span class="book69tag">Lv.${g.lv}</span><span class="book69tag">絆${typeof bondRank==='function'?bondRank(n):'-'}</span>${g.variant52==='RARE'?'<span class="book69tag rar-rare">希少個体</span>':''}</div>`:''}<div class="book69drops"><b>DROP</b><br>${seen?drops69(n).map(d=>S.dropFound[d.n]?`<span class="${rarityClass(d.rar)} book69got">✓ ${d.n}${S.gearQuality?.[d.n]?` [BEST ${Math.round(S.gearQuality[d.n]*100)}%]`:''}</span>`:`<span class="book69miss">???　${d.rar||'NORMAL'}　1/${d.r||'特殊'}</span>`).join('<br>'):'???'}</div></div>`}).join('')}`}
+ function monsterView(){let m=mons69(),seen=m.filter(n=>S.seen[n]).length,joined=m.filter(n=>S.monsterCompanions.includes(n)).length,kills=Object.values(S.kills).reduce((a,b)=>a+(+b||0),0);return `<div class="book69sum"><div><span>発見</span><b>${seen}/${m.length}</b></div><div><span>仲間</span><b>${joined}</b></div><div><span>総討伐</span><b>${kills}</b></div></div>${m.map(n=>{let seen=!!S.seen[n],cfg=MONSTERS[n],joined=hasMonsterSpecies141(n),g=S.monsterCompanions.includes(n)&&typeof ensureGrowth42==='function'?ensureGrowth42(n):null;return `<div class="book69card ${seen?'':'locked'}" data-book-name7607="${escape7607(seen?n:'')}" data-book-got7607="${seen?1:0}"><div class="book69top"><div><h3 class="${n==='黄金スライム'?'rar-phantom':''}">${seen?n:'???'}</h3><div class="book69meta">${seen?area69(n):'未発見'} / 遭遇 ${seen?(S.encounters56[n]||1):0} / 討伐 ${S.kills[n]||0}</div></div><span class="book69tag ${joined?'book69got':'book69miss'}">${cfg?.recruit?(joined?'✓ 仲間化':'??? 仲間化'):'BOSS'}</span></div>${g?`<div><span class="book69tag">Lv.${g.lv}</span><span class="book69tag">絆${typeof bondRank==='function'?bondRank(n):'-'}</span>${g.variant52==='RARE'?'<span class="book69tag rar-rare">希少個体</span>':''}</div>`:''}<div class="book69drops"><b>DROP</b><br>${seen?drops69(n).map(d=>S.dropFound[d.n]?`<span class="${rarityClass(d.rar)} book69got">✓ ${d.n}${S.gearQuality?.[d.n]?` [BEST ${Math.round(S.gearQuality[d.n]*100)}%]`:''}</span>`:`<span class="book69miss">???　${d.rar||'NORMAL'}　1/${d.r||'特殊'}</span>`).join('<br>'):'???'}</div></div>`}).join('')}`}
  function gearView(){let g=gear69(),got=g.filter(x=>collectedGear69(x.n)).length;return `<div class="book69sum"><div><span>装備発見</span><b>${got}/${g.length}</b></div><div><span>未発見</span><b>${g.length-got}</b></div><div><span>収集率</span><b>${g.length?Math.floor(got/g.length*100):0}%</b></div></div><div class="book69gear">${g.sort((a,b)=>({LEGEND:5,PHANTOM:4,EPIC:3,RARE:2,NORMAL:1}[b.rar]||0)-({LEGEND:5,PHANTOM:4,EPIC:3,RARE:2,NORMAL:1}[a.rar]||0)).map(x=>{let got=collectedGear69(x.n),q=S.gearQuality?.[x.n];return `<div class="book69card ${got?'':'locked'}" data-book-name7607="${escape7607(got?x.n:'')}" data-book-got7607="${got?1:0}"><div class="book69top"><div><h3 class="${got?rarityClass(x.rar):''}">${got?x.n:'???'}</h3><div class="book69meta">${got?`${x.type} / ${x.rar||'NORMAL'}`:'未発見装備'}</div></div><span class="book69tag ${got?'book69got':'book69miss'}">${got?'✓ 入手済':'未入手'}</span></div>${got?`<div class="book69drops">${x.desc||''}<br>入手先：${source69(x.n)}${q?`<br>BEST品質：${Math.round(q*100)}%`:''}</div>`:`<div class="book69drops book69miss">入手するまで名称・性能・入手先は？？？</div>`}</div>`}).join('')}</div>`}
  function collectionView(){let areas=[...new Set(stages.map(s=>s.area))],o=overall69(),mp=monsterProgress69(),gp=gearProgress69();return `<div class="book69sum"><div><span>総合</span><b>${o.pct}%</b></div><div><span>モンスター系</span><b>${mp.pct}%</b></div><div><span>装備</span><b>${gp.pct}%</b></div></div><div class="book69card"><b>総合 COLLECTION ${o.got}/${o.total}</b><div class="book69bar"><i style="width:${o.pct}%"></i></div></div>${areas.map(a=>{let ms=mons69().filter(n=>area69(n)===a),got=0,total=0;ms.forEach(n=>{total++;if(S.seen[n])got++;let c=MONSTERS[n];if(c?.recruit){total++;if(S.monsterCompanions.includes(n))got++}drops69(n).forEach(d=>{total++;if(S.dropFound[d.n])got++})});let p=total?Math.floor(got/total*100):0;return `<div class="book69area"><div class="book69areahead"><span>${a}</span><span>${p}%</span></div><div class="book69bar"><i style="width:${p}%"></i></div><small>${got}/${total} COLLECTION</small></div>`}).join('')}<div class="book69card"><b>未発見要素</b><div class="book69meta">未遭遇モンスター・未加入仲間・未取得DROP・未取得装備は「？？？」で保持されます。</div></div>`}
  function view69(t=tab69){tab69=t;open('図鑑',`<div class="book69hero"><b>MOFURUKU COLLECTION BOOK</b><small>遭遇・討伐・仲間・DROP・装備・BEST品質を一冊に記録</small></div>${tabs()}${t==='収集率'?'':searchBar7607()}${t==='モンスター'?monsterView():t==='装備'?gearView():collectionView()}${t==='収集率'?'':'<p id="bookEmpty7607" class="small" hidden>条件に合う項目がありません。検索文字や絞り込みを変更してください。</p>'}`);document.querySelectorAll('[data-b69]').forEach(b=>b.onclick=()=>view69(b.dataset.b69));if(t!=='収集率')bindSearch7607()}
@@ -4232,7 +4250,7 @@ if(!Number.isFinite(S.kills[NAME]))S.kills[NAME]=0;
 // Mythic boss recruitment is deliberately ultra-rare and is allowed even though this is a boss.
 const recruit0=rollRecruit;
 rollRecruit=function(e){
- if(e&&e.name===NAME){if(!S.monsterCompanions.includes(NAME)&&Math.random()<1/3500){S.monsterCompanions.push(NAME);save();stopAuto(NAME+'が仲間になった');setTimeout(()=>showFx('<h1 class="recruitFlash">MYTHIC COMPANION!</h1><div class="dropItem">深淵の堕天獣が仲間になった！</div><p class="small">超低確率 1/3500</p>','phantom'),180)}return}
+ if(e&&e.name===NAME){if(Math.random()<1/3500){const key141=recruitIndividual141(NAME);if(!key141)return;stopAuto(key141+'が仲間になった');setTimeout(()=>showFx('<h1 class="recruitFlash">MYTHIC COMPANION!</h1><div class="dropItem">深淵の堕天獣が仲間になった！</div><p class="small">超低確率 1/3500</p>','phantom'),180)}return}
  return recruit0(e);
 };
 // Keep the encounter fixed after every historical spawn/balance wrapper has run.
@@ -8466,7 +8484,7 @@ window.__DOD_PARTY_MOTION_7549={version:V,names,motionName,motionSlot,selfTest,d
 <script id="v07556-one-actor-turns">
 (()=>{
 'use strict';
-const V='v0.76.140';
+const V='v0.76.141';
 let nextSlot=0,busy=false,enemyDue=false,seqToken=0;
 const HIT_MS={'キーボ':250,'ミア':330,'ナーヴァ':300,'トア':220,'ピボット':300,'リリア':390,'セレナ':300,'ノア':300,'カグラ':330,'ゼファル':250,'レオンハルト':300,'アズライル':350,'フェンリル':430,'ヴォルク':430};
 function names(){try{return partyNames()}catch(_){return []}}
@@ -8650,7 +8668,7 @@ const rr=window.render;if(typeof rr==='function')window.render=function(){const 
 <script id="v07558-version-lock">
 (()=>{
 'use strict';
-const V='v0.76.140';
+const V='v0.76.141';
 let writing=false;
 function stamp(){
  if(writing)return;writing=true;
@@ -8859,7 +8877,7 @@ api.bossAttack=attack;api.bossCharge=charge;window.__DOD_BOSS_MOTION_7572={versi
 .sePanel774{position:absolute;right:5px;top:5px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #8a7440;border-radius:8px;padding:3px 4px;font-size:8px;max-width:108px}.sePanel774 button{font-size:8px;padding:3px 5px;border-radius:7px;white-space:nowrap}.sePanel774 input{width:48px;height:12px}
 </style>
 <script id="v07574-combat-se">
-(()=>{'use strict';const V='v0.76.140';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
+(()=>{'use strict';const V='v0.76.141';let ctx=null;const KEY='dod_se_7574';let cfg={on:true,vol:.22};try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}
 function C(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A()}if(ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f=220,d=.08,type='sine',v=1,slide=0){if(!cfg.on)return;const c=C();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(Math.max(.0001,cfg.vol*v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d)}
 function noise(d=.09,v=.7){if(!cfg.on)return;const c=C();if(!c)return;const n=Math.ceil(c.sampleRate*d),buf=c.createBuffer(1,n,c.sampleRate),a=buf.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.value=cfg.vol*v;src.connect(g).connect(c.destination);src.start()}
@@ -8880,7 +8898,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 .bgmSafe778{position:absolute;right:5px;top:32px;z-index:120;display:flex;gap:3px;align-items:center;background:#061326c9;border:1px solid #6d6792;border-radius:8px;padding:3px 4px;font-size:8px}.bgmSafe778 button{font-size:8px;padding:3px 5px;border-radius:7px}.bgmSafe778 input{width:48px;height:12px}
 </style>
 <script id="v07578-safe-bgm">
-(()=>{'use strict';const V='v0.76.140',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
+(()=>{'use strict';const V='v0.76.141',KEY='dod_bgm_safe778';let cfg={on:false,vol:.14},ctx=null,gain=null,timer=null,step=0,sceneName='battle';try{Object.assign(cfg,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(_){}cfg.vol=Math.max(0,Math.min(.4,Number(cfg.vol)||0));
 const songs={battle:[45,52,57,52,48,55,60,55],boss:[38,45,50,45,41,48,53,48],base:[48,55,60,55,50,57,62,57],gacha:[60,64,67,72,67,64,62,69],mythic:[34,41,46,53,36,43,48,55]};
 function ensure(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ctx=new A();gain=ctx.createGain();gain.gain.value=cfg.vol;gain.connect(ctx.destination)}return ctx}
 function tone(m,d=.16){if(!cfg.on)return;const c=ensure();if(!c||c.state!=='running')return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(gain);o.start(t);o.stop(t+d)}
@@ -8896,7 +8914,7 @@ function stamp(){const b=document.getElementById('buildVersion')||document.getEl
 </script><!-- ===== /v0.75.78 ===== -->
 <!-- ===== v0.75.81 FINAL VERSION DISPLAY LOCK ===== -->
 <script id="v07581-final-version-lock">
-(()=>{'use strict';const V='v0.76.140';let busy=false;
+(()=>{'use strict';const V='v0.76.141';let busy=false;
 function stamp(){if(busy)return;busy=true;try{const a=document.getElementById('buildVersion')||document.getElementById('buildVersion69');if(a){a.id='buildVersion';if(a.textContent!==V)a.textContent=V}const sm=document.querySelector('.logo small');if(sm&&sm.textContent!==V)sm.textContent=V;const t='どろダン / DROP OF DUNGEON '+V;if(document.title!==t)document.title=t}finally{busy=false}}
 stamp();requestAnimationFrame(stamp);setTimeout(stamp,0);setTimeout(stamp,250);setTimeout(stamp,1000);
 const mo=new MutationObserver(()=>queueMicrotask(stamp));function watch(){[document.getElementById('buildVersion')||document.getElementById('buildVersion69'),document.querySelector('.logo small'),document.querySelector('title')].forEach(x=>x&&mo.observe(x,{subtree:true,childList:true,characterData:true}))}watch();window.addEventListener('pageshow',stamp,{passive:true});window.__DOD_VERSION_7581={version:V,stamp};
@@ -8934,7 +8952,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script><!-- ===== /v0.75.86 ===== -->
 
-<!-- v0.76.140: one approved bone boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved bone boss encounter; existing content remains intact. -->
 <style id="dod-bone-07613-style">
 #battle.dodBone7613{background:radial-gradient(ellipse at 50% 30%,#dbc9ab 0,#84745e 34%,#302b2a 68%,#111620 100%)!important;touch-action:none}
 #battle.dodBone7613:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#d9c7a212 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -8953,7 +8971,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-bone-07613">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
+ const VERSION='v0.76.141',ID='bone_boss_07613',NAME='竜骸の墓守',ICON='dod_bone_b_07613';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9055,7 +9073,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved iron boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved iron boss encounter; existing content remains intact. -->
 <style id="dod-iron-07615-style">
 #battle.dodIron7615{background:radial-gradient(ellipse at 50% 30%,#8b4b43 0,#45323a 34%,#191e29 68%,#0c111b 100%)!important;touch-action:none}
 #battle.dodIron7615:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#dd765912 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9074,7 +9092,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-iron-07615">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
+ const VERSION='v0.76.141',ID='iron_boss_07615',NAME='黒鉄の処刑騎士',ICON='dod_iron_a_07615';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9176,7 +9194,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved sea boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved sea boss encounter; existing content remains intact. -->
 <style id="dod-sea-07616-style">
 #battle.dodSea7616{background:radial-gradient(ellipse at 50% 30%,#368d9d 0,#164657 34%,#102739 68%,#08101d 100%)!important;touch-action:none}
 #battle.dodSea7616:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#7ee8ed12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9195,7 +9213,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-sea-07616">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
+ const VERSION='v0.76.141',ID='sea_boss_07616',NAME='海底の神槍王',ICON='dod_sea_a_07616';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9297,7 +9315,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved storm boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved storm boss encounter; existing content remains intact. -->
 <style id="dod-storm-07617-style">
 #battle.dodStorm7617{background:radial-gradient(ellipse at 50% 30%,#6b719e 0,#373c61 34%,#181f38 68%,#0c101d 100%)!important;touch-action:none}
 #battle.dodStorm7617:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b5c9ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9316,7 +9334,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-storm-07617">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
+ const VERSION='v0.76.141',ID='storm_boss_07617',NAME='雷鳴の轟鎚王',ICON='dod_storm_a_07617';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9419,7 +9437,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved underworld boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved underworld boss encounter; existing content remains intact. -->
 <style id="dod-underworld-07618-style">
 #battle.dodUnderworld7618{background:radial-gradient(ellipse at 50% 30%,#465da4 0,#242c59 34%,#111b34 68%,#080d1a 100%)!important;touch-action:none}
 #battle.dodUnderworld7618:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#6898ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9438,7 +9456,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-underworld-07618">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
+ const VERSION='v0.76.141',ID='underworld_boss_07618',NAME='冥王・蒼炎の支配者',ICON='dod_underworld_a_07618';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9540,7 +9558,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved titan boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved titan boss encounter; existing content remains intact. -->
 <style id="dod-titan-07619-style">
 #battle.dodTitan7619{background:radial-gradient(ellipse at 50% 30%,#7f9672 0,#475b46 34%,#232e2c 68%,#111820 100%)!important;touch-action:none}
 #battle.dodTitan7619:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#a8d09b12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9559,7 +9577,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-titan-07619">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
+ const VERSION='v0.76.141',ID='titan_boss_07619',NAME='巨神・翡翠眼の墓守',ICON='dod_titan_b_07619';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9661,7 +9679,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved void boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved void boss encounter; existing content remains intact. -->
 <style id="dod-void-07621-style">
 #battle.dodVoid7621{background:radial-gradient(ellipse at 50% 30%,#864356 0,#442541 34%,#24162e 68%,#0d0c1a 100%)!important;touch-action:none}
 #battle.dodVoid7621:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#df668f12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9680,7 +9698,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-void-07621">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='void_boss_07621',NAME='虚空の魔皇',ICON='dod_void_a_07621';
+ const VERSION='v0.76.141',ID='void_boss_07621',NAME='虚空の魔皇',ICON='dod_void_a_07621';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9782,7 +9800,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved star boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved star boss encounter; existing content remains intact. -->
 <style id="dod-star-07622-style">
 #battle.dodStar7622{background:radial-gradient(ellipse at 50% 30%,#644264 0,#35243f 34%,#1b1935 68%,#090d1d 100%)!important;touch-action:none}
 #battle.dodStar7622:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#d58bff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9801,7 +9819,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-star-07622">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='star_boss_07622',NAME='星域の終焉竜',ICON='dod_star_b_07622';
+ const VERSION='v0.76.141',ID='star_boss_07622',NAME='星域の終焉竜',ICON='dod_star_b_07622';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -9904,7 +9922,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved mythic100 boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved mythic100 boss encounter; existing content remains intact. -->
 <style id="dod-mythic100-07623-style">
 #battle.dodMythic1007623{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic1007623:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -9922,7 +9940,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic100-07623">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='mythic100_boss_07623',NAME='三獄の魔獣',ICON='dod_mythic100_b_07623';
+ const VERSION='v0.76.141',ID='mythic100_boss_07623',NAME='三獄の魔獣',ICON='dod_mythic100_b_07623';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -10024,7 +10042,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved mythic200 boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved mythic200 boss encounter; existing content remains intact. -->
 <style id="dod-mythic200-07624-style">
 #battle.dodMythic2007624{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic2007624:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -10042,7 +10060,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic200-07624">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='mythic200_boss_07624',NAME='六翼の堕天王',ICON='dod_mythic200_a_07624';
+ const VERSION='v0.76.141',ID='mythic200_boss_07624',NAME='六翼の堕天王',ICON='dod_mythic200_a_07624';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -10143,7 +10161,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: one approved mythic300 boss encounter; existing content remains intact. -->
+<!-- v0.76.141: one approved mythic300 boss encounter; existing content remains intact. -->
 <style id="dod-mythic300-07625-style">
 #battle.dodMythic3007625{background:radial-gradient(ellipse at 50% 30%,#71559b 0,#38284f 34%,#20172e 68%,#0c0c1d 100%)!important;touch-action:none}
 #battle.dodMythic3007625:before{content:""!important;display:block!important;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 13%,#b596ff12 14% 15%,transparent 16% 30%)!important;opacity:.55;pointer-events:none}
@@ -10161,7 +10179,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-mythic300-07625">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',ID='mythic300_boss_07625',NAME='終焉の星喰竜',ICON='dod_mythic300_a_07625';
+ const VERSION='v0.76.141',ID='mythic300_boss_07625',NAME='終焉の星喰竜',ICON='dod_mythic300_a_07625';
  // Keep every existing map area on its original page; the new area follows them.
  const stageIndex=stages.findIndex(s=>s.id===ID);
  if(stageIndex>=0)stages.push(...stages.splice(stageIndex,1));
@@ -10263,7 +10281,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: two normal stages in the existing dragon-bone area. -->
+<!-- v0.76.141: two normal stages in the existing dragon-bone area. -->
 <style id="dod-bone-route-07626-style">
 #battle.dodBoneRoute7626{background:#292838 url('assets/art/bone-background-07626.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodBoneRoute7626:before{display:none!important}
@@ -10280,7 +10298,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-bone-route-07626">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',IDS=['bone_path1_07626','bone_path2_07626'];
+ const VERSION='v0.76.141',IDS=['bone_path1_07626','bone_path2_07626'];
  const ART={bone_hound_07626:'assets/art/bone-hound-07626.webp',bone_bat_07626:'assets/art/bone-bat-07626.webp',bone_soldier_07626:'assets/art/bone-soldier-07626.webp'};
  const CFG={'竜骨ハウンド':{hp:850,atk:220,xp:360},'骨翼バット':{hp:650,atk:250,xp:380},'墓場の骨兵':{hp:1100,atk:260,xp:440}};
  Object.assign(BASE_MEMBERS,{'竜骨ハウンド':{hp:78,mp:18,atk:17,def:9,role:'仲間モンスター'},'骨翼バット':{hp:58,mp:25,atk:18,def:7,role:'仲間モンスター'},'墓場の骨兵':{hp:90,mp:15,atk:16,def:13,role:'仲間モンスター'}});
@@ -10334,7 +10352,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: two normal stages in the existing dragon-iron area. -->
+<!-- v0.76.141: two normal stages in the existing dragon-iron area. -->
 <style id="dod-iron-route-07628-style">
 #battle.dodIronRoute7628{background:#292838 url('assets/art/iron-background-07628.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodIronRoute7628:before{display:none!important}
@@ -10351,7 +10369,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-iron-route-07628">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',IDS=['iron_path1_07628','iron_path2_07628'];
+ const VERSION='v0.76.141',IDS=['iron_path1_07628','iron_path2_07628'];
  const ART={iron_hound_07628:'assets/art/iron-hound-07628.webp',iron_gargoyle_07628:'assets/art/iron-gargoyle-07628.webp',iron_sentinel_07628:'assets/art/iron-sentinel-07628.webp'};
  const CFG={'黒鉄ハウンド':{hp:1150,atk:270,xp:500},'要塞ガーゴイル':{hp:1050,atk:310,xp:580},'黒鉄の番兵':{hp:1450,atk:260,xp:540}};
  Object.assign(BASE_MEMBERS,{'黒鉄ハウンド':{hp:82,mp:18,atk:18,def:10,role:'仲間モンスター'},'要塞ガーゴイル':{hp:76,mp:25,atk:19,def:9,role:'仲間モンスター'},'黒鉄の番兵':{hp:100,mp:15,atk:17,def:15,role:'仲間モンスター'}});
@@ -10405,7 +10423,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: two normal stages in the existing dragon-iron area. -->
+<!-- v0.76.141: two normal stages in the existing dragon-iron area. -->
 <style id="dod-sea-route-07629-style">
 #battle.dodSeaRoute7629{background:#292838 url('assets/art/sea-background-07629.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodSeaRoute7629:before{display:none!important}
@@ -10422,7 +10440,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-sea-route-07629">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',IDS=['sea_path1_07629','sea_path2_07629'];
+ const VERSION='v0.76.141',IDS=['sea_path1_07629','sea_path2_07629'];
  const ART={sea_crab_07629:'assets/art/sea-crab-07629.webp',sea_jellyfish_07629:'assets/art/sea-jellyfish-07629.webp',sea_knight_07629:'assets/art/sea-knight-07629.webp'};
  const CFG={'深海クラブ':{hp:1350,atk:310,xp:600},'神殿クラゲ':{hp:1250,atk:350,xp:680},'潮騎士':{hp:1700,atk:300,xp:640}};
  Object.assign(BASE_MEMBERS,{'深海クラブ':{hp:88,mp:18,atk:19,def:12,role:'仲間モンスター'},'神殿クラゲ':{hp:80,mp:30,atk:20,def:10,role:'仲間モンスター'},'潮騎士':{hp:108,mp:20,atk:19,def:16,role:'仲間モンスター'}});
@@ -10476,7 +10494,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: two normal stages in the existing thunder altar area. -->
+<!-- v0.76.141: two normal stages in the existing thunder altar area. -->
 <style id="dod-thunder-route-07630-style">
 #battle.dodThunderRoute7630{background:#292838 url('assets/art/thunder-background-07630.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodThunderRoute7630:before{display:none!important}
@@ -10493,7 +10511,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-thunder-route-07630">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',IDS=['thunder_path1_07630','thunder_path2_07630'];
+ const VERSION='v0.76.141',IDS=['thunder_path1_07630','thunder_path2_07630'];
  const ART={thunder_wolf_07630:'assets/art/thunder-wolf-07630.webp',thunder_jellyfish_07630:'assets/art/thunder-jellyfish-07630.webp',thunder_soldier_07630:'assets/art/thunder-soldier-07630.webp'};
  const CFG={'雷牙ウルフ':{hp:1500,atk:350,xp:700},'放電クラゲ':{hp:1400,atk:390,xp:780},'雷鎧の兵士':{hp:1900,atk:340,xp:740}};
  Object.assign(BASE_MEMBERS,{'雷牙ウルフ':{hp:92,mp:20,atk:21,def:12,role:'仲間モンスター'},'放電クラゲ':{hp:84,mp:32,atk:22,def:10,role:'仲間モンスター'},'雷鎧の兵士':{hp:114,mp:22,atk:21,def:17,role:'仲間モンスター'}});
@@ -10547,7 +10565,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: two normal stages in the existing underworld throne area. -->
+<!-- v0.76.141: two normal stages in the existing underworld throne area. -->
 <style id="dod-underworld-route-07631-style">
 #battle.dodUnderworldRoute7631{background:#292838 url('assets/art/underworld-background-07631.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodUnderworldRoute7631:before{display:none!important}
@@ -10564,7 +10582,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-underworld-route-07631">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',IDS=['underworld_path1_07631','underworld_path2_07631'];
+ const VERSION='v0.76.141',IDS=['underworld_path1_07631','underworld_path2_07631'];
  const ART={underworld_ghost_07631:'assets/art/underworld-ghost-07631.webp',underworld_hound_07631:'assets/art/underworld-hound-07631.webp',underworld_soldier_07631:'assets/art/underworld-soldier-07631.webp'};
  const CFG={'蒼炎の亡霊':{hp:1650,atk:390,xp:800},'冥府の番犬':{hp:1550,atk:430,xp:880},'冥鎧の兵士':{hp:2100,atk:380,xp:840}};
  Object.assign(BASE_MEMBERS,{'蒼炎の亡霊':{hp:96,mp:28,atk:23,def:12,role:'仲間モンスター'},'冥府の番犬':{hp:88,mp:24,atk:24,def:11,role:'仲間モンスター'},'冥鎧の兵士':{hp:120,mp:24,atk:23,def:18,role:'仲間モンスター'}});
@@ -10618,7 +10636,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: two normal stages in the existing giant tomb area. -->
+<!-- v0.76.141: two normal stages in the existing giant tomb area. -->
 <style id="dod-titan-route-07632-style">
 #battle.dodTitanRoute7632{background:#292838 url('assets/art/titan-background-07632.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodTitanRoute7632:before{display:none!important}
@@ -10635,7 +10653,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-titan-route-07632">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',IDS=['titan_path1_07632','titan_path2_07632'];
+ const VERSION='v0.76.141',IDS=['titan_path1_07632','titan_path2_07632'];
  const ART={titan_golem_07632:'assets/art/titan-golem-07632.webp',titan_guard_07632:'assets/art/titan-guard-07632.webp',titan_beast_07632:'assets/art/titan-beast-07632.webp'};
  const CFG={'石甲ゴーレム':{hp:2000,atk:430,xp:900},'祭壇の守衛':{hp:1900,atk:470,xp:980},'雷角ビースト':{hp:2450,atk:420,xp:940}};
  Object.assign(BASE_MEMBERS,{'石甲ゴーレム':{hp:130,mp:22,atk:25,def:20,role:'仲間モンスター'},'祭壇の守衛':{hp:106,mp:26,atk:26,def:17,role:'仲間モンスター'},'雷角ビースト':{hp:124,mp:24,atk:27,def:16,role:'仲間モンスター'}});
@@ -10689,7 +10707,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: two normal stages in the existing void rift area. -->
+<!-- v0.76.141: two normal stages in the existing void rift area. -->
 <style id="dod-void-route-07633-style">
 #battle.dodVoidRoute7633{background:#292838 url('assets/art/void-background-07633.webp') center center/cover no-repeat!important;touch-action:none}
 #battle.dodVoidRoute7633:before{display:none!important}
@@ -10706,7 +10724,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 <script id="dod-void-route-07633">
 (()=>{
  'use strict';
- const VERSION='v0.76.140',IDS=['void_path1_07633','void_path2_07633'];
+ const VERSION='v0.76.141',IDS=['void_path1_07633','void_path2_07633'];
  const ART={void_jellyfish_07633:'assets/art/void-jellyfish-07633.webp',void_beast_07633:'assets/art/void-beast-07633.webp',void_soldier_07633:'assets/art/void-soldier-07633.webp'};
  const CFG={'虚空クラゲ':{hp:2300,atk:470,xp:1000},'裂け目の影獣':{hp:2200,atk:510,xp:1080},'虚鎧の兵士':{hp:2800,atk:460,xp:1040}};
  Object.assign(BASE_MEMBERS,{'虚空クラゲ':{hp:102,mp:36,atk:27,def:14,role:'仲間モンスター'},'裂け目の影獣':{hp:112,mp:26,atk:29,def:15,role:'仲間モンスター'},'虚鎧の兵士':{hp:138,mp:28,atk:27,def:21,role:'仲間モンスター'}});
@@ -10760,7 +10778,7 @@ if(stage().area==='毒沼地'){spawn();render()}
 })();
 </script>
 
-<!-- v0.76.140: duplicate summon stars, additive 5% per rank above one. -->
+<!-- v0.76.141: duplicate summon stars, additive 5% per rank above one. -->
 <style id="hero-stars-07634-style">
 .heroStars7634{display:inline-flex;gap:1px;white-space:nowrap;font-size:12px;vertical-align:middle;margin:3px 5px;color:#ffd765}.heroStars7634 .high{color:#c491ff}.heroStars7634 .empty{color:#586273}.heroStars7634 small{margin-left:4px;color:#e8e3f7;font-size:10px}.starInfo7634{font-size:11px;line-height:1.6;color:#e1d4ff}
 </style>
@@ -10931,7 +10949,7 @@ paint();
 @media(prefers-reduced-motion:reduce){.legendCut7636{animation:none}.legendCut7636:before,.legendCut7636:after{display:none}.legendBolt7636{display:none}.legendBand7636,.legendContent7636{animation:none}.legendPortrait7636{transform:none}}
 </style>
 
-<!-- v0.76.140: save-compatible Home Screen transfer; local saves remain authoritative. -->
+<!-- v0.76.141: save-compatible Home Screen transfer; local saves remain authoritative. -->
 <script id="home-transfer7639">
 (()=>{'use strict';
  const boot=window.__dodHomeBoot7639||{existing:true,cookies:'',standalone:false},PREFIX='dod_home7639',PATH=location.pathname.slice(0,location.pathname.lastIndexOf('/')+1)||'/',MAX=6000,CHUNK=3000,AGE=7*86400000;
@@ -10959,7 +10977,7 @@ paint();
 })();
 </script>
 
-<!-- v0.76.140: four boss breeding recipes; existing enemies and parent companions unchanged. -->
+<!-- v0.76.141: four boss breeding recipes; existing enemies and parent companions unchanged. -->
 <style id="breeding7640-style">
 .breed7640{max-width:620px;margin:auto}.breed7640 p{line-height:1.7}.breed7640 select{width:100%;min-height:46px;font-size:16px;padding:8px;border:1px solid #698ab1;border-radius:9px;background:#10243d;color:#fff;box-sizing:border-box}.breedParents7640{display:grid;grid-template-columns:1fr 1fr;gap:8px}.breedParents7640 label{display:block;color:#ffe38c;font-weight:900;margin-bottom:5px}.breedArt7640{height:150px;display:flex;align-items:center;justify-content:center;margin:8px auto}.breedArt7640 img{width:100%;height:100%;max-width:240px;object-fit:contain;filter:drop-shadow(0 0 14px #69ccff55)}.breed7640 h3{margin:8px 0;color:#ffe38c}.breedNeed7640{padding:7px 0;border-bottom:1px solid #496078;font-size:12px;line-height:1.6}.breedNeed7640.ok{color:#a0f1c0}.breedNeed7640.no{color:#ffd1ae}.breed7640 .miniBtn{min-height:44px;white-space:normal}.breedDo7640{width:100%;margin-top:12px;font-size:16px!important;background:linear-gradient(135deg,#315497,#644d92)!important;border-color:#b9d1ff!important}.breed7640 button:disabled{opacity:.45}.breedBook7640{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.breedBook7640>button{padding:10px;font-size:12px;text-align:left;line-height:1.7}.breedBook7640 small{display:block}.breedBirth7640{text-align:center;background:radial-gradient(ellipse at 50% 30%,#324b77,#10243d 65%);border:1px solid #ffe38c;border-radius:14px;padding:18px;animation:breedBirth7640 .55s ease-out}.breedBirth7640 .breedArt7640{height:190px}.breedBirth7640 h2{color:#ffe38c;overflow-wrap:anywhere}@keyframes breedBirth7640{from{opacity:.2;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.breedBirth7640{animation:none}}
 </style>
@@ -10968,7 +10986,7 @@ paint();
  for(const d of defs){MONSTERS[d.name]={icon:d.icon,hp:d.enemy.hp,atk:d.enemy.atk,xp:26,recruit:0,expeditionOnly76104:true};BASE_MEMBERS[d.name]={...d.base};COMPANION_GROWTH_STYLE[d.name]={...d.growth};COMPANION_TRAITS[d.name]={...d.trait};COMPANION_SKILLS[d.name]={...d.skill};}
  const old=svgMonster;svgMonster=function(icon,gold=false){const d=defs.find(d=>d.icon===icon);return d?'<img class="monsterArt" src="assets/companions/'+d.file+'" alt="'+esc741(d.name)+'" draggable="false">':old.apply(this,arguments);};
 })();</script>
-<script src="assets/features/breeding-companions-076121.js?proficiency=076139"></script>
+<script src="assets/features/breeding-companions-076121.js?proficiency=076141"></script>
 
 <style>#partyPresets7650 .presetGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}#partyPresets7650 article{background:#12283e;border:1px solid #4d657e;border-radius:12px;padding:12px;min-width:0}#partyPresets7650 p{font-size:12px;line-height:1.6;overflow-wrap:anywhere}#partyPresets7650 button{min-height:44px;width:100%;margin-top:6px;touch-action:manipulation}</style>
 <script id="party-presets7650">
@@ -11275,7 +11293,7 @@ paint();
 </body></html>
 
 <script src="assets/features/tower-party-076113.js"></script>
-<script src="assets/features/monster-manual-07693.js?proficiency=076139"></script>
+<script src="assets/features/monster-manual-07693.js?proficiency=076141"></script>
 
 <style id="dod-theme-a7694">/* A preview: presentation only, no game or save changes. */
 body.dodThemeA94{--a-gold:#d6af61;--a-light:#ffe3a3;--a-dark:#080f18;--a-line:#a58349}
@@ -11605,7 +11623,7 @@ body.expeditionOpen7696 #backTop7111{display:none!important}
 <script id="midboss76110-art">(()=>{const old=svgMonster;svgMonster=function(icon,gold){const d=DEPTH_COMPANIONS76106.find(d=>d.midboss76110&&d.icon===icon);return d?'<img class="monsterArt" src="assets/companions/'+d.file+'" alt="'+d.name+'" draggable="false">':old.apply(this,arguments);};})();</script>
 <script id="god-inventory121">(()=>{function mark(){for(const card of document.querySelectorAll('.inv651card')){const action=card.querySelector('[data-d67],[data-e67],[data-detail651],[data-eq651]'),n=card.getAttribute('data-card651')||action?.dataset.d67||action?.dataset.e67||action?.dataset.detail651||action?.dataset.eq651,g=GOD_GEAR121.find(g=>g.n===n);if(!g||card.dataset.god121==='1')continue;card.dataset.god121='1';const title=card.querySelector('.inv651name');if(title){const badge=document.createElement('span');badge.className='god-label121';badge.textContent='SUPREME GOD';title.append(badge);}const image=document.createElement('img');image.className='god-thumb121';image.src=g.art121;image.alt=g.n;card.prepend(image);}}new MutationObserver(mark).observe(document.getElementById('obody'),{childList:true,subtree:true});mark();})();
 </script>
-<script id="expedition7696" src="assets/features/expedition-076121.js?loot=076140"></script>
+<script id="expedition7696" src="assets/features/expedition-076121.js?loot=076141"></script>
 
 <style id="expedition7697-viewport">
 #expedition7696-modal{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box}
