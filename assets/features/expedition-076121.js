@@ -1,7 +1,7 @@
 
 (()=>{
 "use strict";
-const VERSION='v0.76.145',FIELD='expedition7696',HTML='<div id="monster-expedition">\n<section class="exp-game" aria-label="仲間モンスター専用の遺跡探索">\n <header><span>DROP OF DUNGEON / MONSTER EXPEDITION</span><h2>翠水の忘れられた遺跡</h2><div><b id="exp-floor">地下1階</b><span id="exp-loot">発掘0</span><button type="button" id="exp-party">編成</button></div></header>\n <div class="exp-team" aria-label="探索パーティー"></div>\n <canvas width="352" height="352" role="img" aria-label="明るい苔の遺跡を仲間モンスター3体で探索する画面"></canvas>\n <p class="exp-message" aria-live="polite">赤い「!」の敵に接触でバトル。丸パッドで探索できます。</p>\n <div class="exp-controls"><div class="exp-pad"><button type="button" data-dir="up" aria-label="上に移動">▲</button><button type="button" data-dir="left" aria-label="左に移動">◀</button><span>MOVE</span><button type="button" data-dir="right" aria-label="右に移動">▶</button><button type="button" data-dir="down" aria-label="下に移動">▼</button></div><button type="button" id="exp-action">調べる<small>結晶・階段</small></button></div>\n <footer>丸パッド／矢印キー・WASDで移動 · 触れると自動取得<br>敵に接触で戦闘 · 宝箱で回復 · 結晶・階段も自動 · 途中から再開できます</footer>\n <div class="exp-setup" hidden><h3>発掘パーティー</h3><p>所持している仲間モンスターから1〜3体を編成</p><label>先頭<select aria-label="先頭のモンスター"></select></label><label>2体目<select aria-label="2体目のモンスター"></select></label><label>3体目<select aria-label="3体目のモンスター"></select></label><div class="exp-lineup"></div><button type="button" id="exp-start">この仲間で探索する</button><p class="exp-setup-msg" aria-live="polite"></p></div>\n</section></div>\n';
+const VERSION='v0.76.146',FIELD='expedition7696',HTML='<div id="monster-expedition">\n<section class="exp-game" aria-label="仲間モンスター専用の遺跡探索">\n <header><span>DROP OF DUNGEON / MONSTER EXPEDITION</span><h2>翠水の忘れられた遺跡</h2><div><b id="exp-floor">地下1階</b><span id="exp-loot">発掘0</span><button type="button" id="exp-party">編成</button></div></header>\n <div class="exp-team" aria-label="探索パーティー"></div>\n <canvas width="352" height="352" role="img" aria-label="明るい苔の遺跡を仲間モンスター3体で探索する画面"></canvas>\n <p class="exp-message" aria-live="polite">赤い「!」の敵に接触でバトル。丸パッドで探索できます。</p>\n <div class="exp-controls"><div class="exp-pad"><button type="button" data-dir="up" aria-label="上に移動">▲</button><button type="button" data-dir="left" aria-label="左に移動">◀</button><span>MOVE</span><button type="button" data-dir="right" aria-label="右に移動">▶</button><button type="button" data-dir="down" aria-label="下に移動">▼</button></div><button type="button" id="exp-action">調べる<small>結晶・階段</small></button></div>\n <footer>丸パッド／矢印キー・WASDで移動 · 触れると自動取得<br>敵に接触で戦闘 · 宝箱で回復 · 結晶・階段も自動 · 途中から再開できます</footer>\n <div class="exp-setup" hidden><h3>発掘パーティー</h3><p>所持している仲間モンスターから1〜3体を編成</p><label>先頭<select aria-label="先頭のモンスター"></select></label><label>2体目<select aria-label="2体目のモンスター"></select></label><label>3体目<select aria-label="3体目のモンスター"></select></label><div class="exp-lineup"></div><button type="button" id="exp-start">この仲間で探索する</button><p class="exp-setup-msg" aria-live="polite"></p></div>\n</section></div>\n';
 const WILD76119=window.__DOD_EXP_WILD76119||[];
 const APEX76112={name:'星喰竜・ルミヴォル',gear:'星喰竜爪・ルミヴォル',hp:3000,atk:180,def:65};
 const humans=new Set(['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']);
@@ -92,7 +92,7 @@ function installHub121(){
  document.getElementById('close').addEventListener('click',e=>{if(!borrowedOverlay121)return;e.preventDefault();e.stopImmediatePropagation();closeBreed121();},{capture:true,signal:ac.signal});
  const observer=new MutationObserver(()=>{if(!borrowedOverlay121)return;for(const id of ['breedRoster7640','breedRanch7640']){const b=document.getElementById(id);if(b){b.textContent='探索の編成へ戻る';b.onclick=closeBreed121;}}});observer.observe(document.getElementById('obody'),{childList:true});ac.signal.addEventListener('abort',()=>{observer.disconnect();if(borrowedOverlay121)closeBreed121();recruitLayer121?.remove();entryChoice121?.remove();},{once:true});
  // Route buttons reuse the existing engine without closing the expedition.
- journeyPanel76115.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.stopImmediatePropagation();if(b.classList.contains('journey-breed76115'))breedInside121('翠冠竜・エルグリム','蒼甲獣・サファル');else if(b.textContent.includes('古跡'))breedInside121(...WILD76119.filter(d=>d.added76120).map(d=>d.name));else breedInside121(...WILD76119.filter(d=>!d.added76120).map(d=>d.name));},{capture:true,signal:ac.signal});
+ journeyPanel76115.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.stopImmediatePropagation();if(b.classList.contains('journey-breed76115'))breedInside121('翠冠竜・エルグリム','蒼甲獣・サファル');else if(b.textContent.includes('古跡'))breedInside121(...WILD76119.filter(d=>d.added76120).map(d=>d.name));else breedInside121(...WILD76119.filter(d=>!d.added76120&&!d.region146).map(d=>d.name));},{capture:true,signal:ac.signal});
 }
 
 function paintGodCounts121(){for(const el of root.querySelectorAll('[data-god-count121]')){const g=GOD_GEAR121.find(g=>g.n===el.dataset.godCount121);if(g){const count=S.owned.filter(n=>n===g.n).length,equipped=Object.values(S.heroEquipment65||{}).filter(eq=>eq?.[g.type]===g.n).length;el.textContent='所持 '+count+'個 · キャラ装備 '+equipped+' / 14';}}}
@@ -498,7 +498,7 @@ function paintJourney76115(){
  journeyPanel76115.innerHTML='<h4>MONSTER ADVENTURE · 第1部</h4><p>森→水辺→古跡。10階ごとに景色が変わるモンスターだけの冒険。守護者を倒し、配合で次の仲間を育てよう。</p>'+rows.map(([f,title,note])=>'<div class="journey-row76115 '+(cleared[f]?'done':'')+'"><b>'+(cleared[f]?'✓':'◇')+' '+f+'階 · '+title+'</b><small>'+note+'</small></div>').join('')+'<p>5・15・25階にも既存の中ボス。通常階では経験値エリア5%・黄金エリア5%。</p><button type="button" class="journey-breed76115">配合の目標を見る</button>';
  journeyPanel76115.querySelector('button').onclick=()=>{const a='翠冠竜・エルグリム',b='蒼甲獣・サファル';if(!hasMonsterSpecies141(a)||!hasMonsterSpecies141(b)){root.querySelector('.exp-setup-msg').textContent='10階のサファルと20階のエルグリムを集めよう。親Lv20・＋5以上で上位配合に挑戦できます。';return;}active.modal.querySelector('.expedition7696-bar button').click();window.__DOD_BREEDING7640.open(a,b);};
  const note=document.createElement('p');note.textContent='探索の新しい仲間：森の通常階にモスリィ、水辺の通常階にリプルト。新しい階から出現（ボス階・特別エリアを除く）。勝利時10%、5勝で確実に仲間へ。2体ともLv10に育てると新しい配合に挑戦できます。';
- const route=document.createElement('button');route.type='button';route.textContent='探索の仲間の配合を見る';route.onclick=()=>{active.modal.querySelector('.expedition7696-bar button').click();window.__DOD_BREEDING7640.open(...WILD76119.filter(d=>!d.added76120).map(d=>d.name));};journeyPanel76115.append(note,route);
+ const route=document.createElement('button');route.type='button';route.textContent='探索の仲間の配合を見る';route.onclick=()=>{active.modal.querySelector('.expedition7696-bar button').click();window.__DOD_BREEDING7640.open(...WILD76119.filter(d=>!d.added76120&&!d.region146).map(d=>d.name));};journeyPanel76115.append(note,route);
  const ruinsNote=document.createElement('p');ruinsNote.textContent='古跡の通常階にはルミコロとゴロム。各10%・5勝保証で仲間に。親2体ともLv10から古跡の配合へ。';
  const ruinsRoute=document.createElement('button');ruinsRoute.type='button';ruinsRoute.textContent='古跡の仲間の配合を見る';ruinsRoute.onclick=()=>{active.modal.querySelector('.expedition7696-bar button').click();window.__DOD_BREEDING7640.open(...WILD76119.filter(d=>d.added76120).map(d=>d.name));};journeyPanel76115.append(ruinsNote,ruinsRoute);
 }
@@ -1230,6 +1230,37 @@ function weaponPicker145(n){
  select.onchange=paint;paint();select.focus({preventScroll:true});
 }
 const weaponStyle145=document.createElement('style');weaponStyle145.textContent='#monster-expedition .weapon-picker145>div{width:min(420px,94vw);max-height:calc(100dvh - 80px);display:flex;flex-direction:column;gap:10px;overflow:hidden}#monster-expedition .weapon-picker145 h3{margin:0}#monster-expedition .weapon-picker145>div>p{margin:0;font-size:12px}#monster-expedition .weapon-picker145 .choice-art124{display:flex;flex-direction:column;gap:10px;min-height:0;overflow:auto;padding:2px}#monster-expedition .weapon-picker145 select{width:100%;min-height:48px;font-size:16px;padding:9px;background:#152b3c;color:#fff;border:1px solid #c6ae78;border-radius:9px;box-sizing:border-box}#monster-expedition .weapon-preview145{padding:10px;background:#142c39;border:1px solid #5e7779;border-radius:9px;overflow-wrap:anywhere}#monster-expedition .weapon-preview145 p{font-size:12px;line-height:1.6}#monster-expedition .weapon-stats145{display:grid;grid-template-columns:1fr 1fr;gap:7px}#monster-expedition .weapon-stats145 small{font-size:12px;color:#c8efda}#monster-expedition .weapon-picker145 .choice-buttons124{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}#monster-expedition .weapon-picker145 .choice-buttons124 button{min-height:44px;padding:10px 4px;font-size:15px;line-height:1.35}#monster-expedition .weapon-shortcut145{width:100%;min-height:44px;margin:8px 0;border-color:#c6ae78}';document.head.append(weaponStyle145);ac.signal.addEventListener('abort',()=>weaponStyle145.remove(),{once:true});
+
+// Region companions use the existing encounter, recruitment and individual-save contracts.
+const regional146=WILD76119.filter(d=>d.region146);
+const spawnBefore146=spawnEnemies;
+spawnEnemies=function(){
+ spawnBefore146();const region=region144();
+ if(!layout7699||!region||room76115!=='normal'||floor%5===0)return;
+ const d=regional146.find(d=>d.zone===3+regions144.indexOf(region));if(!d)return;
+ const cells=cells121();if(!cells.length)return;
+ const p=cells[((world7699.seed^Math.imul(floor,76146))>>>0)%cells.length];
+ enemies.push({...p,id:'region146_'+d.zone,type:d.name});
+};
+function regionalParents146(r){
+ const pool=species=>owned().filter(n=>monsterSpecies141(n)===species&&compLv(n)>=r.level);
+ const a=pool(r.parents[0]),b=pool(r.parents[1]);
+ for(const first of a)for(const second of b)if(monsterSex139(first)!==monsterSex139(second))return [first,second];
+ return [a[0]||'',b[0]||''];
+}
+const regionalPanel146=document.createElement('details');regionalPanel146.className='panel exp-regional146';
+const regionalTitle146=document.createElement('summary');regionalTitle146.textContent='新地域の仲間と配合';regionalPanel146.append(regionalTitle146);
+function paintRegional146(){regionalPanel146.replaceChildren(regionalTitle146);
+regionalPanel146.append(text129('p','31〜60階に地域固有の仲間。通常階で出会い、勝利時10%・5勝で加入の誘いが確定。呼びかけも有効です。＋値は本人と同系統の仲間の配合で育てられます。60階以降は同じ地域が巡ります。'));
+for(const d of regional146){
+ const recipe=(window.__DOD_BREEDING_EXP76108||[]).find(r=>r.region146===d.zone);
+ if(!recipe)continue;const region=regions144[d.zone-3],block=document.createElement('div'),known=hasMonsterSpecies141(recipe.name)||S.breedDiscovery7679?.[recipe.name];
+ block.append(text129('h4',region.name+' · '+(31+(d.zone-3)*10)+'〜'+(40+(d.zone-3)*10)+'階'),text129('p',d.name+'を仲間にして、'+recipe.parents.find(n=>n!==d.name)+'と育成。上位の仲間：'+(known?recipe.name:'？？？')+'。親2体ともLv'+recipe.level+'・＋'+recipe.parentPlus7691+'以上 / '+recipe.cost.toLocaleString()+'G。'),prepButton129('この地域の配合へ',()=>breedInside121(...regionalParents146(recipe))));
+ regionalPanel146.append(block);
+}
+}
+paintRegional146();prepMore129.append(regionalPanel146);
+const prepareBefore146=showPrepare129;showPrepare129=function(){paintRegional146();return prepareBefore146.apply(this,arguments);};
 
 const saved=S[FIELD];restore(saved);validateGroupRestore124();if(battle?.outcome==='win')claimRival125();if(battle?.outcome&&battle.outcome!=='win'&&!trialDefinition144()){adventure124=cleanRisk124(null);carry126=cleanCarry126(null);}if(battle?.outcome==='win'&&!trialDefinition144()){rollRival126();settleKeys130();}if(!enemies.length)spawnEnemies();if(!battle&&team.every(n=>partyHP[n]<=0)){positions=[{x:6,y:6},{x:5,y:6},{x:4,y:6}];for(const n of team){partyHP[n]=stats(n).hp;partyMP[n]=stats(n).mp;}}
 const resizeMap76113=()=>{const rect=canvas.getBoundingClientRect();if(!rect.width||rect.height<30)return;const h=Math.max(192,Math.min(720,Math.round(352*rect.height/rect.width))),ratio=Math.min(4,Math.max(2,rect.width/352*(window.devicePixelRatio||1)));if(h===mapHeight76113&&canvas.width===Math.round(352*ratio))return;mapHeight76113=h;canvas.width=Math.round(352*ratio);canvas.height=Math.round(h*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);draw();};const mapObserver76113=new ResizeObserver(resizeMap76113);mapObserver76113.observe(canvas);ac.signal.addEventListener('abort',()=>mapObserver76113.disconnect(),{once:true});
