@@ -371,7 +371,7 @@ function draw(t=1){
  decorateScenery76117(left,top,time);
  paintRoute76114(left,top);paintGod121(left,top,time);paintTrace121(left,top,time);
  for(const enemy of enemies){if(defeated.has(enemy.id)||!visible7699.has(key(enemy.x,enemy.y)))continue;const display127=enemyDisplay127(enemy),px=(display127.x-left)*32,py=(display127.y-top)*32;ctx.strokeStyle=enemy.elite?'#ffc762':'#c6474d';ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(px+16,py+26,13,5,0,0,Math.PI*2);ctx.stroke();sprite(ctx,px,py,enemy.type,display127.walk,display127.dir,enemy.roamBoss127?42:34,{phase:enemy.x+enemy.y,ally:false});if(enemy.rare121){ctx.fillStyle='#94ffe0';ctx.font='bold 12px system-ui';ctx.fillText('✦',px-2,py-4);}enemyMark152(enemy,px,py);}
- drawAdventures124(left,top);drawNest164(left,top);drawFinds126(left,top);drawEvents127(left,top);for(let i=team.length-1;i>=0;i--){let pos=positions[i],sx=pos.x,sy=pos.y,dir=facing;if(animation){const old=animation.old[i];sx=old.x+(pos.x-old.x)*t;sy=old.y+(pos.y-old.y)*t;dir=pos.x<old.x?'left':pos.x>old.x?'right':pos.y<old.y?'up':'down';}sprite(ctx,(sx-left)*tile,(sy-top)*tile,team[i],animation?t:0,dir,32,{phase:i,ally:true});}
+ drawAdventures124(left,top);drawNest164(left,top);drawAftermath165(left,top);drawFinds126(left,top);drawEvents127(left,top);for(let i=team.length-1;i>=0;i--){let pos=positions[i],sx=pos.x,sy=pos.y,dir=facing;if(animation){const old=animation.old[i];sx=old.x+(pos.x-old.x)*t;sy=old.y+(pos.y-old.y)*t;dir=pos.x<old.x?'left':pos.x>old.x?'right':pos.y<old.y?'up':'down';}sprite(ctx,(sx-left)*tile,(sy-top)*tile,team[i],animation?t:0,dir,32,{phase:i,ally:true});}
  airMotes151(left,top,time);ctx.restore();
  const found=seen.has(key(stairs.x,stairs.y));if(found){const sx=(stairs.x-left)*32*zoom76113+16*zoom76113,sy=(stairs.y-top)*32*zoom76113+24*zoom76113;ctx.fillStyle='#ffe49b';ctx.strokeStyle='#765926';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(sx-6,sy);ctx.lineTo(sx+6,sy);ctx.lineTo(sx,sy+6);ctx.closePath();ctx.fill();ctx.stroke();}
 }
@@ -379,7 +379,7 @@ function draw(t=1){
 const ac=new AbortController(),listen=(node,event,fn)=>node.addEventListener(event,fn,{signal:ac.signal});
 let best=1,shards=0,saveWarned=false;
 function persist(){
- S[FIELD]={schema:2,world7699:world7699?{...world7699}:null,team:team.slice(),floor,best,loot,shards,positions:positions.map(p=>({...p})),opened:[...opened],dug:[...dug],seen:[...seen],enemies:enemies.map(e=>({...e})),defeated:[...defeated],partyHP:{...partyHP},partyMP:{...partyMP},kills,announced76115,areaNotice76116,stickPosition76120,godTrial121,adventure124:{...adventure124,items:adventure124.items.slice()},eggChoices139:{...eggChoices139},carry126:cleanCarry126(carry126),findMarks126:[...findMarks126].slice(-1000),roam127:snapshotRoam127(),keyRoom130:snapshotRoom130(),vaultPlan148:vaultPlan148?{...vaultPlan148}:null,blessings132:snapshotBless132(),battle:battle?JSON.parse(JSON.stringify(battle)):null};
+ S[FIELD]={schema:2,world7699:world7699?{...world7699}:null,team:team.slice(),floor,best,loot,shards,positions:positions.map(p=>({...p})),opened:[...opened],dug:[...dug],seen:[...seen],enemies:enemies.map(e=>({...e})),defeated:[...defeated],partyHP:{...partyHP},partyMP:{...partyMP},kills,announced76115,areaNotice76116,stickPosition76120,godTrial121,adventure124:{...adventure124,items:adventure124.items.slice()},eggChoices139:{...eggChoices139},carry126:cleanCarry126(carry126),findMarks126:[...findMarks126].slice(-1000),roam127:snapshotRoam127(),keyRoom130:snapshotRoom130(),vaultPlan148:vaultPlan148?{...vaultPlan148}:null,aftermath165:snapshotAftermath165(),blessings132:snapshotBless132(),battle:battle?JSON.parse(JSON.stringify(battle)):null};
  const saved124=save();if(saved124===false&&!saveWarned){saveWarned=true;toast('探索データを保存できません。容量を確認してから戻ってください。');}return saved124!==false;
 }
 root.__cleanup=()=>{stop();persist();ac.abort();if(frame)cancelAnimationFrame(frame);animation=null;};
@@ -391,6 +391,7 @@ function chestGear76100(){
 }
 
 function pickupTile76102(p){
+ const spring165=pickupAftermath165(p);if(spring165)return spring165;
  const special=pickupGod121(p);if(special)return special;const guarded=treasures.find(t=>t.x===p.x&&t.y===p.y&&t.guard121&&!defeated.has(t.guard121));if(guarded){const guard=enemies.find(n=>n.id===guarded.guard121);if(guard){beginBattle(guard);return null;}}const k=key(p.x,p.y),crystal=crystals.find(o=>o.x===p.x&&o.y===p.y);if(crystal&&!dug.has(k)){dug.add(k);loot++;shards++;return {gear:null,text:'青い結晶を発掘！ 遺跡の欠片×1を集めた。'};}const chest=treasures.find(o=>o.x===p.x&&o.y===p.y);if(!chest||opened.has(k))return null;
  opened.add(k);loot++;shards+=2;
  for(const id of team){const st=stats(id);partyHP[id]=Math.min(st.hp,partyHP[id]+Math.ceil(st.hp*.25));partyMP[id]=Math.min(st.mp,partyMP[id]+Math.ceil(st.mp*.25));}
@@ -673,7 +674,7 @@ function restore(state){if(!state||typeof state!=='object')return;const valid=n=
  if(!(world7699?.roaming127===1&&state.roam127?.seed===world7699.seed&&state.roam127?.floor===floor&&state.roam127.secretOpen===true)&&state.positions?.length===3&&state.positions.every(o=>integer(o.x,1,mapSize121()-2)&&integer(o.y,1,mapSize121()-2)&&terrain(o.x,o.y)==='floor'))positions=state.positions.map(o=>({...o}));
  const tiles=x=>new Set(Array.isArray(x)?x.filter(k=>typeof k==='string'&&/^\d{1,2},\d{1,2}$/.test(k)).slice(0,1100):[]);opened=tiles(state.opened);dug=tiles(state.dug);seen=tiles(state.seen);
  for(const {id:n} of roster){const st=stats(n);partyHP[n]=integer(state.partyHP?.[n],0,1e9)?Math.min(st.hp,state.partyHP[n]):st.hp;partyMP[n]=integer(state.partyMP?.[n],0,1e9)?Math.min(st.mp,state.partyMP[n]):st.mp;}
- spawnEnemies();restoreEncounters160(state);restoreSecretParty127(state);defeated=new Set(Array.isArray(state.defeated)?state.defeated.filter(id=>enemies.some(e=>e.id===id)):[]);
+ spawnEnemies();restoreEncounters160(state);restoreSecretParty127(state);restoreAftermathParty165(state);defeated=new Set(Array.isArray(state.defeated)?state.defeated.filter(id=>enemies.some(e=>e.id===id)):[]);
  const b=state.battle,enemy=enemies.find(e=>e.id===b?.enemy?.id&&e.type===b?.enemy?.type)||trialEnemy144(b);
  if(enemy&&integer(b.hp,0,1e9)&&integer(b.maxHP,1,1e9)&&b.hp<=b.maxHP&&integer(b.actor,0,team.length-1)&&integer(b.turn,1,1e9)&&integer(b.atk,1,1e9)&&integer(b.def,0,1e9)&&[null,'win','lose','escape'].includes(b.outcome)){
   battle={...b,enemy:restoreRivalEnemy125(enemy,b.enemy,b.members124)};if(!battle.outcome&&battle.hp===0){battle=null;}else if(!battle.outcome&&partyHP[team[battle.actor]]<=0){const i=team.findIndex(n=>partyHP[n]>0);if(i<0)battle.outcome='lose';else battle.actor=i;}
@@ -1634,6 +1635,59 @@ const weaponVisualStyle156=document.createElement('style');weaponVisualStyle156.
 `;root.append(weaponVisualStyle156);
 
 const nestStyle164=document.createElement('style');nestStyle164.textContent="#monster-expedition .nest-choice164>div{width:min(94vw,430px);max-height:88dvh;padding:20px!important;background:radial-gradient(ellipse at 50% 0,#30364e,#141d30 70%);border:1px solid #c3a56f;border-radius:18px;box-shadow:0 18px 50px #0009;box-sizing:border-box}\n#monster-expedition .nest-choice164>div>small{color:#d6ba83;letter-spacing:2px;font-size:10px}\n#monster-expedition .nest-choice164 h3{font-size:23px;margin:7px 0 12px;color:#f6e0af}\n#monster-expedition .nest-choice164>div>p{font-size:11px;line-height:1.8;color:#c9d2e4}\n#monster-expedition .nest-choice164 .choice-art124{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}\n#monster-expedition .nest-choice164 article{min-width:0;background:linear-gradient(#34446066,#15223788);border:1px solid #a18a6555;border-radius:13px;padding:10px 5px;box-sizing:border-box}\n#monster-expedition .nest-choice164 article img,#monster-expedition .nest-choice164 article svg,#monster-expedition .nest-choice164 article canvas{width:100%!important;height:100px!important;background:transparent!important;object-fit:contain}\n#monster-expedition .nest-choice164 article b{display:block;font-size:13px;overflow-wrap:anywhere;color:#f2dfba}\n#monster-expedition .nest-choice164 article small{font-size:10px;margin-top:4px;color:#b4c3dc}\n#monster-expedition .nest-choice164 .choice-buttons124{gap:8px}\n#monster-expedition .nest-choice164 .choice-buttons124 button{min-height:46px;background:#24334c;border:1px solid #697c9e;color:#dbe5f5;font-size:15px}\n#monster-expedition .nest-choice164 .choice-buttons124 button:first-child{background:linear-gradient(100deg,#70593a,#494052);border-color:#d0b37d;color:#ffebc5}\n@media(max-height:650px){#monster-expedition .nest-choice164>div{padding:12px!important}#monster-expedition .nest-choice164 h3{font-size:20px;margin:4px 0}#monster-expedition .nest-choice164 article img,#monster-expedition .nest-choice164 article svg,#monster-expedition .nest-choice164 article canvas{height:65px!important}#monster-expedition .nest-choice164 .choice-art124{margin:7px 0}#monster-expedition .nest-choice164>div>p{font-size:10px;margin:5px 0}}\n";root.append(nestStyle164);
+// v165: a defeated guardian opens an optional room; saved older floors remain unchanged.
+let aftermath165=null;
+function aftermathBoss165(e){return e&&!String(e.type).includes('ヒュドラ')&&(e.apex76112||e.mainBoss121||e.roamBoss127||e.midboss76110);}
+function aftermathTiles165(a=aftermath165){if(!a)return [];return [a.door,...Array.from({length:9},(_,i)=>({x:a.x+i%3,y:a.y+Math.floor(i/3)}))];}
+function snapshotAftermath165(){return aftermath165?{...aftermath165,door:{...aftermath165.door},approach:{...aftermath165.approach},ground:aftermath165.ground.slice()}:null;}
+function applyAftermath165(open){
+ const a=aftermath165;if(!a||!layout7699)return;const d=Math.max(0,layout7699.distance[a.approach.y]?.[a.approach.x]||0);
+ for(const [i,p] of aftermathTiles165(a).entries()){layout7699.grid[p.y][p.x]=open?'floor':a.ground[i];layout7699.distance[p.y][p.x]=open?d+Math.abs(p.x-a.approach.x)+Math.abs(p.y-a.approach.y):-1;}
+ tileCache7699.clear();scenicCache76117=null;
+}
+function setupAftermath165(){
+ aftermath165=null;if(!layout7699||!world7699)return;
+ const state=S[FIELD],same=state?.schema===2&&state.floor===floor&&state.world7699?.seed===world7699.seed,saved=same?state.aftermath165:null;
+ if(same&&!saved)return;
+ const bosses=enemies.filter(aftermathBoss165).sort((a,b)=>(b.apex76112?4:b.mainBoss121?3:b.roamBoss127?2:1)-(a.apex76112?4:a.mainBoss121?3:a.roamBoss127?2:1));if(!bosses.length)return;
+ const secret=roam127?.secret,blocked=p=>(layout7699.torches||[]).some(t=>t.x===p.x&&t.y===p.y)||secret&&(p.x>=secret.x-1&&p.x<=secret.x+3&&p.y>=secret.y-1&&p.y<=secret.y+3),size=mapSize121(),candidates=[];
+ for(let y=2;y<size-4;y++)for(let x=2;x<size-4;x++)for(const [door,approach] of [[{x:x-1,y:y+1},{x:x-2,y:y+1}],[{x:x+3,y:y+1},{x:x+4,y:y+1}],[{x:x+1,y:y-1},{x:x+1,y:y-2}],[{x:x+1,y:y+3},{x:x+1,y:y+4}]]){
+  const tiles=[door,...Array.from({length:9},(_,i)=>({x:x+i%3,y:y+Math.floor(i/3)}))];
+  if(terrain(approach.x,approach.y)!=='floor'||layout7699.distance[approach.y]?.[approach.x]<4||tiles.some(p=>p.x<1||p.y<1||p.x>=size-1||p.y>=size-1||!['wall','water'].includes(terrain(p.x,p.y))||blocked(p)))continue;
+  // Keep a sealed pocket from connecting to another corridor around its edge.
+  const inside=new Set(tiles.map(p=>key(p.x,p.y)));if(tiles.some(p=>[[1,0],[-1,0],[0,1],[0,-1]].some(([dx,dy])=>!inside.has(key(p.x+dx,p.y+dy))&&!(p.x+dx===approach.x&&p.y+dy===approach.y)&&terrain(p.x+dx,p.y+dy)==='floor')))continue;
+  candidates.push({x,y,door,approach,ground:tiles.map(p=>terrain(p.x,p.y))});
+ }
+ if(!candidates.length)return;
+ const random=rng7699((world7699.seed^Math.imul(floor,165019))>>>0),p=candidates[Math.floor(random()*candidates.length)],boss=bosses[0],id=world7699.seed+':'+floor+':after165';
+ if(saved&&(saved.v!==1||saved.id!==id||saved.x!==p.x||saved.y!==p.y||saved.boss!==boss.id||saved.door?.x!==p.door.x||saved.door?.y!==p.door.y))return;
+ aftermath165={v:1,id,seed:world7699.seed,floor,...p,boss:boss.id,opened:saved?.opened===true,used:saved?.opened===true&&saved?.used===true};if(aftermath165.opened)applyAftermath165(true);
+}
+function openAftermath165(){
+ const a=aftermath165;if(!a||a.opened||battle?.outcome!=='win'||battle.enemy.id!==a.boss||!defeated.has(a.boss))return true;
+ const ok=transaction155(()=>{aftermath165={...a,opened:true};applyAftermath165(true);battle.log+=' 強敵の封印が解けた！ 新しい道の奥に回復の泉が現れた。';});
+ if(!ok){aftermath165=a;applyAftermath165(false);battle.log+=' 封印の解放を保存できませんでした。探索へ戻る時に再試行します。';return false;}
+ reveal();draw();return true;
+}
+function restoreAftermathParty165(state){if(!aftermath165?.opened||state?.aftermath165?.id!==aftermath165.id||!Array.isArray(state.positions)||state.positions.length!==3||!state.positions.every(roamCell127))return;positions=state.positions.map(p=>({x:p.x,y:p.y}));}
+function pickupAftermath165(p){
+ const a=aftermath165;if(!a?.opened||a.used||p.x!==a.x+1||p.y!==a.y+1)return null;
+ if(team.every(n=>partyHP[n]>=stats(n).hp&&partyMP[n]>=stats(n).mp))return {gear:null,text:'回復の泉はまだ使えます。HP・MPが減った時に触れよう。'};
+ const ok=transaction155(()=>{aftermath165={...a,used:true};for(const n of team){const s=stats(n);partyHP[n]=Math.min(s.hp,partyHP[n]+Math.ceil(s.hp*.25));partyMP[n]=Math.min(s.mp,partyMP[n]+Math.ceil(s.mp*.25));}});
+ if(!ok){aftermath165=a;return {gear:null,text:'回復を保存できなかったため、使用前に戻しました。泉はまだ使えます。'};}
+ teamUI();return {gear:null,text:'解放された泉で全員のHP・MPが25%回復！ この泉は使い切りました。'};
+}
+function drawAftermath165(left,top){
+ const a=aftermath165;if(!a)return;ctx.save();const p=a.opened?{x:a.x+1,y:a.y+1}:a.door;if(!visible7699.has(key(p.x,p.y))){ctx.restore();return;}const x=(p.x-left)*32+16,y=(p.y-top)*32+18,t=performance.now()/800;
+ if(!a.opened){ctx.fillStyle='#1c2234';ctx.strokeStyle='#b8a080';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x-13,y-21,26,37,8);ctx.fill();ctx.stroke();glow7699(x,y-4,'#c2a4ff',23,.16);ctx.strokeStyle='#e6cbff';ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(x,y-16);ctx.lineTo(x+7,y-5);ctx.lineTo(x,y+6);ctx.lineTo(x-7,y-5);ctx.closePath();ctx.moveTo(x-9,y-5);ctx.lineTo(x+9,y-5);ctx.stroke();}
+ else{ctx.fillStyle='#101e32';ctx.strokeStyle=a.used?'#727d8d':'#b7b8a1';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,y+8,24,12,0,0,Math.PI*2);ctx.fill();ctx.stroke();const g=ctx.createRadialGradient(x,y+4,1,x,y+4,21);g.addColorStop(0,a.used?'#526879':'#d8ffff');g.addColorStop(.5,a.used?'#34424e':'#63bbda');g.addColorStop(1,'#17293c');ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,y+4,21,9,0,0,Math.PI*2);ctx.fill();if(!a.used){glow7699(x,y,'#8be2ff',35,.2);ctx.strokeStyle='#e0fbff';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(x,y+4,9+Math.sin(t)*2,3,0,0,Math.PI*2);ctx.stroke();for(let i=0;i<3;i++){ctx.fillStyle='#defcff';ctx.beginPath();ctx.arc(x+Math.sin(t+i*2)*12,y-8-Math.sin(t+i)*6,1.6,0,Math.PI*2);ctx.fill();}}}
+ ctx.textAlign='center';ctx.font='bold 9px system-ui';ctx.strokeStyle='#142036';ctx.lineWidth=3;const label=a.opened?(a.used?'静かな泉':'回復の泉'):'強敵の封印';ctx.strokeText(label,x,y-29);ctx.fillStyle=a.opened?'#c8f4ff':'#dec8f4';ctx.fillText(label,x,y-29);ctx.restore();
+}
+const spawnAftermathBefore165=spawnEnemies;spawnEnemies=function(){spawnAftermathBefore165();setupAftermath165();};
+const finishAftermathBefore165=finishBattle;finishBattle=function(outcome){finishAftermathBefore165(outcome);if(battle?.outcome==='win'&&aftermath165&&!aftermath165.opened&&battle.enemy.id===aftermath165.boss){openAftermath165();battleUI();}};
+const returnAftermathBefore165=returnToExploration7698;returnToExploration7698=function(){if(!openAftermath165()){battleUI();return;}returnAftermathBefore165();};
+const hintAftermathBefore165=floorHint7699;floorHint7699=function(){return hintAftermathBefore165()+(aftermath165?(aftermath165.opened?' 封印が解け、回復の泉への道が開いた。':' 強敵を倒すと封印された道が開く。'):'');};
+
 const saved=S[FIELD];restore(saved);validateGroupRestore124();if(battle?.outcome==='win')claimRival125();if(battle?.outcome&&battle.outcome!=='win'&&!trialDefinition144()){adventure124=cleanRisk124(null);carry126=cleanCarry126(null);}if(battle?.outcome==='win'&&!trialDefinition144()){rollRival126();settleKeys130();}if(!enemies.length)spawnEnemies();if(!battle&&team.every(n=>partyHP[n]<=0)){positions=[{x:6,y:6},{x:5,y:6},{x:4,y:6}];for(const n of team){partyHP[n]=stats(n).hp;partyMP[n]=stats(n).mp;}}
 // v150 exploration presentation: read existing state, retain original controls and artwork.
 const header150=root.querySelector('.exp-game>header');
@@ -1906,7 +1960,7 @@ const bossStyle160=document.createElement('style');bossStyle160.textContent=`
 
 const personalityHintBefore163=floorHint7699;floorHint7699=function(){const hint=personalityHintBefore163.apply(this,arguments),reaction=window.__DOD_PROFILE163?.reaction(team[0]);return hint+(reaction?' '+reaction:'');};
 const resizeMap76113=()=>{const rect=canvas.getBoundingClientRect();if(!rect.width||rect.height<30)return;const h=Math.max(192,Math.min(720,Math.round(352*rect.height/rect.width))),ratio=Math.min(4,Math.max(2,rect.width/352*(window.devicePixelRatio||1)));if(h===mapHeight76113&&canvas.width===Math.round(352*ratio))return;mapHeight76113=h;canvas.width=Math.round(352*ratio);canvas.height=Math.round(h*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);draw();};const mapObserver76113=new ResizeObserver(resizeMap76113);mapObserver76113.observe(canvas);ac.signal.addEventListener('abort',()=>mapObserver76113.disconnect(),{once:true});
-paintTrials144();reveal();teamUI();hud();draw();lineup();message.textContent=floorHint7699();sceneIdle76117();installHub121();paintMembers129();if(battle){battlePanel.hidden=false;paintPortraits();battleUI();}else if(!saved?.team?.length){setup.hidden=false;showEntry121();}const standingChest76100=!battle&&setup.hidden&&(!entryChoice121||entryChoice121.hidden)?pickupTile76102(positions[0]):null;hud();persist();showChest76100(standingChest76100);if(chooseEntry121&&!battle)showEntry121();if(!chooseEntry121)showBlessing132();if(!battle&&setup.hidden&&(!entryChoice121||entryChoice121.hidden)&&positions[0].x===stairs.x&&positions[0].y===stairs.y)act();
+if(battle?.outcome==='win')openAftermath165();paintTrials144();reveal();teamUI();hud();draw();lineup();message.textContent=floorHint7699();sceneIdle76117();installHub121();paintMembers129();if(battle){battlePanel.hidden=false;paintPortraits();battleUI();}else if(!saved?.team?.length){setup.hidden=false;showEntry121();}const standingChest76100=!battle&&setup.hidden&&(!entryChoice121||entryChoice121.hidden)?pickupTile76102(positions[0]):null;hud();persist();showChest76100(standingChest76100);if(chooseEntry121&&!battle)showEntry121();if(!chooseEntry121)showBlessing132();if(!battle&&setup.hidden&&(!entryChoice121||entryChoice121.hidden)&&positions[0].x===stairs.x&&positions[0].y===stairs.y)act();
 
 }
 
