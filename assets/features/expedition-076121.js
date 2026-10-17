@@ -371,7 +371,7 @@ function draw(t=1){
  decorateScenery76117(left,top,time);
  paintRoute76114(left,top);paintGod121(left,top,time);paintTrace121(left,top,time);
  for(const enemy of enemies){if(defeated.has(enemy.id)||!visible7699.has(key(enemy.x,enemy.y)))continue;const display127=enemyDisplay127(enemy),px=(display127.x-left)*32,py=(display127.y-top)*32;ctx.strokeStyle=enemy.elite?'#ffc762':'#c6474d';ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(px+16,py+26,13,5,0,0,Math.PI*2);ctx.stroke();sprite(ctx,px,py,enemy.type,display127.walk,display127.dir,enemy.roamBoss127?42:34,{phase:enemy.x+enemy.y,ally:false});if(enemy.rare121){ctx.fillStyle='#94ffe0';ctx.font='bold 12px system-ui';ctx.fillText('✦',px-2,py-4);}enemyMark152(enemy,px,py);}
- drawAdventures124(left,top);drawNest164(left,top);drawAftermath165(left,top);drawFinds126(left,top);drawEvents127(left,top);for(let i=team.length-1;i>=0;i--){let pos=positions[i],sx=pos.x,sy=pos.y,dir=facing;if(animation){const old=animation.old[i];sx=old.x+(pos.x-old.x)*t;sy=old.y+(pos.y-old.y)*t;dir=pos.x<old.x?'left':pos.x>old.x?'right':pos.y<old.y?'up':'down';}sprite(ctx,(sx-left)*tile,(sy-top)*tile,team[i],animation?t:0,dir,32,{phase:i,ally:true});}
+ drawAdventures124(left,top);drawNest164(left,top);drawAftermath165(left,top);drawAtlas167(left,top);drawFinds126(left,top);drawEvents127(left,top);for(let i=team.length-1;i>=0;i--){let pos=positions[i],sx=pos.x,sy=pos.y,dir=facing;if(animation){const old=animation.old[i];sx=old.x+(pos.x-old.x)*t;sy=old.y+(pos.y-old.y)*t;dir=pos.x<old.x?'left':pos.x>old.x?'right':pos.y<old.y?'up':'down';}sprite(ctx,(sx-left)*tile,(sy-top)*tile,team[i],animation?t:0,dir,32,{phase:i,ally:true});}
  airMotes151(left,top,time);ctx.restore();
  const found=seen.has(key(stairs.x,stairs.y));if(found){const sx=(stairs.x-left)*32*zoom76113+16*zoom76113,sy=(stairs.y-top)*32*zoom76113+24*zoom76113;ctx.fillStyle='#ffe49b';ctx.strokeStyle='#765926';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(sx-6,sy);ctx.lineTo(sx+6,sy);ctx.lineTo(sx,sy+6);ctx.closePath();ctx.fill();ctx.stroke();}
 }
@@ -379,7 +379,7 @@ function draw(t=1){
 const ac=new AbortController(),listen=(node,event,fn)=>node.addEventListener(event,fn,{signal:ac.signal});
 let best=1,shards=0,saveWarned=false;
 function persist(){
- S[FIELD]={schema:2,world7699:world7699?{...world7699}:null,team:team.slice(),floor,best,loot,shards,positions:positions.map(p=>({...p})),opened:[...opened],dug:[...dug],seen:[...seen],enemies:enemies.map(e=>({...e})),defeated:[...defeated],partyHP:{...partyHP},partyMP:{...partyMP},kills,announced76115,areaNotice76116,stickPosition76120,godTrial121,adventure124:{...adventure124,items:adventure124.items.slice()},eggChoices139:{...eggChoices139},carry126:cleanCarry126(carry126),findMarks126:[...findMarks126].slice(-1000),roam127:snapshotRoam127(),keyRoom130:snapshotRoom130(),vaultPlan148:vaultPlan148?{...vaultPlan148}:null,aftermath165:snapshotAftermath165(),blessings132:snapshotBless132(),battle:battle?JSON.parse(JSON.stringify(battle)):null};
+ S[FIELD]={schema:2,world7699:world7699?{...world7699}:null,team:team.slice(),floor,best,loot,shards,positions:positions.map(p=>({...p})),opened:[...opened],dug:[...dug],seen:[...seen],enemies:enemies.map(e=>({...e})),defeated:[...defeated],partyHP:{...partyHP},partyMP:{...partyMP},kills,announced76115,areaNotice76116,stickPosition76120,godTrial121,adventure124:{...adventure124,items:adventure124.items.slice()},eggChoices139:{...eggChoices139},carry126:cleanCarry126(carry126),findMarks126:[...findMarks126].slice(-1000),roam127:snapshotRoam127(),keyRoom130:snapshotRoom130(),vaultPlan148:vaultPlan148?{...vaultPlan148}:null,aftermath165:snapshotAftermath165(),atlasFloor167:atlasSnapshot167(),blessings132:snapshotBless132(),battle:battle?JSON.parse(JSON.stringify(battle)):null};
  const saved124=save();if(saved124===false&&!saveWarned){saveWarned=true;toast('探索データを保存できません。容量を確認してから戻ってください。');}return saved124!==false;
 }
 root.__cleanup=()=>{stop();persist();ac.abort();if(frame)cancelAnimationFrame(frame);animation=null;};
@@ -391,6 +391,7 @@ function chestGear76100(){
 }
 
 function pickupTile76102(p){
+ const atlas167=pickupAtlas167(p);if(atlas167)return atlas167;
  const spring165=pickupAftermath165(p);if(spring165)return spring165;
  const special=pickupGod121(p);if(special)return special;const guarded=treasures.find(t=>t.x===p.x&&t.y===p.y&&t.guard121&&!defeated.has(t.guard121));if(guarded){const guard=enemies.find(n=>n.id===guarded.guard121);if(guard){beginBattle(guard);return null;}}const k=key(p.x,p.y),crystal=crystals.find(o=>o.x===p.x&&o.y===p.y);if(crystal&&!dug.has(k)){dug.add(k);loot++;shards++;return {gear:null,text:'青い結晶を発掘！ 遺跡の欠片×1を集めた。'};}const chest=treasures.find(o=>o.x===p.x&&o.y===p.y);if(!chest||opened.has(k))return null;
  opened.add(k);loot++;shards+=2;
@@ -674,7 +675,7 @@ function restore(state){if(!state||typeof state!=='object')return;const valid=n=
  if(!(world7699?.roaming127===1&&state.roam127?.seed===world7699.seed&&state.roam127?.floor===floor&&state.roam127.secretOpen===true)&&state.positions?.length===3&&state.positions.every(o=>integer(o.x,1,mapSize121()-2)&&integer(o.y,1,mapSize121()-2)&&terrain(o.x,o.y)==='floor'))positions=state.positions.map(o=>({...o}));
  const tiles=x=>new Set(Array.isArray(x)?x.filter(k=>typeof k==='string'&&/^\d{1,2},\d{1,2}$/.test(k)).slice(0,1100):[]);opened=tiles(state.opened);dug=tiles(state.dug);seen=tiles(state.seen);
  for(const {id:n} of roster){const st=stats(n);partyHP[n]=integer(state.partyHP?.[n],0,1e9)?Math.min(st.hp,state.partyHP[n]):st.hp;partyMP[n]=integer(state.partyMP?.[n],0,1e9)?Math.min(st.mp,state.partyMP[n]):st.mp;}
- spawnEnemies();restoreEncounters160(state);restoreSecretParty127(state);restoreAftermathParty165(state);defeated=new Set(Array.isArray(state.defeated)?state.defeated.filter(id=>enemies.some(e=>e.id===id)):[]);
+ spawnEnemies();restoreEncounters160(state);restoreSecretParty127(state);restoreAftermathParty165(state);restoreAtlasParty167(state);defeated=new Set(Array.isArray(state.defeated)?state.defeated.filter(id=>enemies.some(e=>e.id===id)):[]);
  const b=state.battle,enemy=enemies.find(e=>e.id===b?.enemy?.id&&e.type===b?.enemy?.type)||trialEnemy144(b);
  if(enemy&&integer(b.hp,0,1e9)&&integer(b.maxHP,1,1e9)&&b.hp<=b.maxHP&&integer(b.actor,0,team.length-1)&&integer(b.turn,1,1e9)&&integer(b.atk,1,1e9)&&integer(b.def,0,1e9)&&[null,'win','lose','escape'].includes(b.outcome)){
   battle={...b,enemy:restoreRivalEnemy125(enemy,b.enemy,b.members124)};if(!battle.outcome&&battle.hp===0){battle=null;}else if(!battle.outcome&&partyHP[team[battle.actor]]<=0){const i=team.findIndex(n=>partyHP[n]>0);if(i<0)battle.outcome='lose';else battle.actor=i;}
@@ -1703,6 +1704,58 @@ function anomalyNative166(n,type){return entryAnomaly166()?.id==='tide'&&!!battl
 const costAnomalyBefore166=skillCost132;skillCost132=function(n,type){const base=costAnomalyBefore166(n,type);return anomalyNative166(n,type)?Math.max(3,base-1):base;};
 const hintAnomalyBefore166=floorHint7699;floorHint7699=function(){const a=entryAnomaly166();return hintAnomalyBefore166()+(a&&a.id!=='calm'?' '+a.short+'（今回の入場中）。':'');};
 
+// v167: a separate atlas collection opens optional side rooms, without spending relic shards.
+let atlasFloor167=null;
+function atlasState167(){const s=S.expeditionAtlas167;return {v:1,pieces:Number.isInteger(s?.pieces)?Math.max(0,Math.min(3,s.pieces)):0,visits:Number.isInteger(s?.visits)?Math.max(0,Math.min(999999,s.visits)):0};}
+function atlasTiles167(a=atlasFloor167){const r=a?.room;return r?[r.door,...Array.from({length:9},(_,i)=>({x:r.x+i%3,y:r.y+Math.floor(i/3)}))]:[];}
+function atlasSnapshot167(){return atlasFloor167?JSON.parse(JSON.stringify(atlasFloor167)):null;}
+function applyAtlas167(open){const a=atlasFloor167,r=a?.room;if(!r||!layout7699)return;const d=Math.max(0,layout7699.distance[r.approach.y]?.[r.approach.x]||0);for(const [i,p]of atlasTiles167().entries()){layout7699.grid[p.y][p.x]=open?'floor':r.ground[i];layout7699.distance[p.y][p.x]=open?d+Math.abs(p.x-r.approach.x)+Math.abs(p.y-r.approach.y):-1;}tileCache7699.clear();scenicCache76117=null;}
+function setupAtlas167(){
+ atlasFloor167=null;if(!layout7699||!world7699||room76115!=='normal')return;
+ const state=S[FIELD],same=state?.schema===2&&state.floor===floor&&state.world7699?.seed===world7699.seed,saved=same?state.atlasFloor167:null;if(same&&!saved)return;
+ const id=world7699.seed+':'+floor+':atlas167';
+ if(saved){
+  const cell=p=>p&&Number.isInteger(p.x)&&Number.isInteger(p.y)&&p.x>=1&&p.y>=1&&p.x<mapSize121()-1&&p.y<mapSize121()-1,r=saved.room;
+  if(saved.v!==1||saved.id!==id||saved.fragment&&(!cell(saved.fragment)||terrain(saved.fragment.x,saved.fragment.y)!=='floor'))return;
+  if(r){const tiles=[r.door,...Array.from({length:9},(_,i)=>({x:r.x+i%3,y:r.y+Math.floor(i/3)}))],inside=new Set(tiles.map(p=>p&&key(p.x,p.y)));
+   if(!Number.isInteger(r.x)||!Number.isInteger(r.y)||!cell(r.approach)||terrain(r.approach.x,r.approach.y)!=='floor'||!Array.isArray(r.ground)||r.ground.length!==10||tiles.some((p,i)=>!cell(p)||!['wall','water'].includes(r.ground[i])||terrain(p.x,p.y)!==r.ground[i]))return;
+   if(![[r.x-1,r.y+1,r.x-2,r.y+1],[r.x+3,r.y+1,r.x+4,r.y+1],[r.x+1,r.y-1,r.x+1,r.y-2],[r.x+1,r.y+3,r.x+1,r.y+4]].some(v=>v[0]===r.door.x&&v[1]===r.door.y&&v[2]===r.approach.x&&v[3]===r.approach.y)||tiles.some(p=>[[1,0],[-1,0],[0,1],[0,-1]].some(([dx,dy])=>!inside.has(key(p.x+dx,p.y+dy))&&!(p.x+dx===r.approach.x&&p.y+dy===r.approach.y)&&terrain(p.x+dx,p.y+dy)==='floor')))return;
+  }
+  atlasFloor167={v:1,id,fragment:saved.fragment?{x:saved.fragment.x,y:saved.fragment.y}:null,picked:saved.picked===true,room:r?JSON.parse(JSON.stringify(r)):null,opened:!!r&&saved.opened===true&&atlasState167().pieces===3,claimed:!!r&&saved.opened===true&&saved.claimed===true&&atlasState167().pieces===3};if(atlasFloor167.opened)applyAtlas167(true);return;
+ }
+ const random=rng7699((world7699.seed^Math.imul(floor,167021))>>>0);
+ const reserved=[...finds126,...(roam127?.merchant?[roam127.merchant]:[]),...(keyRoom130?[keyRoom130]:[]),...(godPosition121?[godPosition121]:[])],blocked=new Set(reserved.map(p=>key(p.x,p.y))),cells=cells121(8).filter(p=>!blocked.has(key(p.x,p.y)));
+ const fragment=random()<.4&&cells.length?cells[Math.floor(random()*cells.length)]:null;
+ const size=mapSize121(),candidates=[],secret=roam127?.secret,after=aftermath165;
+ const protectedCell=p=>(layout7699.torches||[]).some(t=>t.x===p.x&&t.y===p.y)||secret&&p.x>=secret.x-1&&p.x<=secret.x+3&&p.y>=secret.y-1&&p.y<=secret.y+3||after&&p.x>=after.x-1&&p.x<=after.x+3&&p.y>=after.y-1&&p.y<=after.y+3;
+ if(random()<.2)for(let y=2;y<size-4;y++)for(let x=2;x<size-4;x++)for(const [door,approach]of [[{x:x-1,y:y+1},{x:x-2,y:y+1}],[{x:x+3,y:y+1},{x:x+4,y:y+1}],[{x:x+1,y:y-1},{x:x+1,y:y-2}],[{x:x+1,y:y+3},{x:x+1,y:y+4}]]){
+  const tiles=[door,...Array.from({length:9},(_,i)=>({x:x+i%3,y:y+Math.floor(i/3)}))],inside=new Set(tiles.map(p=>key(p.x,p.y)));
+  if(terrain(approach.x,approach.y)!=='floor'||layout7699.distance[approach.y]?.[approach.x]<4||tiles.some(p=>p.x<1||p.y<1||p.x>=size-1||p.y>=size-1||!['wall','water'].includes(terrain(p.x,p.y))||protectedCell(p)))continue;
+  if(tiles.some(p=>[[1,0],[-1,0],[0,1],[0,-1]].some(([dx,dy])=>!inside.has(key(p.x+dx,p.y+dy))&&!(p.x+dx===approach.x&&p.y+dy===approach.y)&&terrain(p.x+dx,p.y+dy)==='floor')))continue;
+  candidates.push({x,y,door,approach,ground:tiles.map(p=>terrain(p.x,p.y))});
+ }
+ const room=candidates.length?candidates[Math.floor(random()*candidates.length)]:null;
+
+ atlasFloor167={v:1,id,fragment:fragment?{x:fragment.x,y:fragment.y}:null,picked:saved?.picked===true,room,opened:!!room&&saved?.opened===true,claimed:!!room&&saved?.opened===true&&saved?.claimed===true};if(atlasFloor167.opened)applyAtlas167(true);
+}
+function atlasTransaction167(change){const present=Object.hasOwn(S,'expeditionAtlas167'),prior=S.expeditionAtlas167,local=atlasSnapshot167(),carry=cleanCarry126(carry126);const ok=transaction155(change);if(!ok){if(present)S.expeditionAtlas167=prior;else delete S.expeditionAtlas167;atlasFloor167=local;carry126=carry;applyAtlas167(local?.opened===true);}return ok;}
+function pickupAtlas167(p){const a=atlasFloor167;if(!a)return null;const state=atlasState167();
+ if(a.fragment&&!a.picked&&state.pieces<3&&p.x===a.fragment.x&&p.y===a.fragment.y){if(!atlasTransaction167(()=>{atlasFloor167={...a,picked:true};S.expeditionAtlas167={...state,pieces:state.pieces+1};}))return {gear:null,text:'地図切れ端を保存できませんでした。その場で止まり、もう一度触れてください。'};paintAtlas167();return {gear:null,text:state.pieces===2?'地図が完成！ 星詠みの秘境の封印を、触れるだけで開けられます。':'地図切れ端を発見！ '+(state.pieces+1)+' / 3枚。遺跡の欠片とは別の収集品です。'};}
+ const r=a.room;if(!r||!a.opened||a.claimed||p.x!==r.x+1||p.y!==r.y+1)return null;
+ const kind=state.visits===0?'gold':'azure';if(carry126.eggs.length>=50||goods126().eggs.length+carry126.eggs.length>=50)return {gear:null,text:'卵の持ち帰り袋がいっぱいです。秘境の宝は未受取で残っています。'};
+ const egg={id:a.id+':egg',kind,monster:pickEggMonster139(kind,rng7699((world7699.seed^Math.imul(floor,167033))>>>0))};if(!egg.monster)return {gear:null,text:'卵の候補がありません。宝は未受取です。'};
+ if(!atlasTransaction167(()=>{atlasFloor167={...a,claimed:true};carry126.eggs=[...carry126.eggs,egg];S.expeditionAtlas167={...state,visits:state.visits+1};}))return {gear:null,text:'秘境の宝を保存できなかったため、未受取に戻しました。'};
+ paintAtlas167();return {gear:null,text:'星詠みの秘境で'+EGG_TYPES126.find(t=>t.id===kind).name+'を発見！ 帰還で確保。全滅・撤退では今回の卵を失います。'};
+}
+function openAtlas167(){const a=atlasFloor167;if(!a?.room||a.opened||atlasState167().pieces<3)return false;const ok=atlasTransaction167(()=>{atlasFloor167={...a,opened:true};applyAtlas167(true);});if(ok){reveal();draw();message.textContent='完成した地図が輝き、星詠みの秘境への道が開いた！ 奥の星の祭壇に触れよう。';}return ok;}
+function restoreAtlasParty167(state){if(!atlasFloor167?.opened||state?.atlasFloor167?.id!==atlasFloor167.id||!Array.isArray(state.positions)||state.positions.length!==3||!state.positions.every(roamCell127))return;positions=state.positions.map(p=>({x:p.x,y:p.y}));}
+function drawAtlas167(left,top){const a=atlasFloor167;if(!a)return;ctx.save();ctx.textAlign='center';ctx.font='bold 9px system-ui';const drawLabel=(text,x,y)=>{ctx.strokeStyle='#16223a';ctx.lineWidth=3;ctx.strokeText(text,x,y);ctx.fillStyle='#eed8a1';ctx.fillText(text,x,y);};
+ if(a.fragment&&!a.picked&&atlasState167().pieces<3&&visible7699.has(key(a.fragment.x,a.fragment.y))){const x=(a.fragment.x-left)*32+16,y=(a.fragment.y-top)*32+16;glow7699(x,y,'#eac78c',25,.18);ctx.save();ctx.translate(x,y);ctx.rotate(-.15);ctx.fillStyle='#dfc28b';ctx.strokeStyle='#78623e';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(-10,-12);ctx.lineTo(9,-10);ctx.lineTo(12,-2);ctx.lineTo(7,3);ctx.lineTo(9,12);ctx.lineTo(-11,10);ctx.closePath();ctx.fill();ctx.stroke();ctx.strokeStyle='#536b71';ctx.beginPath();ctx.moveTo(-6,6);ctx.lineTo(-3,-5);ctx.lineTo(5,4);ctx.stroke();ctx.fillStyle='#bd794e';ctx.beginPath();ctx.arc(5,4,2,0,Math.PI*2);ctx.fill();ctx.restore();drawLabel('地図切れ端',x,y-18);}
+ const r=a.room;if(r){const p=a.opened?{x:r.x+1,y:r.y+1}:r.door;if(visible7699.has(key(p.x,p.y))){const x=(p.x-left)*32+16,y=(p.y-top)*32+16;ctx.fillStyle='#1b2841';ctx.strokeStyle=a.claimed?'#6f798b':'#d6bc81';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x-14,y-19,28,34,7);ctx.fill();ctx.stroke();if(!a.claimed){glow7699(x,y-1,'#bca0f5',30,.18);ctx.strokeStyle='#e6d2ff';ctx.beginPath();for(let i=0;i<10;i++){const t=i*Math.PI/5-Math.PI/2,q=i%2?5:11;ctx[i?'lineTo':'moveTo'](x+Math.cos(t)*q,y+Math.sin(t)*q);}ctx.closePath();ctx.stroke();}drawLabel(a.opened?(a.claimed?'静かな祭壇':'秘境の宝'):'地図の封印',x,y-25);}}
+ ctx.restore();}
+const spawnAtlasBefore167=spawnEnemies;spawnEnemies=function(){spawnAtlasBefore167();setupAtlas167();};
+const stepAtlasBefore167=step;step=function(dir){if(!battle&&!animation&&!choice124&&setup.hidden&&atlasFloor167?.room&&!atlasFloor167.opened){const [dx,dy]=dirs[dir],r=atlasFloor167.room;if(positions[0].x+dx===r.door.x&&positions[0].y+dy===r.door.y){stop();if(atlasState167().pieces<3){message.textContent='地図切れ端 '+atlasState167().pieces+' / 3枚。地図を完成させると開きます。';return false;}if(!openAtlas167())return false;}}return stepAtlasBefore167(dir);};
+
 const saved=S[FIELD];restore(saved);validateGroupRestore124();if(battle?.outcome==='win')claimRival125();if(battle?.outcome&&battle.outcome!=='win'&&!trialDefinition144()){adventure124=cleanRisk124(null);carry126=cleanCarry126(null);}if(battle?.outcome==='win'&&!trialDefinition144()){rollRival126();settleKeys130();}if(!enemies.length)spawnEnemies();if(!battle&&team.every(n=>partyHP[n]<=0)){positions=[{x:6,y:6},{x:5,y:6},{x:4,y:6}];for(const n of team){partyHP[n]=stats(n).hp;partyMP[n]=stats(n).mp;}}
 // v150 exploration presentation: read existing state, retain original controls and artwork.
 const header150=root.querySelector('.exp-game>header');
@@ -1980,6 +2033,11 @@ function paintAnomaly166(){const a=entryAnomaly166();root.dataset.anomaly166=a?.
 const hudAnomalyBefore166=hud;hud=function(){hudAnomalyBefore166();paintAnomaly166();};
 const uiAnomalyBefore166=battleUI;battleUI=function(){uiAnomalyBefore166();if(!battle)return;const n=team[battle.actor];if(!anomalyNative166(n,'skill'))return;const b=battlePanel.querySelector('[data-command="skill"]'),cost=skillCost132(n,'skill');if(b){b.disabled=battleBusy||!!battle.outcome||(partyMP[n]||0)<cost;b.querySelector('small').textContent=b.querySelector('small').textContent.replace(/MP\s*\d+/,'MP '+cost)+' · 魔力潮';}};
 const anomalyStyle166=document.createElement('style');anomalyStyle166.textContent='#monster-expedition .anomaly-note166{margin:2px 0 10px!important;padding:9px!important;border:1px solid #8397b366;border-radius:8px;background:#17263c;color:#dbe5f4;font-size:11px;line-height:1.7;white-space:normal;overflow-wrap:anywhere}#monster-expedition .anomaly-note166[hidden]{display:none!important}#monster-expedition[data-anomaly166="starlight"] .exp-region150 small{color:#cfb9f2}#monster-expedition[data-anomaly166="tailwind"] .exp-region150 small{color:#b3e2dc}#monster-expedition[data-anomaly166="tide"] .exp-region150 small{color:#abd8f6}';root.append(anomalyStyle166);paintAnomaly166();
+
+const atlasPanel167=document.createElement('section');atlasPanel167.className='exp-trials144 atlas-panel167';prepMore129.append(atlasPanel167);
+function paintAtlas167(){const panel=root.querySelector('.atlas-panel167');if(!panel)return;const s=atlasState167();panel.replaceChildren(text129('h4','星詠みの地図'),text129('p',s.pieces<3?'地図切れ端 '+s.pieces+' / 3枚。探索中の巻物に触れて集めよう。遺跡の欠片は消費しません。':'地図完成 · 秘境を発見 '+s.visits+'回。地図の封印に触れると、星詠みの秘境へ続く道が開きます。'),text129('small','秘境の初回の宝は金彩の卵、2回目以降は青晶の卵。帰還で確保。地図の完成は帰還・全滅でも失いません。'));
+ const note=root.querySelector('.atlas-note167');if(note)note.textContent='星詠みの地図 '+s.pieces+'/3 · 秘境 '+s.visits+'回。探索の準備「冒険の目標」で確認できます。';}
+const atlasNote167=document.createElement('p');atlasNote167.className='anomaly-note166 atlas-note167';tools150.append(atlasNote167);paintAtlas167();
 
 const resizeMap76113=()=>{const rect=canvas.getBoundingClientRect();if(!rect.width||rect.height<30)return;const h=Math.max(192,Math.min(720,Math.round(352*rect.height/rect.width))),ratio=Math.min(4,Math.max(2,rect.width/352*(window.devicePixelRatio||1)));if(h===mapHeight76113&&canvas.width===Math.round(352*ratio))return;mapHeight76113=h;canvas.width=Math.round(352*ratio);canvas.height=Math.round(h*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);draw();};const mapObserver76113=new ResizeObserver(resizeMap76113);mapObserver76113.observe(canvas);ac.signal.addEventListener('abort',()=>mapObserver76113.disconnect(),{once:true});
 if(battle?.outcome==='win')openAftermath165();paintTrials144();reveal();teamUI();hud();draw();lineup();message.textContent=floorHint7699();sceneIdle76117();installHub121();paintMembers129();if(battle){battlePanel.hidden=false;paintPortraits();battleUI();}else if(!saved?.team?.length){setup.hidden=false;showEntry121();}const standingChest76100=!battle&&setup.hidden&&(!entryChoice121||entryChoice121.hidden)?pickupTile76102(positions[0]):null;hud();persist();showChest76100(standingChest76100);if(chooseEntry121&&!battle)showEntry121();if(!chooseEntry121)showBlessing132();if(!battle&&setup.hidden&&(!entryChoice121||entryChoice121.hidden)&&positions[0].x===stairs.x&&positions[0].y===stairs.y)act();
