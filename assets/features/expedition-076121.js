@@ -921,7 +921,7 @@ function showPrepare129(tab='members'){
 }
 function paintMembers129(){
  prepMemberControls129.hidden=!!prepMonster129;prepCards129.hidden=!!prepMonster129;prepSettings129.hidden=!!prepMonster129;prepDetail129.hidden=!prepMonster129;if(prepMonster129){const filters=prepCards129.parentElement.querySelector('.pasture-filters142');if(filters)filters.hidden=true;paintMonster129(prepMonster129);return;}
- mountPastureFilters142(prepCards129.parentElement,'探索牧場',()=>paintMembers129());prepCards129.parentElement.querySelector('.pasture-filters142').hidden=false;prepCards129.replaceChildren();for(const n of filterPasture142(owned(),'探索牧場')){const g=S.monsterGrowth?.[n]||{},w=MONSTER_WEAPONS126.find(w=>w.id===goods126().equipped[n]),b=prepButton129('',()=>{prepMonster129=n;paintMembers129();setup.scrollTop=0;});b.className='prep-monster129';b.setAttribute('aria-label',n+'の詳細');b.append(portrait129(n),text129('b',partyName173(n)),window.__DOD_RANK148.node(n),text129('small',(monsterFavorite142(n)?'★ お気に入り · ':'')+monsterSexLabel139(n)+' · '+(monsterPurpose141(n)==='breed'?'配合用':'育成用')),text129('small','Lv.'+(g.lv||1)+' · ＋'+(g.breedPlus7680||0)),text129('small',w?'武器：'+w.name:'武器：なし'));if(team.includes(n))b.append(text129('em','探索メンバー'));prepCards129.append(b);}if(!prepCards129.children.length)prepCards129.append(text129('p','条件に合う仲間はいません。絞り込みを変えてください。'));
+ mountPastureFilters142(prepCards129.parentElement,'探索牧場',()=>paintMembers129());prepCards129.parentElement.querySelector('.pasture-filters142').hidden=false;prepCards129.replaceChildren();for(const n of filterPasture142(owned(),'探索牧場')){const g=S.monsterGrowth?.[n]||{},w=MONSTER_WEAPONS126.find(w=>w.id===goods126().equipped[n]),b=prepButton129('',()=>{prepMonster129=n;paintMembers129();setup.scrollTop=0;});b.className='prep-monster129';b.setAttribute('aria-label',n+'の詳細');b.append(portrait129(n),text129('b',partyName173(n)),window.__DOD_RANK148.node(n),text129('small',(monsterFavorite142(n)?'★ お気に入り · ':'')+monsterSexLabel139(n)+' · '+(monsterPurpose141(n)==='breed'?'配合用':'育成用')),text129('small','Lv.'+(g.lv||1)+' · ＋'+(g.breedPlus7680||0)),text129('small',w?'武器：'+w.name:'武器：なし'));if(team.includes(n))b.append(text129('em','探索メンバー'));const wrap181=document.createElement('article');wrap181.className='roster-wrap181';const weapon181=prepButton129('武器を変更',()=>weaponPicker145(n));weapon181.className='roster-weapon181';weapon181.setAttribute('aria-label',partyName173(n)+'の武器を変更');wrap181.append(b,weapon181);prepCards129.append(wrap181);}if(!prepCards129.children.length)prepCards129.append(text129('p','条件に合う仲間はいません。絞り込みを変えてください。'));
 }
 function paintMonster129(n){
  if(!owned().includes(n)){prepMonster129=null;paintMembers129();return;}
@@ -1295,22 +1295,41 @@ const style144=document.createElement('style');style144.textContent='#monster-ex
 
 function weaponPicker145(n){
  if(!owned().includes(n)||battle||animation)return;
- const g=goods126(),current=g.equipped[n]||'',level=S.monsterGrowth?.[n]?.lv||1;
+ const origin=document.activeElement,g=goods126(),current=g.equipped[n]||'',level=compLv(n);let selected=current;
  const available=w=>level>=w.lv&&g.weapons[w.id]>Object.entries(g.equipped).filter(([who,id])=>who!==n&&id===w.id).length;
  const weapons=MONSTER_WEAPONS126.filter(w=>g.weapons[w.id]>0).sort((a,b)=>Number(available(b))-Number(available(a))||b.lv-a.lv||b.atk-a.atk);
- const screen=choiceScreen124('武器を変更',n+' · Lv.'+level+' / 装備中：'+(MONSTER_WEAPONS126.find(w=>w.id===current)?.name||'なし'),[
- ['装備する',()=>{const id=select.value;if(equipWeapon126(n,id)){closeChoice124();paintMonster129(n);setup.scrollTop=0;root.querySelector('.exp-setup-msg').textContent=id?n+'に'+MONSTER_WEAPONS126.find(w=>w.id===id).name+'を装備しました。':'武器を外しました。所持品に残っています。';}else screen.querySelector('.choice-msg124').textContent='装備できませんでした。レベル・空き数・保存容量を確認してください。';}],
- ['戻る',()=>closeChoice124()]]);
- screen.classList.add('weapon-picker145');
- const body=screen.querySelector('.choice-art124'),select=document.createElement('select'),label=text129('label','装備する武器');select.id='weapon-select145';select.setAttribute('aria-label','装備する武器');label.htmlFor=select.id;
- const empty=document.createElement('option');empty.value='';empty.textContent='武器を外す / 装備なし';select.append(empty);
- for(const w of weapons){const option=document.createElement('option');option.value=w.id;option.disabled=!available(w);const used=Object.entries(g.equipped).filter(([who,id])=>who!==n&&id===w.id).length;option.textContent=w.name+(w.id===current?'（装備中）':level<w.lv?'（Lv'+w.lv+'から）':!available(w)?'（ほかの仲間が装備中）':'（空き'+Math.max(0,g.weapons[w.id]-used)+'）');select.append(option);}
- select.value=current;const preview=document.createElement('div');preview.className='weapon-preview145';body.append(label,select,preview);
- const confirm=screen.querySelector('.choice-buttons124 button');
- function paint(){const w=MONSTER_WEAPONS126.find(w=>w.id===select.value),st=stats(n);preview.replaceChildren(text129('b',w?w.name:'武器なし'),text129('p',w?rarity129[w.rarity]+' / '+weaponText140(w):'今の武器を外します。所持品には残ります。'));if(w&&weaponFrames156[w.id])preview.prepend(weaponCanvas156(w.id,76));
-  const changes=document.createElement('div');changes.className='weapon-stats145';for(const [key,title]of [['atk','攻撃'],['def','防御'],['hp','HP'],['mp','MP']]){const next=st[key]-weaponBonus140(n,key)+(w?.[key]||0);changes.append(text129('small',title+' '+st[key]+' → '+next));}preview.append(changes);confirm.textContent=select.value?'装備する':'外す';confirm.disabled=select.value===current||!!w&&!available(w);
+ const screen=choiceScreen124('武器を選ぶ',partyName173(n)+' · Lv.'+level+' / 現在：'+(MONSTER_WEAPONS126.find(w=>w.id===current)?.name||'なし'),[
+  ['装備する',()=>{
+   if(battle||animation)return;
+   if(equipWeapon126(n,selected)){
+    closeChoice124();paintMembers129();teamUI();hud();draw();
+    root.querySelector('.exp-setup-msg').textContent=selected?'武器を変更して保存しました。':'武器を外しました。所持品に残っています。';
+    if(origin?.isConnected)origin.focus({preventScroll:true});
+   }else screen.querySelector('.choice-msg124').textContent='変更を保存できませんでした。レベル・空き数・保存容量を確認してください。';
+  }],['戻る',()=>{closeChoice124();if(origin?.isConnected)origin.focus({preventScroll:true});}]
+ ]);screen.classList.add('weapon-picker145','weapon-picker181');
+ const body=screen.querySelector('.choice-art124'),preview=document.createElement('div'),list=document.createElement('div');preview.className='weapon-preview145';preview.setAttribute('aria-live','polite');list.className='weapon-list181';body.append(preview,list);
+ const buttons=[],confirm=screen.querySelector('.choice-buttons124 button');
+ function paint(){
+  const w=MONSTER_WEAPONS126.find(w=>w.id===selected),st=stats(n);
+  preview.replaceChildren(text129('b',w?w.name:'武器なし'),text129('p',w?(rarity129[w.rarity]||w.rarity)+' / '+weaponText140(w):'武器を外しても所持品には残ります。'));
+  const changes=document.createElement('div');changes.className='weapon-stats145';
+  for(const [key,title]of [['atk','攻撃'],['def','防御'],['hp','HP'],['mp','MP']]){
+   const next=st[key]-weaponBonus140(n,key)+(w?.[key]||0),line=text129('small',title+' '+st[key]+' → '+next);line.style.color=next>st[key]?'#a0edbc':next<st[key]?'#ffb7ad':'#c4cddd';changes.append(line);
+  }
+  preview.append(changes);for(const [b,id]of buttons)b.setAttribute('aria-pressed',String(id===selected));
+  confirm.textContent=selected?'この武器を装備':'武器を外す';confirm.disabled=selected===current||!!w&&!available(w);
  }
- select.onchange=paint;paint();select.focus({preventScroll:true});
+ function option(id,title,desc,disabled=false){
+  const b=prepButton129('',()=>{selected=id;paint();});b.className='weapon-option181';b.dataset.weapon181=id;b.disabled=disabled;b.append(text129('b',title),text129('small',desc));buttons.push([b,id]);list.append(b);
+ }
+ option('','装備なし'+(!current?' · 装備中':''),'武器を外す');
+ for(const w of weapons){
+  const used=Object.entries(g.equipped).filter(([who,id])=>who!==n&&id===w.id).length,free=Math.max(0,g.weapons[w.id]-used),state=w.id===current?'装備中':level<w.lv?'Lv.'+w.lv+'から':!available(w)?'ほかの仲間が装備中':'装備可能';
+  option(w.id,w.name+' · '+state,weaponText140(w)+' / 空き'+free+'・所持'+g.weapons[w.id],!available(w)&&w.id!==current);
+ }
+ if(!weapons.length)list.append(text129('p','武器はまだありません。探索や魔物商人で入手できます。'));
+ paint();
 }
 const weaponStyle145=document.createElement('style');weaponStyle145.textContent='#monster-expedition .weapon-picker145>div{width:min(420px,94vw);max-height:calc(100dvh - 80px);display:flex;flex-direction:column;gap:10px;overflow:hidden}#monster-expedition .weapon-picker145 h3{margin:0}#monster-expedition .weapon-picker145>div>p{margin:0;font-size:12px}#monster-expedition .weapon-picker145 .choice-art124{display:flex;flex-direction:column;gap:10px;min-height:0;overflow:auto;padding:2px}#monster-expedition .weapon-picker145 select{width:100%;min-height:48px;font-size:16px;padding:9px;background:#152b3c;color:#fff;border:1px solid #c6ae78;border-radius:9px;box-sizing:border-box}#monster-expedition .weapon-preview145{padding:10px;background:#142c39;border:1px solid #5e7779;border-radius:9px;overflow-wrap:anywhere}#monster-expedition .weapon-preview145 p{font-size:12px;line-height:1.6}#monster-expedition .weapon-stats145{display:grid;grid-template-columns:1fr 1fr;gap:7px}#monster-expedition .weapon-stats145 small{font-size:12px;color:#c8efda}#monster-expedition .weapon-picker145 .choice-buttons124{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}#monster-expedition .weapon-picker145 .choice-buttons124 button{min-height:44px;padding:10px 4px;font-size:15px;line-height:1.35}#monster-expedition .weapon-shortcut145{width:100%;min-height:44px;margin:8px 0;border-color:#c6ae78}';document.head.append(weaponStyle145);ac.signal.addEventListener('abort',()=>weaponStyle145.remove(),{once:true});
 
@@ -2635,6 +2654,77 @@ const apexButton171=document.createElement('button');apexButton171.type='button'
 const apexReturnBefore171=returnToExploration7698;returnToExploration7698=function(){const q=apexDefinition171();apexReturnBefore171();if(q)paintApex171();};
 const apexUIBefore171=battleUI;battleUI=function(){apexUIBefore171();const q=apexDefinition171();battlePanel.classList.toggle('apex-quest171',!!q);if(q){battlePanel.querySelector('.battle-top b').textContent=battle.outcome==='win'?'QUEST CLEARED':q.name;battlePanel.querySelector('.battle-turn').textContent='QUEST '+(APEX_QUESTS171.indexOf(q)+1)+'/3 · TURN '+battle.turn;}};
 const apexStyle171=document.createElement('style');apexStyle171.textContent='#monster-expedition .apex-preview171 .choice-art124{display:flex;justify-content:center}#monster-expedition .apex-preview171 article{display:grid;justify-items:center;gap:6px;padding:6px;max-width:100%;box-sizing:border-box}#monster-expedition .apex-preview171 article canvas,#monster-expedition .apex-preview171 article img{width:120px!important;height:120px!important;object-fit:contain}#monster-expedition .apex-preview171 article small{font-size:10px;letter-spacing:0;color:#c7d3e5}#monster-expedition .apex-menu171 .choice-art124{display:none}#monster-expedition .apex-menu171 .choice-buttons124{gap:8px}#monster-expedition .apex-menu171 .choice-buttons124 button{font-size:14px!important;line-height:1.55;white-space:pre-line;min-height:48px;padding:10px!important}#monster-expedition .apex-quest171 .battle-top{border-color:#e1c383;color:#f0dfb5}#monster-expedition .apex-preview171 .choice-buttons124 button{min-height:48px}';root.append(apexStyle171);
+
+// v181: direct, individual-aware expedition party and weapon controls.
+const squad181=document.createElement('section');squad181.className='squad181';squad181.setAttribute('aria-label','探索パーティー編成');prepMemberControls129.prepend(squad181);
+for(const s of selects)s.parentElement.hidden=true;
+root.querySelector('.exp-lineup').hidden=true;
+function paintSquad181(){
+ squad181.replaceChildren(text129('h4','探索パーティー'),text129('p','変更はその場で保存 · 武器とHP・MPは引き継ぎます'));
+ const list=document.createElement('div');list.className='squad-slots181';squad181.append(list);
+ for(let i=0;i<3;i++){
+  const n=team[i],card=document.createElement('article'),copy=document.createElement('div'),actions=document.createElement('div');card.className='squad-slot181';copy.className='squad-copy181';actions.className='squad-actions181';
+  card.append(n?portrait129(n):text129('span','＋','squad-empty181'));
+  copy.append(text129('small',i===0?'LEADER · 先頭':'MEMBER '+(i+1)),text129('b',n?partyName173(n):'仲間を追加'));
+  if(n){const w=equippedWeapon144(n);copy.append(text129('small','Lv.'+compLv(n)+' · '+monsterSexLabel139(n)),text129('small','武器：'+(w?.name||'なし')));}
+  const change=prepButton129(n?'入れ替え':'追加',()=>memberPicker181(i));change.setAttribute('aria-label',(i+1)+'枠目の仲間を'+(n?'入れ替え':'追加'));actions.append(change);
+  if(n){const weapon=prepButton129('武器',()=>weaponPicker145(n));weapon.setAttribute('aria-label',partyName173(n)+'の武器を変更');actions.append(weapon);}
+  card.append(copy,actions);list.append(card);
+ }
+}
+function chooseMember181(i,n){
+ if(battle||animation||!Number.isInteger(i)||i<0||i>2||n&&!owned().includes(n))return false;
+ const next=team.slice(),at=next.indexOf(n);
+ if(!n)next.splice(i,1);
+ else if(at>=0&&at!==i){const old=next[i];next[i]=n;if(old)next[at]=old;else next.splice(at,1);}
+ else next[i]=n;
+ const compact=next.filter(Boolean);if(!validTeam158(compact))return false;
+ return applyTeam158(compact);
+}
+function memberPicker181(i){
+ if(battle||animation)return;
+ const el=choiceScreen124((i+1)+'枠目の仲間を選ぶ','編成中の仲間を選ぶと位置を交換します。',[
+  ['この枠から外す',()=>{if(chooseMember181(i,'')){closeChoice124();paintMembers129();}}],['戻る',()=>closeChoice124()]
+ ]);el.classList.add('member-picker181');const remove=el.querySelector('.choice-buttons124 button');remove.disabled=!team[i]||team.length<=1;
+ const body=el.querySelector('.choice-art124'),search=document.createElement('input'),order=document.createElement('select'),tools=document.createElement('div'),list=document.createElement('div'),pager=document.createElement('div');tools.className='picker-tools181';list.className='member-list181';pager.className='picker-pages181';
+ search.type='search';search.placeholder='仲間の名前で検索';search.setAttribute('aria-label','仲間の名前で検索');order.setAttribute('aria-label','仲間の並び順');for(const [v,t]of [['level','レベル順'],['rank','ランク順'],['name','名前順']]){const o=document.createElement('option');o.value=v;o.textContent=t;order.append(o);}tools.append(search,order);body.append(tools,list,pager);
+ let page=0;
+ function paint(){
+  const query=search.value.trim().toLocaleLowerCase();
+  const names=owned().filter(n=>(n+' '+partyName173(n)).toLocaleLowerCase().includes(query));
+  names.sort((a,b)=>order.value==='name'?partyName173(a).localeCompare(partyName173(b),'ja'):order.value==='rank'?window.__DOD_RANK148.score(b)-window.__DOD_RANK148.score(a)||compLv(b)-compLv(a):compLv(b)-compLv(a));
+  const max=Math.max(1,Math.ceil(names.length/12));page=Math.min(page,max-1);list.replaceChildren();
+  for(const n of names.slice(page*12,page*12+12)){
+   const b=prepButton129('',()=>{if(chooseMember181(i,n)){closeChoice124();paintMembers129();}else el.querySelector('.choice-msg124').textContent='変更を保存できませんでした。現在の編成を維持しています。';});b.className='member-option181';b.setAttribute('aria-pressed',String(team[i]===n));
+   const copy=document.createElement('span');copy.append(text129('b',partyName173(n)),text129('small','Lv.'+compLv(n)+' · '+monsterSexLabel139(n)+(team.includes(n)?' · '+(team.indexOf(n)+1)+'枠目':'')),window.__DOD_RANK148.node(n));b.append(portrait129(n),copy);list.append(b);
+  }
+  if(!names.length)list.append(text129('p','該当する仲間はいません。'));
+  const prev=prepButton129('前へ',()=>{page--;paint();}),next=prepButton129('次へ',()=>{page++;paint();});prev.disabled=page===0;next.disabled=page>=max-1;pager.replaceChildren(prev,text129('small',(page+1)+' / '+max+' · '+names.length+'体'),next);
+ }
+ search.oninput=()=>{page=0;paint();};order.onchange=()=>{page=0;paint();};paint();
+}
+const lineupBefore181=lineup;lineup=function(){lineupBefore181();paintSquad181();};
+const membersBefore181=paintMembers129;paintMembers129=function(){membersBefore181();paintSquad181();};
+const squadStyle181=document.createElement('style');squadStyle181.textContent=`
+#monster-expedition .prep-controls129>label[hidden],#monster-expedition .exp-lineup[hidden]{display:none!important}
+#monster-expedition .squad181{margin:0 0 10px;width:100%;grid-column:1/-1;min-width:0}
+#monster-expedition .squad181 h4{margin:4px 0;color:#eed6a5;font-size:15px}#monster-expedition .squad181>p{font-size:10px;margin:5px 0 10px;line-height:1.6}
+#monster-expedition .squad-slots181{display:grid;gap:7px}#monster-expedition .squad-slot181{display:grid;grid-template-columns:52px minmax(0,1fr) 66px;gap:8px;align-items:center;padding:9px;background:linear-gradient(125deg,#27334b,#161e30);border:1px solid #75664f;border-radius:12px;min-width:0}
+#monster-expedition .squad-slot181 .prep-portrait129{width:52px!important;height:60px!important;margin:0;display:flex;align-items:center;justify-content:center}#monster-expedition .squad-slot181 .prep-portrait129>*{width:100%!important;height:100%!important;object-fit:contain}
+#monster-expedition .squad-empty181{font-size:28px;text-align:center;color:#a09377}#monster-expedition .squad-copy181{min-width:0;display:grid;gap:3px}#monster-expedition .squad-copy181 b{font-size:12px;overflow-wrap:anywhere}#monster-expedition .squad-copy181 small{font-size:10px;overflow-wrap:anywhere;color:#b9c5d8}#monster-expedition .squad-copy181>small:first-child{font-size:8px;letter-spacing:.08em;color:#dfc391}
+#monster-expedition .squad-actions181{display:grid;gap:5px}#monster-expedition .squad-actions181 button{min-height:44px;font-size:11px;padding:5px 2px;touch-action:manipulation}
+#monster-expedition .member-picker181>div,#monster-expedition .weapon-picker181>div{width:min(440px,94vw);box-sizing:border-box;max-height:calc(100dvh - 80px);overflow:hidden;display:flex;flex-direction:column;gap:8px;padding:14px}
+#monster-expedition .member-picker181 h3,#monster-expedition .weapon-picker181 h3{font-size:17px;margin:0}#monster-expedition .member-picker181>div>p,#monster-expedition .weapon-picker181>div>p{font-size:11px;line-height:1.5;margin:0}
+#monster-expedition .member-picker181 .choice-art124,#monster-expedition .weapon-picker181 .choice-art124{overflow:auto;min-height:0;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain;padding:2px}
+#monster-expedition .picker-tools181{display:grid;grid-template-columns:minmax(0,1fr) 105px;gap:6px}#monster-expedition .picker-tools181 input,#monster-expedition .picker-tools181 select{width:100%;min-width:0;box-sizing:border-box;font-size:16px;min-height:44px;padding:7px;background:#111b2d;color:#edf0fa;border:1px solid #68738c;border-radius:8px;user-select:text;-webkit-user-select:text}
+#monster-expedition .member-list181{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}#monster-expedition .member-option181{display:flex;align-items:center;gap:6px;text-align:left;min-width:0;padding:7px;min-height:80px}#monster-expedition .member-option181>span:last-child{display:grid;gap:4px;min-width:0}#monster-expedition .member-option181 b{font-size:11px;overflow-wrap:anywhere}#monster-expedition .member-option181 small{font-size:9px;overflow-wrap:anywhere}#monster-expedition .member-option181 .prep-portrait129{width:36px!important;height:44px!important;flex:none;margin:0}#monster-expedition .member-option181 .prep-portrait129>*{width:100%!important;height:100%!important;object-fit:contain}
+#monster-expedition .member-option181[aria-pressed=true],#monster-expedition .weapon-option181[aria-pressed=true]{border-color:#f1d296;background:linear-gradient(135deg,#534837,#29334a);box-shadow:inset 0 0 0 1px #e8c98855}
+#monster-expedition .picker-pages181{display:flex;gap:8px;align-items:center;justify-content:space-between}#monster-expedition .picker-pages181 button{min-height:44px;min-width:60px}#monster-expedition .picker-pages181 small{font-size:11px}
+#monster-expedition .member-picker181 .choice-buttons124,#monster-expedition .weapon-picker181 .choice-buttons124{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}#monster-expedition .member-picker181 .choice-buttons124 button,#monster-expedition .weapon-picker181 .choice-buttons124 button{min-height:44px;padding:8px 3px;font-size:13px}
+#monster-expedition .roster-wrap181{min-width:0;display:grid;gap:5px}#monster-expedition .roster-wrap181>.prep-monster129{width:100%;height:100%;box-sizing:border-box}#monster-expedition .roster-weapon181{min-height:44px;font-size:11px}
+#monster-expedition .weapon-list181{display:grid;gap:6px}#monster-expedition .weapon-option181{padding:10px;text-align:left;display:grid;gap:4px;min-height:58px;width:100%;box-sizing:border-box}#monster-expedition .weapon-option181 b{font-size:12px;overflow-wrap:anywhere}#monster-expedition .weapon-option181 small{font-size:10px;color:#c4cddd;line-height:1.5}#monster-expedition .weapon-option181:disabled{opacity:.5}
+#monster-expedition .weapon-picker181 .weapon-preview145{position:sticky;top:0;z-index:1;background:#202b40;flex:none;margin:0;padding:8px}#monster-expedition .weapon-picker181 .weapon-preview145 p{font-size:10px;margin:4px 0}#monster-expedition .weapon-picker181 .weapon-stats145 small{font-size:11px}#monster-expedition .weapon-picker181 .choice-msg124:empty{display:none}
+`;root.append(squadStyle181);
 
 const resizeMap76113=()=>{const rect=canvas.getBoundingClientRect();if(!rect.width||rect.height<30)return;const h=Math.max(192,Math.min(720,Math.round(352*rect.height/rect.width))),ratio=Math.min(4,Math.max(2,rect.width/352*(window.devicePixelRatio||1)));if(h===mapHeight76113&&canvas.width===Math.round(352*ratio))return;mapHeight76113=h;canvas.width=Math.round(352*ratio);canvas.height=Math.round(h*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);draw();};const mapObserver76113=new ResizeObserver(resizeMap76113);mapObserver76113.observe(canvas);ac.signal.addEventListener('abort',()=>mapObserver76113.disconnect(),{once:true});
 if(battle?.outcome==='win')openAftermath165();paintTrials144();reveal();teamUI();hud();draw();lineup();message.textContent=floorHint7699();sceneIdle76117();installHub121();paintMembers129();if(battle){battlePanel.hidden=false;paintPortraits();battleUI();}else if(!saved?.team?.length){setup.hidden=false;showEntry121();}const standingChest76100=!battle&&setup.hidden&&(!entryChoice121||entryChoice121.hidden)?pickupTile76102(positions[0]):null;hud();persist();showChest76100(standingChest76100);if(chooseEntry121&&!battle)showEntry121();if(!chooseEntry121)showBlessing132();if(!battle&&setup.hidden&&(!entryChoice121||entryChoice121.hidden)&&positions[0].x===stairs.x&&positions[0].y===stairs.y)act();
