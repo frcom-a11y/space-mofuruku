@@ -2,6 +2,32 @@
 (()=>{
 "use strict";
 const VERSION='v0.76.160',FIELD='expedition7696',HTML='<div id="monster-expedition">\n<section class="exp-game" aria-label="仲間モンスター専用の遺跡探索">\n <header><span>DROP OF DUNGEON / MONSTER EXPEDITION</span><h2>翠水の忘れられた遺跡</h2><div><b id="exp-floor">地下1階</b><span id="exp-loot">発掘0</span><button type="button" id="exp-party">編成</button></div></header>\n <div class="exp-team" aria-label="探索パーティー"></div>\n <canvas width="352" height="352" role="img" aria-label="明るい苔の遺跡を仲間モンスター3体で探索する画面"></canvas>\n <p class="exp-message" aria-live="polite">赤い「!」の敵に接触でバトル。丸パッドで探索できます。</p>\n <div class="exp-controls"><div class="exp-pad"><button type="button" data-dir="up" aria-label="上に移動">▲</button><button type="button" data-dir="left" aria-label="左に移動">◀</button><span>MOVE</span><button type="button" data-dir="right" aria-label="右に移動">▶</button><button type="button" data-dir="down" aria-label="下に移動">▼</button></div><button type="button" id="exp-action">調べる<small>結晶・階段</small></button></div>\n <footer>丸パッド／矢印キー・WASDで移動 · 触れると自動取得<br>敵に接触で戦闘 · 宝箱で回復 · 結晶・階段も自動 · 途中から再開できます</footer>\n <div class="exp-setup" hidden><h3>発掘パーティー</h3><p>所持している仲間モンスターから1〜3体を編成</p><label>先頭<select aria-label="先頭のモンスター"></select></label><label>2体目<select aria-label="2体目のモンスター"></select></label><label>3体目<select aria-label="3体目のモンスター"></select></label><div class="exp-lineup"></div><button type="button" id="exp-start">この仲間で探索する</button><p class="exp-setup-msg" aria-live="polite"></p></div>\n</section></div>\n';
+const BANDS155=[
+ {min:1,max:29,name:'翠葉の森',theme:0,names:['スライム','ホーンラビット','コロドラ','リーフフェアリー'],rare:['ミントドラゴン']},
+ {min:30,max:59,name:'青晶の洞窟',theme:1,names:['アクアドラコ','水晶亀・リプルト','ぷにシェル','鉱甲獣・グラモル'],rare:['聖甲獣・ルミガード']},
+ {min:60,max:99,name:'熔牙の古代遺跡',theme:3,names:['牙竜・ラグレット','角獣・カーネル','ルーンゴーレム','牙魔・グルモン'],rare:['魔竜・インプドラ']},
+ {min:100,max:149,name:'月翼の廃都',theme:4,names:['聖羽獣・リュミエ','骨甲獣・ボノル','月尾獣・ルナリィ','虹晶獣・プリズモ'],rare:['宵星竜・ノクティア']},
+ {min:150,max:199,name:'黒焔の魔境',theme:3,names:['深淵竜・ガルドラ','魔将・ベルザゴン','魔獣・ラゼルガ','黒騎士・ナハト'],rare:['魔甲竜・ヴェルガオン']},
+ {min:200,max:249,name:'氷霊の墓所',theme:1,names:['霊牙獣・ノクルス','晶機獣・ルクサルト','月牙獣・フェルニア','翠晶獣・モスガメル'],rare:['幻月獣・ルナヴェール']},
+ {min:250,max:299,name:'雷嵐の神殿',theme:5,names:['嵐竜・ゼルガスト','天翼獣・アルフィア','花冠獣・フロレア','紅翼魔・ヴェルム'],rare:['紅嵐竜・ヴェルグリム']},
+ {min:300,max:399,name:'深淵の裂け目',theme:4,names:['冥翼魔・バルグリス','冥冠獣・モルディア','魔晶獣・サファルム','古代竜・オルドレア'],rare:['星海獣・ネブラプニ']},
+ {min:400,max:499,name:'星界の守護域',theme:5,names:['聖冠獣・セレスタ','雷冠獣・ガルディア','聖鎧獣・グランルミナ','星碑獣・アストゴロム'],rare:['天翔獣・セレスフィア']},
+ {min:500,max:599,name:'原初の禁域',theme:2,names:['巨晶獣・テラゴルム','世界樹獣・ユグルム','翠晶竜・エルサフィル','古代竜・オルドレア'],rare:['熔晶竜・ガルネクス']},
+ {min:600,max:9999,name:'最深の星淵',theme:5,names:['古代竜・オルドレア','巨晶獣・テラゴルム','聖冠獣・セレスタ','世界樹獣・ユグルム'],rare:['星海王・オルビオン'],extra800:['獣皇・レオガルム'],extra1000:['冥界王・エレボルグ']}
+];
+// Read-only acquisition hints from the same depth bands, egg pools and nest rules.
+window.__DOD_HABITAT172=Object.freeze({sources(n){
+ const species=monsterSpecies141(n),rows=[];
+ for(const b of BANDS155){
+  const ranges=[['通常の魔物',b.names,b.min],['希少な魔物',b.rare,b.min],['希少な魔物',b.extra800||[],800],['希少な魔物',b.extra1000||[],1000]];
+  for(const [kind,pool,min]of ranges)if(pool.includes(species))rows.push({kind:'field',text:b.name+' · 地下'+Math.max(b.min,min)+'〜'+(b.max===9999?'最深':b.max)+'階 · '+kind});
+ }
+ for(const t of EGG_TYPES126)if(eggPool126(t.id).includes(species))rows.push({kind:'egg',text:t.name+'の孵化候補（中身は抽選）'});
+ const nest=(window.__DOD_EXPANSION162?.species||[]).find(r=>r.name===species);
+ if(nest&&['D','C'].includes(nest.rank))rows.push({kind:'nest',text:'魔物の巣 · 地下'+(nest.rank==='C'?30:1)+'階からの出現・加入候補'});
+ return rows;
+}});
+
 const WILD76119=window.__DOD_EXP_WILD76119||[];
 const APEX76112={name:'星喰竜・ルミヴォル',gear:'星喰竜爪・ルミヴォル',hp:3000,atk:180,def:65};
 const humans=new Set(['キーボ','ミア','トア','ピボット','リリア','セレナ','ノア','カグラ','ゼファル','レオンハルト','ナーヴァ','アズライル','フェンリル','ヴォルク']);
@@ -1533,19 +1559,7 @@ function chestExtra154(chest){
 }
 
 // v155 depth bands: existing adopted species/art, with new encounter access only.
-const BANDS155=[
- {min:1,max:29,name:'翠葉の森',theme:0,names:['スライム','ホーンラビット','コロドラ','リーフフェアリー'],rare:['ミントドラゴン']},
- {min:30,max:59,name:'青晶の洞窟',theme:1,names:['アクアドラコ','水晶亀・リプルト','ぷにシェル','鉱甲獣・グラモル'],rare:['聖甲獣・ルミガード']},
- {min:60,max:99,name:'熔牙の古代遺跡',theme:3,names:['牙竜・ラグレット','角獣・カーネル','ルーンゴーレム','牙魔・グルモン'],rare:['魔竜・インプドラ']},
- {min:100,max:149,name:'月翼の廃都',theme:4,names:['聖羽獣・リュミエ','骨甲獣・ボノル','月尾獣・ルナリィ','虹晶獣・プリズモ'],rare:['宵星竜・ノクティア']},
- {min:150,max:199,name:'黒焔の魔境',theme:3,names:['深淵竜・ガルドラ','魔将・ベルザゴン','魔獣・ラゼルガ','黒騎士・ナハト'],rare:['魔甲竜・ヴェルガオン']},
- {min:200,max:249,name:'氷霊の墓所',theme:1,names:['霊牙獣・ノクルス','晶機獣・ルクサルト','月牙獣・フェルニア','翠晶獣・モスガメル'],rare:['幻月獣・ルナヴェール']},
- {min:250,max:299,name:'雷嵐の神殿',theme:5,names:['嵐竜・ゼルガスト','天翼獣・アルフィア','花冠獣・フロレア','紅翼魔・ヴェルム'],rare:['紅嵐竜・ヴェルグリム']},
- {min:300,max:399,name:'深淵の裂け目',theme:4,names:['冥翼魔・バルグリス','冥冠獣・モルディア','魔晶獣・サファルム','古代竜・オルドレア'],rare:['星海獣・ネブラプニ']},
- {min:400,max:499,name:'星界の守護域',theme:5,names:['聖冠獣・セレスタ','雷冠獣・ガルディア','聖鎧獣・グランルミナ','星碑獣・アストゴロム'],rare:['天翔獣・セレスフィア']},
- {min:500,max:599,name:'原初の禁域',theme:2,names:['巨晶獣・テラゴルム','世界樹獣・ユグルム','翠晶竜・エルサフィル','古代竜・オルドレア'],rare:['熔晶竜・ガルネクス']},
- {min:600,max:9999,name:'最深の星淵',theme:5,names:['古代竜・オルドレア','巨晶獣・テラゴルム','聖冠獣・セレスタ','世界樹獣・ユグルム'],rare:['星海王・オルビオン'],extra800:['獣皇・レオガルム'],extra1000:['冥界王・エレボルグ']}
-];
+// Depth bands shared with the read-only acquisition guide172.
 function band155(level=floor){return BANDS155.find(b=>level>=b.min&&level<=b.max)||BANDS155[0];}
 function bandPool155(level=floor,rare=false){const b=band155(level);return [...new Set(rare?[...b.rare,...(level>=800?b.extra800||[]:[]),...(level>=1000?b.extra1000||[]:[])]:b.names)].filter(n=>MONSTERS[n]);}
 const depthSpecies155=new Set(BANDS155.flatMap(b=>[...b.names,...b.rare,...(b.extra800||[]),...(b.extra1000||[])]));
@@ -2014,7 +2028,7 @@ function ecologyStatus157(n){const held=owned().filter(k=>monsterSpecies141(k)==
 function ecologyPool157(level){return [...new Set([...bandPool155(level),...bandPool155(level,true)])];}
 function regionGuide155(selected=band155(Math.min(floor,best)).min,filter='all'){
  if(battle||animation)return;stop();info150.open=false;const band=BANDS155.find(b=>b.min===selected)||BANDS155[0],reached=best>=band.min,level=Math.max(band.min,Math.min(best,band.max)),pool=ecologyPool157(level),rare=new Set(bandPool155(level,true)),total=[...depthSpecies155],joined=total.filter(n=>ecologyStatus157(n).joined).length,seen=total.filter(n=>ecologyStatus157(n).seen).length;
- const el=choiceScreen124('深層の生態手帳','発見 '+seen+' / '+total.length+'種 · 加入 '+joined+' / '+total.length+'種。加入記録は配合で親がいなくなっても残ります。',[['遠征メニューへ',hubMenu155],['探索へ戻る',()=>{closeChoice124();canvas.focus({preventScroll:true});}]]);el.classList.add('hub155','ecology157');
+ const el=choiceScreen124('深層の生態手帳','発見 '+seen+' / '+total.length+'種 · 加入 '+joined+' / '+total.length+'種。加入記録は配合で親がいなくなっても残ります。',[['入手図鑑・配合目標',()=>{closeChoice124();breedInside121();window.__DOD_COLLECTION172.open();}],['遠征メニューへ',hubMenu155],['探索へ戻る',()=>{closeChoice124();canvas.focus({preventScroll:true});}]]);el.classList.add('hub155','ecology157');
  const body=document.createElement('div');body.className='ecology-body157';const controls=document.createElement('div');controls.className='ecology-controls157';const area=document.createElement('select');area.setAttribute('aria-label','生態手帳の地域');for(const b of BANDS155){const option=document.createElement('option');option.value=b.min;option.textContent='B'+b.min+'〜'+(b.max===9999?'最深':b.max)+' '+(best>=b.min?b.name:'未踏の地域');area.append(option);}area.value=String(band.min);const select=document.createElement('select');select.setAttribute('aria-label','生態手帳の絞り込み');for(const [value,label]of [['all','すべての魔物'],['unjoined','まだ加入していない'],['rare','上位の希少種']]){const option=document.createElement('option');option.value=value;option.textContent=label;select.append(option);}select.value=['all','unjoined','rare'].includes(filter)?filter:'all';controls.append(area,select);area.onchange=()=>regionGuide155(Number(area.value),select.value);select.onchange=()=>regionGuide155(Number(area.value),select.value);body.append(controls);
  const summary=document.createElement('div');summary.className='ecology-summary157';summary.append(text129('b',reached?band.name:'まだ見ぬ地域'),text129('small',reached?'この地域の加入 '+pool.filter(n=>ecologyStatus157(n).joined).length+' / '+pool.length+'種':'地下'+band.min+'階に到達すると、この地域の手帳が開きます。'));body.append(summary);
  const list=document.createElement('div');list.className='ecology-list157';if(reached){for(const n of pool){const state=ecologyStatus157(n);if(select.value==='unjoined'&&state.joined||select.value==='rare'&&!rare.has(n))continue;const row=document.createElement('article');row.dataset.status=state.joined?'joined':state.seen?'seen':'unknown';const portrait=state.seen?portrait129(n):text129('div','？','ecology-unknown157'),copy=document.createElement('div');copy.append(text129('small',rare.has(n)?'希少な上位種':'この地域の通常種'),text129('b',state.seen?shortName154(n):'未発見のモンスター'));if(state.seen){copy.append(window.__DOD_RANK148.node(n));row.title=n;}copy.append(text129('small',state.joined?(state.held?'加入済み · 現在 '+state.held+'体':'加入済み · 現在は未所持'):state.seen?'発見済み · 加入を目指そう':'探索して姿を見つけよう'));row.append(portrait,copy);list.append(row);}if(!list.childElementCount)list.append(text129('p','この条件のモンスターはいません。'));if(band.min===600&&best<1000)list.append(text129('small','地下'+(best<800?'800':'1000')+'階で、新たな希少種がこの地域に加わります。'));}body.append(list,text129('p','通常・希少の出現種を記録。神獣・魔王・大天使など配合限定の最上位種は、配合から目指せます。','ecology-note157'));el.querySelector('.choice-buttons124').before(body);
