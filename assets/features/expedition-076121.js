@@ -2054,7 +2054,7 @@ const STORY_MAPS175={
  rival:{name:'芽吹きの国への道',bg:'forest',paths:[[1,10,5,10],[5,10,5,6],[3,6,10,6],[10,2,10,6],[3,3,3,6],[3,3,7,3]],nodes:[['gar',10,3,'旅するガル']]},
  waterway:{name:'根脈の水路',bg:'waterway',paths:[[1,10,5,10],[5,2,5,10],[2,7,10,7],[2,4,2,7],[2,4,10,4],[10,4,10,7],[5,2,9,2]],nodes:[['valveA',2,6,'西の水門'],['valveB',10,6,'東の水門'],['valveC',5,4,'奥の水門'],['guardian',9,2,'守護獣']]}
 };
-function storyState175(){const v=S.monsterStory175||{},stage=Number.isInteger(v.stage)&&v.stage>=0&&v.stage<STORY_STAGE175.length?v.stage:0,scene=STORY_SCENES175[stage],page=Number.isInteger(v.page)&&v.page>=0&&v.page<(scene?.pages.length||1)?v.page:0;const flags={};for(const k of ['sign','prints','roots','valveA','valveB','valveC','guardian','resident','joined','weapon','miner177','warm177','rubble177','lift177','coolant177','vent177','forgeSeal177','furnaceWin177','forgeWeapon177','garRound177','garFinished177','garWon177'])if(v.flags?.[k]===true)flags[k]=true;const map=stage===2?'forest':stage===4?'rival':stage===7?'waterway':stage===12?'mine177':stage===14?'forgeRival177':stage===16?'furnace177':null;return {v:1,stage,page,active:v.active===true,flags,rival:['win','lose'].includes(v.rival)?v.rival:null,walk:map&&v.walk?.map===map&&storyWalkable175(map,v.walk.x,v.walk.y)?{map,x:v.walk.x,y:v.walk.y}:{map,x:1,y:10}};}
+function storyState175(){const v=S.monsterStory175||{},stage=Number.isInteger(v.stage)&&v.stage>=0&&v.stage<STORY_STAGE175.length?v.stage:0,scene=STORY_SCENES175[stage],page=Number.isInteger(v.page)&&v.page>=0&&v.page<(scene?.pages.length||1)?v.page:0;const flags={};for(const k of ['sign','prints','roots','valveA','valveB','valveC','guardian','resident','joined','weapon','miner177','warm177','rubble177','lift177','coolant177','vent177','forgeSeal177','furnaceWin177','forgeWeapon177','garRound177','garFinished177','garWon177','promiseHand180','promiseSign180','garStay180','garStrong180','liliTrust180','liliReturn180','kingAsk180','kingAct180','truth180','hope180','challenge180'])if(v.flags?.[k]===true)flags[k]=true;const map=stage===2?'forest':stage===4?'rival':stage===7?'waterway':stage===12?'mine177':stage===14?'forgeRival177':stage===16?'furnace177':null;return {v:1,stage,page,active:v.active===true,flags,rival:['win','lose'].includes(v.rival)?v.rival:null,walk:map&&v.walk?.map===map&&storyWalkable175(map,v.walk.x,v.walk.y)?{map,x:v.walk.x,y:v.walk.y}:{map,x:1,y:10}};}
 function storyWalkable175(map,x,y){if(!Number.isInteger(x)||!Number.isInteger(y))return false;return STORY_MAPS175[map]?.paths.some(([x1,y1,x2,y2])=>x>=Math.min(x1,x2)&&x<=Math.max(x1,x2)&&y>=Math.min(y1,y2)&&y<=Math.max(y1,y2))||false;}
 // Include recruitment fields and story progress in the same existing atomic save transaction.
 function storyTransaction175(change){const names=['monsterStory175','monsterCompanions','monsterGrowth','monsterIndividualSeq141','seen','joined','companionRecords156'],prior=names.map(k=>[k,Object.hasOwn(S,k),S[k]]);const individuals=snapshotIndividuals141();const ok=transaction155(change);if(!ok){restoreIndividuals141(individuals);for(const[k,p,v]of prior)if(p)S[k]=v;else delete S[k];}return ok;}
@@ -2088,7 +2088,7 @@ function storyGar175(){const body=storyShell175('gar','旅するガル');const i
 function storyFight175(b=battle){return STORY_FIGHTS175.find(d=>b?.trial144?.id===d.id&&b.enemy?.id==='trial144:'+d.id&&b.enemy?.type===d.monster&&b.trial144.story175===1);}
 const storyTrialBefore175=trialDefinition144;trialDefinition144=function(b=battle){return storyTrialBefore175(b)||storyFight175(b);};
 function storyFightPreview175(id){const d=[...STORY_FIGHTS175,...STORY_FIGHTS177].find(d=>d.id===id);if(!d||storyState175().stage!==d.stage)return false;const body=storyShell175('preview',d.name),i=document.createElement('div');i.className='story-preview-art175';if(id==='gar175'||id==='guardian175'){const img=document.createElement('img');img.src=storyURL175(id==='gar175'?'gar':'guardian');img.alt=d.name;i.append(img);}else i.append(battlePortrait(d.monster));body.append(i,text129('p','推奨Lv'+d.level+' · HP '+d.hp+' / 攻撃 '+d.atk+' / 防御 '+d.def),text129('p','現在の探索パーティーで挑戦。HP・MPは開始時に全回復し、終了後は挑戦前の値へ戻ります。3行動ごとの猛攻には防御で備えよう。'),text129('small',['gar175','garOre177','garClaw177'].includes(id)?'勝敗にかかわらず物語が続きます。撤退なら後から再挑戦できます。':'勝つと物語が進みます。EXP・G・通常の加入抽選はありません。'),prepButton129('この仲間で挑む',()=>storyStartFight175(d)),prepButton129('町へ戻る',storyHome175));}
-function storyStartFight175(d){const s=storyState175();if(battle||animation||![...STORY_FIGHTS175,...STORY_FIGHTS177].includes(d)||s.stage!==d.stage||d.id==='guardian175'&&!['valveA','valveB','valveC'].every(k=>s.flags[k])||!storyReady177(d,s)||!team.length||team.some(n=>!owned().includes(n)))return false;const beforeBusy=battleBusy;const ok=storyTransaction175(()=>{const snap={id:d.id,story175:1,hp:{...partyHP},mp:{...partyMP}};for(const n of team){partyHP[n]=stats(n).hp;partyMP[n]=stats(n).mp;}battle={enemy:{id:'trial144:'+d.id,type:d.monster,x:positions[0].x,y:positions[0].y,trial144:true},hp:d.hp,maxHP:d.hp,atk:d.atk,def:d.def,actor:0,turn:1,outcome:null,trial144:snap,log:d.name+'！ 仲間の技・防御を使って立ち向かおう。'};battleBusy=false;});if(!ok){battleBusy=beforeBusy;return false;}storyStop175();storyPane175?.remove();storyPane175=null;root.classList.remove('story-open175');setup.hidden=true;battlePanel.hidden=false;paintPortraits();battleUI();active?.modal.scrollTo(0,0);return true;}
+function storyStartFight175(d,rematch180=false){const s=storyState175();if(battle||animation||![...STORY_FIGHTS175,...STORY_FIGHTS177].includes(d)||(!rematch180&&s.stage!==d.stage||rematch180&&s.stage<=d.stage)||!rematch180&&d.id==='guardian175'&&!['valveA','valveB','valveC'].every(k=>s.flags[k])||!rematch180&&!storyReady177(d,s)||!team.length||team.some(n=>!owned().includes(n)))return false;const plan=storyCombatPlan180(d),beforeBusy=battleBusy;const ok=storyTransaction175(()=>{const snap={id:d.id,story175:1,rematch180:rematch180===true,challenge180:s.flags.challenge180===true,hp:{...partyHP},mp:{...partyMP}};for(const n of team){partyHP[n]=stats(n).hp;partyMP[n]=stats(n).mp;}battle={enemy:{id:'trial144:'+d.id,type:d.monster,x:positions[0].x,y:positions[0].y,trial144:true},hp:plan.hp,maxHP:plan.hp,atk:plan.atk,def:plan.def,actor:0,turn:1,outcome:null,trial144:snap,log:d.name+'！ 仲間の技・防御を使って立ち向かおう。'};battleBusy=false;});if(!ok){battleBusy=beforeBusy;return false;}storyStop175();storyPane175?.remove();storyPane175=null;root.classList.remove('story-open175');setup.hidden=true;battlePanel.hidden=false;paintPortraits();battleUI();active?.modal.scrollTo(0,0);return true;}
 const storyFinishBefore175=finishBattle;finishBattle=function(outcome){const d=storyFight175();if(!d)return storyFinishBefore175(outcome);if(battle.outcome||!['win','lose','escape'].includes(outcome))return;const ok=storyUpdate175(s=>{battle.outcome=outcome;battleBusy=false;if(d.id==='roots175'&&outcome==='win')s.flags.roots=true;if(d.id==='gar175'&&outcome!=='escape'){s.rival=outcome;s.stage=5;s.page=0;}if(d.id==='guardian175'&&outcome==='win'){s.flags.guardian=true;s.stage=8;s.page=0;if(!s.flags.weapon){const g=goods126();g.weapons.mossstaff140=Math.min(999,g.weapons.mossstaff140+1);S.expeditionGoods126=g;s.flags.weapon=true;}}battle.log=outcome==='win'?d.name+'に勝利！'+(d.id==='guardian175'?' 封印を直した。初クリア：翠芽の魔杖×1。':' 物語の続きを見よう。'):outcome==='lose'?(d.id==='gar175'?'ガルとの腕試しを終えた。勝敗を越えて、彼が語りはじめる。':'仲間たちは町で休もう。育成・編成して再挑戦できます。'):'挑戦を中断。準備してから、いつでも再挑戦できます。';});if(!ok)battleBusy=false;battleUI();};
 const storyReturnBefore175=returnToExploration7698;returnToExploration7698=function(){const d=storyFight175();if(!d||!battle.outcome)return storyReturnBefore175();storyReturnFight175();};
 function storyReturnFight175(){if(!storyFight175()||!battle.outcome)return false;clearTimeout(returnTimer7698);returnTimer7698=null;returnBattle7698=null;const outcome=battle.outcome,snap=battle.trial144,d=storyFight175();if(!storyTransaction175(()=>{for(const n of team){partyHP[n]=Math.min(stats(n).hp,snap.hp[n]);partyMP[n]=Math.min(stats(n).mp,snap.mp[n]);}battle=null;battleBusy=false;})){battleUI();return false;}battlePanel.hidden=true;battlePanel.classList.remove('story-battle175','trial144');setup.hidden=false;teamUI();hud();if(d.id==='roots175'&&outcome==='win')storyRescue175();else if(d.id==='gar175'&&outcome!=='escape'||d.id==='guardian175'&&outcome==='win')storyContinue175();else storyHome175();return true;}
@@ -2199,6 +2199,136 @@ function chooseSkill178(){if(!battle||battleBusy||battle.outcome)return;const n=
 command=function(type){if(type==='skill'&&!fusionActive132&&!inheritedActive155&&!lineageActive134&&sweepFor178(team[battle?.actor]))return chooseSkill178();return commandBefore178(type);};
 const uiBefore178=battleUI;battleUI=function(){uiBefore178();if(!battle||battle.outcome||sweepActive178)return;const n=team[battle.actor],d=sweepFor178(n),b=battlePanel.querySelector('[data-command="skill"]');if(d&&b){b.firstChild.textContent=skill(n).name+' ▾';b.querySelector('small').textContent+=' / 全体技';b.disabled=battleBusy||(partyMP[n]||0)<Math.min(skillCost132(n,'skill'),sweepCost178());}};
 const style178=document.createElement('style');style178.textContent='#monster-expedition .sweep-wave178{position:absolute;inset:0;z-index:8;pointer-events:none;animation:sweep178 .65s ease-out both;background:radial-gradient(ellipse at 50% 30%,#ffd77aaa,transparent 70%);mix-blend-mode:screen}#monster-expedition .sweep-wave178.dark{background:radial-gradient(ellipse at 50% 30%,#b397ffaa,transparent 70%)}#monster-expedition .sweep-wave178.earth{background:repeating-linear-gradient(170deg,transparent 0 24px,#f4c78599 26px 29px,transparent 33px 55px)}@keyframes sweep178{0%{opacity:0;transform:scale(.65)}30%{opacity:.85}100%{opacity:0;transform:scale(1.15)}}@media(prefers-reduced-motion:reduce){#monster-expedition .sweep-wave178{animation:none;opacity:.2}}';document.head.append(style178);ac.signal.addEventListener('abort',()=>style178.remove(),{once:true});
+
+// v180: same chapter progress, new dialogue choices and optional scaled rematches.
+Object.assign(STORY_SCENES175,{
+0:{title:'序章　帰ってこない名前',bg:'forest',pages:[
+ ['narrator','霧の向こうで、木を叩く音がした。小さな魔物が、折れた道標を一匹で立て直している。'],
+ ['moku','それ、抜かないで。リリが帰ってくる時、道がなくなっちゃう。……雨が降る前には、帰ってくるはずなんだ。'],
+ ['narrator','道標の裏には、細い爪で名前が刻まれていた。「モク」「リリ」。リリの文字だけ、何度もなぞった跡がある。'],
+ ['moku','モクっていうんだ。君の仲間にも、名前、ある？ ……あるよね。なくしたら、呼んであげられないもん。'],
+ ['narrator','あなたの仲間が道標を支えた。モクは初めて、霧とは反対の方を見た。今夜だけでも、待てる場所を探そう。']
+]},
+1:{title:'序章　ただいまの練習',bg:'town-ruin',pages:[
+ ['moku','ここ、お家だったのかな。屋根は半分だけど……半分は、あるね。'],
+ ['narrator','廃屋の灯籠には七つの窪みがあった。モクは道標を壁に立てかけ、誰もいない部屋に小さく言った。「ただいま」。'],
+ ['moku','……変かな。まだ誰も待ってないのに。ねえ、森に小さい足跡があったんだ。リリじゃない。でも、まだ生きてるかもしれない。'],
+ ['narrator','あなたの仲間が立ち上がった。ここで待つ名前を、もう一つ増やそう。最初の行き先は、道しるべの森。']
+]},
+3:{title:'第一章　橋を架ける魔物',bg:'town-bridge',pages:[
+ ['narrator','救い出したコロドラはポルと名乗った。町に着くなり、欠けた橋脚に石を積み始める。'],
+ ['moku','お礼なら、いらないよ。疲れてるでしょ。……そんなに急いで、どこへ行くの？'],
+ ['narrator','「行かねえよ。橋があれば、次に来るやつが濡れずに済むだろ」。ポルは、まるで当たり前のことを言った。'],
+ ['moku','じゃあ……ここに、いてくれるんだ。うん。おかえり、ポル。'],
+ ['narrator','橋の下から古い旅の手帳が見つかった。「力は、次の命へ渡せる」。配合所の印がある。強さを託す道も、この町から始まる。'],
+ ['moku','ポルが教えてくれた。リリは芽吹きの国へ逃げたって。今度は、僕が迎えに行く番だ。']
+]},
+5:{title:'第一章　置いていけない弱さ',bg:'forest',pages:[
+ ['gar','……強いな。でも、そこの小さいのまで連れて歩くのか。'],
+ ['moku','モクだよ。「小さいの」じゃない。僕にも、できることはある。'],
+ ['gar','知ってる。弱いやつに、名前がないわけじゃない。……名前を呼んでも、戻ってこないことがあるだけだ。'],
+ ['narrator','ガルの首には、焼けた小さな鈴があった。彼はそれを握り、すぐ離した。指には、まだ消えない火傷の跡がある。'],
+ ['gar','俺は、次は間に合う力が欲しい。お前はどうする。連れていくと言った以上、最後まで置いてくるなよ。'],
+ ['moku','うん。僕、歩くのは遅いけど。帰り道は、誰よりちゃんと覚えてるから。']
+]},
+6:{title:'第一章　門の向こうの声',bg:'forest',pages:[
+ ['narrator','芽吹きの国の門には、内側から爪を立てた跡があった。誰かが外へ出ようとしていた。'],
+ ['king','外の霧を入れるわけにはいかぬ。ここに残る命だけで、もう精いっぱいなのだ。'],
+ ['moku','リリを返してください。迎えに来たんです。約束したから。'],
+ ['king','リリは生きている。だが、この国に来たのは彼女だけではない。守る相手が増えるたび、門は重くなる。'],
+ ['narrator','門の下から、細い葉が差し出された。「モク、来ちゃだめ」。見覚えのある爪の文字だった。'],
+ ['king','根脈の水路の守護獣が霧を抱え込んでいる。三つの水門を開き、息をさせてやってくれ。殺すための戦いではない。'],
+ ['moku','迎えに来たのに、来ちゃだめって……。理由を聞きたい。ちゃんと、リリの声で。']
+]},
+8:{title:'第一章　迎えに来た、その先',bg:'forest',pages:[
+ ['narrator','守護獣は倒れなかった。水が戻ると、絡まった根の腕をほどいた。その下で、幼い魔物たちが息をしていた。'],
+ ['king','守護獣は、最後までこの子らを抱えていたのだな。門を閉じていた我よりも、よほど多くの命を守っていた。'],
+ ['moku','リリ！ もう大丈夫だよ。帰ろう。橋もあるし、屋根も、半分より増えたんだ。'],
+ ['narrator','リリは首を振った。「この子たち、私がいないと眠れないの」。迎えに来た言葉だけが、モクの口に残った。'],
+ ['moku','……僕が帰りたい場所と、リリが帰りたい場所は、同じじゃないんだね。わかった。じゃあ、また会いに来る。'],
+ ['king','この灯の種を持ってゆけ。門の外にも、待つ者がいると分かった。今度は、こちらから道をつなごう。']
+]},
+9:{title:'第一章　灯は誰のために',bg:'town-lit',pages:[
+ ['narrator','橋の向こうで、ポルが手を振った。道標には新しい名前が増えている。リリの名前も、消されずに残っていた。'],
+ ['moku','ただいま。……リリは、来なかった。でも、一人じゃなかったよ。'],
+ ['narrator','灯の種がともった。七つの紋章と、その中心に一行の文字が浮かぶ。「始まりの庭へ。二度と、失いたくない者たちよ」。'],
+ ['moku','二度と……？ じゃあ、待ってても帰ってこなかった子たちも、そこで会えるのかな。'],
+ ['king','〈王の手紙〉庭へ行くなら、王たちに同じ問いをせよ。「あの門の先に、何を置いてきた」。答えは、一つではない。'],
+ ['narrator','遠い遺跡で、ガルも同じ言葉を読んでいた。焼けた鈴を握る手が、今度は離れない。'],
+ ['moku','今日は、ここで待とうか。ポルがごはん作ってる。先のことを考えるのは……一緒に食べてからでも、いいよね。'],
+ ['narrator','第一王国「芽吹きの国」　完。今夜、灯の町には初めて、消さずに眠れる火がともった。']
+]},
+11:{title:'第二章　待つ側の約束',bg:'town-lit',pages:[
+ ['moku','リリから手紙。あの子たち、橋を渡りたいって。ねえ、今度来たら、ちょっと自慢してもいい？'],
+ ['narrator','地図に次の道が浮かんだ。石と炎の国。その山で、石の魔物が目を覚まさなくなっているという。'],
+ ['moku','僕は町に残る。みんなの名前、道標に彫っておくから。どんな姿で帰ってきても、間違えないように。'],
+ ['narrator','出発する仲間の胸元へ、モクは小さな布を結んだ。不格好な家の刺繍。配合で姿が変わっても、帰り道を忘れないように。'],
+ ['moku','いってらっしゃい。……あのね。「絶対」じゃなくていいから。帰ろうとするのだけ、やめないで。']
+]},
+13:{title:'第二章　冷たい王の手',bg:'mine177',pages:[
+ ['narrator','昇降機が動くと、調査隊の一匹がつぶやいた。「王様を、起こしてくれ」。広間の玉座には、山ほど大きな影が座っていた。'],
+ ['forgeking177','……ガンロウだ。礼を言う。手を取れず、すまぬな。もう、指が曲がらぬ。'],
+ ['narrator','王の胸の火は細かった。国じゅうの魔物に熱を分け、自分の体から先に石へ戻り始めていた。'],
+ ['forgeking177','炉の守護獣が熱を抱えている。我が「二度と火を失うな」と命じたのだ。あれは今も、命令を守っている。'],
+ ['forgeking177','冷却石と排熱弁で圧力を下げてくれ。熱を吐く時は身を守り、吐き終えたら殻を砕く。それが、命令を解く合図だ。'],
+ ['narrator','王は町の紋章を見た。「始まりの庭を探しているのか」。長い沈黙の後で、炉を救えたら全て話す、と約束した。']
+]},
+15:{title:'第二章　強さに名前をつける',bg:'mine177',pages:[
+ ['gar','……こいつ、まだ震えてるだろ。最初は、俺の足音だけで岩の中に潜ってた。'],
+ ['narrator','グラモルがガルの膝に頭を押しつけた。ラグレットは、その背中を盾にしてこちらをのぞく。'],
+ ['gar','強いやつに替えりゃいい。ずっと、そう思ってた。なのに、毎朝こいつらが起きてくると、今日は何ができるか見たくなる。'],
+ ['narrator','ガルは焼けた鈴を外しかけて、やめた。「まだ、捨てられねえや」。その声は、初めて会った時より少し幼かった。'],
+ ['gar','俺は外の道を守る。お前は炉を頼む。勝った方が偉いとか、そういうのは後だ。……帰ったら、また戦おう。']
+]},
+17:{title:'第二章　楽園の値段',bg:'furnace177',pages:[
+ ['narrator','炉の輪が回り出した。守護獣は王の足元へ歩み寄り、額を伏せる。ガンロウの石の指が、ゆっくりと動いた。'],
+ ['forgeking177','もう、抱えておらずともよい。よく守った。……長い間、すまなかったな。'],
+ ['narrator','灯の種を渡す王へ、あなたは手紙の問いを告げた。「あの門の先に、何を置いてきた」。'],
+ ['forgeking177','我らの祖先は、庭の門を閉じる炉を造った。庭では、失う苦しみが消える。代わりに、誰を失ったのかも忘れてしまう。'],
+ ['narrator','炉の壁には、名を削られた魔物の列が刻まれていた。最後の一匹だけが、誰かを呼ぶように振り返っている。'],
+ ['forgeking177','それを救いと呼ぶ王もいる。次の潮の国へ行け。記録を船に積んだ者たちは、違う答えを持つだろう。']
+]},
+18:{title:'第二章　忘れたくない名前',bg:'town-lit',pages:[
+ ['moku','おかえり！ ……その布、まだつけてくれてる。糸、ほどけてない？'],
+ ['narrator','石炎の国の修繕隊が、灯籠の足元に赤金の火を据えた。町の窓が増え、誰かの夕飯を呼ぶ声が聞こえる。'],
+ ['moku','庭のこと、何かわかった？ リリの手紙にも書きたいんだ。「もう、誰もいなくならなくていいかも」って。'],
+ ['narrator','ガルからも手紙が届いていた。「あの庭なら、忘れずに済むんだろうか」。紙の端に、小さな足形が二つついている。'],
+ ['moku','……今日は、みんなの名前を彫り直すよ。消えないように、深く。君たちの分もね。'],
+ ['narrator','第二王国「石と炎の国」　完。灯の町に、二つの火がともる。そのどちらも、忘れるための火ではなかった。']
+]}
+});
+STORY_STAGE175[0]=['帰ってこない名前','霧の中で、道標を立て直す魔物を見つけた'];
+STORY_STAGE175[5]=['置いていけない弱さ','ガルが握りしめる焼けた鈴。その理由を聞こう'];
+STORY_STAGE175[13]=['冷たい王の手','眠る王国で、命令を守り続ける獣の話を聞こう'];
+STORY_STAGE175[17]=['楽園の値段','王たちが庭の門を閉ざした理由を聞こう'];
+const STORY_CHOICES180={
+0:{page:1,prompt:'モクに、どう応える？',options:[['一緒に支えよう。君は釘を打って','promiseHand180'],['道標に、帰る場所も描こう','promiseSign180']]},
+5:{page:2,prompt:'ガルへ返す言葉',options:[['強くなるまで、一緒に歩く','garStay180'],['守れる強さを、この仲間と作る','garStrong180']]},
+8:{page:3,prompt:'リリが選んだ場所に、どう応える？',options:[['この子たちのこと、頼んだよ','liliTrust180'],['次は、町の話を持ってくる','liliReturn180']]},
+13:{page:3,prompt:'動けない王へ',options:[['まず命令を解こう。話は帰ってから','kingAct180'],['どうして、そこまで守ろうとする？','kingAsk180']]},
+18:{page:2,prompt:'モクに、何を伝える？',options:[['庭では、大切な名前も忘れてしまう','truth180'],['まだ全部はわからない。一緒に確かめよう','hope180']]}
+};
+let replayChoices180={};
+function storyReply180(stage,page,flags){if(stage===0&&page===2)return flags.promiseHand180?'モクは釘を両手で握った。「一緒に」なら、道標から手を離せる。あなたの仲間と並んで、初めて一本まっすぐに打てた。':flags.promiseSign180?'道標の裏に、小さな家を描いた。「待つ場所も、書いていいんだ」。モクはリリの名前の隣に、空白を一つ残した。':null;
+ if(stage===5&&page===3)return flags.garStay180?'「待ってやるのも、強さなのか」。ガルは首の焼けた鈴に触れた。返事を探すように、あなたの仲間を見ている。':flags.garStrong180?'「替えるんじゃなく、こいつらを強くする、か」。ガルは焼けた鈴を握り、すぐ離した。指には消えない火傷の跡がある。':null;
+ if(stage===8&&page===4)return flags.liliTrust180?'「そっか。リリはもう、誰かを待つ側なんだね」。モクは目をこすった。「じゃあ、ここを頼むよ。僕も、町で待ってるから」。':flags.liliReturn180?'「ポルの橋、すごいんだ。また話しに来るよ」。モクは笑おうとして、途中で声が詰まった。リリは、最後まで待っていた。':null;
+ if(stage===13&&page===4&&flags.kingAsk180)return '「昔、帰れと言った仲間がいた。帰ってこなかった」。王は石の指を見つめた。「今度こそ、火を消さなければと……。冷却石と排熱弁で、あれを命令から解いてやってくれ」。';
+ if(stage===18&&page===4)return flags.truth180?'「リリがいなくて寂しいのも、忘れちゃうんだね」。モクはしばらく黙った。「じゃあ僕、寂しいままでいい。名前、彫り直してくる」。':flags.hope180?'「うん。わからないこと、僕にも分けて」。モクは道標を抱えた。「庭の名前より先に、君たちの名前を彫ろう。今日は、ちゃんと帰ってきたんだもん」。':null;return null;}
+const dialogueBefore180=storyDialogue175;storyDialogue175=function(replayStage=null,replayPage=0){dialogueBefore180(replayStage,replayPage);if(!storyPane175||storyMode175!=='dialogue')return;const s=storyState175(),replay=replayStage!==null,stage=replayStage??s.stage,page=replay?replayPage:s.page,flags={...s.flags,...(replay?replayChoices180:{})},reply=storyReply180(stage,page,flags);storyPane175.classList.add('story-polish180');const art=storyPane175.querySelector('.story-scene175');if(page===0)art?.append(text129('span',STORY_SCENES175[stage].title,'story-chapter180'));if(reply)storyPane175.querySelector('.story-dialogue175 p').textContent=reply;const d=STORY_CHOICES180[stage];if(!d||page!==d.page)return;const actions=storyPane175.querySelector('.story-actions175');actions.lastElementChild?.remove();const choice=document.createElement('section');choice.className='story-choice180';choice.append(text129('small',replay?'回想の中で、別の返事を試せます':d.prompt));for(const[label,key]of d.options)choice.append(prepButton129(label,()=>{if(replay){for(const[,other]of d.options)replayChoices180[other]=other===key;storyDialogue175(stage,page+1);return;}if(storyState175().stage!==stage||storyState175().page!==page)return;const ok=storyUpdate175(v=>{for(const[,other]of d.options)if(other===key)v.flags[other]=true;else delete v.flags[other];v.page++;});if(ok)storyDialogue175();}));storyPane175.querySelector('.story-body175').insertBefore(choice,actions);};
+const journalBefore180=storyJournal175;storyJournal175=function(){replayChoices180={};journalBefore180();const note=storyPane175?.querySelector('.story-body175>p');if(note)note.textContent='読んだ章を読み返し、別の返事も試せます。回想の選択で本編の進行・仲間・報酬は変わりません。';};
+function storyCombatPlan180(d){if(!storyState175().flags.challenge180||!team.length)return d;const avg=k=>team.reduce((sum,n)=>sum+stats(n)[k],0)/team.length,atk=avg('atk'),def=avg('def'),hp=avg('hp'),turns=d.id==='roots175'?3:d.id==='guardian175'?6:d.id==='furnaceFight177'?8:4;return {...d,hp:Math.min(999999999,Math.max(d.hp,Math.ceil(atk*1.5*turns))),atk:Math.min(999999999,Math.max(d.atk,Math.ceil(def*.35+hp*.12))),def:Math.min(999999999,Math.max(d.def,Math.floor(atk*.22)))};}
+function storyDifficulty180(){if(battle)return;const s=storyState175(),body=storyShell175('difficulty','戦闘の手応え');body.append(text129('p','物語はそのままに、戦い方を選べます。途中で変更できます。進行条件と初回報酬は同じです。'));for(const[challenge,label,desc]of [[false,'物語を楽しむ','従来の敵の強さ。会話と探索を自分のペースで。'],[true,'育てた仲間で挑戦','敵の強さが今の編成に合わせて上がります。予告を見て守り、隙に攻めよう。']]){const button=prepButton129((!!s.flags.challenge180===challenge?'選択中 · ':'')+label,()=>{if(storyUpdate175(v=>{if(challenge)v.flags.challenge180=true;else delete v.flags.challenge180;}))storyHome175();});button.setAttribute('aria-pressed',String(!!s.flags.challenge180===challenge));body.append(button,text129('p',desc));}body.append(prepButton129('町へ戻る',storyHome175));}
+const homeBefore180=storyHome175;storyHome175=function(){homeBefore180();if(!storyPane175||battle)return;const s=storyState175(),actions=storyPane175.querySelector('.story-home-actions175');actions?.append(prepButton129('戦闘の手応え · '+(s.flags.challenge180?'挑戦':'物語'),storyDifficulty180));if(s.stage>2)actions?.append(prepButton129('思い出の戦い · 報酬なしで再戦',storyMemory180));if(s.stage===0&&s.page>0&&actions?.firstElementChild)actions.firstElementChild.textContent='モクとの話を続ける';const hero=storyPane175.querySelector('.story-town175 span');if(hero)hero.textContent=s.stage>=19?'忘れたくない名前が、ここにある':s.stage>=10?'ただいまを言える、最初の町':'霧の中に、帰る場所を作ろう';if(s.flags.truth180){const note=text129('p','モクは今日も、道標の名前を深く彫り直している。','story-keepsake180');storyPane175.querySelector('.story-current175').append(note);}else if(s.flags.promiseHand180||s.flags.promiseSign180)storyPane175.querySelector('.story-current175').append(text129('p',s.stage<3?'あの道標から、帰る場所を探す旅が始まった。':s.flags.promiseHand180?'あの日、一緒に支えた道標が、今も町の入口に立っている。':'あの日描いた小さな家。その前に、仲間の名前が増えていく。','story-keepsake180'));};
+function storyMemory180(){if(battle)return;const s=storyState175(),body=storyShell175('memory','思い出の戦い');body.append(text129('p','通り過ぎた相手に、今の仲間で挑戦できます。勝敗で物語・初回報酬・図鑑は変わりません。EXP・G・加入抽選もありません。固有技の熟練度は通常通り。HP・MPは終了後に戻ります。'));for(const d of [...STORY_FIGHTS175,...STORY_FIGHTS177].filter(d=>s.stage>d.stage))body.append(prepButton129(d.name,()=>storyMemoryPreview180(d)));body.append(prepButton129('戦闘の手応えを変える',storyDifficulty180),prepButton129('町へ戻る',storyHome175));}
+function storyMemoryPreview180(d){if(battle||storyState175().stage<=d.stage)return;const body=storyShell175('memory-preview',d.name),plan=storyCombatPlan180(d),art=document.createElement('div');art.className='story-preview-art175';const name=d.id==='furnaceFight177'?'furnaceguard177':d.id==='guardian175'?'guardian':d.id==='gar175'?'gar':null;if(name){const image=document.createElement('img');image.src=storyURL175(name);image.alt=d.name;art.append(image);}else art.append(battlePortrait(d.monster));body.append(art,text129('p','思い出の戦い · '+(storyState175().flags.challenge180?'今の編成に合わせた挑戦':'従来の強さ')),text129('p','HP '+plan.hp+' / 攻撃 '+plan.atk+' / 防御 '+plan.def),text129('small','報酬・本編進行の変化なし。開始時全回復、終了後は挑戦前のHP・MPに戻ります。'),prepButton129('この仲間で再戦する',()=>storyStartFight175(d,true)),prepButton129('再戦一覧へ戻る',storyMemory180));}
+const previewBefore180=storyFightPreview175;storyFightPreview175=function(id){const result=previewBefore180(id);if(storyMode175!=='preview')return result;const d=[...STORY_FIGHTS175,...STORY_FIGHTS177].find(d=>d.id===id);if(!d)return result;const p=storyPane175.querySelector('.story-body175>p'),plan=storyCombatPlan180(d);if(p)p.textContent=(storyState175().flags.challenge180?'挑戦 · 今の編成に合わせた敵':'物語 · 従来の強さ')+' / HP '+plan.hp+' / 攻撃 '+plan.atk+' / 防御 '+plan.def;return result;};
+const finishBefore180=finishBattle;finishBattle=function(outcome){if(!storyFight175()||!battle.trial144?.rematch180)return finishBefore180(outcome);if(battle.outcome||!['win','lose','escape'].includes(outcome))return;const ok=storyTransaction175(()=>{battle.outcome=outcome;battleBusy=false;battle.log=outcome==='win'?'思い出の戦いに勝利！ '+battle.turn+'ターン。仲間と重ねた時間が、力になった。':'思い出の戦いを終えた。何度でも、育てた仲間で挑めます。';});if(!ok)battleBusy=false;battleUI();};
+const returnBefore180=storyReturnFight175;storyReturnFight175=function(){if(!storyFight175()||!battle.trial144?.rematch180)return returnBefore180();if(!battle.outcome)return false;const snap=battle.trial144;clearTimeout(returnTimer7698);returnTimer7698=null;const ok=storyTransaction175(()=>{for(const n of team){partyHP[n]=Math.min(stats(n).hp,snap.hp[n]);partyMP[n]=Math.min(stats(n).mp,snap.mp[n]);}battle=null;battleBusy=false;});if(!ok){battleUI();return false;}battlePanel.hidden=true;battlePanel.classList.remove('story-battle175','trial144');setup.hidden=false;teamUI();hud();storyMemory180();return true;};
+function guardianIntent180(){if(storyFight175()?.id!=='guardian175')return null;return [{name:'根のうねり',mult:.8,label:'根のうねり · 通常攻撃'},{name:'霧を抱える',mult:.4,label:'霧を抱えている！ 次の噴霧に防御で備えよう'},{name:'黒霧の噴出',mult:2.2,label:'黒霧の噴出！ 防御で大きく軽減'},{name:'息をつく',mult:.4,label:'息をついている！ 根がほどけた今が攻撃の好機'}][(battle.turn-1)%4];}
+const intentBefore180=bossIntent160;bossIntent160=function(){return guardianIntent180()||intentBefore180();};const defenseBefore180=enemyDefense136;enemyDefense136=function(enemy){const d=defenseBefore180(enemy);return enemy===battle&&guardianIntent180()&&(battle.turn-1)%4===3?d*.25:d;};
+const battleUIBefore180=battleUI;battleUI=function(){battleUIBefore180();if(!storyFight175())return;if(battle.trial144?.rematch180)battlePanel.querySelector('.battle-turn').textContent='回想戦 · '+(battle.trial144.challenge180?'挑戦':'物語')+' · TURN '+battle.turn;if(guardianIntent180())battlePanel.querySelector('.enemy-intent').textContent='次の敵行動：'+guardianIntent180().label;};
+const touchBefore180=storyTouch175;storyTouch175=function(id){const result=touchBefore180(id),note=storyPane175?.querySelector('.story-map-note175');if(note&&storyMode175==='map'){const s=storyState175(),lines={sign:'道標には、まだ名前のない空白がある。次に帰る仲間のために。',prints:'足跡は二つ。小さな足跡を、大きなものが覆うように続いている。',valveA:'水が走った。奥で、小さな寝息が聞こえる。守護獣の声ではない。',valveB:'澄んだ水が根を洗う。引っかかっていた小さな葉を、モクが拾った。「リリのだ」。',valveC:'三つの水音が重なった。守護獣の腕の下に、幼い魔物たちがいる。',miner177:'眠る調査隊の胸に、弱い火が残っていた。「王様を、起こしてくれ」。',warm177:'温石は、握った爪を焦がすほど熱い。火は、まだこの国から消えていない。',coolant177:'冷却石の表に文字があった。「熱を逃がせ。命まで、閉じ込めるな」。',vent177:'蒸気が抜ける。向こうで、守護獣が初めてこちらを見る。怒っているのではない。助けを求めている。'};if(lines[id]&&s.flags[id])note.textContent=lines[id];}return result;};
+const style180=document.createElement('style');style180.textContent=`.story-polish180 .story-scene175{position:relative;overflow:hidden;border-color:#c9b37b;box-shadow:inset 0 0 55px #070d1c88,0 6px 22px #0005;animation:story-fade180 .28s ease-out}.story-polish180 .story-scene175:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 55%,#091322a8)}.story-chapter180{position:absolute;z-index:2;left:14px;right:14px;bottom:12px;color:#fff0c3;font-weight:800;letter-spacing:.08em;text-shadow:0 2px 8px #000;font-size:15px}.story-polish180 .story-dialogue175{background:linear-gradient(135deg,#20283e,#101b2b);border-color:#aa9363;box-shadow:0 5px 20px #0004}.story-polish180 .story-dialogue175 p{font-size:15px;line-height:1.9;letter-spacing:.025em}.story-choice180{display:grid;gap:8px;padding:12px;border:1px solid #ad9160;border-radius:12px;background:#182239}.story-choice180 small{color:#e6ca90;font-size:11px;line-height:1.6}.story-choice180 button{min-height:48px!important;white-space:normal;font-size:13px!important;line-height:1.6;padding:10px!important;background:linear-gradient(135deg,#45425b,#23374b)!important;border-color:#b79b68!important;color:#fff0cc!important}.story-keepsake180{font-size:11px!important;color:#e1c493!important;padding-top:8px;border-top:1px solid #ac986844}.story175 .story-home-actions175 button{white-space:normal}@keyframes story-fade180{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.story-polish180 .story-scene175{animation:none}}`;root.append(style180);
 
 const saved=S[FIELD];restore(saved);validateGroupRestore124();if(battle?.outcome==='win')claimRival125();if(battle?.outcome&&battle.outcome!=='win'&&!trialDefinition144()){adventure124=cleanRisk124(null);carry126=cleanCarry126(null);}if(battle?.outcome==='win'&&!trialDefinition144()){rollRival126();settleKeys130();}if(!enemies.length)spawnEnemies();if(!battle&&team.every(n=>partyHP[n]<=0)){positions=[{x:6,y:6},{x:5,y:6},{x:4,y:6}];for(const n of team){partyHP[n]=stats(n).hp;partyMP[n]=stats(n).mp;}}
 // v150 exploration presentation: read existing state, retain original controls and artwork.
