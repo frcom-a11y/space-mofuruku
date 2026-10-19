@@ -385,6 +385,7 @@ function sight7699(x,y){const p=positions[0],steps=Math.max(Math.abs(x-p.x),Math
 function reveal(){visible7699=new Set();const p=positions[0],radius=(layout7699?.trait.sight||6)+1+anomalySight166();for(let y=p.y-radius;y<=p.y+radius;y++)for(let x=p.x-radius;x<=p.x+radius;x++)if(x>=0&&y>=0&&x<mapSize121()&&y<mapSize121()&&Math.hypot(x-p.x,y-p.y)<=radius){const k=key(x,y);seen.add(k);if(sight7699(x,y))visible7699.add(k);}}
 function glow7699(x,y,color,radius,alpha){ctx.save();ctx.globalAlpha=alpha;const g=ctx.createRadialGradient(x,y,0,x,y,radius);g.addColorStop(0,color);g.addColorStop(1,color.slice(0,7)+'00');ctx.fillStyle=g;ctx.fillRect(x-radius,y-radius,radius*2,radius*2);ctx.restore();}
 function draw(t=1){
+ if(document.hidden||!setup.hidden||!battlePanel.hidden||root.querySelector('.story175,.exp-choice124,.hatch-layer132'))return;
  let p=positions[0],rx=p.x,ry=p.y;if(animation){rx=animation.old[0].x+(p.x-animation.old[0].x)*t;ry=animation.old[0].y+(p.y-animation.old[0].y)*t;}const zoom76113=1.05,left=rx-(352/zoom76113/32-1)/2,top=ry-(mapHeight76113/zoom76113/32-1)/2,palette=layout7699?.trait.palette||RUIN_TRAITS_7699[0].palette,time=performance.now()/700;tapCamera76114={left,top,zoom:zoom76113};
  ctx.clearRect(0,0,352,mapHeight76113);ctx.fillStyle='#328c9e';ctx.fillRect(0,0,352,mapHeight76113);ctx.imageSmoothingEnabled=true;ctx.save();ctx.scale(zoom76113,zoom76113);paintScenery76117(left,top,time);
  for(let y=Math.floor(top)-1;y<top+mapHeight76113/zoom76113/32+2;y++)for(let x=Math.floor(left)-1;x<left+12;x++){
@@ -480,7 +481,7 @@ const touchModal76118=root.closest('#expedition7696-modal');
 const formTarget76118=e=>e.target instanceof Element&&e.target.closest('input,textarea,select,[contenteditable="true"]');
 listen(touchModal76118,'contextmenu',e=>{if(!formTarget76118(e))e.preventDefault();});
 listen(touchModal76118,'selectstart',e=>{if(!formTarget76118(e))e.preventDefault();});
-const touchGuard76118=e=>{if(formTarget76118(e))return;const story132=e.target instanceof Element&&e.target.closest('.blessing-choice132>div,.hatch-layer132>div');if(story132&&story132.scrollHeight>story132.clientHeight)return;const panel=e.target instanceof Element&&e.target.closest('.exp-setup,.exp-battle,.exp-breed121,.exp-choice124');if(panel&&panel.scrollHeight>panel.clientHeight)return;const prep129=panel?.closest('.exp-setup');if(prep129&&prep129.scrollHeight>prep129.clientHeight)return;e.preventDefault();};
+const touchGuard76118=e=>{if(formTarget76118(e))return;let node=e.target instanceof Element?e.target:null;while(node&&node!==touchModal76118){const overflow=getComputedStyle(node).overflowY;if(/^(auto|scroll)$/.test(overflow)&&node.scrollHeight>node.clientHeight+1)return;node=node.parentElement;}e.preventDefault();};
 touchModal76118.addEventListener('touchmove',touchGuard76118,{passive:false,signal:ac.signal});
 
 canvas.tabIndex=0;
@@ -700,7 +701,7 @@ const newRuinButton7699=document.createElement('button');newRuinButton7699.type=
 const newRuinNote7699=document.createElement('p');newRuinNote7699.className='exp-new-note7699';newRuinNote7699.textContent='途中の探索は上のボタンで再開。新しく入場すると1階／到達済みの10階ごとに開始階を選べます。入場時に神装備の聖域を0.05%で抽選。';
 root.querySelector('#exp-start').after(newRuinButton7699,newRuinNote7699);root.querySelector('#exp-party').textContent='編成・入口';
 listen(newRuinButton7699,'click',()=>showEntry121());
-const reduced7699=window.matchMedia('(prefers-reduced-motion: reduce)'),ambient7699=setInterval(()=>{if(!reduced7699.matches&&!document.hidden&&root.isConnected&&setup.hidden&&battlePanel.hidden&&!animation)draw();},160);
+const reduced7699=window.matchMedia('(prefers-reduced-motion: reduce)'),ambient7699=null;
 ac.signal.addEventListener('abort',()=>clearInterval(ambient7699),{once:true});
 
 function restore(state){if(!state||typeof state!=='object')return;const valid=n=>roster.some(r=>r.id===n),integer=(n,min,max)=>Number.isInteger(n)&&n>=min&&n<=max;
@@ -935,8 +936,7 @@ function paintEggs129(){
  if(carry126.eggs.length)pane.append(text129('p','拾った卵 '+carry126.eggs.length+'個は持ち帰り待ち。帰還すると孵化できます。','prep-carry129'));
  const list=document.createElement('div');list.className='prep-eggs129';pane.append(list);
  if(!g.eggs.length)list.append(text129('p','保管している卵はありません。探索で卵を拾って持ち帰ろう。'));
- for(const egg of g.eggs){const t=EGG_TYPES126.find(t=>t.id===egg.kind),card=document.createElement('article');card.className='prep-egg129';card.style.setProperty('--rarity129',t.color);const image=text129('span','','prep-egg-art129');image.setAttribute('role','img');image.setAttribute('aria-label',t.name);image.append(eggCanvas154(t.id,104));card.append(image,text129('small',rarity129[t.rarity]),text129('b',t.name),text129('p',eggDescription129(t)+' 候補'+eggPool126(t.id).length+'種類'),prepButton129('孵化する',()=>hatchEgg126(egg.id)));list.append(card);}
- const more=document.createElement('details');more.className='prep-more129';more.append(text129('summary','卵の詳しい説明'),text129('p','探索で拾った卵は帰還で確保。全滅・戦闘撤退では、持ち帰る前の卵だけ失います。同じ種類でも別の個体として加入し、性別・育成データを個別に保存します。確保済みの卵は最大50個まで保管できます。'));pane.append(more);
+ for(const t of EGG_TYPES126){const eggs=g.eggs.filter(egg=>egg.kind===t.id);if(!eggs.length)continue;const card=document.createElement('article');card.className='prep-egg129';card.dataset.eggGroup187=t.id;card.style.setProperty('--rarity129',t.color);const image=text129('span','','prep-egg-art129');image.setAttribute('role','img');image.setAttribute('aria-label',t.name);image.append(eggCanvas154(t.id,104));card.append(image,text129('small',rarity129[t.rarity]),text129('b',t.name+' × '+eggs.length),text129('p',eggDescription129(t)+' 候補'+eggPool126(t.id).length+'種類'),prepButton129('1個孵化する',()=>{const current=goods126().eggs.find(egg=>egg.kind===t.id);if(current)hatchEgg126(current.id);else paintEggs129();}));list.append(card);}
 }
 function showHatch129(egg,duplicate,t){
  showPrepare129('eggs');const pane=prepPanes129.eggs;pane.replaceChildren();pane.append(text129('small','仲間が誕生！'),portrait129(egg.monster),text129('h4',egg.monster+' · '+monsterSexLabel139(egg.monster)),text129('p',t.name+'から生まれました！'),text129('p',duplicate?'すでに仲間なので、探索欠片5個を獲得しました。':'新しい仲間としてLv.1で加入しました。'),prepButton129('ほかの卵を見る',()=>showPrepare129('eggs')),prepButton129('仲間を見る',()=>{showPrepare129('members');prepMonster129=egg.monster;paintMembers129();}));pane.classList.add('prep-hatched129');
@@ -2992,6 +2992,12 @@ const townStyle186=document.createElement('style');townStyle186.textContent=`
 @media(prefers-reduced-motion:reduce){#monster-expedition .town186 *{animation:none!important;transition:none!important}}
 `;root.append(townStyle186);ac.signal.addEventListener('abort',townStop186,{once:true});
 
+const usabilityStyle187=document.createElement('style');usabilityStyle187.textContent=`
+#monster-expedition .weapon-picker181 .choice-art124,#monster-expedition .member-picker181 .choice-art124{flex:1 1 auto;min-height:0;overflow-y:auto;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+#monster-expedition .weapon-list181{flex:none}#monster-expedition .weapon-option181{touch-action:pan-y}
+#monster-expedition .exp-breed121 #obody{touch-action:pan-y;overscroll-behavior:contain}
+#monster-expedition .prep-egg129 b{color:var(--rarity129)}
+`;document.head.append(usabilityStyle187);ac.signal.addEventListener('abort',()=>usabilityStyle187.remove(),{once:true});
 actions150.prepend(storyButton175);storyBoot175();
 
 }
