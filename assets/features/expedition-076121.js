@@ -76,6 +76,7 @@ entry();
 
 function validPosition76120(value){return ['left','center','right'].includes(value)?value:'center';}
 function mount(root,chooseEntry121=false){
+let visit188=S[FIELD]?.journey188||null;
 // Exploration expansion; additive fields keep the previous expedition intact.
 let entryChoice121=null,recruitLayer121=null,borrowedOverlay121=null;
 let godTrial121=validGodTrial121(S[FIELD]?.godTrial121),godPosition121=null;
@@ -415,7 +416,7 @@ function draw(t=1){
 const ac=new AbortController(),listen=(node,event,fn)=>node.addEventListener(event,fn,{signal:ac.signal});
 let best=1,shards=0,saveWarned=false;
 function persist(){
- S[FIELD]={schema:2,world7699:world7699?{...world7699}:null,team:team.slice(),floor,best,loot,shards,positions:positions.map(p=>({...p})),opened:[...opened],dug:[...dug],seen:[...seen],enemies:enemies.map(e=>({...e})),defeated:[...defeated],partyHP:{...partyHP},partyMP:{...partyMP},kills,announced76115,areaNotice76116,stickPosition76120,godTrial121,adventure124:{...adventure124,items:adventure124.items.slice()},eggChoices139:{...eggChoices139},carry126:cleanCarry126(carry126),findMarks126:[...findMarks126].slice(-1000),roam127:snapshotRoam127(),keyRoom130:snapshotRoom130(),vaultPlan148:vaultPlan148?{...vaultPlan148}:null,aftermath165:snapshotAftermath165(),atlasFloor167:atlasSnapshot167(),rescue168:rescueSnapshot168(),blessings132:snapshotBless132(),battle:battle?JSON.parse(JSON.stringify(battle)):null};
+ S[FIELD]={schema:2,journey188:visit188,world7699:world7699?{...world7699}:null,team:team.slice(),floor,best,loot,shards,positions:positions.map(p=>({...p})),opened:[...opened],dug:[...dug],seen:[...seen],enemies:enemies.map(e=>({...e})),defeated:[...defeated],partyHP:{...partyHP},partyMP:{...partyMP},kills,announced76115,areaNotice76116,stickPosition76120,godTrial121,adventure124:{...adventure124,items:adventure124.items.slice()},eggChoices139:{...eggChoices139},carry126:cleanCarry126(carry126),findMarks126:[...findMarks126].slice(-1000),roam127:snapshotRoam127(),keyRoom130:snapshotRoom130(),vaultPlan148:vaultPlan148?{...vaultPlan148}:null,aftermath165:snapshotAftermath165(),atlasFloor167:atlasSnapshot167(),rescue168:rescueSnapshot168(),blessings132:snapshotBless132(),battle:battle?JSON.parse(JSON.stringify(battle)):null};
  const saved124=save();if(saved124===false&&!saveWarned){saveWarned=true;toast('探索データを保存できません。容量を確認してから戻ってください。');}return saved124!==false;
 }
 root.__cleanup=()=>{stop();persist();ac.abort();if(frame)cancelAnimationFrame(frame);animation=null;};
@@ -1590,16 +1591,28 @@ function chestExtra154(chest){
 // v155 depth bands: existing adopted species/art, with new encounter access only.
 // Depth bands shared with the read-only acquisition guide172.
 function band155(level=floor){return BANDS155.find(b=>level>=b.min&&level<=b.max)||BANDS155[0];}
-function bandPool155(level=floor,rare=false){const b=band155(level);return [...new Set(rare?[...b.rare,...(level>=800?b.extra800||[]:[]),...(level>=1000?b.extra1000||[]:[])]:b.names)].filter(n=>MONSTERS[n]);}
+// Explicit regional families and rank ceilings. SS quest/breeding destinations stay rare.
+const REGIONAL_FAMILIES188=[['スライム','獣','自然'],['スライム','物質','竜'],['竜','物質','悪魔'],['精霊','自然','獣'],['悪魔','竜','物質'],['精霊','物質','獣'],['竜','自然','精霊'],['悪魔','竜','獣'],['精霊','物質','自然'],['竜','自然','物質'],['竜','精霊','悪魔']];
+function regionalGuests188(level=floor){
+ const b=band155(level),index=BANDS155.indexOf(b),families=REGIONAL_FAMILIES188[index],ranks=index<1?['D']:index<2?['D','C']:index<4?['C','B']:index<7?['B','A']:['A','S'];
+ return (window.__DOD_EXPANSION162?.species||[]).filter(r=>ranks.includes(r.rank)&&families.includes(r.family)&&MONSTERS[r.name]&&!String(r.name).includes('ヒュドラ')).map(r=>r.name);
+}
+function rotatingPool188(level=floor,seed=world7699?.seed||1){
+ const b=band155(level),all=regionalGuests188(level),offset=Math.floor((level-1)/10)*3,guests=all.length?Array.from({length:Math.min(4,all.length)},(_,i)=>all[(offset+i)%all.length]):[];
+ const visitors=all.filter(n=>!guests.includes(n)),visitor=visitors.length?visitors[(seed>>>0)%visitors.length]:null;
+ return [...new Set([...b.names,...guests,...(visitor?[visitor]:[])])].filter(n=>MONSTERS[n]);
+}
+
+function bandPool155(level=floor,rare=false){const b=band155(level);return [...new Set(rare?[...b.rare,...(level>=800?b.extra800||[]:[]),...(level>=1000?b.extra1000||[]:[])]:[...b.names,...regionalGuests188(level)])].filter(n=>MONSTERS[n]);}
 const depthSpecies155=new Set(BANDS155.flatMap(b=>[...b.names,...b.rare,...(b.extra800||[]),...(b.extra1000||[])]));
-for(const n of depthSpecies155){const rank=window.__DOD_RANK148?.score(n)||1;enemyBase[n]??={hp:Math.min(200,65+rank*18),atk:12+rank*3,def:4+rank*2};battleNames[n]=n;}
+for(const n of new Set([...depthSpecies155,...BANDS155.flatMap(b=>regionalGuests188(b.min))])){const rank=window.__DOD_RANK148?.score(n)||1;enemyBase[n]??={hp:Math.min(200,65+rank*18),atk:12+rank*3,def:4+rank*2};battleNames[n]=n;}
 const spawnDepthBefore155=spawnEnemies;spawnEnemies=function(){spawnDepthBefore155();if(!layout7699||!world7699)return;
  const savedFloor=S[FIELD];if(!world7699.depth155&&savedFloor?.floor===floor&&savedFloor?.world7699?.seed===world7699.seed)return;world7699.depth155=1;
- if(room76115!=='normal')return;const pool=bandPool155(),random=rng7699((world7699.seed^Math.imul(floor,155031))>>>0);if(!pool.length)return;
- for(const e of enemies){if(e.midboss76110||e.apex76112||e.mainBoss121||e.elite||e.adventureKind124||e.roamBoss127||e.special76115)continue;e.type=pool[Math.floor(random()*pool.length)];e.depth155=true;}
+ if(room76115!=='normal')return;const pool=rotatingPool188(),random=rng7699((world7699.seed^Math.imul(floor,155031))>>>0);if(!pool.length)return;
+ for(const e of enemies){if(e.midboss76110||e.apex76112||e.main121||e.rare121||e.mainBoss121||e.elite||e.adventureKind124||e.roamBoss127||e.special76115)continue;e.type=pool[Math.floor(random()*pool.length)];e.depth155=true;}
  if(floor%5!==0&&random()<.18){const cells=cells121(7),rare=bandPool155(floor,true);if(cells.length&&rare.length){const p=cells[Math.floor(random()*cells.length)];enemies.push({...p,id:'depthRare155',type:rare[Math.floor(random()*rare.length)],depth155:true,rare155:true,shiny155:random()<.1});}}
 };
-const recruitDepthBefore155=recruitable121;recruitable121=n=>recruitDepthBefore155(n)||depthSpecies155.has(n);
+const recruitDepthBefore155=recruitable121;recruitable121=n=>recruitDepthBefore155(n)||(depthSpecies155.has(n)||BANDS155.some(b=>regionalGuests188(b.min).includes(n)));
 const beginDepthBefore155=beginBattle;beginBattle=function(e){if(e.depth155)S.seen={...(S.seen||{}),[e.type]:true};beginDepthBefore155(e);};
 const areaDepthBefore155=area76116;area76116=function(level){const old=areaDepthBefore155(level);if(!world7699?.depth155)return old;const b=band155(level);return {...old,name:b.name,start:b.min,end:b.max,id:b.theme<3?b.theme:old.id};};
 const regionDepthBefore155=region144;region144=function(level=floor){if(!world7699?.depth155)return regionDepthBefore155(level);const theme=band155(level).theme;return theme>=3?regions144[theme-3]:null;};
@@ -2935,12 +2948,12 @@ function townMove186(dx,dy,dt){const old={...townPos186},step=12*Math.min(.05,dt
 function townPad186(){const nav=document.createElement('nav');nav.className='town-controls186';const pad=document.createElement('div');pad.className='town-pad186';pad.setAttribute('role','group');pad.setAttribute('aria-label','町の移動パッド');pad.append(text129('i',''));const dirs={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};for(const [d,mark]of [['up','↑'],['left','←'],['right','→'],['down','↓']]){const b=prepButton129(mark,()=>townMove186(...dirs[d],.5));b.dataset.townDir186=d;b.setAttribute('aria-label',({up:'上',left:'左',right:'右',down:'下'})[d]+'へ歩く');pad.append(b);}const action=prepButton129('建物をタップして入る',()=>{});action.className='town-enter186';nav.append(pad,action);let pointer=null;const halt=()=>{townHeld186=null;pointer=null;pad.querySelector('i').style.transform='';};const aim=e=>{const r=pad.getBoundingClientRect(),x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2,len=Math.hypot(x,y);if(len<10){townHeld186=null;return;}townHeld186=Math.abs(x)>Math.abs(y)?dirs[x<0?'left':'right']:dirs[y<0?'up':'down'];pad.querySelector('i').style.transform='translate('+Math.max(-22,Math.min(22,x))+'px,'+Math.max(-22,Math.min(22,y))+'px)';};pad.onpointerdown=e=>{e.preventDefault();pointer=e.pointerId;pad.setPointerCapture(pointer);aim(e);};pad.onpointermove=e=>{if(e.pointerId===pointer)aim(e);};pad.onpointerup=pad.onpointercancel=pad.onlostpointercapture=halt;pad.oncontextmenu=e=>e.preventDefault();townKeyboard186=new AbortController();const sig=townKeyboard186.signal,keys={ArrowUp:'up',w:'up',ArrowDown:'down',s:'down',ArrowLeft:'left',a:'left',ArrowRight:'right',d:'right'};window.addEventListener('keydown',e=>{if(!keys[e.key]||townPlace186!=='plaza'||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;e.preventDefault();e.stopImmediatePropagation();townHeld186=dirs[keys[e.key]];},{capture:true,signal:sig});window.addEventListener('keyup',e=>{if(keys[e.key]){e.preventDefault();e.stopImmediatePropagation();halt();}},{capture:true,signal:sig});window.addEventListener('blur',halt,{signal:sig});document.addEventListener('visibilitychange',halt,{signal:sig});const loop=t=>{if(townPlace186!=='plaza'||!storyPane175?.isConnected)return;const dt=townLast186?(t-townLast186)/1000:0;townLast186=t;if(townHeld186)townMove186(...townHeld186,dt);townFrame186=requestAnimationFrame(loop);};townFrame186=requestAnimationFrame(loop);return nav;}
 storyHome175=function(){if(battle)return;townStop186();visit185=false;closeChoice124();if(entryChoice121)entryChoice121.hidden=true;townOrigin186=null;townPlace186='plaza';if(!townTrail186.length)townTrail186=[{x:townPos186.x-18,y:townPos186.y},{x:townPos186.x-9,y:townPos186.y},{...townPos186}];const body=storyShell175('home','灯の町 · 中央広場');townHeader186(body,'plaza');const map=document.createElement('div');map.className='town-map186';map.style.backgroundImage='url("'+townURL186('town')+'")';map.setAttribute('aria-label','中央広場。建物の名前をタップすると施設に入れます');for(const id of Object.keys(TOWN186))map.append(townSign186(id));team.slice(0,3).forEach((n,i)=>{const el=document.createElement('span');el.className='town-walker186';el.setAttribute('aria-hidden','true');el.append(portrait129(n));map.append(el);});body.append(text129('p','建物をタップして入る · 丸パッドでも歩けます','town-hint186'),map,townTeam186(),townPad186());const links=document.createElement('nav');links.className='town-links186';links.append(prepButton129('町の仲間',()=>{townStop186();townPlace186=null;storyResidents175();}),prepButton129('旅の記録',()=>{townStop186();townPlace186=null;storyJournal175();}));body.append(links);townPaintParty186(map);};
 function townFacility186(id){const d=TOWN186[id];if(!d||battle)return;townStop186();townPlace186=id;townOrigin186=null;const body=storyShell175('home',d.title);townHeader186(body,id);const art=document.createElement('div');art.className='town-interior186';art.style.backgroundImage='url("'+townURL186(d.art)+'")';art.append(text129('span',d.sub));const dialogue=document.createElement('article');dialogue.className='town-dialogue186';dialogue.append(text129('small',d.speaker),text129('p',d.line));const actions=document.createElement('nav');actions.className='town-actions186';const add=(label,fn,sub)=>{const b=prepButton129('',fn);b.append(text129('b',label));if(sub)b.append(text129('small',sub));actions.append(b);};body.append(art,dialogue,actions);
- if(id==='breed'){add('配合をお願いする',()=>townNative186(id,()=>breedInside121()),'オスとメス · Lv.10以上の仲間から');add('仲間を整える',()=>townNative186('ranch',()=>showPrepare129('members')),'配合前に育成と装備を確認');}
- if(id==='arena'){add('受付でランクを選ぶ',()=>townNative186(id,arenaMenu155),'3連戦 · 初制覇報酬と最短記録');add('出場する仲間を整える',()=>townNative186('arena',()=>showPrepare129('members')),'3体の編成と武器');}
- if(id==='bazaar'){add('欠片を卵と交換する',()=>townNative186(id,()=>showDelve154('exchange')),'所持している遺跡の欠片 '+shards+'個');add('武器を付け替える',()=>townNative186(id,()=>showPrepare129('members')),'所持武器を仲間の顔から選ぶ');add('保管した卵を孵す',()=>townNative186(id,()=>showPrepare129('eggs')),'保管中 '+goods126().eggs.length+'個');}
- if(id==='ranch'){add('パーティー・武器を整える',()=>townNative186(id,()=>showPrepare129('members')),'顔を選んで入れ替え · 武器も同じ画面で');add('卵の世話をする',()=>townNative186(id,()=>showPrepare129('eggs')),'保管中 '+goods126().eggs.length+'個');add('控え探索隊を送り出す',()=>townNative186(id,scoutsMenu169),'控えの仲間にも活躍の場を');}
+ if(id==='breed'){add('配合する',()=>townNative186(id,()=>breedInside121()),'オスとメス · Lv.10以上の仲間から');add('仲間を整える',()=>townNative186('ranch',()=>showPrepare129('members')),'配合前に育成と装備を確認');}
+ if(id==='arena'){add('闘技場へ',()=>townNative186(id,arenaMenu155),'3連戦 · 初制覇報酬と最短記録');add('出場する仲間を整える',()=>townNative186('arena',()=>showPrepare129('members')),'3体の編成と武器');}
+ if(id==='bazaar'){add('欠片を卵と交換する',()=>townNative186(id,()=>showDelve154('exchange')),'所持している遺跡の欠片 '+shards+'個');add('武器を付け替える',()=>townNative186(id,()=>showPrepare129('members')),'所持武器を仲間の顔から選ぶ');add('卵を孵す',()=>townNative186(id,()=>showPrepare129('eggs')),'保管中 '+goods126().eggs.length+'個');}
+ if(id==='ranch'){add('パーティー・武器',()=>townNative186(id,()=>showPrepare129('members')),'顔を選んで入れ替え · 武器も同じ画面で');add('卵の世話をする',()=>townNative186(id,()=>showPrepare129('eggs')),'保管中 '+goods126().eggs.length+'個');add('控え探索隊を送り出す',()=>townNative186(id,scoutsMenu169),'控えの仲間にも活躍の場を');}
  if(id==='trial'){const unlocked=TRIALS144.filter(d=>best>=d.unlock),next=TRIALS144.find(d=>best<d.unlock);dialogue.append(text129('p','最高到達：地下'+best+'階 · 挑戦可能 '+unlocked.length+'/'+TRIALS144.length+'戦'+(next?'。次は地下'+next.unlock+'階で解放。':'。すべて解放済み。')));add('強敵と報酬を確認する',()=>townNative186(id,()=>{if(team.every(n=>partyHP[n]<=0)){choiceScreen124('仲間の準備が必要です','生存している仲間を編成してから挑戦してください。',[['仲間を整える',()=>{closeChoice124();showPrepare129('members');}],['祠へ戻る',()=>{closeChoice124();townFacility186('trial');}]]);}else trialMenu144();}),'解放条件・推奨Lv・初勝利の武器を表示');add('最上位の試練を見る',()=>townNative186(id,apexMenu171),'S・SSの育成成果を試す専用クエスト');}
- if(id==='gate'){const s=storyState175();add('今の探索へ戻る',()=>{if(!storyUpdate175(v=>{v.active=false;}))return;townSuspend186();townOrigin186=null;setup.hidden=true;canvas.focus({preventScroll:true});},'地下'+floor+'階 · 現在の探索を続ける');add('開始階を選んで探索する',()=>townNative186(id,showEntry121),'地下1階 / 到達済みの10階ごと');add('魔物たちの物語を進める',()=>{townStop186();townPlace186=null;townOrigin186=null;storyPane175?.classList.remove('town186');if(![10,19,29].includes(s.stage))storyContinue175();else storyWorld175();},STORY_STAGE175[s.stage][0]);add('物語の案内所・再挑戦',()=>{townPlace186=null;townOldHome186();},'難易度・王国の地図・解放済みの再探索');add('町の仲間と話す',()=>{townPlace186=null;storyResidents175();});}
+ if(id==='gate'){const s=storyState175();add('探索を続ける',()=>{if(!storyUpdate175(v=>{v.active=false;}))return;townSuspend186();townOrigin186=null;setup.hidden=true;canvas.focus({preventScroll:true});},'地下'+floor+'階 · 現在の探索を続ける');add('出発する',()=>townNative186(id,showEntry121),'地下1階 / 到達済みの10階ごと');add('魔物たちの物語を進める',()=>{townStop186();townPlace186=null;townOrigin186=null;storyPane175?.classList.remove('town186');if(![10,19,29].includes(s.stage))storyContinue175();else storyWorld175();},STORY_STAGE175[s.stage][0]);add('物語の案内所・再挑戦',()=>{townPlace186=null;townOldHome186();},'難易度・王国の地図・解放済みの再探索');add('町の仲間と話す',()=>{townPlace186=null;storyResidents175();});}
  body.append(townTeam186());}
 // Native submenus retain their handlers; one explicit return control reconnects them to town.
 const choiceBefore186=choiceScreen124;choiceScreen124=function(title,text,buttons){const el=choiceBefore186(title,text,buttons);if(townOrigin186){el.classList.add('town-menu186');const where=townOrigin186,b=prepButton129((TOWN186[where]?.title||'中央広場')+'へ戻る',()=>{closeChoice124();if(entryChoice121)entryChoice121.hidden=true;townFacility186(where);});b.className='town-return186';el.querySelector('div').prepend(b);for(const button of el.querySelectorAll('.choice-buttons124 button'))if(['戻る','準備に戻る','探索へ戻る'].includes(button.textContent)){button.textContent='施設へ戻る';button.onclick=()=>{closeChoice124();townFacility186(where);};}}return el;};
@@ -2998,6 +3011,146 @@ const usabilityStyle187=document.createElement('style');usabilityStyle187.textCo
 #monster-expedition .exp-breed121 #obody{touch-action:pan-y;overscroll-behavior:contain}
 #monster-expedition .prep-egg129 b{color:var(--rarity129)}
 `;document.head.append(usabilityStyle187);ac.signal.addEventListener('abort',()=>usabilityStyle187.remove(),{once:true});
+// v188: existing transactions and owned individual IDs remain authoritative.
+let skillTray188=null,skillDirect188=false;
+function closeSkills188(){skillTray188?.remove();skillTray188=null;battlePanel.classList.remove('skills-open188');battlePanel.querySelectorAll('.aim-all188').forEach(n=>n.classList.remove('aim-all188'));}
+function openSkills188(){
+ if(!battle||battleBusy||battle.outcome)return;
+ closeSkills188();const current=battle,turn=current.turn,n=team[current.actor];
+ const valid=()=>battle===current&&battle.turn===turn&&team[battle.actor]===n&&!battleBusy&&!battle.outcome;
+ const tray=document.createElement('div');tray.className='skill-tray188';tray.setAttribute('aria-label','技を選ぶ');
+ const top=document.createElement('header'),back=prepButton129('‹ 戻る',()=>{closeSkills188();battlePanel.querySelector('[data-command="skill"]')?.focus();});
+ top.append(back,text129('b',shortName154(n)));tray.append(top);
+ function add(name,cost,target,fn,disabled=false){const b=prepButton129('',()=>{if(!valid())return closeSkills188();closeSkills188();fn();});b.append(text129('b',name),text129('small',target+' · MP '+cost));b.disabled=disabled||(partyMP[n]||0)<cost;b.onpointerenter=b.onfocus=()=>{battlePanel.querySelectorAll('.target124').forEach(t=>t.classList.toggle('aim-all188',target==='敵全体'&&!t.classList.contains('fallen')));};b.onpointerleave=b.onblur=()=>battlePanel.querySelectorAll('.aim-all188').forEach(t=>t.classList.remove('aim-all188'));tray.append(b);}
+ const normal=skill(n);add(normal.name,skillCost132(n,'skill'),normal.heal?'味方回復':normal.shield?'味方守護':'敵1体',()=>{skillDirect188=true;try{commandBefore188('skill');}finally{skillDirect188=false;}});
+ const sweep=sweepFor178(n);if(sweep)add(sweep.name,sweepCost178(),'敵全体',castSweep178);
+ if(!fusionButton132.hidden)add(fusionButton132.firstChild.textContent.trim(),Math.max(8,12-Math.min(4,blessCount132('magic')*2)),'配合奥義',()=>fusionButton132.click(),fusionButton132.disabled);
+ // Reuse the final command chain for fusion and inherited actions.
+ for(const type of ['fusion','lineage','heal']){const b=battlePanel.querySelector('[data-command="'+type+'"]');if(b&&!b.hidden)add(b.firstChild.textContent.trim(),skillCost132(n,type),type==='heal'?'自分回復':'技',()=>command(type),b.disabled);}
+ battlePanel.querySelector('.battle-actions').after(tray);skillTray188=tray;battlePanel.classList.add('skills-open188');tray.querySelector('button').focus();
+}
+const commandBefore188=command;command=function(type){if(type==='skill'&&!fusionActive132&&!inheritedActive155&&!lineageActive134)return openSkills188();closeSkills188();return commandBefore188(type);};
+chooseSkill178=function(){if(skillDirect188)return commandBefore178('skill');return openSkills188();};
+function markActor188(){if(!battle)return;battlePanel.querySelectorAll('.battle-friend').forEach(e=>e.classList.toggle('acting188',Number(e.dataset.actor)===battle.actor&&!battle.outcome));}
+const portraitsBefore188=paintPortraits;paintPortraits=function(){portraitsBefore188();markActor188();};
+const paintBefore188=battleUI;battleUI=function(){
+ paintBefore188();if(!battle)return;if(battleBusy||battle.outcome)closeSkills188();
+ const actor=team[battle.actor];markActor188();
+ const button=battlePanel.querySelector('[data-command="skill"]');if(button&&!battle.outcome){button.firstChild.textContent='技';button.querySelector('small').textContent='単体 / 全体';}
+ const attackCopy=battlePanel.querySelector('[data-command="attack"] small'),guardCopy=battlePanel.querySelector('[data-command="guard"] small');if(attackCopy)attackCopy.textContent='MP 0';if(guardCopy)guardCopy.textContent='被ダメージ軽減';
+ // The old 3*floor number was not a combat level. Use actual floor, never invent a level.
+ if(!battle.trial144&&!battle.arena155)battlePanel.querySelector('.battle-turn').textContent='地下'+floor+'階 · TURN '+battle.turn;
+ const intent=bossIntent160()||(battle.enemy.apex76112?apexIntent76112():null),strong=!battle.outcome&&(intent?intent.charge||intent.mult>=1.5:!group124()&&battle.turn%3===0);
+ battlePanel.querySelector('.battle-enemy').classList.toggle('charging188',!!strong);
+ battlePanel.querySelector('[data-command="guard"]')?.classList.toggle('guard-ready188',!!strong);
+ const label=battlePanel.querySelector('.enemy-intent');if(strong)label.textContent=intent?.charge?'力を溜めている…':(intent?.name||'猛攻')+'！';
+ const log=battlePanel.querySelector('.battle-log');if(log&&!log.closest('details')){const d=document.createElement('details');d.className='combat-record188';d.append(text129('summary','戦闘記録'));log.before(d);d.append(log);}
+};
+const groupPaintBefore188=paintGroup124;paintGroup124=function(){groupPaintBefore188();for(const b of battlePanel.querySelectorAll('[data-target124]'))b.setAttribute('aria-label',b.getAttribute('aria-label')+(b.classList.contains('selected')?' · 攻撃対象':''));};
+// Highlight actual large damage, without inventing critical/weakness results.
+const impactBefore188=impact153;impact153=function(node,value,hurt){impactBefore188(node,value,hurt);const amount=Number(String(value).replace(/[^0-9.]/g,''));if(node&&!hurt&&amount>=Math.max(1,(battle?.maxHP||1)*.35)){node.classList.add('heavy-hit188');later153(()=>node.classList.remove('heavy-hit188'),450);}};
+
+// A shelf uses the existing stock, prices and atomic purchasing path.
+const merchantBefore188=merchant127;merchant127=function(){
+ merchantBefore188();if(!choice124?.classList.contains('merchant140'))return;
+ const el=choice124,shop=roam127.merchant,w=MONSTER_WEAPONS126.find(d=>d.id===shop.weapon),egg=EGG_TYPES126.find(d=>d.id===shop.egg),buttons=[...el.querySelectorAll('.choice-buttons124 button')];
+ el.classList.add('shop188');el.querySelector('p').textContent=S.gold.toLocaleString()+'G · 閉店すると商人は旅立ちます';
+ const shelf=el.querySelector('.choice-art124');shelf.replaceChildren();shelf.style.display='grid';const info=document.createElement('article');info.className='shop-info188';shelf.after(info);
+ const offers=[{name:egg.name,price:EGG_PRICES140[shop.egg],detail:'卵 ×1',art:()=>eggCanvas154(egg.id,96)},{name:w.name,price:merchantWeaponPrice140(w.id),detail:weaponText140(w)+' · Lv'+w.lv,art:()=>{const c=document.createElement('canvas');c.width=c.height=96;drawWeapon156(c.getContext('2d'),w.id,0,0,96,96);return c;}},{name:'旅の休息',price:150,detail:'全員HP・MP30%回復',art:()=>text129('span','✦','rest-art188')}];
+ function select(i){const o=offers[i];shelf.querySelectorAll('button').forEach((b,j)=>b.setAttribute('aria-pressed',String(i===j)));info.replaceChildren(text129('h4',o.name),text129('p',o.detail));buttons.slice(0,3).forEach((b,j)=>{b.hidden=i!==j;});buttons[i].textContent=roam127.bought.includes(i)?'売切れ':o.price.toLocaleString()+'G · 買う';}
+ offers.forEach((o,i)=>{const b=prepButton129('',()=>select(i));b.append(o.art(),text129('small',o.name));shelf.append(b);});select(0);
+};
+// Keep original actions; turn repetitive facility directions into short labels.
+const facilityBefore188=townFacility186;townFacility186=function(id){facilityBefore188(id);const pane=storyPane175;if(!pane)return;
+ const lines={ranch:'おかえり。今日は誰と旅に出る？',bazaar:'掘り出し物を探していくかい？',breed:'二つの命から、どんな仲間が生まれるかな。',arena:'育てた仲間の力を見せてくれ。',gate:'次は、どこまで行こうか。'};const dialogue=pane.querySelector('.town-dialogue186>p');if(lines[id]&&dialogue)dialogue.textContent=lines[id];
+ for(const b of pane.querySelectorAll('.town-actions186 button')){const sub=b.querySelector('small');if(sub&&!/[0-9０-９]/.test(sub.textContent))sub.remove();}
+ const art=pane.querySelector('.town-interior186');if(art){const lights=document.createElement('span');lights.className='town-glow188';lights.setAttribute('aria-hidden','true');art.append(lights);if(id==='ranch'){const n=team.find(monsterFavorite142)||team[0];if(n){const pet=document.createElement('div');pet.className='ranch-pet188';pet.append(portrait129(n),text129('b',partyName173(n)),text129('small','Lv.'+compLv(n)+'　＋'+(S.monsterGrowth?.[n]?.breedPlus7680||0)+'　絆 '+(S.monsterGrowth?.[n]?.bond||0)));art.append(pet);}}}
+};
+const squadBefore188=paintSquad181;paintSquad181=function(){squadBefore188();squad181.classList.add('squad188');const p=squad181.querySelector(':scope>p');if(p)p.textContent='パーティー';};
+const pickerBefore188=memberPicker181;memberPicker181=function(slot){pickerBefore188(slot);if(!choice124?.classList.contains('member-picker181'))return;const bar=document.createElement('div');bar.className='picker-team188';for(let j=0;j<3;j++){const n=team[j],b=prepButton129('',()=>memberPicker181(j));b.setAttribute('aria-pressed',String(slot===j));b.append(n?portrait129(n):text129('span','＋'),text129('small',n?partyName173(n):'空き枠'));bar.append(b);}choice124.querySelector('.choice-art124').before(bar);};
+const detailBefore188=paintMonster129;paintMonster129=function(n){detailBefore188(n);for(const el of [...prepDetail129.children]){if(!el.matches('section,.career134,.proficiency136,.monster-purpose141')||el.querySelector('details'))continue;const title=el.querySelector('h3,h4')?.textContent;if(!title)continue;const d=document.createElement('details');d.className='companion-detail188';d.append(text129('summary',title));el.before(d);d.append(el);}};
+
+// Common command placement. No removal of handlers or data-bearing controls.
+const choiceBefore188=choiceScreen124;choiceScreen124=function(title,copy,actions){const el=choiceBefore188(title,copy,actions);const back=[...el.querySelectorAll('.choice-buttons124 button')].find(b=>/^(戻る|今は避ける|準備に戻る|探索へ戻る|施設へ戻る)$/.test(b.textContent));if(back){back.classList.add('back188');back.textContent='‹ '+back.textContent;}return el;};
+
+const experienceStyle188=document.createElement('style');experienceStyle188.textContent=`
+#monster-expedition .battle-friend.acting188:before{background:#e9c87588;box-shadow:0 0 18px #f4cf8499;height:10px}
+#monster-expedition .exp-battle{background:#111c2c!important}#monster-expedition .battle-top{background:linear-gradient(100deg,#26374a,#121e2f)!important}
+#monster-expedition .battle-health.active{border-color:#efd08c!important;background:#263b4a!important;box-shadow:inset 0 2px #ecd08c}
+#monster-expedition .battle-actions{gap:6px!important}#monster-expedition .battle-actions button{border-radius:10px!important;min-height:48px;border-color:#9c8963!important;background:linear-gradient(150deg,#263d51,#101c2c)!important;color:#f8e9c9!important}
+#monster-expedition .battle-actions button small{font-size:10px!important;color:#bcd1df!important}
+#monster-expedition .battle-actions .fusion-button132,#monster-expedition .battle-actions [data-command="lineage"],#monster-expedition .battle-actions [data-command="heal"]{display:none!important}
+#monster-expedition .skills-open188 .battle-actions{display:none!important}
+#monster-expedition .skill-tray188{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px;background:#111f30;border-top:1px solid #af9363;max-height:32dvh;overflow:auto;touch-action:pan-y}
+#monster-expedition .skill-tray188 header{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding:0;background:none}
+#monster-expedition .skill-tray188 button{min-height:46px!important;border:1px solid #9c8963!important;background:#213447!important;border-radius:8px!important;padding:7px!important;color:#f5e4c2;text-align:left}
+#monster-expedition .skill-tray188 small{display:block;color:#aecaeb;font-size:11px}#monster-expedition .skill-tray188 b{font-size:13px;overflow-wrap:anywhere}
+#monster-expedition .combat-record188{font-size:11px;color:#aab9ca;padding:0 10px}#monster-expedition .combat-record188 summary{padding:7px 0;cursor:pointer}#monster-expedition .combat-record188[open]{max-height:18dvh;overflow:auto;touch-action:pan-y}
+#monster-expedition .target124.selected:after,#monster-expedition .target124.aim-all188:after{content:'⌖';position:absolute;left:50%;top:15%;transform:translateX(-50%);font-size:32px;color:#f5d289;text-shadow:0 1px 4px #000;pointer-events:none}
+#monster-expedition .charging188{filter:drop-shadow(0 0 8px #ff925c);animation:charge188 .9s ease-in-out infinite}
+#monster-expedition .guard-ready188{box-shadow:0 0 12px #e8bb67!important}#monster-expedition .heavy-hit188 .battle-float{font-size:30px!important;color:#ffe1a2!important;text-shadow:2px 2px #702b17}
+#monster-expedition .shop188 .choice-art124{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-bottom:8px solid #654a32;padding-bottom:8px}
+#monster-expedition .shop188 .choice-art124 button{min-width:0;background:#2e302b;border:1px solid #7e6d4f;border-radius:9px;padding:5px;color:#f1dfbe}#monster-expedition .shop188 .choice-art124 [aria-pressed=true]{border-color:#ffe0a3;box-shadow:0 0 12px #e8c06b44}
+#monster-expedition .shop188 canvas{width:70px!important;height:70px!important;max-width:100%}#monster-expedition .shop188 small{display:block;font-size:10px}.rest-art188{display:block;font-size:48px;color:#f1d796;height:70px}.shop-info188 h4{margin:10px 0 5px}.shop-info188 p{font-size:12px}
+#monster-expedition .town-glow188{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 16% 25%,#ffd07c38,transparent 30%),radial-gradient(ellipse at 85% 30%,#ffd07c28,transparent 25%);animation:lantern188 4s ease-in-out infinite}
+#monster-expedition .town-interior186{position:relative}#monster-expedition .ranch-pet188{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);text-align:center;min-width:150px;max-width:65%;padding:8px;border-radius:12px;background:linear-gradient(transparent,#152624dd)}
+#monster-expedition .ranch-pet188 .prep-portrait129{width:100px!important;height:100px!important;margin:auto;animation:pet188 4s ease-in-out infinite}#monster-expedition .ranch-pet188 b,#monster-expedition .ranch-pet188 small{display:block;font-size:12px;color:#ffedc7}
+#monster-expedition .squad188 .squad-slots181{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}#monster-expedition .squad188 .squad-slot181{display:flex;flex-direction:column;align-items:stretch;padding:7px;min-width:0}
+#monster-expedition .squad188 .prep-portrait129{width:70px!important;height:70px!important;margin:auto;max-width:100%!important}#monster-expedition .squad188 .squad-copy181{text-align:center;min-width:0}#monster-expedition .squad188 .squad-copy181 b{white-space:normal;overflow-wrap:anywhere;font-size:12px}#monster-expedition .squad188 .squad-copy181 small{font-size:10px}
+#monster-expedition .squad188 .squad-actions181{display:grid;grid-template-columns:1fr;gap:4px;margin-top:auto}#monster-expedition .squad188 button{min-height:44px!important;font-size:12px!important}
+#monster-expedition .picker-team188{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;flex:none}#monster-expedition .picker-team188 button{min-width:0;min-height:66px;padding:5px;background:#1c2c3c;border:1px solid #687181;border-radius:8px;color:#e5d3ad}#monster-expedition .picker-team188 [aria-pressed=true]{border-color:#efcf89;background:#35424b}#monster-expedition .picker-team188 .prep-portrait129{width:38px!important;height:38px!important;margin:auto}#monster-expedition .picker-team188 small{display:block;font-size:10px}
+#monster-expedition .companion-detail188{border-top:1px solid #807150;padding:8px 0}#monster-expedition .companion-detail188 summary{min-height:44px;display:flex;align-items:center;color:#e5d1a9;cursor:pointer}
+#monster-expedition .back188{align-self:flex-start;min-height:44px!important;min-width:64px;background:transparent!important;border:0!important;color:#e5cf9f!important;margin:0!important;text-align:left}
+#monster-expedition .exp-choice124>div:has(.back188){position:relative;padding-top:54px}#monster-expedition .exp-choice124 .back188{position:absolute;left:12px;top:6px;width:auto!important;max-width:70%;z-index:2}
+#monster-expedition .town186>header>button{order:-1;margin-right:8px}
+@keyframes charge188{50%{filter:drop-shadow(0 0 14px #ff8d4a) brightness(1.14)}}@keyframes lantern188{50%{opacity:.5}}@keyframes pet188{50%{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){#monster-expedition .charging188,#monster-expedition .town-glow188,#monster-expedition .ranch-pet188 .prep-portrait129{animation:none}}
+`;document.head.append(experienceStyle188);ac.signal.addEventListener('abort',()=>{experienceStyle188.remove();closeSkills188();},{once:true});
+paintSquad181();if(battle)battleUI();
+
+// A short optional expedition objective on the existing map, not a separate game mode.
+// No reward minting or forced return. Existing risk/carry transactions remain in charge.
+function freshJourney188(){const g=goods126();return {v:1,seed:world7699?.seed||0,start:floor,kills,loot,levels:Object.fromEntries(owned().map(n=>[n,compLv(n)])),owned:owned().slice(),seen:Object.keys(S.seen||{}),eggIds:g.eggs.map(e=>e.id),weapons:{...g.weapons}};}
+function validJourney188(v){return v?.v===1&&v.seed===world7699?.seed&&Number.isInteger(v.start)&&v.start>=1&&v.start<=9999&&Number.isInteger(v.kills)&&v.kills>=0&&Number.isInteger(v.loot)&&v.loot>=0&&Array.isArray(v.owned)&&v.owned.length<10000&&v.owned.every(n=>typeof n==='string')&&Array.isArray(v.seen)&&v.seen.length<10000&&v.seen.every(n=>typeof n==='string')&&v.levels&&Object.values(v.levels).every(n=>Number.isInteger(n)&&n>=1);}
+visit188=validJourney188(visit188)?visit188:freshJourney188();
+const startJourneyBefore188=startRun121;startRun121=function(level){const seed=world7699?.seed;startJourneyBefore188(level);if(world7699?.seed!==seed){visit188=freshJourney188();persist();}};
+const tripButton188=prepButton129('旅の成果',()=>{info150.open=false;journeyReport188();});tripButton188.className='journey-button188';tools150.prepend(tripButton188);
+function journeyTarget188(){return enemies.find(e=>e.adventureKind124==='nest'&&!defeated.has(e.id))||enemies.find(e=>(e.rare155||e.rare121)&&!defeated.has(e.id))||enemies.find(e=>e.mainBoss121&&!defeated.has(e.id))||null;}
+let allowReturn188=false,returnShown188='';
+function journeyReport188(returning=false){
+ if(battle||animation)return;
+ const gained=owned().filter(n=>!visit188.owned.includes(n)),raised=owned().filter(n=>visit188.levels[n]&&compLv(n)>visit188.levels[n]),discovered=Object.keys(S.seen||{}).filter(n=>!visit188.seen.includes(n));
+ const el=choiceScreen124('旅の成果','地下'+visit188.start+' → '+floor+'階 · 討伐 '+Math.max(0,kills-visit188.kills)+' · 発見 '+Math.max(0,loot-visit188.loot),[
+ [returning?'通常モードへ':'探索を続ける',()=>{closeChoice124();if(returning){allowReturn188=true;try{active?.modal.querySelector('.expedition7696-bar button').click();}finally{allowReturn188=false;}}else canvas.focus({preventScroll:true});}],
+ ['持ち帰って仲間を整える',()=>{if(!cashRisk124()||!bankCarry126())return;closeChoice124();showPrepare129('members');}],
+ ['配合を見る',()=>{closeChoice124();breedInside121();}]
+ ]);el.classList.add('journey-report188');const art=el.querySelector('.choice-art124');art.replaceChildren();
+ const rows=[...gained.map(n=>[n,'新しい仲間']),...raised.filter(n=>!gained.includes(n)).map(n=>[n,'Lv.'+visit188.levels[n]+' → '+compLv(n)])].slice(0,3);
+ for(const[n,label]of rows){const card=document.createElement('article');card.append(portrait129(n),text129('b',partyName173(n)),text129('small',label));art.append(card);}
+ const goods=goods126(),eggs=Array.isArray(visit188.eggIds)?goods.eggs.filter(e=>!visit188.eggIds.includes(e.id)).length:0,weapons=visit188.weapons?Object.entries(goods.weapons).reduce((sum,[id,n])=>sum+Math.max(0,n-(visit188.weapons[id]||0)),0):0;
+ const copy=document.createElement('p');copy.textContent='初遭遇 '+discovered.length+'種 · 確保した卵 '+eggs+'個 · 武器 '+weapons+'個';art.after(copy);
+ if(hasCarry126())copy.append(document.createTextNode(' / 未確保：卵'+carry126.eggs.length+'・武器'+carry126.weapons.length));
+ if(!rows.length)art.append(text129('b','仲間の成長はここに残ります'));
+ if(pendingRisk124()||hasCarry126())copy.after(text129('p','未確保の品は全滅・戦闘撤退で失います。','journey-risk188'));
+}
+// Existing capture handlers settle pending loot first; never intercept an unfinished battle.
+active.modal.addEventListener('click',event=>{if(!event.target.closest('.expedition7696-bar button')||allowReturn188||battle||animation)return;const stamp=[world7699?.seed,kills,loot,owned().length].join(':');if(stamp===returnShown188||kills===visit188.kills&&loot===visit188.loot&&owned().length===visit188.owned.length)return;event.preventDefault();event.stopImmediatePropagation();returnShown188=stamp;journeyReport188(true);},{capture:true,signal:ac.signal});
+// Replace the verbose repeated floor hint with destination and a short landmark cue.
+const floorHintBefore188=floorHint7699;floorHint7699=function(){if(room76115!=='normal')return floorHintBefore188();const target=journeyTarget188();return band155().name+' · 地下'+floor+'階'+(target?'　'+(target.adventureKind124==='nest'?'巣の気配':target.mainBoss121?'守護者の気配':'珍しい魔物の気配'):'');};
+const entryBefore188=showEntry121;showEntry121=function(){entryBefore188();if(!entryChoice121)return;const box=entryChoice121.firstElementChild,p=box.querySelector('p');if(p)p.textContent='最高到達：地下'+best+'階';
+ let preview=box.querySelector('.entry-preview188');if(!preview){preview=document.createElement('div');preview.className='entry-preview188';const select=box.querySelector('select');select.before(preview);select.addEventListener('change',()=>paint());}
+ function paint(){const level=Number(box.querySelector('select')?.value)||1,pool=bandPool155(level),unknown=pool.filter(n=>!hasMonsterSpecies141(n));preview.replaceChildren(text129('b',band155(level).name),text129('small','未加入 '+unknown.length+'種 / 生息 '+pool.length+'種'));const faces=document.createElement('div');faces.className='entry-faces188';pool.slice(0,4).forEach(n=>{const cell=document.createElement('span');if(S.seen?.[n]||hasMonsterSpecies141(n)){cell.append(portrait129(n));cell.title=shortName154(n);}else cell.append(text129('b','？'));faces.append(cell);});preview.append(faces);}
+ paint();
+};
+// A visual bearing only when a landmark is nearby; it does not expose the whole map.
+const drawJourneyBefore188=drawAdventures124;drawAdventures124=function(left,top){drawJourneyBefore188(left,top);const target=journeyTarget188();if(!target)return;const p=positions[0],dx=target.x-p.x,dy=target.y-p.y,d=Math.abs(dx)+Math.abs(dy);if(d<3||d>12)return;ctx.save();ctx.translate((p.x-left)*32+16,(p.y-top)*32+16);ctx.rotate(Math.atan2(dy,dx));ctx.fillStyle=target.adventureKind124==='nest'?'#edd39a':'#b9c8ff';ctx.beginPath();ctx.moveTo(28,0);ctx.lineTo(21,-5);ctx.lineTo(21,5);ctx.closePath();ctx.fill();ctx.restore();};
+const riskBefore188=showRiskChoice124;showRiskChoice124=function(){riskBefore188();if(choice124?.getAttribute('aria-label')!=='持ち帰る？ 奥へ挑む？')return;const art=choice124.querySelector('.choice-art124');art.replaceChildren(text129('b','討伐 '+Math.max(0,kills-visit188.kills)+'　発見 '+Math.max(0,loot-visit188.loot)));};
+const journeyStyle188=document.createElement('style');journeyStyle188.textContent=`
+#monster-expedition .entry-preview188{padding:10px;background:#1a2b3d;border:1px solid #a38d60;border-radius:10px;margin:8px 0}#monster-expedition .entry-preview188>b,#monster-expedition .entry-preview188>small{display:block;color:#efd7ab}#monster-expedition .entry-faces188{display:flex;justify-content:center;gap:8px;margin-top:5px}#monster-expedition .entry-faces188>span{display:grid;place-items:center;width:54px;height:54px;background:#101b29;border-radius:8px}#monster-expedition .entry-faces188 .prep-portrait129{width:48px!important;height:48px!important}
+#monster-expedition .journey-report188 .choice-art124{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}#monster-expedition .journey-report188 .choice-art124>b{grid-column:1/-1;font-size:13px}#monster-expedition .journey-report188 article{min-width:0}#monster-expedition .journey-report188 .prep-portrait129{width:75px!important;height:75px!important;max-width:100%!important;margin:auto}#monster-expedition .journey-report188 article b,#monster-expedition .journey-report188 article small{display:block;font-size:11px;overflow-wrap:anywhere}#monster-expedition .journey-risk188{color:#f3c7a0;font-size:12px}
+`;root.append(journeyStyle188);
+message.textContent=floorHint7699();
+
 actions150.prepend(storyButton175);storyBoot175();
 
 }
